@@ -1,11 +1,11 @@
 {
-	"id": "sample-plugin",
-	"name": "Sample Plugin",
+	"id": "anki-bridge",
+	"name": "Anki Bridge",
 	"version": "1.0.0",
 	"minAppVersion": "1.0.0",
-	"description": "Demonstrates some of the capabilities of the Obsidian API.",
-	"author": "Obsidian",
-	"authorUrl": "https://obsidian.md",
+	"description": "Sync flashcards from Obsidian to Anki",
+	"author": "Andy Nguyen",
+	"authorUrl": "https://github.com/stoic031",
 	"fundingUrl": "https://obsidian.md/pricing",
-	"isDesktopOnly": false
+	"isDesktopOnly": true
 }
