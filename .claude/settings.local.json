@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(echo \"---exit code: $?\")"
+      "Bash(echo \"---exit code: $?\")",
+      "Bash(npm run *)"
     ]
   }
 }
