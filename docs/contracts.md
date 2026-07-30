@@ -1,10 +1,10 @@
 # Contracts
 
-`design.md` describes behavior in prose. This file is the machine-readable half: the
+`docs/design/` describes behavior in prose. This file is the machine-readable half: the
 exact types and algorithms, so an agent doesn't invent a shape in `parser.ts` and a
 different one in `providerManager.ts`.
 
-> Items marked **[NEEDS DECISION]** are proposals filling gaps in `design.md`.
+> Items marked **[NEEDS DECISION]** are proposals filling gaps in `docs/design/`.
 > Confirm or change them before starting Milestone 1.
 
 ## 1. Frontmatter
@@ -19,8 +19,7 @@ interface AnkiFrontmatter {
 }
 ```
 
-`last_synced` is display-only and must **not** drive any sync decision. See
-`design-open-questions.md` §3. **[NEEDS DECISION]**
+`last_synced` is display-only and must **not** drive any sync decision.
 
 All frontmatter writes go through `app.fileManager.processFrontMatter()`, never string
 manipulation.
@@ -77,14 +76,14 @@ const FIELD_ALIASES: Record<string, string[]> = {
 ### What gets written into media fields
 
 Anki needs the **full tag**, not a bare filename. Writing only the filename produces a
-card that displays text instead of playing audio. **[NEEDS DECISION]**
+card that displays text instead of playing audio.
 
 | Field | Value written to Anki    |
 | ----- | ------------------------ |
 | Audio | `[sound:{filename}]`     |
 | Image | `<img src="{filename}">` |
 
-`design.md` §1.5 says "extract filename", which is the most misreadable line in the spec.
+`docs/design/01-sync.md` §1.5 says "extract filename", which is the most misreadable line in the spec.
 
 ## 4. AI providers
 
@@ -154,6 +153,11 @@ export function sanitizeForFilename(word: string): string {
 
 Unicode is preserved — a filename containing 診察 is valid. Square brackets must be
 stripped: one that survives into a filename breaks the `[sound:...]` syntax.
+
+`sanitizeForFilename` is also reused, unmodified, by the hotkey/quick-capture flow
+(`docs/design/03-note.md` §3.7) to turn the user's selected text into a new **note**
+filename — the same 40-char truncation and Unicode-preservation rules apply there as to
+media filenames.
 
 Required test cases:
 

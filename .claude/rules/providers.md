@@ -5,7 +5,7 @@ paths:
 
 # AI provider adapters
 
-Spec: `docs/design.md` Module 2. Interfaces: `docs/contracts.md`.
+Spec: `docs/design/02-providers.md`. Interfaces: `docs/contracts.md`.
 
 ## Structure
 

@@ -3,8 +3,8 @@
 ## Claude Code specifics
 
 - Architecture and shared conventions: see AGENTS.md (imported above).
-- Behavior spec: `docs/design.md` — **read the relevant module before writing code**,
-  not the whole file.
+- Behavior spec: `docs/design/` — **read the relevant module file before writing code**,
+  not the whole directory. Start at `docs/design/README.md` for the index.
 - Path-scoped rules live in `.claude/rules/` and load automatically when Claude opens a
   file matching their patterns.
 - Repeatable procedures (adding a provider, adding a button) live in `.claude/skills/`.
@@ -31,3 +31,13 @@ the logic is correct.
        tree from AGENTS.md, since Claude can derive that from the codebase by then.
      - To check which files actually loaded, run /context and look under "Memory files".
 -->
+
+## graphify
+
+This project has a knowledge graph at graphify-out/ with god nodes, community structure, and cross-file relationships.
+
+Rules:
+- For codebase questions, first run `graphify query "<question>"` when graphify-out/graph.json exists. Use `graphify path "<A>" "<B>"` for relationships and `graphify explain "<concept>"` for focused concepts. These return a scoped subgraph, usually much smaller than GRAPH_REPORT.md or raw grep output.
+- If graphify-out/wiki/index.md exists, use it for broad navigation instead of raw source browsing.
+- Read graphify-out/GRAPH_REPORT.md only for broad architecture review or when query/path/explain do not surface enough context.
+- After modifying code, run `graphify update .` to keep the graph current (AST-only, no API cost).

@@ -20,13 +20,13 @@ widen the shared interface without discussion.
 - [ ] Create `src/providers/<task>/<vendor>.ts` implementing the task interface.
 - [ ] Register it in the provider map in `providerManager.ts`. No other change to that file.
 - [ ] Add settings fields in `settingsTab.ts` following the existing cloud-vs-local
-      conditional pattern (design.md Module 6.2): API key for cloud, API URL for local,
+      conditional pattern (`docs/design/06-settings.md` §6.2): API key for cloud, API URL for local,
       plus model / voice / size as the vendor requires.
 - [ ] Label it clearly as **cloud** or **local** in the settings UI.
 - [ ] Add defaults to `DEFAULT_SETTINGS`.
 - [ ] Unit test: mock HTTP, assert normalized output shape.
 - [ ] Unit test: failure path — non-200, malformed body, and timeout.
-- [ ] Update the provider list in `docs/design.md` Module 2.2.
+- [ ] Update the provider list in `docs/design/02-providers.md` §2.2.
 - [ ] Update `README.md` if it's a cloud provider — users need to know what data leaves
       the vault and where it goes.
 

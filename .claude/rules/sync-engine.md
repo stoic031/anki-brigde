@@ -6,7 +6,7 @@ paths:
 
 # Sync engine & AnkiConnect
 
-Spec: `docs/design.md` Module 1 and Module 3. Contracts: `docs/contracts.md`.
+Spec: `docs/design/01-sync.md` and `docs/design/03-note.md`. Contracts: `docs/contracts.md`.
 
 ## AnkiConnect access
 
@@ -59,7 +59,8 @@ Write frontmatter with `app.fileManager.processFrontMatter()`, not string surger
 
 ## Content parsing
 
-Parse off the `## Heading` structure described in design.md Module 1.5 / 3.3. A section
+Parse off the `## Heading` structure described in `docs/design/01-sync.md` §1.5 and
+`docs/design/03-note.md` §3.3. A section
 runs from its heading to the next heading of the same or higher level, or EOF.
 
 Do not invent alternative schemes (YAML in body, custom delimiters, HTML comments) —
@@ -83,6 +84,6 @@ the exact rule and its unit tests.
 
 ## Error paths
 
-Every case in design.md Module 1.6 needs an explicit branch and a user-facing message:
+Every case in `docs/design/01-sync.md` §1.6 needs an explicit branch and a user-facing message:
 AnkiConnect offline, note not found, duplicate note, parse error, model not found.
 Silent `catch {}` is never acceptable — surface it through a Notice.

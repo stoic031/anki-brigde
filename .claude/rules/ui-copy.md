@@ -7,7 +7,8 @@ paths:
 
 # UI, copy, and feedback
 
-Spec: `docs/design.md` Modules 3, 5, 6, 7.
+Spec: `docs/design/03-note.md`, `docs/design/05-ui.md`, `docs/design/06-settings.md`,
+`docs/design/07-sidebar.md`.
 
 ## Copy
 
@@ -27,7 +28,7 @@ Every action button cycles: normal → `⏳ …` (disabled, opacity 0.6, `cursor
 → `✅ Done!` (~2s) or `❌ Error` (~3s) → back to normal, or hidden if the action is no
 longer applicable.
 
-Visibility is conditional per design.md Module 3.2 — e.g. Delete only renders when
+Visibility is conditional per `docs/design/03-note.md` §3.2 — e.g. Delete only renders when
 `anki_note_id` exists, Add Audio only when the content has no `[sound:...]`.
 
 ## Long operations
