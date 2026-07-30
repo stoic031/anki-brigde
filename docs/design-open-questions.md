@@ -8,6 +8,19 @@ the entry here.
 
 ---
 
+## 🟡 Blocking provider work
+
+### 14. `AudioOptions` / `ImageOptions` shape undefined
+
+`docs/contracts.md` §4 uses `AudioOptions` and `ImageOptions` as parameter types for
+`AudioProvider.generateAudio` / `ImageProvider.generateImage`, but neither type's fields
+are specified anywhere in `docs/contracts.md` or `docs/design/`. `src/types.ts` currently
+declares them as empty placeholder interfaces so the signatures compile. Needs real
+fields (e.g. voice/speed for audio, style/size for image) before any provider adapter
+can be implemented against them.
+
+---
+
 ## 🟢 Worth doing, not blocking
 
 ### 10. No acceptance criteria per milestone
