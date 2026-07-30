@@ -89,12 +89,7 @@ card that displays text instead of playing audio.
 
 ```ts
 interface TextResult {
- word: string;
- meaning: string;
- furigana?: string;
- partOfSpeech?: string;
- collocations?: string[];
- exampleSentences?: string[];
+ [fieldName: string]: string; // keyed by exact Anki field name from targetFields
 }
 
 interface MediaResult {
@@ -106,7 +101,11 @@ interface MediaResult {
 interface TextProvider {
  id: string;
  isCloud: boolean;
- processText(input: string, task: TextTask): Promise<TextResult>;
+ processText(
+  input: string,
+  task: TextTask,
+  targetFields: string[], // fields the user ticked in the Generate-with-AI modal
+ ): Promise<TextResult>;
 }
 interface AudioProvider {
  id: string;
@@ -121,6 +120,12 @@ interface ImageProvider {
 
 type TextTask = 'extract-vocabulary' | 'generate-example' | 'rewrite';
 ```
+
+`targetFields` comes straight from `modelFieldNames()` for the note's Model — the
+provider is told exactly which fields exist (e.g. "Meaning", "Furigana", "Pinyin",
+"Gender") and must interpret each field name itself to produce sensible content. A
+field it can't or doesn't know how to fill is simply omitted/empty from the result,
+same as the existing "field không rỗng" rule for consuming it.
 
 A provider **returns a `MediaResult`. It does not name files and does not call
 `storeMediaFile`.** Naming belongs to `note/mediaNaming.ts`; storage belongs to

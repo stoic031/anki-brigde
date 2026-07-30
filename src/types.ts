@@ -16,12 +16,7 @@ export interface ParsedNote {
 
 // §4 AI providers
 export interface TextResult {
-	word: string;
-	meaning: string;
-	furigana?: string;
-	partOfSpeech?: string;
-	collocations?: string[];
-	exampleSentences?: string[];
+	[fieldName: string]: string; // keyed by exact Anki field name from targetFields
 }
 
 export interface MediaResult {
@@ -33,7 +28,11 @@ export interface MediaResult {
 export interface TextProvider {
 	id: string;
 	isCloud: boolean;
-	processText(input: string, task: TextTask): Promise<TextResult>;
+	processText(
+		input: string,
+		task: TextTask,
+		targetFields: string[], // fields the user ticked in the Generate-with-AI modal
+	): Promise<TextResult>;
 }
 
 export interface AudioProvider {

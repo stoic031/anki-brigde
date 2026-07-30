@@ -92,12 +92,14 @@
     ↓
 [6] Mở note mới trong editor
     ↓
-[7] User bấm "🤖 Generate with AI" trong note-controls
+[7] User bấm "🤖 Generate with AI" trong note-controls → mở Field Selection Modal
+    (checkbox: Meaning, Furigana, Audio, Image)
     ↓
-[8] Plugin đọc "薬" từ section "## Word" → Gọi AI Provider
-    processText("薬", "extract-vocabulary")
+[8] User tick Meaning + Furigana → bấm "Generate"
     ↓
-[9] Nhận TextResult: { meaning: "Thuốc", furigana: "くすり" }
+[9] Plugin đọc "薬" từ section "## Word" → Gọi AI Provider
+    processText("薬", "extract-vocabulary", ["Meaning", "Furigana"])
+    → Nhận TextResult: { Meaning: "Thuốc", Furigana: "くすり" }
     → Điền vào "## Meaning" và "## Furigana" (đang rỗng)
     ↓
 [10] (Tuỳ chọn) User bấm "🔊 Add Audio" / "🖼️ Add Image"

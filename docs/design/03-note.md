@@ -28,44 +28,62 @@ Plugin dùng `registerMarkdownCodeBlockProcessor('anki-controls', ...)` để đ
 - Action: Hiển thị confirm modal → Gọi AnkiConnect deleteNotes → Xóa `anki_note_id` khỏi frontmatter
 - Visual feedback: Button ẩn đi sau khi xóa
 
+**Field Selection Modal (dùng chung cho cả 3 nút AI):**
+
+Cả 3 nút (🤖 Generate with AI, 🔊 Add Audio, 🖼️ Add Image) đều **mở modal riêng của
+chính nó** khi bấm — không hành động trực tiếp trên note, và không liên quan đến Sidebar
+Modal chọn Deck/Model (`07-sidebar.md`). Modal dùng chung 1 cấu trúc:
+
+- Checkbox list: mỗi checkbox tương ứng 1 field trong `modelFieldNames(anki_model)`.
+- Field mà section tương ứng **đã có nội dung phù hợp** (Generate with AI: section
+  không rỗng; Add Audio: section chứa `[sound:`; Add Image: section chứa `<img src="`)
+  → checkbox **mặc định không tick sẵn**, nhưng vẫn chọn được — user tự tick lại nếu
+  muốn generate thêm/ghi đè theo đúng rule ở §3.4.
+- Nút "Generate" trong modal để xác nhận; đóng modal/Cancel không làm gì.
+- Provider xử lý (text/audio/image) lấy từ Settings Tab đã cấu hình sẵn — modal **không**
+  có bước chọn provider.
+- Cả 3 nút đều **luôn hiện**, cho phép bấm lại nhiều lần (mở modal lại) — không còn nút
+  nào tự ẩn sau khi dùng (xem lý do bỏ rule ẩn cũ ở dưới).
+
 **🤖 Generate with AI Button:**
 
-- Điều kiện hiển thị: **luôn hiện**, cho phép bấm lại nhiều lần. Lưu ý: khác với template
-  chung ở `AGENTS.md` mục "Add a new button to the controls block" (vốn mặc định tự ẩn
-  sau khi thành công) — đây là ngoại lệ có chủ đích, vì user có thể muốn Generate lại sau
-  khi tự sửa một vài field.
-- Input: đọc word từ section của **field đầu tiên** trong Model — tức `fields[0]` lấy từ
-  `modelFieldNames(anki_model)`, sau đó tìm section khớp tên theo đúng quy tắc
-  normalize/lookup ở `../contracts.md` §2/§3. Không hard-code `"## Word"` — Model khác có
-  thể đặt tên field đầu tiên khác (VD "Front").
-- Edge case: nếu section đó đang rỗng khi bấm nút → hiển thị Notice lỗi "Please fill in
-  the [FieldName] section first.", dừng lại, không gọi AI Provider.
-- Action: Gọi AI Provider `processText(word, 'extract-vocabulary')` (`../contracts.md`
-  §4) → nhận `TextResult` → với mỗi field không rỗng trả về (meaning, furigana,
-  partOfSpeech, collocations, exampleSentences), tìm section `## SectionName` khớp tên:
-  - Section đã tồn tại và đang rỗng → điền vào.
-  - Section đã tồn tại và đã có nội dung → **bỏ qua**, không ghi đè dữ liệu user đã nhập.
-  - Section chưa tồn tại trong note (Model hiện tại không có field đó, VD Basic không có
-    Furigana) → **tạo mới ở cuối file** rồi điền vào — không được âm thầm bỏ dữ liệu AI
-    trả về chỉ vì Model không map field đó (giống cách Audio/Image tạo section mới ở §3.4).
+- Pre-check trước khi mở modal: đọc word từ section của **field đầu tiên** trong Model —
+  tức `fields[0]` lấy từ `modelFieldNames(anki_model)`, tìm section khớp tên theo đúng
+  quy tắc normalize/lookup ở `../contracts.md` §2/§3. Không hard-code `"## Word"` — Model
+  khác có thể đặt tên field đầu tiên khác (VD "Front"). Section đó đang rỗng → hiển thị
+  Notice lỗi "Please fill in the [FieldName] section first.", dừng lại, **không mở
+  modal**.
+- Modal: checkbox theo field của Model (xem "Field Selection Modal" ở trên).
+- Action khi bấm "Generate" trong modal: `targetFields` = các field đã tick → gọi AI
+  Provider `processText(word, 'extract-vocabulary', targetFields)` (`../contracts.md`
+  §4) → nhận `TextResult` (key = đúng tên field trong `targetFields`) → với mỗi key
+  không rỗng trả về, tìm section `## FieldName` khớp **chính xác** tên đó (không cần
+  alias vì key đã đúng tên Model):
+  - Section đang rỗng → điền vào.
+  - Section đã có nội dung → **bỏ qua**, không ghi đè dữ liệu user đã nhập.
 - Visual feedback: Button đổi thành "⏳ Generating..." → "✅ Done!" → quay lại trạng thái
-  **bình thường** sau 2 giây (**không ẩn** — khác với Add Audio/Add Image).
+  bình thường sau 2 giây.
 
 **🔊 Add Audio Button:**
 
-- Điều kiện hiển thị: quét **toàn bộ content** (không chỉ section "## Audio"); nếu chuỗi
-  `[sound:` xuất hiện ở bất kỳ đâu → ẩn button. Không quan tâm file đó còn tồn tại trong
-  Anki media folder hay không, và không quan tâm có bao nhiêu section "## Audio" — chỉ
-  cần match chuỗi `[sound:` là đủ điều kiện ẩn.
-- Action: Đọc word + example từ content → Gọi AI Provider generateAudio → Gọi AnkiConnect storeMediaFile → Chèn `[sound:filename.mp3]` vào section "## Audio"
-- Visual feedback: Button đổi thành "⏳ Generating..." → "✅ Done!" → Ẩn đi
+- Modal: checkbox theo field của Model (xem "Field Selection Modal" ở trên).
+- Action khi bấm "Generate" trong modal: với **mỗi field đã tick**, đọc nội dung hiện tại
+  của chính section đó làm input → gọi AI Provider `generateAudio(fieldContent, opts)` →
+  gọi AnkiConnect `storeMediaFile` → append `[sound:filename.mp3]` vào cuối section đó.
+  Field được tick nhưng section đang rỗng → bỏ qua field đó (không có gì để đọc), không
+  báo lỗi cả modal.
+- Visual feedback: Button đổi thành "⏳ Generating..." → "✅ Done!" → quay lại trạng thái
+  bình thường.
 
 **🖼️ Add Image Button:**
 
-- Điều kiện hiển thị: quét **toàn bộ content**; nếu chuỗi `<img src="` xuất hiện ở bất kỳ
-  đâu → ẩn button. Cùng quy tắc như Add Audio ở trên.
-- Action: Đọc word + meaning từ content → Gọi AI Provider generateImage → Gọi AnkiConnect storeMediaFile → Chèn `<img src="filename.png">` vào section "## Image"
-- Visual feedback: Button đổi thành "⏳ Generating..." → "✅ Done!" → Ẩn đi
+- Modal: checkbox theo field của Model (xem "Field Selection Modal" ở trên).
+- Action khi bấm "Generate" trong modal: với **mỗi field đã tick**, đọc nội dung hiện tại
+  của chính section đó làm prompt → gọi AI Provider `generateImage(fieldContent, opts)` →
+  gọi AnkiConnect `storeMediaFile` → append `<img src="filename.png">` vào cuối section
+  đó. Field được tick nhưng section đang rỗng → bỏ qua field đó, không báo lỗi cả modal.
+- Visual feedback: Button đổi thành "⏳ Generating..." → "✅ Done!" → quay lại trạng thái
+  bình thường.
 
 ## 3.3. Content Parsing Logic
 
@@ -82,20 +100,20 @@ Plugin parse content theo cấu trúc heading:
 ## 3.4. Content Update Logic
 
 Nguyên tắc chung cho cả 3 nút AI: **không bao giờ phá dữ liệu user đã tự nhập.** Cách áp
-dụng khác nhau đôi chút giữa Audio/Image và Generate with AI:
+dụng khác nhau đôi chút giữa Audio/Image và Generate with AI. Cả 2 trường hợp dưới đây
+chỉ áp dụng cho field mà user đã tick trong modal (§3.2) — field không tick thì không bị
+đụng tới.
 
-**Audio/Image** (nhiều tag có thể cùng tồn tại hợp lý trong 1 section):
+**Audio/Image** (nhiều tag có thể cùng tồn tại hợp lý trong 1 section, field target =
+chính field user tick, không còn cố định "## Audio"/"## Image"):
 
-- Tìm section "## Audio" hoặc "## Image"
-- Nếu chưa có section → tạo mới ở cuối file
-- Nếu đã có section → append vào cuối section
-- Save file → Trigger re-render → Button tự động ẩn đi
+- Field đã tick nhưng section đang rỗng → bỏ qua field đó (không có input để đọc).
+- Section có nội dung → append tag (`[sound:...]`/`<img src="...">`) vào cuối section.
+- Save file → Trigger re-render → Button **không** ẩn (xem §3.2).
 
-**Generate with AI** (§3.2) — mỗi field trả về map với đúng 1 section, append không hợp
-lý vì sẽ tạo ra 2 đoạn text lẫn lộn dưới cùng 1 heading:
+**Generate with AI** (§3.2) — mỗi field trong `TextResult` trả về map với đúng 1
+section, append không hợp lý vì sẽ tạo ra 2 đoạn text lẫn lộn dưới cùng 1 heading:
 
-- Section tương ứng chưa tồn tại trong note → tạo mới ở cuối file, rồi điền vào (giống
-  quy tắc "tạo nếu thiếu" ở trên).
 - Section tồn tại và đang rỗng → điền vào.
 - Section tồn tại và đã có nội dung → **bỏ qua**, không append, không ghi đè.
 - Save file → Trigger re-render → Button **không** ẩn (xem §3.2).

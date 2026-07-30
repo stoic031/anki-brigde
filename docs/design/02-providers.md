@@ -39,8 +39,13 @@ Quản lý lifecycle của các provider:
 
 **Text Processing:**
 
-- Input: text string + task type
-- Output: JSON object với các field (word, meaning, furigana, collocations, exampleSentences)
+- Input: text string + task type + `targetFields` (danh sách tên field thật của Model,
+  lấy từ `modelFieldNames`, do user tick chọn trong Field Selection Modal — xem
+  `03-note.md` §3.2)
+- Output: JSON object key = đúng tên trong `targetFields`, value = nội dung sinh cho
+  field đó. Không còn field cố định (word/meaning/furigana/...) — provider tự diễn giải
+  ý nghĩa từng tên field để sinh nội dung phù hợp, field nào không suy luận được thì bỏ
+  qua (không trả key đó hoặc trả rỗng)
 
 **Audio Generation:**
 
