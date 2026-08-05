@@ -8,8 +8,9 @@ external APIs (AnkiConnect, AI providers), never runs or bundles models.
 - Entry: `src/main.ts`. Release artifacts: `main.js`, `manifest.json`, `styles.css`.
 - Runtime deps (external): AnkiConnect at `http://localhost:8765`, plus whatever AI
   provider the user configures.
-- **Behavior spec: `docs/design.md`** — that file says _what_ to build, this one says
-  _how_ to build it here. On conflict, design.md wins for behavior; update this file.
+- **Behavior spec: `docs/design/`** (start at `docs/design/README.md`) — those files say
+  _what_ to build, this one says _how_ to build it here. On conflict, docs/design/ wins
+  for behavior; update this file.
 
 ## Non-negotiables
 
@@ -51,7 +52,7 @@ all pass. A green build alone is not done.
 ## Repo layout
 
 Greenfield — this layout is a decision to follow, not a description of existing code.
-Organize by module, mirroring `docs/design.md`. Keep `main.ts` to lifecycle only
+Organize by module, mirroring `docs/design/`. Keep `main.ts` to lifecycle only
 (`onload`, `onunload`, command/view registration).
 
 ```
@@ -93,7 +94,7 @@ a matching file — don't duplicate them here.
 
 | Need                                      | Go to                                   |
 | ----------------------------------------- | --------------------------------------- |
-| What a feature should do                  | `docs/design.md` (read the module only) |
+| What a feature should do                  | `docs/design/` (read the module only)   |
 | Exact interface / field-mapping algorithm | `docs/contracts.md`                     |
 | Sync engine + AnkiConnect rules           | `.claude/rules/sync-engine.md`          |
 | Provider adapter rules                    | `.claude/rules/providers.md`            |
@@ -133,8 +134,8 @@ a matching file — don't duplicate them here.
   instead of deleting it. Every changed line should trace to the request.
 - **Verifiable goals.** "Add validation" → "write tests for invalid input, then make
   them pass". For multi-step work, state the plan with a verification step per item.
-- **Changing behavior means changing the spec.** Update `docs/design.md` in the same
-  change, not later.
+- **Changing behavior means changing the spec.** Update the relevant `docs/design/`
+  module file in the same change, not later.
 
 ## Troubleshooting
 
