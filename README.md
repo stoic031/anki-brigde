@@ -1,92 +1,74 @@
-# Obsidian Sample Plugin
+# Anki Bridge
 
-This is a sample plugin for Obsidian (https://obsidian.md).
+An [Obsidian](https://obsidian.md) plugin that syncs vocabulary notes from your vault
+to [Anki](https://apps.ankiweb.net/) via [AnkiConnect](https://foosoft.net/projects/anki-connect/),
+and can generate audio/image media for those notes through pluggable AI providers
+(cloud or local).
 
-This project uses TypeScript to provide type checking and documentation.
-The repo depends on the latest plugin API (obsidian.d.ts) in TypeScript Definition format, which contains TSDoc comments describing what it does.
+Anki Bridge is an **orchestrator only** — it calls AnkiConnect and whatever AI
+provider you configure; it never runs or bundles models itself, and it never writes
+AI-generated media into your vault (media goes straight to Anki's media folder).
 
-This sample plugin demonstrates some of the basic functionality the plugin API can do.
+> **Status:** early development. The behavior described below is the design target —
+> see [`docs/design/`](docs/design/README.md) for the full spec and
+> [`docs/design/roadmap.md`](docs/design/roadmap.md) for what's built vs. planned.
 
-- Adds a ribbon icon, which shows a Notice when clicked.
-- Adds a command "Open modal (simple)" which opens a Modal.
-- Adds a plugin setting tab to the settings page.
-- Registers a global click event and outputs a Notice on click.
-- Registers a global interval which logs 'setInterval' to the console.
+## Features (target)
 
-## First time developing plugins?
+- Sync a note's content to an Anki note via AnkiConnect, with dynamic field mapping
+  based on the Anki model you select (no hardcoded deck/model/field names).
+- In-note controls (a custom `anki-controls` code block) to trigger sync and AI
+  generation directly from the note.
+- A sidebar modal for choosing Deck/Model and configuring audio/image generation
+  per note.
+- Pluggable AI providers for text, audio (TTS), and image generation — bring your
+  own API key, nothing is bundled or hardcoded.
+- Works entirely on your machine: Anki + AnkiConnect must be running locally.
 
-Quick starting guide for new plugin devs:
+## Requirements
 
-- Check if [someone already developed a plugin for what you want](https://obsidian.md/plugins)! There might be an existing plugin similar enough that you can partner up with.
-- Make a copy of this repo as a template with the "Use this template" button (login to GitHub if you don't see it).
-- Clone your repo to a local development folder. For convenience, you can place this folder in your `.obsidian/plugins/your-plugin-name` folder.
-- Install NodeJS, then run `npm i` in the command line under your repo folder.
-- Run `npm run dev` to compile your plugin from `src/main.ts` to `main.js`.
-- Make changes to `src/main.ts` (or create new `.ts` files). Those changes should be automatically compiled into `main.js`.
-- Reload Obsidian to load the new version of your plugin.
-- Enable plugin in settings window.
-- For updates to the Obsidian API run `npm update` in the command line under your repo folder.
+- [Anki](https://apps.ankiweb.net/) with the [AnkiConnect](https://foosoft.net/projects/anki-connect/)
+  add-on installed and running (default `http://localhost:8765`).
+- Desktop only — this plugin talks to a local Anki instance and does not support
+  Obsidian Mobile.
 
-## Releasing new releases
+## Installation (manual, until this is on the community plugin list)
 
-- Update your `manifest.json` with your new version number, such as `1.0.1`, and the minimum Obsidian version required for your latest release.
-- Update your `versions.json` file with `"new-plugin-version": "minimum-obsidian-version"` so older versions of Obsidian can download an older version of your plugin that's compatible.
-- Create new GitHub release using your new version number as the "Tag version". Use the exact version number, don't include a prefix `v`. See here for an example: https://github.com/obsidianmd/obsidian-sample-plugin/releases
-- Upload the files `manifest.json`, `main.js`, `styles.css` as binary attachments. Note: The manifest.json file must be in two places, first the root path of your repository and also in the release.
-- Publish the release.
+1. Download `main.js`, `manifest.json`, and `styles.css` from a
+   [release](../../releases), or build them yourself (see below).
+2. Copy them into `<YourVault>/.obsidian/plugins/anki-bridge/`.
+3. Reload Obsidian and enable **Anki Bridge** under **Settings → Community plugins**.
+4. Make sure Anki is running with AnkiConnect before using the plugin.
 
-> You can simplify the version bump process by running `npm version patch`, `npm version minor` or `npm version major` after updating `minAppVersion` manually in `manifest.json`.
-> The command will bump version in `manifest.json` and `package.json`, and add the entry for the new version to `versions.json`
+## Development
 
-## Adding your plugin to the community plugin list
-
-- Check the [plugin guidelines](https://docs.obsidian.md/Plugins/Releasing/Plugin+guidelines).
-- Publish an initial version.
-- Make sure you have a `README.md` file in the root of your repo.
-- Make a pull request at https://github.com/obsidianmd/obsidian-releases to add your plugin.
-
-## How to use
-
-- Clone this repo.
-- Make sure your NodeJS is at least v18 (`node --version`).
-- `npm i` to install dependencies.
-- `npm run dev` to start compilation in watch mode.
-
-## Manually installing the plugin
-
-- Copy over `main.js`, `styles.css`, `manifest.json` to your vault `VaultFolder/.obsidian/plugins/your-plugin-id/`.
-
-## Improve code quality with eslint
-
-- [ESLint](https://eslint.org/) is a tool that analyzes your code to quickly find problems. You can run ESLint against your plugin to find common bugs and ways to improve your code.
-- This project already has eslint preconfigured, you can invoke a check by running`npm run lint`
-- Together with a custom eslint [plugin](https://github.com/obsidianmd/eslint-plugin) for Obsidan specific code guidelines.
-- A GitHub action is preconfigured to automatically lint every commit on all branches.
-
-## Funding URL
-
-You can include funding URLs where people who use your plugin can financially support it.
-
-The simple way is to set the `fundingUrl` field to your link in your `manifest.json` file:
-
-```json
-{
-	"fundingUrl": "https://buymeacoffee.com"
-}
+```bash
+npm i               # install dependencies
+npm run dev          # build in watch mode
+npm run build        # production build
+npm run lint          # ESLint
+npm run type-check    # tsc --noEmit
+npm run test:unit     # Vitest
+npm run format:write   # Prettier
 ```
 
-If you have multiple URLs, you can also do:
+A change is considered done when lint, type-check, and unit tests all pass:
 
-```json
-{
-	"fundingUrl": {
-		"Buy Me a Coffee": "https://buymeacoffee.com",
-		"GitHub Sponsor": "https://github.com/sponsors",
-		"Patreon": "https://www.patreon.com/"
-	}
-}
+```bash
+npm run lint && npm run type-check && npm run test:unit
 ```
 
-## API Documentation
+For manual integration testing, copy `main.js`, `manifest.json`, `styles.css` into
+`<Vault>/.obsidian/plugins/anki-bridge/` and reload Obsidian, with Anki + AnkiConnect
+running.
 
-See https://docs.obsidian.md
+## Documentation
+
+- [`AGENTS.md`](AGENTS.md) — repo layout and how-we-build-here conventions.
+- [`docs/design/README.md`](docs/design/README.md) — behavior spec, module by module.
+- [`docs/contracts.md`](docs/contracts.md) — concrete TypeScript interfaces and the
+  field-mapping algorithm.
+
+## License
+
+[0BSD](LICENSE)
