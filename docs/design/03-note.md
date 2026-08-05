@@ -10,11 +10,17 @@ Plugin dùng `registerMarkdownCodeBlockProcessor('anki-controls', ...)` để đ
 
 ## 3.2. Button Actions
 
+Note-controls hiện đúng 5 nút: 🔄 Sync | 🤖 Generate with AI | 🔊 Add Audio |
+🖼️ Add Image | 🗑️ Delete.
+
 > **Nguyên tắc chung cho 3 nút AI** (Generate with AI, Add Audio, Add Image): không nút
 > nào trong 3 nút này gọi `updateNoteFields` — mỗi nút chỉ ghi vào **content của note
 > Obsidian**. Field trên Anki chỉ được cập nhật khi user bấm 🔄 Sync một cách tường minh.
 > Cả 3 đều đọc input từ **content**, không đọc từ tên file/tiêu đề note — đổi tên file sau
-> khi tạo không làm hỏng hành vi của các nút này.
+> khi tạo không làm hỏng hành vi của các nút này. Cả 3 nút **không mở modal chọn field**
+> khi bấm — cấu hình field đã được chọn sẵn từ trước trong Sidebar Modal
+> (`07-sidebar.md` §7.2, Tab 1/2/3), theo đúng cặp Deck+Model của note đang mở. Bấm nút
+> là generate ngay; không có bước tick checkbox tại thời điểm bấm.
 
 **🔄 Sync Button:**
 
@@ -28,37 +34,31 @@ Plugin dùng `registerMarkdownCodeBlockProcessor('anki-controls', ...)` để đ
 - Action: Hiển thị confirm modal → Gọi AnkiConnect deleteNotes → Xóa `anki_note_id` khỏi frontmatter
 - Visual feedback: Button ẩn đi sau khi xóa
 
-**Field Selection Modal (dùng chung cho cả 3 nút AI):**
+**Pre-check dùng chung cho 3 nút AI:** mỗi nút, trước khi làm gì, đọc cấu hình đã lưu
+cho cặp Deck+Model của note đang mở (`07-sidebar.md` §7.4). Chưa cấu hình (theo định
+nghĩa "chưa cấu hình" ở `07-sidebar.md` §7.4) → hiển thị Notice và **dừng lại, không
+làm gì khác**:
 
-Cả 3 nút (🤖 Generate with AI, 🔊 Add Audio, 🖼️ Add Image) đều **mở modal riêng của
-chính nó** khi bấm — không hành động trực tiếp trên note, và không liên quan đến Sidebar
-Modal chọn Deck/Model (`07-sidebar.md`). Modal dùng chung 1 cấu trúc:
+- Generate with AI, chưa tick field nào ở Tab 1 → "Please configure AI field generation
+  for this Deck/Model in the sidebar (Tab 1) first."
+- Add Audio, Tab 2 chưa có dòng mapping nào → "Please configure Audio field mapping for
+  this Deck/Model in the sidebar (Tab 2) first."
+- Add Image, Tab 3 chưa chọn Input/Output → "Please configure Image field mapping for
+  this Deck/Model in the sidebar (Tab 3) first."
 
-- Checkbox list: mỗi checkbox tương ứng 1 field trong `modelFieldNames(anki_model)`.
-- Field mà section tương ứng **đã có nội dung phù hợp** (Generate with AI: section
-  không rỗng; Add Audio: section chứa `[sound:`; Add Image: section chứa `<img src="`)
-  → checkbox **mặc định không tick sẵn**, nhưng vẫn chọn được — user tự tick lại nếu
-  muốn generate thêm/ghi đè theo đúng rule ở §3.4.
-- Nút "Generate" trong modal để xác nhận; đóng modal/Cancel không làm gì.
-- Provider xử lý (text/audio/image) lấy từ Settings Tab đã cấu hình sẵn — modal **không**
-  có bước chọn provider.
-- Cả 3 nút đều **luôn hiện**, cho phép bấm lại nhiều lần (mở modal lại) — không còn nút
-  nào tự ẩn sau khi dùng (xem lý do bỏ rule ẩn cũ ở dưới).
+**🤖 Generate with AI Button** (chỉ áp dụng cho text — Audio/Image có nút riêng):
 
-**🤖 Generate with AI Button:**
-
-- Pre-check trước khi mở modal: đọc word từ section của **field đầu tiên** trong Model —
-  tức `fields[0]` lấy từ `modelFieldNames(anki_model)`, tìm section khớp tên theo đúng
-  quy tắc normalize/lookup ở `../contracts.md` §2/§3. Không hard-code `"## Word"` — Model
-  khác có thể đặt tên field đầu tiên khác (VD "Front"). Section đó đang rỗng → hiển thị
-  Notice lỗi "Please fill in the [FieldName] section first.", dừng lại, **không mở
-  modal**.
-- Modal: checkbox theo field của Model (xem "Field Selection Modal" ở trên).
-- Action khi bấm "Generate" trong modal: `targetFields` = các field đã tick → gọi AI
-  Provider `processText(word, 'extract-vocabulary', targetFields)` (`../contracts.md`
-  §4) → nhận `TextResult` (key = đúng tên field trong `targetFields`) → với mỗi key
-  không rỗng trả về, tìm section `## FieldName` khớp **chính xác** tên đó (không cần
-  alias vì key đã đúng tên Model):
+- Qua pre-check ở trên (Tab 1 đã tick ít nhất 1 field) thì đọc word từ section của
+  **field đầu tiên** trong Model — tức `fields[0]` lấy từ `modelFieldNames(anki_model)`,
+  tìm section khớp tên theo đúng quy tắc normalize/lookup ở `../contracts.md` §2/§3.
+  Không hard-code `"## Word"` — Model khác có thể đặt tên field đầu tiên khác (VD
+  "Front"). Section đó đang rỗng → hiển thị Notice lỗi "Please fill in the [FieldName]
+  section first.", dừng lại.
+- `targetFields` = các field đã tick ở Tab 1 cho Deck+Model này → gọi AI Provider
+  `processText(word, 'extract-vocabulary', targetFields)` (`../contracts.md` §4) →
+  nhận `TextResult` (key = đúng tên field trong `targetFields`) → với mỗi key không
+  rỗng trả về, tìm section `## FieldName` khớp **chính xác** tên đó (không cần alias vì
+  key đã đúng tên Model):
   - Section đang rỗng → điền vào.
   - Section đã có nội dung → **bỏ qua**, không ghi đè dữ liệu user đã nhập.
 - Visual feedback: Button đổi thành "⏳ Generating..." → "✅ Done!" → quay lại trạng thái
@@ -66,22 +66,24 @@ Modal chọn Deck/Model (`07-sidebar.md`). Modal dùng chung 1 cấu trúc:
 
 **🔊 Add Audio Button:**
 
-- Modal: checkbox theo field của Model (xem "Field Selection Modal" ở trên).
-- Action khi bấm "Generate" trong modal: với **mỗi field đã tick**, đọc nội dung hiện tại
-  của chính section đó làm input → gọi AI Provider `generateAudio(fieldContent, opts)` →
-  gọi AnkiConnect `storeMediaFile` → append `[sound:filename.mp3]` vào cuối section đó.
-  Field được tick nhưng section đang rỗng → bỏ qua field đó (không có gì để đọc), không
-  báo lỗi cả modal.
+- Qua pre-check ở trên thì với **mỗi dòng** đã cấu hình ở Tab 2 (`07-sidebar.md`
+  §7.2.2): đọc nội dung hiện tại của section **Input** làm input → gọi AI Provider
+  `generateAudio(fieldContent, { voice, language })` (voice/language lấy từ Tab 2) →
+  gọi AnkiConnect `storeMediaFile` → ghi tag `[sound:filename.mp3]` vào cuối section
+  **Output** của dòng đó, theo tuỳ chọn Overwrite/Append của Tab 2 (xem §3.4).
+  - Section Input đang rỗng → bỏ qua dòng đó (không có gì để đọc), không báo lỗi cả
+    nút.
 - Visual feedback: Button đổi thành "⏳ Generating..." → "✅ Done!" → quay lại trạng thái
   bình thường.
 
 **🖼️ Add Image Button:**
 
-- Modal: checkbox theo field của Model (xem "Field Selection Modal" ở trên).
-- Action khi bấm "Generate" trong modal: với **mỗi field đã tick**, đọc nội dung hiện tại
-  của chính section đó làm prompt → gọi AI Provider `generateImage(fieldContent, opts)` →
-  gọi AnkiConnect `storeMediaFile` → append `<img src="filename.png">` vào cuối section
-  đó. Field được tick nhưng section đang rỗng → bỏ qua field đó, không báo lỗi cả modal.
+- Qua pre-check ở trên thì đọc nội dung hiện tại của section **Input** (Tab 3,
+  `07-sidebar.md` §7.2.3) làm prompt → gọi AI Provider `generateImage(fieldContent,
+  opts)` → gọi AnkiConnect `storeMediaFile` → ghi tag `<img src="filename.png">` vào
+  cuối section **Output**, theo tuỳ chọn Overwrite/Append của Tab 3 (xem §3.4).
+  - Section Input đang rỗng → không làm gì, hiển thị Notice "Nothing to generate an
+    image from — please fill in the [InputFieldName] section first."
 - Visual feedback: Button đổi thành "⏳ Generating..." → "✅ Done!" → quay lại trạng thái
   bình thường.
 
@@ -100,15 +102,21 @@ Plugin parse content theo cấu trúc heading:
 ## 3.4. Content Update Logic
 
 Nguyên tắc chung cho cả 3 nút AI: **không bao giờ phá dữ liệu user đã tự nhập.** Cách áp
-dụng khác nhau đôi chút giữa Audio/Image và Generate with AI. Cả 2 trường hợp dưới đây
-chỉ áp dụng cho field mà user đã tick trong modal (§3.2) — field không tick thì không bị
-đụng tới.
+dụng khác nhau đôi chút giữa Audio/Image và Generate with AI. Audio/Image chỉ áp dụng
+cho dòng field-mapping đã cấu hình ở Tab 2/3 (`07-sidebar.md` §7.2.2/§7.2.3) — field
+Output không nằm trong cấu hình thì không bị đụng tới.
 
-**Audio/Image** (nhiều tag có thể cùng tồn tại hợp lý trong 1 section, field target =
-chính field user tick, không còn cố định "## Audio"/"## Image"):
+**Audio/Image** (field Input/Output = theo dòng mapping đã cấu hình, không còn cố định
+"## Audio"/"## Image"; hành vi ghi vào section Output phụ thuộc tuỳ chọn **Overwrite /
+Append** của Tab 2/3):
 
-- Field đã tick nhưng section đang rỗng → bỏ qua field đó (không có input để đọc).
-- Section có nội dung → append tag (`[sound:...]`/`<img src="...">`) vào cuối section.
+- Section Input đang rỗng → bỏ qua dòng đó (không có input để đọc).
+- Tuỳ chọn **Append** (mặc định): section Output đã có tag `[sound:...]`/
+  `<img src="...">` từ trước → giữ nguyên tag cũ, thêm tag mới vào cuối section. Section
+  Output chưa có tag nào → thêm tag mới.
+- Tuỳ chọn **Overwrite**: xoá (các) tag `[sound:...]`/`<img src="...">` hiện có trong
+  section Output — chỉ xoá tag, giữ nguyên text khác user đã viết thêm trong section đó
+  — rồi ghi tag mới vào.
 - Save file → Trigger re-render → Button **không** ẩn (xem §3.2).
 
 **Generate with AI** (§3.2) — mỗi field trong `TextResult` trả về map với đúng 1
@@ -180,28 +188,42 @@ trong cùng folder — không cần mở Sidebar Modal, không cần nhập tên
 
 **Flow:**
 
+Dùng chung Sidebar Modal và cùng cơ chế 2-nhánh với `07-sidebar.md` §7.3 (Deck/Model đã
+từng cấu hình hay chưa) — khác biệt duy nhất so với §7.3: filename lấy từ text đã bôi
+đen (không hỏi tên), và folder đích luôn là folder chứa file đang active (không dùng
+Folder select của Tab 1).
+
 1. User bôi đen text trong note markdown đang mở.
 2. Bấm hotkey đã gán cho command `create-note-from-selection`.
-3. Plugin đọc Deck/Model đã lưu gần nhất trong settings (`07-sidebar.md` §7.4
-   Persistence).
-   - Chưa từng chọn Deck/Model → Notice lỗi: "No Deck/Model selected yet. Please open
-     the Anki sidebar and select a Deck and Model first." → dừng lại, **không tạo note**.
-     (Lỗi này gắn với điều kiện tiên quyết của flow tạo note, không thuộc danh sách lỗi
-     sync ở `01-sync.md` §1.6 — nhưng theo cùng convention copy: nói rõ cái gì hỏng và
-     bước tiếp theo là gì.)
-   - Đã có → tiếp tục.
-4. Plugin tính filename = `sanitizeForFilename(selectedText)` + `.md` (tái dùng hàm từ
+3. Plugin tính filename = `sanitizeForFilename(selectedText)` + `.md` (tái dùng hàm từ
    `../contracts.md` §5 — vốn trước đây chỉ dùng cho tên file media, nay dùng chung cho
    tên note). Folder đích = folder chứa file đang active.
    - Trùng tên file đã tồn tại trong folder đó → tự thêm hậu tố số (hành vi mặc định của
      Obsidian khi tạo file trùng tên, VD "word 1.md") — không ghi đè, không báo lỗi,
      không mở file cũ thay vào.
+4. Plugin đọc Deck/Model đã lưu gần nhất (`07-sidebar.md` §7.4 Persistence).
+   - **Đã có** (Nhánh A) → tạo note ngay bằng Deck/Model đã lưu, bỏ qua bước 5.
+   - **Chưa từng chọn Deck/Model** (Nhánh B) → hiện modal ở giữa màn hình để chọn
+     Deck/Model (giống `07-sidebar.md` §7.3 Nhánh B, nhưng **không có** ô Folder — folder
+     đã cố định ở bước 3, và **không có** ô nhập tên note — tên đã có từ text bôi đen):
+     ```
+     ┌─────────────────────────────┐
+     │  Set up Anki Bridge          │
+     │  Select Deck:  [ ▼ ]          │
+     │  Select Model: [ ▼ ]          │
+     │        [Create new note]      │
+     └─────────────────────────────┘
+     ```
+     User chọn Deck + Model → bấm "Create new note" → plugin lưu 2 giá trị này làm cấu
+     hình Tab 1 (persist, `07-sidebar.md` §7.4) → tiếp tục bước 5.
 5. Plugin tạo note với content skeleton **giống hệt §3.6** (một `## SectionName` cho mỗi
    field của Model, theo đúng thứ tự `modelFieldNames`) — **ngoại lệ duy nhất**: section
    của field đầu tiên (`fields[0]`) được điền sẵn text đã chọn; các section còn lại để
    trống như §3.6 mô tả.
-   - Frontmatter: `anki_deck`, `anki_model` lấy từ settings đã resolve ở bước 3.
-6. Mở note mới trong editor (giống bước cuối của `07-sidebar.md` §7.3).
+   - Frontmatter: `anki_deck`, `anki_model` lấy từ Deck/Model đã resolve ở bước 4.
+6. Mở note mới trong editor.
+7. Nếu Sidebar Modal chưa mở → tự mở ra (Tab 1), để user xem lại/đổi Deck/Model cho note
+   vừa tạo nếu cần (giống `07-sidebar.md` §7.3 Nhánh A bước cuối).
 
 Sau khi note được tạo, việc điền Meaning/Furigana/... không còn tự động — user tự bấm
 "🤖 Generate with AI" trong note-controls (§3.2) khi cần, có thể bấm lại nhiều lần.

@@ -1,23 +1,36 @@
 # 🔄 Luồng xử lý tổng thể (Updated)
 
-> Xem [`README.md`](README.md) cho tổng quan kiến trúc.
+> Xem [`README.md`](README.md) cho tổng quan kiến trúc. Chi tiết Sidebar Modal (3 tab):
+> [`07-sidebar.md`](07-sidebar.md). Chi tiết nút note-controls: [`03-note.md`](03-note.md).
 
-## Scenario 1: User tạo note từ Sidebar Modal
+## Scenario 1: User tạo note qua icon "+" / command (lần đầu vs. đã cấu hình)
+
+Sidebar Modal luôn có mặt ở Right Sidebar ngay sau khi cài plugin, gồm 3 tab cố định
+(xem `07-sidebar.md` §7.2):
+
+- **Tab 1 — Note:** Deck, Model, Folder lưu note, checkbox chọn field cho Generate with
+  AI (checkbox chỉ hiện sau khi đã chọn Deck + Model).
+- **Tab 2 — Audio:** Voice, Language, Overwrite/Append, nhiều dòng mapping field
+  (Input → Output) — cho phép tạo nhiều field audio khác nhau trong 1 note.
+- **Tab 3 — Image:** Overwrite/Append, 1 dòng mapping field (Input → Output) cố định —
+  không cần nhiều dòng vì 1 note thường chỉ cần 1 ảnh.
+
+Tab 2 và Tab 3 chỉ hiện sau khi Tab 1 đã có Deck + Model.
+
+Bấm icon "+" trong Ribbon hoặc chạy command **"Anki: Create new note"** sẽ **tạo note
+ngay** và đồng thời mở Sidebar Modal ra (nếu chưa mở) — không còn yêu cầu user tự mở
+modal, chọn Deck/Model rồi mới bấm nút Create như trước.
+
+**Nhánh A — Deck/Model đã từng được cấu hình:**
 
 ```
-[1] User mở Sidebar Modal (click icon trong Ribbon)
+[1] User bấm icon "+" (hoặc command "Anki: Create new note")
     ↓
-[2] Chọn Deck: "Japanese::N2"
+[2] Plugin hỏi tên note: "Enter note name:"
     ↓
-[3] Chọn Model: "Basic (and reversed card)"
+[3] User nhập tên: "診察"
     ↓
-[4] Plugin tự động lấy fields: ["Front", "Back"]
-    ↓
-[5] User bấm "📝 Create New Note"
-    ↓
-[6] Nhập tên note: "診察"
-    ↓
-[7] Plugin tạo note:
+[4] Plugin tạo note ngay bằng Deck/Model/Folder đã lưu gần nhất (Tab 1):
     ---
     anki_deck: "Japanese::N2"
     anki_model: "Basic (and reversed card)"
@@ -32,7 +45,13 @@
 
 
     ↓
-[8] User điền content:
+[5] Mở note mới trong editor
+    ↓
+[6] Sidebar Modal tự mở (Tab 1) nếu chưa mở, để user xem lại/đổi Deck/Model/Folder cho
+    note vừa tạo — note chưa sync nên đổi ở đây chỉ ghi frontmatter, không cảnh báo
+    (khác Scenario 4, áp dụng cho note đã sync)
+    ↓
+[7] User điền content:
     ## Front
     診察
 
@@ -40,32 +59,60 @@
     Khám bệnh
 
     ↓
-[9] Bấm button "🔄 Sync" trong note
+[8] Bấm button "🔄 Sync" trong note
     ↓
-[10] Plugin parse content → map "## Front" → Anki "Front", "## Back" → Anki "Back"
+[9] Plugin parse content → map "## Front" → Anki "Front", "## Back" → Anki "Back"
     ↓
-[11] Gọi AnkiConnect "addNote"
+[10] Gọi AnkiConnect "addNote"
     ↓
-[12] Lưu anki_note_id vào frontmatter
+[11] Lưu anki_note_id vào frontmatter
     ↓
-[13] Button đổi thành "✅ Synced" (2 giây)
+[12] Button đổi thành "✅ Synced" (2 giây)
     ↓
-[14] Re-render controls (hiện thêm Delete button)
+[13] Re-render controls (hiện thêm Delete button)
 ```
 
-## Scenario 2: User tạo note từ text được chọn (Hotkey) rồi Generate with AI
+**Nhánh B — chưa từng cấu hình gì (lần đầu dùng plugin):**
+
+```
+[1] User bấm icon "+" (hoặc command "Anki: Create new note")
+    ↓
+[2] Chưa có Deck/Model nào được lưu → KHÔNG tạo note ngay. Hiện modal ở giữa màn hình:
+    ┌─────────────────────────────┐
+    │  Set up Anki Bridge          │
+    │  Select Deck:  [ ▼ ]          │
+    │  Select Model: [ ▼ ]          │
+    │  Save notes to: [ ▼ ]          │
+    │        [Create new note]      │
+    └─────────────────────────────┘
+    ↓
+[3] User chọn Deck: "Japanese::N2", Model: "Basic (and reversed card)",
+    Folder: "Vocabulary/" → bấm "Create new note"
+    ↓
+[4] Plugin lưu Deck/Model/Folder này làm cấu hình Tab 1 (persist)
+    ↓
+[5] Tiếp tục như Nhánh A từ bước [2] (hỏi tên note → tạo note → mở note → mở Sidebar
+    Modal Tab 1, giờ đã có field checkbox khả dụng vì đã có Deck+Model)
+```
+
+## Scenario 2: User tạo note từ text được chọn (Hotkey), dùng chung Sidebar Modal
+
+Cũng dùng chung Sidebar Modal và cùng cơ chế 2-nhánh ở Scenario 1 — khác biệt duy nhất:
+filename lấy từ text đã bôi đen (không hỏi tên), folder đích luôn là folder chứa note
+đang active (không dùng Folder select của Tab 1). Chi tiết đầy đủ: `03-note.md` §3.7.
 
 ```
 [1] User đang đọc 1 note markdown khác, bôi đen "薬"
     ↓
 [2] Bấm hotkey đã gán cho command "create-note-from-selection"
     ↓
-[3] Plugin đọc Deck/Model đã lưu gần nhất trong settings:
-    Deck: "Japanese::N2", Model: "Japanese Vocabulary"
-    (chưa từng chọn Deck/Model → Notice lỗi, dừng lại — xem 03-note.md §3.7)
-    ↓
-[4] Plugin tính filename = sanitizeForFilename("薬") = "薬.md"
+[3] Plugin tính filename = sanitizeForFilename("薬") = "薬.md"
     Trùng tên đã tồn tại trong folder → tự thêm hậu tố số ("薬 1.md")
+    ↓
+[4] Plugin đọc Deck/Model đã lưu gần nhất:
+    ├─ Đã có (VD: Deck "Japanese::N2", Model "Japanese Vocabulary") → dùng ngay
+    └─ Chưa từng chọn → hiện modal giữa màn hình chọn Deck/Model (không có ô Folder/tên
+       note, xem `03-note.md` §3.7) → user chọn xong, plugin lưu làm cấu hình Tab 1
     ↓
 [5] Plugin tạo note trong CÙNG folder với note đang đọc:
     ---
@@ -92,10 +139,11 @@
     ↓
 [6] Mở note mới trong editor
     ↓
-[7] User bấm "🤖 Generate with AI" trong note-controls → mở Field Selection Modal
-    (checkbox: Meaning, Furigana, Audio, Image)
+[7] Sidebar Modal tự mở (Tab 1) nếu chưa mở
     ↓
-[8] User tick Meaning + Furigana → bấm "Generate"
+[8] User bấm "🤖 Generate with AI" trong note-controls
+    (không mở modal chọn field — nút generate ngay theo checkbox đã tick sẵn ở Tab 1
+    cho cặp Deck+Model này, VD: Meaning, Furigana)
     ↓
 [9] Plugin đọc "薬" từ section "## Word" → Gọi AI Provider
     processText("薬", "extract-vocabulary", ["Meaning", "Furigana"])
@@ -103,38 +151,89 @@
     → Điền vào "## Meaning" và "## Furigana" (đang rỗng)
     ↓
 [10] (Tuỳ chọn) User bấm "🔊 Add Audio" / "🖼️ Add Image"
+    (cũng generate ngay theo mapping đã cấu hình ở Tab 2/3 — xem Scenario 3/3b)
     ↓
 [11] User review, chỉnh sửa nếu cần
     ↓
 [12] Bấm "🔄 Sync" → Lưu vào Anki
 ```
 
-## Scenario 3: User thêm audio vào note
+> Nếu Tab 1 chưa tick field nào (Generate with AI) hoặc Tab 2/3 chưa cấu hình dòng
+> mapping nào cho cặp Deck+Model này, bấm nút tương ứng chỉ hiện Notice nhắc cấu hình
+> và không làm gì — xem `03-note.md` §3.2.
+
+## Scenario 3: User thêm audio vào note (theo cấu hình Tab 2)
+
+Khác với trước đây, không còn Field Selection Modal mở ra khi bấm — Tab 2 (Audio) của
+Sidebar Modal đã cấu hình sẵn Voice, Language, Overwrite/Append và các dòng mapping
+Input → Output cho cặp Deck+Model của note này (xem `07-sidebar.md` §7.2.2). Ví dụ cấu
+hình Tab 2: Voice = Female, Language = Japanese, On existing tag = Append, 2 dòng:
+`Word → Audio`, `Example → Example Audio`.
 
 ```
 [1] User bấm "🔊 Add Audio"
     ↓
-[2] Plugin parse content → extract word + example_sentence
+[2] Tab 2 chưa có dòng mapping nào cho Deck+Model này? → Notice "Please configure Audio
+    field mapping for this Deck/Model in the sidebar (Tab 2) first." → dừng lại
+    (trường hợp còn lại tiếp tục các bước dưới)
     ↓
-[3] Hiển thị progress: "🔊 Generating audio..."
+[3] Với mỗi dòng đã cấu hình (VD dòng 1: Word → Audio):
+    - Đọc nội dung section "## Word" làm input
+    - Section rỗng → bỏ qua dòng này, không báo lỗi cả nút
     ↓
-[4] Gọi AI Provider → generateAudio(word + example)
+[4] Hiển thị progress: "🔊 Generating audio..."
     ↓
-[5] Nhận base64 → Gọi AnkiConnect "storeMediaFile"
+[5] Gọi AI Provider → generateAudio(wordContent, { voice: "Female", language: "Japanese" })
     ↓
-[6] Chèn [sound:_obsidian_{word}_audio_{timestamp}.mp3] vào section "## Audio"
+[6] Nhận base64 → Gọi AnkiConnect "storeMediaFile"
     ↓
-[7] Save file → Re-render
+[7] Ghi vào section "## Audio" (field Output của dòng này) theo tuỳ chọn Append/Overwrite:
+    - Append: giữ tag [sound:...] cũ (nếu có) + thêm tag mới
+    - Overwrite: xoá tag [sound:...] cũ, ghi tag mới
     ↓
-[8] Button ẩn đi (vì đã có audio)
+[8] Lặp lại bước 3-7 cho từng dòng còn lại (VD dòng 2: Example → Example Audio)
+    ↓
+[9] Save file → Re-render
+    ↓
+[10] Button "🔊 Add Audio" vẫn hiện — có thể bấm lại nhiều lần (không tự ẩn)
 ```
 
-## Scenario 4: User thay đổi Deck/Model trong Sidebar Modal
+## Scenario 3b: User thêm image vào note (theo cấu hình Tab 3)
+
+Giống Scenario 3 nhưng chỉ 1 dòng mapping cố định, không có Voice/Language (xem
+`07-sidebar.md` §7.2.3). Ví dụ cấu hình Tab 3: On existing tag = Overwrite,
+`Word → Image`.
+
+```
+[1] User bấm "🖼️ Add Image"
+    ↓
+[2] Tab 3 chưa chọn Input/Output cho Deck+Model này? → Notice "Please configure Image
+    field mapping for this Deck/Model in the sidebar (Tab 3) first." → dừng lại
+    ↓
+[3] Đọc nội dung section "## Word" (field Input) làm prompt
+    - Section rỗng → Notice "Nothing to generate an image from — please fill in the
+      Word section first." → dừng lại
+    ↓
+[4] Hiển thị progress: "🎨 Generating image..."
+    ↓
+[5] Gọi AI Provider → generateImage(wordContent, opts) → Nhận base64
+    ↓
+[6] Gọi AnkiConnect "storeMediaFile"
+    ↓
+[7] Ghi vào section "## Image" (field Output) theo tuỳ chọn Overwrite: xoá tag
+    <img src="..."> cũ, ghi tag mới
+    ↓
+[8] Save file → Re-render
+    ↓
+[9] Button "🖼️ Add Image" vẫn hiện — có thể bấm lại nhiều lần (không tự ẩn)
+```
+
+## Scenario 4: User thay đổi Deck/Model trong Sidebar Modal (Tab 1)
 
 ```
 [1] User mở note đã sync (có anki_note_id trong frontmatter)
     ↓
-[2] Mở Sidebar Modal → Chọn Deck mới hoặc Model mới
+[2] Mở Sidebar Modal → Tab 1 → Chọn Deck mới hoặc Model mới
     ↓
 [3] Plugin hiển thị warning modal:
     "Note này đã sync với Deck/Model cũ.
@@ -146,3 +245,7 @@
     ├─ Giữ nguyên → Không thay đổi frontmatter
     └─ Cập nhật → Update anki_deck/anki_model trong frontmatter → Xóa anki_note_id (để tạo note mới khi sync)
 ```
+
+> Cảnh báo này **chỉ** áp dụng cho note đã sync. Đổi Deck/Model cho note **chưa** sync
+> (mới tạo, không có `anki_note_id`) — như ở bước [6]/Nhánh A của Scenario 1 hoặc bước
+> [7] của Scenario 2 — chỉ ghi đè frontmatter trực tiếp, không hiện warning modal này.

@@ -40,8 +40,8 @@ Quản lý lifecycle của các provider:
 **Text Processing:**
 
 - Input: text string + task type + `targetFields` (danh sách tên field thật của Model,
-  lấy từ `modelFieldNames`, do user tick chọn trong Field Selection Modal — xem
-  `03-note.md` §3.2)
+  lấy từ `modelFieldNames`, do user tick chọn trước trong Sidebar Modal Tab 1 — xem
+  `07-sidebar.md` §7.2.1 và `03-note.md` §3.2)
 - Output: JSON object key = đúng tên trong `targetFields`, value = nội dung sinh cho
   field đó. Không còn field cố định (word/meaning/furigana/...) — provider tự diễn giải
   ý nghĩa từng tên field để sinh nội dung phù hợp, field nào không suy luận được thì bỏ

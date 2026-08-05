@@ -15,8 +15,8 @@ tương ứng.
 | [`03-note.md`](03-note.md)                 | Module 3: Note Creation & Controls                |
 | [`05-ui.md`](05-ui.md)                     | Module 5: UI/UX (visual feedback, toast, CSS)     |
 | [`06-settings.md`](06-settings.md)         | Module 6: Settings Tab (Connection Flow)          |
-| [`07-sidebar.md`](07-sidebar.md)           | Module 7: Sidebar Modal (Deck & Model Selection)  |
-| [`scenarios.md`](scenarios.md)             | Luồng xử lý tổng thể — 4 scenario end-to-end       |
+| [`07-sidebar.md`](07-sidebar.md)           | Module 7: Sidebar Modal (Deck/Model, Audio & Image config, 3 tab) |
+| [`scenarios.md`](scenarios.md)             | Luồng xử lý tổng thể — 5 scenario end-to-end       |
 | [`roadmap.md`](roadmap.md)                 | Lộ trình phát triển theo milestone                |
 
 > Đánh số Module nhảy **3 → 5** có chủ đích: Module 4 đã bị bỏ khỏi kế hoạch, không phải
@@ -55,5 +55,6 @@ Câu hỏi/mâu thuẫn thiết kế chưa chốt: xem `docs/design-open-questio
 9. **Error handling** - Xử lý mọi trường hợp lỗi (API fail, offline, timeout)
 10. **Conditional rendering** - Chỉ hiện button cần thiết dựa trên trạng thái note
 11. **Content parsing** - Dựa trên heading structure (## SectionName)
-12. **Content update** - Append vào đúng section, không ghi đè toàn bộ file
+12. **Content update** - Ghi vào đúng section (Append hoặc Overwrite tag cũ tuỳ cấu hình
+    Tab 2/3, xem `03-note.md` §3.4), không ghi đè toàn bộ file
 13. **Persistence** - Lưu Deck/Model đã chọn trong settings, sync giữa Settings Tab và Sidebar Modal
