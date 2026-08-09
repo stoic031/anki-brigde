@@ -1,5 +1,5 @@
 import type { App, TFile } from 'obsidian';
-import type { AnkiFrontmatter } from '../types';
+import type { AnkiFrontmatter, SectionValue } from '../types';
 
 export function readAnkiFrontmatter(app: App, file: TFile): AnkiFrontmatter | undefined {
 	const fm = app.metadataCache.getFileCache(file)?.frontmatter;
@@ -26,4 +26,54 @@ export async function writeAnkiFrontmatter(
 			else frontmatter[key] = value;
 		}
 	});
+}
+
+const AUDIO_TAG = /^\[sound:[^\]]+\]$/;
+const IMAGE_TAG = /^<img\s+src="[^"]+">$/;
+
+export function parseSections(content: string): Map<string, SectionValue> {
+	const sections = new Map<string, SectionValue>();
+	const lines = content.split('\n');
+	let currentKey: string | null = null;
+	let buffer: string[] = [];
+
+	const commit = () => {
+		if (currentKey !== null) sections.set(currentKey, extractSectionValue(buffer.join('\n')));
+	};
+
+	for (const line of lines) {
+		const heading = /^(#{1,6})\s+(.+?)\s*$/.exec(line);
+		const hashes = heading?.[1];
+		const headingText = heading?.[2];
+		if (hashes !== undefined && headingText !== undefined) {
+			const level = hashes.length;
+			if (level <= 2) {
+				// a heading of the same or higher level ends the current section (.claude/rules/sync-engine.md)
+				commit();
+				currentKey = level === 2 ? headingText.trim().toLowerCase() : null;
+				buffer = [];
+				continue;
+			}
+		}
+		if (currentKey !== null) buffer.push(line);
+	}
+	commit();
+
+	return sections;
+}
+
+function extractSectionValue(raw: string): SectionValue {
+	const trimmed = raw.trim();
+	if (trimmed === '') return '';
+	if (AUDIO_TAG.test(trimmed)) return trimmed;
+	if (IMAGE_TAG.test(trimmed)) return trimmed;
+
+	const bulletItems = trimmed
+		.split('\n')
+		.map((line) => line.trim())
+		.filter((line) => line.startsWith('-'))
+		.map((line) => line.slice(1).trim());
+	if (bulletItems.length > 0) return bulletItems;
+
+	return trimmed;
 }

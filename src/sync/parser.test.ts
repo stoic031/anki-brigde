@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { App, FrontMatterCache, TFile } from 'obsidian';
-import { readAnkiFrontmatter, writeAnkiFrontmatter } from './parser';
+import { parseSections, readAnkiFrontmatter, writeAnkiFrontmatter } from './parser';
 
 function fakeReaderApp(frontmatter: FrontMatterCache | undefined): App {
 	return {
@@ -92,5 +92,45 @@ describe('writeAnkiFrontmatter', () => {
 		const { app, frontmatter } = fakeWriterApp({ anki_note_id: 123, anki_deck: 'Deck' });
 		await writeAnkiFrontmatter(app, file, { anki_note_id: undefined });
 		expect(frontmatter).toEqual({ anki_deck: 'Deck' });
+	});
+});
+
+describe('parseSections', () => {
+	it('extracts a text section as a trimmed string', () => {
+		const sections = parseSections('## Word\n\n診察\n\n## Meaning\n\nKhám bệnh\n');
+		expect(sections.get('word')).toBe('診察');
+		expect(sections.get('meaning')).toBe('Khám bệnh');
+	});
+
+	it('extracts a list section as an array of trimmed items with the marker stripped', () => {
+		const sections = parseSections('## Collocations\n\n- 診察を受ける\n- 診察室\n');
+		expect(sections.get('collocations')).toEqual(['診察を受ける', '診察室']);
+	});
+
+	it('extracts a [sound:...] section verbatim as a string, not a list', () => {
+		const sections = parseSections('## Audio\n\n[sound:_obsidian_診察_audio_1698765432.mp3]\n');
+		expect(sections.get('audio')).toBe('[sound:_obsidian_診察_audio_1698765432.mp3]');
+	});
+
+	it('extracts an <img src="..."> section verbatim as a string', () => {
+		const sections = parseSections('## Image\n\n<img src="_obsidian_診察_image_1698765433.png">\n');
+		expect(sections.get('image')).toBe('<img src="_obsidian_診察_image_1698765433.png">');
+	});
+
+	it('maps an empty section to "", not undefined, and keeps the key present', () => {
+		const sections = parseSections('## Word\n\n## Meaning\n\nKhám bệnh\n');
+		expect(sections.get('word')).toBe('');
+		expect(sections.has('word')).toBe(true);
+	});
+
+	it('ends the current section at a heading of the same or higher level', () => {
+		const sections = parseSections('## Word\n\n診察\n\n# Unrelated\n\nnot a section\n');
+		expect(sections.get('word')).toBe('診察');
+		expect(sections.has('unrelated')).toBe(false);
+	});
+
+	it('keeps a deeper heading (###) as part of the enclosing section content', () => {
+		const sections = parseSections('## Example\n\n診察を受けました。\n\n### Note\n\nInformal register.\n');
+		expect(sections.get('example')).toBe('診察を受けました。\n\n### Note\n\nInformal register.');
 	});
 });
