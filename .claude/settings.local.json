@@ -2,7 +2,10 @@
   "permissions": {
     "allow": [
       "Bash(echo \"---exit code: $?\")",
-      "Bash(npm run *)"
+      "Bash(npm run *)",
+      "Bash(graphify query *)",
+      "Bash(graphify update *)",
+      "Bash(git add *)"
     ]
   }
 }

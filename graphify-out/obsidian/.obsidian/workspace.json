@@ -11,14 +11,17 @@
             "id": "eac4b2abdf061860",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "canvas",
               "state": {
-                "file": "eslint_1.md",
-                "mode": "source",
-                "source": false
+                "file": "graph.canvas",
+                "viewState": {
+                  "x": 3510.8554117077256,
+                  "y": 1744.2128008250115,
+                  "zoom": -2.2784004290655586
+                }
               },
-              "icon": "lucide-file",
-              "title": "eslint_1"
+              "icon": "lucide-layout-dashboard",
+              "title": "graph"
             }
           }
         ]
@@ -41,7 +44,9 @@
               "type": "file-explorer",
               "state": {
                 "sortOrder": "alphabetical",
-                "autoReveal": false
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
               },
               "icon": "lucide-folder-closed",
               "title": "Files"
@@ -74,7 +79,8 @@
               "title": "Bookmarks"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
@@ -94,7 +100,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "eslint_1.md",
+                "file": "graph.canvas",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +110,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for eslint_1"
+              "title": "Backlinks"
             }
           },
           {
@@ -184,6 +190,8 @@
   },
   "active": "eac4b2abdf061860",
   "lastOpenFiles": [
+    "Toast notifications (§5.2).md",
+    "eslint_1.md",
     "DeckModel selection persistence (§7.4).md",
     "AGENTS.md — Agent Guide (Obsidian-Anki AI Plugin).md",
     "Add Audio button (§3.2).md",

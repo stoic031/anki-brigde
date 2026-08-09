@@ -155,10 +155,9 @@
       "source_file": ".opencode/opencode.json",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "opencode_opencode",
       "community": 14,
-      "community_name": "opencode.json",
-      "norm_label": "opencode.json"
+      "norm_label": "opencode.json",
+      "id": "opencode_opencode"
     },
     {
       "label": "$schema",
@@ -166,10 +165,9 @@
       "source_file": ".opencode/opencode.json",
       "source_location": "L2",
       "_origin": "ast",
-      "id": "opencode_opencode_schema",
       "community": 14,
-      "community_name": "opencode.json",
-      "norm_label": "$schema"
+      "norm_label": "$schema",
+      "id": "opencode_opencode_schema"
     },
     {
       "label": "plugin",
@@ -177,10 +175,9 @@
       "source_file": ".opencode/opencode.json",
       "source_location": "L3",
       "_origin": "ast",
-      "id": "opencode_opencode_plugin",
       "community": 14,
-      "community_name": "opencode.json",
-      "norm_label": "plugin"
+      "norm_label": "plugin",
+      "id": "opencode_opencode_plugin"
     },
     {
       "label": ".opencode/plugins/graphify.js",
@@ -188,10 +185,9 @@
       "source_file": ".opencode/opencode.json",
       "source_location": "L3",
       "_origin": "ast",
-      "id": "ref_opencode_plugins_graphify_js",
       "community": 14,
-      "community_name": "opencode.json",
-      "norm_label": ".opencode/plugins/graphify.js"
+      "norm_label": ".opencode/plugins/graphify.js",
+      "id": "ref_opencode_plugins_graphify_js"
     },
     {
       "label": "graphify.js",
@@ -199,10 +195,9 @@
       "source_file": ".opencode/plugins/graphify.js",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "opencode_plugins_graphify",
       "community": 17,
-      "community_name": "graphify.js",
-      "norm_label": "graphify.js"
+      "norm_label": "graphify.js",
+      "id": "opencode_plugins_graphify"
     },
     {
       "label": "GraphifyPlugin()",
@@ -210,10 +205,9 @@
       "source_file": ".opencode/plugins/graphify.js",
       "source_location": "L12",
       "_origin": "ast",
-      "id": "opencode_plugins_graphify_graphifyplugin",
       "community": 17,
-      "community_name": "graphify.js",
-      "norm_label": "graphifyplugin()"
+      "norm_label": "graphifyplugin()",
+      "id": "opencode_plugins_graphify_graphifyplugin"
     },
     {
       "label": "IMPORTANT: keep the reminder string free of backticks and $(...) constructs.",
@@ -221,10 +215,9 @@
       "source_file": ".opencode/plugins/graphify.js",
       "source_location": "L4",
       "_origin": "ast",
-      "id": "opencode_plugins_graphify_rationale_4",
       "community": 17,
-      "community_name": "graphify.js",
-      "norm_label": "important: keep the reminder string free of backticks and $(...) constructs."
+      "norm_label": "important: keep the reminder string free of backticks and $(...) constructs.",
+      "id": "opencode_plugins_graphify_rationale_4"
     },
     {
       "label": "esbuild.config.mjs",
@@ -232,10 +225,9 @@
       "source_file": "esbuild.config.mjs",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "esbuild_config",
       "community": 72,
-      "community_name": "esbuild.config.mjs",
-      "norm_label": "esbuild.config.mjs"
+      "norm_label": "esbuild.config.mjs",
+      "id": "esbuild_config"
     },
     {
       "label": "eslint.config.mts",
@@ -243,10 +235,9 @@
       "source_file": "eslint.config.mts",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "eslint_config",
       "community": 73,
-      "community_name": "eslint.config.mts",
-      "norm_label": "eslint.config.mts"
+      "norm_label": "eslint.config.mts",
+      "id": "eslint_config"
     },
     {
       "label": "manifest.json",
@@ -254,10 +245,9 @@
       "source_file": "manifest.json",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "manifest",
       "community": 10,
-      "community_name": "manifest.json",
-      "norm_label": "manifest.json"
+      "norm_label": "manifest.json",
+      "id": "manifest"
     },
     {
       "label": "id",
@@ -265,10 +255,9 @@
       "source_file": "manifest.json",
       "source_location": "L2",
       "_origin": "ast",
-      "id": "manifest_id",
       "community": 10,
-      "community_name": "manifest.json",
-      "norm_label": "id"
+      "norm_label": "id",
+      "id": "manifest_id"
     },
     {
       "label": "name",
@@ -276,10 +265,9 @@
       "source_file": "manifest.json",
       "source_location": "L3",
       "_origin": "ast",
-      "id": "manifest_name",
       "community": 10,
-      "community_name": "manifest.json",
-      "norm_label": "name"
+      "norm_label": "name",
+      "id": "manifest_name"
     },
     {
       "label": "version",
@@ -287,10 +275,9 @@
       "source_file": "manifest.json",
       "source_location": "L4",
       "_origin": "ast",
-      "id": "manifest_version",
       "community": 10,
-      "community_name": "manifest.json",
-      "norm_label": "version"
+      "norm_label": "version",
+      "id": "manifest_version"
     },
     {
       "label": "minAppVersion",
@@ -298,10 +285,9 @@
       "source_file": "manifest.json",
       "source_location": "L5",
       "_origin": "ast",
-      "id": "manifest_minappversion",
       "community": 10,
-      "community_name": "manifest.json",
-      "norm_label": "minappversion"
+      "norm_label": "minappversion",
+      "id": "manifest_minappversion"
     },
     {
       "label": "description",
@@ -309,10 +295,9 @@
       "source_file": "manifest.json",
       "source_location": "L6",
       "_origin": "ast",
-      "id": "manifest_description",
       "community": 10,
-      "community_name": "manifest.json",
-      "norm_label": "description"
+      "norm_label": "description",
+      "id": "manifest_description"
     },
     {
       "label": "author",
@@ -320,10 +305,9 @@
       "source_file": "manifest.json",
       "source_location": "L7",
       "_origin": "ast",
-      "id": "manifest_author",
       "community": 10,
-      "community_name": "manifest.json",
-      "norm_label": "author"
+      "norm_label": "author",
+      "id": "manifest_author"
     },
     {
       "label": "authorUrl",
@@ -331,10 +315,9 @@
       "source_file": "manifest.json",
       "source_location": "L8",
       "_origin": "ast",
-      "id": "manifest_authorurl",
       "community": 10,
-      "community_name": "manifest.json",
-      "norm_label": "authorurl"
+      "norm_label": "authorurl",
+      "id": "manifest_authorurl"
     },
     {
       "label": "fundingUrl",
@@ -342,10 +325,9 @@
       "source_file": "manifest.json",
       "source_location": "L9",
       "_origin": "ast",
-      "id": "manifest_fundingurl",
       "community": 10,
-      "community_name": "manifest.json",
-      "norm_label": "fundingurl"
+      "norm_label": "fundingurl",
+      "id": "manifest_fundingurl"
     },
     {
       "label": "isDesktopOnly",
@@ -353,10 +335,9 @@
       "source_file": "manifest.json",
       "source_location": "L10",
       "_origin": "ast",
-      "id": "manifest_isdesktoponly",
       "community": 10,
-      "community_name": "manifest.json",
-      "norm_label": "isdesktoponly"
+      "norm_label": "isdesktoponly",
+      "id": "manifest_isdesktoponly"
     },
     {
       "label": "package.json",
@@ -364,10 +345,9 @@
       "source_file": "package.json",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "package",
       "community": 7,
-      "community_name": "package.json",
-      "norm_label": "package.json"
+      "norm_label": "package.json",
+      "id": "package"
     },
     {
       "label": "name",
@@ -375,10 +355,9 @@
       "source_file": "package.json",
       "source_location": "L2",
       "_origin": "ast",
-      "id": "package_name",
       "community": 7,
-      "community_name": "package.json",
-      "norm_label": "name"
+      "norm_label": "name",
+      "id": "package_name"
     },
     {
       "label": "version",
@@ -386,10 +365,9 @@
       "source_file": "package.json",
       "source_location": "L3",
       "_origin": "ast",
-      "id": "package_version",
       "community": 7,
-      "community_name": "package.json",
-      "norm_label": "version"
+      "norm_label": "version",
+      "id": "package_version"
     },
     {
       "label": "description",
@@ -397,10 +375,9 @@
       "source_file": "package.json",
       "source_location": "L4",
       "_origin": "ast",
-      "id": "package_description",
       "community": 7,
-      "community_name": "package.json",
-      "norm_label": "description"
+      "norm_label": "description",
+      "id": "package_description"
     },
     {
       "label": "main",
@@ -408,10 +385,9 @@
       "source_file": "package.json",
       "source_location": "L5",
       "_origin": "ast",
-      "id": "package_main",
       "community": 7,
-      "community_name": "package.json",
-      "norm_label": "main"
+      "norm_label": "main",
+      "id": "package_main"
     },
     {
       "label": "type",
@@ -419,10 +395,9 @@
       "source_file": "package.json",
       "source_location": "L6",
       "_origin": "ast",
-      "id": "package_type",
       "community": 7,
-      "community_name": "package.json",
-      "norm_label": "type"
+      "norm_label": "type",
+      "id": "package_type"
     },
     {
       "label": "scripts",
@@ -430,10 +405,9 @@
       "source_file": "package.json",
       "source_location": "L7",
       "_origin": "ast",
-      "id": "package_scripts",
       "community": 7,
-      "community_name": "package.json",
-      "norm_label": "scripts"
+      "norm_label": "scripts",
+      "id": "package_scripts"
     },
     {
       "label": "dev",
@@ -441,10 +415,9 @@
       "source_file": "package.json",
       "source_location": "L8",
       "_origin": "ast",
-      "id": "package_scripts_dev",
       "community": 7,
-      "community_name": "package.json",
-      "norm_label": "dev"
+      "norm_label": "dev",
+      "id": "package_scripts_dev"
     },
     {
       "label": "build",
@@ -452,10 +425,9 @@
       "source_file": "package.json",
       "source_location": "L9",
       "_origin": "ast",
-      "id": "package_scripts_build",
       "community": 7,
-      "community_name": "package.json",
-      "norm_label": "build"
+      "norm_label": "build",
+      "id": "package_scripts_build"
     },
     {
       "label": "version",
@@ -463,10 +435,9 @@
       "source_file": "package.json",
       "source_location": "L10",
       "_origin": "ast",
-      "id": "package_scripts_version",
       "community": 7,
-      "community_name": "package.json",
-      "norm_label": "version"
+      "norm_label": "version",
+      "id": "package_scripts_version"
     },
     {
       "label": "lint",
@@ -474,10 +445,9 @@
       "source_file": "package.json",
       "source_location": "L11",
       "_origin": "ast",
-      "id": "package_scripts_lint",
       "community": 7,
-      "community_name": "package.json",
-      "norm_label": "lint"
+      "norm_label": "lint",
+      "id": "package_scripts_lint"
     },
     {
       "label": "type-check",
@@ -485,10 +455,9 @@
       "source_file": "package.json",
       "source_location": "L12",
       "_origin": "ast",
-      "id": "package_scripts_type_check",
       "community": 7,
-      "community_name": "package.json",
-      "norm_label": "type-check"
+      "norm_label": "type-check",
+      "id": "package_scripts_type_check"
     },
     {
       "label": "test:unit",
@@ -496,10 +465,9 @@
       "source_file": "package.json",
       "source_location": "L13",
       "_origin": "ast",
-      "id": "package_scripts_test_unit",
       "community": 7,
-      "community_name": "package.json",
-      "norm_label": "test:unit"
+      "norm_label": "test:unit",
+      "id": "package_scripts_test_unit"
     },
     {
       "label": "format:write",
@@ -507,10 +475,9 @@
       "source_file": "package.json",
       "source_location": "L14",
       "_origin": "ast",
-      "id": "package_scripts_format_write",
       "community": 7,
-      "community_name": "package.json",
-      "norm_label": "format:write"
+      "norm_label": "format:write",
+      "id": "package_scripts_format_write"
     },
     {
       "label": "keywords",
@@ -518,10 +485,9 @@
       "source_file": "package.json",
       "source_location": "L16",
       "_origin": "ast",
-      "id": "package_keywords",
       "community": 7,
-      "community_name": "package.json",
-      "norm_label": "keywords"
+      "norm_label": "keywords",
+      "id": "package_keywords"
     },
     {
       "label": "license",
@@ -529,10 +495,9 @@
       "source_file": "package.json",
       "source_location": "L17",
       "_origin": "ast",
-      "id": "package_license",
       "community": 7,
-      "community_name": "package.json",
-      "norm_label": "license"
+      "norm_label": "license",
+      "id": "package_license"
     },
     {
       "label": "devDependencies",
@@ -540,10 +505,9 @@
       "source_file": "package.json",
       "source_location": "L18",
       "_origin": "ast",
-      "id": "package_devdependencies",
       "community": 2,
-      "community_name": "devDependencies",
-      "norm_label": "devdependencies"
+      "norm_label": "devdependencies",
+      "id": "package_devdependencies"
     },
     {
       "label": "@eslint/js",
@@ -551,10 +515,9 @@
       "source_file": "package.json",
       "source_location": "L19",
       "_origin": "ast",
-      "id": "package_devdependencies_eslint_js",
       "community": 2,
-      "community_name": "devDependencies",
-      "norm_label": "@eslint/js"
+      "norm_label": "@eslint/js",
+      "id": "package_devdependencies_eslint_js"
     },
     {
       "label": "@eslint/js",
@@ -562,10 +525,9 @@
       "source_file": "package.json",
       "source_location": "L19",
       "_origin": "ast",
-      "id": "eslint_js",
       "community": 2,
-      "community_name": "devDependencies",
-      "norm_label": "@eslint/js"
+      "norm_label": "@eslint/js",
+      "id": "eslint_js"
     },
     {
       "label": "@types/node",
@@ -573,10 +535,9 @@
       "source_file": "package.json",
       "source_location": "L20",
       "_origin": "ast",
-      "id": "package_devdependencies_types_node",
       "community": 2,
-      "community_name": "devDependencies",
-      "norm_label": "@types/node"
+      "norm_label": "@types/node",
+      "id": "package_devdependencies_types_node"
     },
     {
       "label": "@types/node",
@@ -584,10 +545,9 @@
       "source_file": "package.json",
       "source_location": "L20",
       "_origin": "ast",
-      "id": "types_node",
       "community": 2,
-      "community_name": "devDependencies",
-      "norm_label": "@types/node"
+      "norm_label": "@types/node",
+      "id": "types_node"
     },
     {
       "label": "esbuild",
@@ -595,10 +555,9 @@
       "source_file": "package.json",
       "source_location": "L21",
       "_origin": "ast",
-      "id": "package_devdependencies_esbuild",
       "community": 2,
-      "community_name": "devDependencies",
-      "norm_label": "esbuild"
+      "norm_label": "esbuild",
+      "id": "package_devdependencies_esbuild"
     },
     {
       "label": "esbuild",
@@ -606,10 +565,9 @@
       "source_file": "package.json",
       "source_location": "L21",
       "_origin": "ast",
-      "id": "esbuild",
       "community": 2,
-      "community_name": "devDependencies",
-      "norm_label": "esbuild"
+      "norm_label": "esbuild",
+      "id": "esbuild"
     },
     {
       "label": "eslint",
@@ -617,10 +575,9 @@
       "source_file": "package.json",
       "source_location": "L22",
       "_origin": "ast",
-      "id": "package_devdependencies_eslint",
       "community": 2,
-      "community_name": "devDependencies",
-      "norm_label": "eslint"
+      "norm_label": "eslint",
+      "id": "package_devdependencies_eslint"
     },
     {
       "label": "eslint",
@@ -628,10 +585,9 @@
       "source_file": "package.json",
       "source_location": "L22",
       "_origin": "ast",
-      "id": "eslint",
       "community": 2,
-      "community_name": "devDependencies",
-      "norm_label": "eslint"
+      "norm_label": "eslint",
+      "id": "eslint"
     },
     {
       "label": "eslint-plugin-obsidianmd",
@@ -639,10 +595,9 @@
       "source_file": "package.json",
       "source_location": "L23",
       "_origin": "ast",
-      "id": "package_devdependencies_eslint_plugin_obsidianmd",
       "community": 2,
-      "community_name": "devDependencies",
-      "norm_label": "eslint-plugin-obsidianmd"
+      "norm_label": "eslint-plugin-obsidianmd",
+      "id": "package_devdependencies_eslint_plugin_obsidianmd"
     },
     {
       "label": "eslint-plugin-obsidianmd",
@@ -650,10 +605,9 @@
       "source_file": "package.json",
       "source_location": "L23",
       "_origin": "ast",
-      "id": "eslint_plugin_obsidianmd",
       "community": 2,
-      "community_name": "devDependencies",
-      "norm_label": "eslint-plugin-obsidianmd"
+      "norm_label": "eslint-plugin-obsidianmd",
+      "id": "eslint_plugin_obsidianmd"
     },
     {
       "label": "globals",
@@ -661,10 +615,9 @@
       "source_file": "package.json",
       "source_location": "L24",
       "_origin": "ast",
-      "id": "package_devdependencies_globals",
       "community": 2,
-      "community_name": "devDependencies",
-      "norm_label": "globals"
+      "norm_label": "globals",
+      "id": "package_devdependencies_globals"
     },
     {
       "label": "globals",
@@ -672,10 +625,9 @@
       "source_file": "package.json",
       "source_location": "L24",
       "_origin": "ast",
-      "id": "globals",
       "community": 2,
-      "community_name": "devDependencies",
-      "norm_label": "globals"
+      "norm_label": "globals",
+      "id": "globals"
     },
     {
       "label": "jiti",
@@ -683,10 +635,9 @@
       "source_file": "package.json",
       "source_location": "L25",
       "_origin": "ast",
-      "id": "package_devdependencies_jiti",
       "community": 2,
-      "community_name": "devDependencies",
-      "norm_label": "jiti"
+      "norm_label": "jiti",
+      "id": "package_devdependencies_jiti"
     },
     {
       "label": "jiti",
@@ -694,10 +645,9 @@
       "source_file": "package.json",
       "source_location": "L25",
       "_origin": "ast",
-      "id": "jiti",
       "community": 2,
-      "community_name": "devDependencies",
-      "norm_label": "jiti"
+      "norm_label": "jiti",
+      "id": "jiti"
     },
     {
       "label": "obsidian",
@@ -705,10 +655,9 @@
       "source_file": "package.json",
       "source_location": "L26",
       "_origin": "ast",
-      "id": "package_devdependencies_obsidian",
       "community": 2,
-      "community_name": "devDependencies",
-      "norm_label": "obsidian"
+      "norm_label": "obsidian",
+      "id": "package_devdependencies_obsidian"
     },
     {
       "label": "obsidian",
@@ -716,10 +665,9 @@
       "source_file": "package.json",
       "source_location": "L26",
       "_origin": "ast",
-      "id": "obsidian",
       "community": 2,
-      "community_name": "devDependencies",
-      "norm_label": "obsidian"
+      "norm_label": "obsidian",
+      "id": "obsidian"
     },
     {
       "label": "prettier",
@@ -727,10 +675,9 @@
       "source_file": "package.json",
       "source_location": "L27",
       "_origin": "ast",
-      "id": "package_devdependencies_prettier",
       "community": 2,
-      "community_name": "devDependencies",
-      "norm_label": "prettier"
+      "norm_label": "prettier",
+      "id": "package_devdependencies_prettier"
     },
     {
       "label": "prettier",
@@ -738,10 +685,9 @@
       "source_file": "package.json",
       "source_location": "L27",
       "_origin": "ast",
-      "id": "prettier",
       "community": 2,
-      "community_name": "devDependencies",
-      "norm_label": "prettier"
+      "norm_label": "prettier",
+      "id": "prettier"
     },
     {
       "label": "typescript",
@@ -749,10 +695,9 @@
       "source_file": "package.json",
       "source_location": "L28",
       "_origin": "ast",
-      "id": "package_devdependencies_typescript",
       "community": 2,
-      "community_name": "devDependencies",
-      "norm_label": "typescript"
+      "norm_label": "typescript",
+      "id": "package_devdependencies_typescript"
     },
     {
       "label": "typescript",
@@ -760,10 +705,9 @@
       "source_file": "package.json",
       "source_location": "L28",
       "_origin": "ast",
-      "id": "typescript",
       "community": 2,
-      "community_name": "devDependencies",
-      "norm_label": "typescript"
+      "norm_label": "typescript",
+      "id": "typescript"
     },
     {
       "label": "typescript-eslint",
@@ -771,10 +715,9 @@
       "source_file": "package.json",
       "source_location": "L29",
       "_origin": "ast",
-      "id": "package_devdependencies_typescript_eslint",
       "community": 2,
-      "community_name": "devDependencies",
-      "norm_label": "typescript-eslint"
+      "norm_label": "typescript-eslint",
+      "id": "package_devdependencies_typescript_eslint"
     },
     {
       "label": "typescript-eslint",
@@ -782,10 +725,9 @@
       "source_file": "package.json",
       "source_location": "L29",
       "_origin": "ast",
-      "id": "typescript_eslint",
       "community": 2,
-      "community_name": "devDependencies",
-      "norm_label": "typescript-eslint"
+      "norm_label": "typescript-eslint",
+      "id": "typescript_eslint"
     },
     {
       "label": "vitest",
@@ -793,10 +735,9 @@
       "source_file": "package.json",
       "source_location": "L30",
       "_origin": "ast",
-      "id": "package_devdependencies_vitest",
       "community": 2,
-      "community_name": "devDependencies",
-      "norm_label": "vitest"
+      "norm_label": "vitest",
+      "id": "package_devdependencies_vitest"
     },
     {
       "label": "vitest",
@@ -804,10 +745,9 @@
       "source_file": "package.json",
       "source_location": "L30",
       "_origin": "ast",
-      "id": "vitest",
       "community": 2,
-      "community_name": "devDependencies",
-      "norm_label": "vitest"
+      "norm_label": "vitest",
+      "id": "vitest"
     },
     {
       "label": "main.ts",
@@ -815,10 +755,9 @@
       "source_file": "src/main.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "src_main",
       "community": 15,
-      "community_name": "AnkiBridgePlugin",
-      "norm_label": "main.ts"
+      "norm_label": "main.ts",
+      "id": "src_main"
     },
     {
       "label": "AnkiBridgePlugin",
@@ -826,10 +765,9 @@
       "source_file": "src/main.ts",
       "source_location": "L3",
       "_origin": "ast",
-      "id": "src_main_ankibridgeplugin",
       "community": 15,
-      "community_name": "AnkiBridgePlugin",
-      "norm_label": "ankibridgeplugin"
+      "norm_label": "ankibridgeplugin",
+      "id": "src_main_ankibridgeplugin"
     },
     {
       "label": ".onload()",
@@ -837,10 +775,9 @@
       "source_file": "src/main.ts",
       "source_location": "L4",
       "_origin": "ast",
-      "id": "src_main_ankibridgeplugin_onload",
       "community": 15,
-      "community_name": "AnkiBridgePlugin",
-      "norm_label": ".onload()"
+      "norm_label": ".onload()",
+      "id": "src_main_ankibridgeplugin_onload"
     },
     {
       "label": ".onunload()",
@@ -848,10 +785,9 @@
       "source_file": "src/main.ts",
       "source_location": "L6",
       "_origin": "ast",
-      "id": "src_main_ankibridgeplugin_onunload",
       "community": 15,
-      "community_name": "AnkiBridgePlugin",
-      "norm_label": ".onunload()"
+      "norm_label": ".onunload()",
+      "id": "src_main_ankibridgeplugin_onunload"
     },
     {
       "label": "mediaNaming.test.ts",
@@ -859,10 +795,9 @@
       "source_file": "src/note/mediaNaming.test.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "src_note_medianaming_test",
       "community": 18,
-      "community_name": "mediaNaming.ts",
-      "norm_label": "medianaming.test.ts"
+      "norm_label": "medianaming.test.ts",
+      "id": "src_note_medianaming_test"
     },
     {
       "label": "mediaNaming.ts",
@@ -870,21 +805,19 @@
       "source_file": "src/note/mediaNaming.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "src_note_medianaming",
       "community": 18,
-      "community_name": "mediaNaming.ts",
-      "norm_label": "medianaming.ts"
+      "norm_label": "medianaming.ts",
+      "id": "src_note_medianaming"
     },
     {
       "label": "sanitizeForFilename()",
       "file_type": "code",
       "source_file": "src/note/mediaNaming.ts",
-      "source_location": "L6",
+      "source_location": "L1",
       "_origin": "ast",
-      "id": "src_note_medianaming_sanitizeforfilename",
       "community": 18,
-      "community_name": "mediaNaming.ts",
-      "norm_label": "sanitizeforfilename()"
+      "norm_label": "sanitizeforfilename()",
+      "id": "src_note_medianaming_sanitizeforfilename"
     },
     {
       "label": "types.ts",
@@ -892,10 +825,9 @@
       "source_file": "src/types.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "src_types",
       "community": 5,
-      "community_name": "types.ts",
-      "norm_label": "types.ts"
+      "norm_label": "types.ts",
+      "id": "src_types"
     },
     {
       "label": "AnkiFrontmatter",
@@ -903,10 +835,9 @@
       "source_file": "src/types.ts",
       "source_location": "L2",
       "_origin": "ast",
-      "id": "src_types_ankifrontmatter",
       "community": 5,
-      "community_name": "types.ts",
-      "norm_label": "ankifrontmatter"
+      "norm_label": "ankifrontmatter",
+      "id": "src_types_ankifrontmatter"
     },
     {
       "label": "ParsedNote",
@@ -914,10 +845,9 @@
       "source_file": "src/types.ts",
       "source_location": "L11",
       "_origin": "ast",
-      "id": "src_types_parsednote",
       "community": 5,
-      "community_name": "types.ts",
-      "norm_label": "parsednote"
+      "norm_label": "parsednote",
+      "id": "src_types_parsednote"
     },
     {
       "label": "TextResult",
@@ -925,10 +855,9 @@
       "source_file": "src/types.ts",
       "source_location": "L18",
       "_origin": "ast",
-      "id": "src_types_textresult",
       "community": 5,
-      "community_name": "types.ts",
-      "norm_label": "textresult"
+      "norm_label": "textresult",
+      "id": "src_types_textresult"
     },
     {
       "label": "MediaResult",
@@ -936,10 +865,9 @@
       "source_file": "src/types.ts",
       "source_location": "L22",
       "_origin": "ast",
-      "id": "src_types_mediaresult",
       "community": 5,
-      "community_name": "types.ts",
-      "norm_label": "mediaresult"
+      "norm_label": "mediaresult",
+      "id": "src_types_mediaresult"
     },
     {
       "label": "TextProvider",
@@ -947,10 +875,9 @@
       "source_file": "src/types.ts",
       "source_location": "L28",
       "_origin": "ast",
-      "id": "src_types_textprovider",
       "community": 5,
-      "community_name": "types.ts",
-      "norm_label": "textprovider"
+      "norm_label": "textprovider",
+      "id": "src_types_textprovider"
     },
     {
       "label": ".processText()",
@@ -958,10 +885,9 @@
       "source_file": "src/types.ts",
       "source_location": "L31",
       "_origin": "ast",
-      "id": "src_types_textprovider_processtext",
       "community": 5,
-      "community_name": "types.ts",
-      "norm_label": ".processtext()"
+      "norm_label": ".processtext()",
+      "id": "src_types_textprovider_processtext"
     },
     {
       "label": "AudioProvider",
@@ -969,10 +895,9 @@
       "source_file": "src/types.ts",
       "source_location": "L38",
       "_origin": "ast",
-      "id": "src_types_audioprovider",
       "community": 5,
-      "community_name": "types.ts",
-      "norm_label": "audioprovider"
+      "norm_label": "audioprovider",
+      "id": "src_types_audioprovider"
     },
     {
       "label": ".generateAudio()",
@@ -980,10 +905,9 @@
       "source_file": "src/types.ts",
       "source_location": "L41",
       "_origin": "ast",
-      "id": "src_types_audioprovider_generateaudio",
       "community": 5,
-      "community_name": "types.ts",
-      "norm_label": ".generateaudio()"
+      "norm_label": ".generateaudio()",
+      "id": "src_types_audioprovider_generateaudio"
     },
     {
       "label": "ImageProvider",
@@ -991,10 +915,9 @@
       "source_file": "src/types.ts",
       "source_location": "L44",
       "_origin": "ast",
-      "id": "src_types_imageprovider",
       "community": 5,
-      "community_name": "types.ts",
-      "norm_label": "imageprovider"
+      "norm_label": "imageprovider",
+      "id": "src_types_imageprovider"
     },
     {
       "label": ".generateImage()",
@@ -1002,10 +925,9 @@
       "source_file": "src/types.ts",
       "source_location": "L47",
       "_origin": "ast",
-      "id": "src_types_imageprovider_generateimage",
       "community": 5,
-      "community_name": "types.ts",
-      "norm_label": ".generateimage()"
+      "norm_label": ".generateimage()",
+      "id": "src_types_imageprovider_generateimage"
     },
     {
       "label": "TextTask",
@@ -1013,76 +935,69 @@
       "source_file": "src/types.ts",
       "source_location": "L50",
       "_origin": "ast",
-      "id": "src_types_texttask",
       "community": 5,
-      "community_name": "types.ts",
-      "norm_label": "texttask"
+      "norm_label": "texttask",
+      "id": "src_types_texttask"
     },
     {
       "label": "AudioOptions",
       "file_type": "code",
       "source_file": "src/types.ts",
-      "source_location": "L52",
+      "source_location": "L55",
       "_origin": "ast",
-      "id": "src_types_audiooptions",
       "community": 5,
-      "community_name": "types.ts",
-      "norm_label": "audiooptions"
+      "norm_label": "audiooptions",
+      "id": "src_types_audiooptions"
     },
     {
       "label": "ImageOptions",
       "file_type": "code",
       "source_file": "src/types.ts",
-      "source_location": "L58",
+      "source_location": "L57",
       "_origin": "ast",
-      "id": "src_types_imageoptions",
       "community": 5,
-      "community_name": "types.ts",
-      "norm_label": "imageoptions"
+      "norm_label": "imageoptions",
+      "id": "src_types_imageoptions"
     },
     {
       "label": "AnkiConnectError",
       "file_type": "code",
       "source_file": "src/types.ts",
-      "source_location": "L65",
+      "source_location": "L60",
       "_origin": "ast",
-      "id": "src_types_ankiconnecterror",
       "community": 5,
-      "community_name": "types.ts",
-      "norm_label": "ankiconnecterror"
+      "norm_label": "ankiconnecterror",
+      "id": "src_types_ankiconnecterror"
     },
     {
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "src/types.ts",
-      "source_location": "L66",
+      "source_location": "L61",
       "_origin": "ast",
-      "id": "src_types_ankiconnecterror_constructor",
       "community": 5,
-      "community_name": "types.ts",
-      "norm_label": ".constructor()"
+      "norm_label": ".constructor()",
+      "id": "src_types_ankiconnecterror_constructor"
     },
     {
       "label": "ProviderError",
       "file_type": "code",
       "source_file": "src/types.ts",
-      "source_location": "L74",
+      "source_location": "L69",
       "_origin": "ast",
-      "id": "src_types_providererror",
       "community": 5,
-      "community_name": "types.ts",
-      "norm_label": "providererror"
+      "norm_label": "providererror",
+      "id": "src_types_providererror"
     },
     {
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "src/types.ts",
-      "source_location": "L75",
+      "source_location": "L70",
       "_origin": "ast",
-      "id": "src_types_providererror_constructor",
       "community": 5,
-      "community_name": "types.ts",
-      "norm_label": ".constructor()"
+      "norm_label": ".constructor()",
+      "id": "src_types_providererror_constructor"
     },
     {
       "label": "tsconfig.json",
@@ -1090,10 +1005,9 @@
       "source_file": "tsconfig.json",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "tsconfig",
       "community": 3,
-      "community_name": "compilerOptions",
-      "norm_label": "tsconfig.json"
+      "norm_label": "tsconfig.json",
+      "id": "tsconfig"
     },
     {
       "label": "compilerOptions",
@@ -1101,10 +1015,9 @@
       "source_file": "tsconfig.json",
       "source_location": "L2",
       "_origin": "ast",
-      "id": "tsconfig_compileroptions",
       "community": 3,
-      "community_name": "compilerOptions",
-      "norm_label": "compileroptions"
+      "norm_label": "compileroptions",
+      "id": "tsconfig_compileroptions"
     },
     {
       "label": "inlineSourceMap",
@@ -1112,10 +1025,9 @@
       "source_file": "tsconfig.json",
       "source_location": "L3",
       "_origin": "ast",
-      "id": "tsconfig_compileroptions_inlinesourcemap",
       "community": 3,
-      "community_name": "compilerOptions",
-      "norm_label": "inlinesourcemap"
+      "norm_label": "inlinesourcemap",
+      "id": "tsconfig_compileroptions_inlinesourcemap"
     },
     {
       "label": "inlineSources",
@@ -1123,10 +1035,9 @@
       "source_file": "tsconfig.json",
       "source_location": "L4",
       "_origin": "ast",
-      "id": "tsconfig_compileroptions_inlinesources",
       "community": 3,
-      "community_name": "compilerOptions",
-      "norm_label": "inlinesources"
+      "norm_label": "inlinesources",
+      "id": "tsconfig_compileroptions_inlinesources"
     },
     {
       "label": "module",
@@ -1134,10 +1045,9 @@
       "source_file": "tsconfig.json",
       "source_location": "L5",
       "_origin": "ast",
-      "id": "tsconfig_compileroptions_module",
       "community": 3,
-      "community_name": "compilerOptions",
-      "norm_label": "module"
+      "norm_label": "module",
+      "id": "tsconfig_compileroptions_module"
     },
     {
       "label": "target",
@@ -1145,10 +1055,9 @@
       "source_file": "tsconfig.json",
       "source_location": "L6",
       "_origin": "ast",
-      "id": "tsconfig_compileroptions_target",
       "community": 3,
-      "community_name": "compilerOptions",
-      "norm_label": "target"
+      "norm_label": "target",
+      "id": "tsconfig_compileroptions_target"
     },
     {
       "label": "strict",
@@ -1156,10 +1065,9 @@
       "source_file": "tsconfig.json",
       "source_location": "L7",
       "_origin": "ast",
-      "id": "tsconfig_compileroptions_strict",
       "community": 3,
-      "community_name": "compilerOptions",
-      "norm_label": "strict"
+      "norm_label": "strict",
+      "id": "tsconfig_compileroptions_strict"
     },
     {
       "label": "noImplicitReturns",
@@ -1167,10 +1075,9 @@
       "source_file": "tsconfig.json",
       "source_location": "L8",
       "_origin": "ast",
-      "id": "tsconfig_compileroptions_noimplicitreturns",
       "community": 3,
-      "community_name": "compilerOptions",
-      "norm_label": "noimplicitreturns"
+      "norm_label": "noimplicitreturns",
+      "id": "tsconfig_compileroptions_noimplicitreturns"
     },
     {
       "label": "noFallthroughCasesInSwitch",
@@ -1178,10 +1085,9 @@
       "source_file": "tsconfig.json",
       "source_location": "L9",
       "_origin": "ast",
-      "id": "tsconfig_compileroptions_nofallthroughcasesinswitch",
       "community": 3,
-      "community_name": "compilerOptions",
-      "norm_label": "nofallthroughcasesinswitch"
+      "norm_label": "nofallthroughcasesinswitch",
+      "id": "tsconfig_compileroptions_nofallthroughcasesinswitch"
     },
     {
       "label": "noUncheckedIndexedAccess",
@@ -1189,10 +1095,9 @@
       "source_file": "tsconfig.json",
       "source_location": "L10",
       "_origin": "ast",
-      "id": "tsconfig_compileroptions_nouncheckedindexedaccess",
       "community": 3,
-      "community_name": "compilerOptions",
-      "norm_label": "nouncheckedindexedaccess"
+      "norm_label": "nouncheckedindexedaccess",
+      "id": "tsconfig_compileroptions_nouncheckedindexedaccess"
     },
     {
       "label": "moduleResolution",
@@ -1200,10 +1105,9 @@
       "source_file": "tsconfig.json",
       "source_location": "L11",
       "_origin": "ast",
-      "id": "tsconfig_compileroptions_moduleresolution",
       "community": 3,
-      "community_name": "compilerOptions",
-      "norm_label": "moduleresolution"
+      "norm_label": "moduleresolution",
+      "id": "tsconfig_compileroptions_moduleresolution"
     },
     {
       "label": "isolatedModules",
@@ -1211,10 +1115,9 @@
       "source_file": "tsconfig.json",
       "source_location": "L12",
       "_origin": "ast",
-      "id": "tsconfig_compileroptions_isolatedmodules",
       "community": 3,
-      "community_name": "compilerOptions",
-      "norm_label": "isolatedmodules"
+      "norm_label": "isolatedmodules",
+      "id": "tsconfig_compileroptions_isolatedmodules"
     },
     {
       "label": "skipLibCheck",
@@ -1222,10 +1125,9 @@
       "source_file": "tsconfig.json",
       "source_location": "L13",
       "_origin": "ast",
-      "id": "tsconfig_compileroptions_skiplibcheck",
       "community": 3,
-      "community_name": "compilerOptions",
-      "norm_label": "skiplibcheck"
+      "norm_label": "skiplibcheck",
+      "id": "tsconfig_compileroptions_skiplibcheck"
     },
     {
       "label": "forceConsistentCasingInFileNames",
@@ -1233,10 +1135,9 @@
       "source_file": "tsconfig.json",
       "source_location": "L14",
       "_origin": "ast",
-      "id": "tsconfig_compileroptions_forceconsistentcasinginfilenames",
       "community": 3,
-      "community_name": "compilerOptions",
-      "norm_label": "forceconsistentcasinginfilenames"
+      "norm_label": "forceconsistentcasinginfilenames",
+      "id": "tsconfig_compileroptions_forceconsistentcasinginfilenames"
     },
     {
       "label": "allowSyntheticDefaultImports",
@@ -1244,10 +1145,9 @@
       "source_file": "tsconfig.json",
       "source_location": "L15",
       "_origin": "ast",
-      "id": "tsconfig_compileroptions_allowsyntheticdefaultimports",
       "community": 3,
-      "community_name": "compilerOptions",
-      "norm_label": "allowsyntheticdefaultimports"
+      "norm_label": "allowsyntheticdefaultimports",
+      "id": "tsconfig_compileroptions_allowsyntheticdefaultimports"
     },
     {
       "label": "lib",
@@ -1255,10 +1155,9 @@
       "source_file": "tsconfig.json",
       "source_location": "L16",
       "_origin": "ast",
-      "id": "tsconfig_compileroptions_lib",
       "community": 3,
-      "community_name": "compilerOptions",
-      "norm_label": "lib"
+      "norm_label": "lib",
+      "id": "tsconfig_compileroptions_lib"
     },
     {
       "label": "ES2021",
@@ -1266,10 +1165,9 @@
       "source_file": "tsconfig.json",
       "source_location": "L16",
       "_origin": "ast",
-      "id": "ref_es2021",
       "community": 3,
-      "community_name": "compilerOptions",
-      "norm_label": "es2021"
+      "norm_label": "es2021",
+      "id": "ref_es2021"
     },
     {
       "label": "DOM",
@@ -1277,10 +1175,9 @@
       "source_file": "tsconfig.json",
       "source_location": "L16",
       "_origin": "ast",
-      "id": "ref_dom",
       "community": 3,
-      "community_name": "compilerOptions",
-      "norm_label": "dom"
+      "norm_label": "dom",
+      "id": "ref_dom"
     },
     {
       "label": "include",
@@ -1288,10 +1185,9 @@
       "source_file": "tsconfig.json",
       "source_location": "L18",
       "_origin": "ast",
-      "id": "tsconfig_include",
       "community": 3,
-      "community_name": "compilerOptions",
-      "norm_label": "include"
+      "norm_label": "include",
+      "id": "tsconfig_include"
     },
     {
       "label": "src/**/*.ts",
@@ -1299,10 +1195,9 @@
       "source_file": "tsconfig.json",
       "source_location": "L18",
       "_origin": "ast",
-      "id": "ref_src_ts",
       "community": 3,
-      "community_name": "compilerOptions",
-      "norm_label": "src/**/*.ts"
+      "norm_label": "src/**/*.ts",
+      "id": "ref_src_ts"
     },
     {
       "label": "version-bump.mjs",
@@ -1310,10 +1205,9 @@
       "source_file": "version-bump.mjs",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "version_bump",
       "community": 19,
-      "community_name": "version-bump.mjs",
-      "norm_label": "version-bump.mjs"
+      "norm_label": "version-bump.mjs",
+      "id": "version_bump"
     },
     {
       "label": "manifest",
@@ -1321,10 +1215,9 @@
       "source_file": "version-bump.mjs",
       "source_location": "L6",
       "_origin": "ast",
-      "id": "version_bump_manifest",
       "community": 19,
-      "community_name": "version-bump.mjs",
-      "norm_label": "manifest"
+      "norm_label": "manifest",
+      "id": "version_bump_manifest"
     },
     {
       "label": "versions",
@@ -1332,10 +1225,9 @@
       "source_file": "version-bump.mjs",
       "source_location": "L13",
       "_origin": "ast",
-      "id": "version_bump_versions",
       "community": 19,
-      "community_name": "version-bump.mjs",
-      "norm_label": "versions"
+      "norm_label": "versions",
+      "id": "version_bump_versions"
     },
     {
       "label": "vitest.config.ts",
@@ -1343,43 +1235,9 @@
       "source_file": "vitest.config.ts",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "vitest_config",
       "community": 75,
-      "community_name": "vitest.config.ts",
-      "norm_label": "vitest.config.ts"
-    },
-    {
-      "label": "github-and-merge.md",
-      "file_type": "document",
-      "source_file": ".opencode/skills/graphify/references/github-and-merge.md",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "opencode_skills_graphify_references_github_and_merge",
-      "community": 76,
-      "community_name": "graphify reference: GitHub clone and cross-repo merge",
-      "norm_label": "github-and-merge.md"
-    },
-    {
-      "label": "graphify reference: GitHub clone and cross-repo merge",
-      "file_type": "document",
-      "source_file": ".opencode/skills/graphify/references/github-and-merge.md",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "opencode_skills_graphify_references_github_and_merge_graphify_reference_github_clone_and_cross_repo_merge",
-      "community": 76,
-      "community_name": "graphify reference: GitHub clone and cross-repo merge",
-      "norm_label": "graphify reference: github clone and cross-repo merge"
-    },
-    {
-      "label": "Step 0 - Clone GitHub repo(s) (only if a GitHub URL was given)",
-      "file_type": "document",
-      "source_file": ".opencode/skills/graphify/references/github-and-merge.md",
-      "source_location": "L5",
-      "_origin": "ast",
-      "id": "opencode_skills_graphify_references_github_and_merge_step_0_clone_github_repo_s_only_if_a_github_url_was_given",
-      "community": 76,
-      "community_name": "graphify reference: GitHub clone and cross-repo merge",
-      "norm_label": "step 0 - clone github repo(s) (only if a github url was given)"
+      "norm_label": "vitest.config.ts",
+      "id": "vitest_config"
     },
     {
       "label": "Graphify-First Directive",
@@ -1393,7 +1251,6 @@
       "rationale": "Ensures the installed graphify skill/instructions are consulted before doing anything else whenever the user types /graphify.",
       "community": 8,
       "norm_label": "graphify-first directive",
-      "community_name": "Graphify Full Pipeline",
       "id": "_claude_claude_graphify_directive"
     },
     {
@@ -1408,7 +1265,6 @@
       "rationale": "One provider per file; adding a provider must not require editing providerManager.ts beyond one registration entry, keeping the manager a thin registry.",
       "community": 9,
       "norm_label": "provider adapter pattern",
-      "community_name": "docs/contracts.md",
       "id": "_claude_rules_providers_adapter_pattern"
     },
     {
@@ -1423,7 +1279,6 @@
       "rationale": "The provider returns the shared shape from docs/contracts.md so nothing downstream needs to know which vendor answered.",
       "community": 9,
       "norm_label": "normalize at adapter boundary",
-      "community_name": "docs/contracts.md",
       "id": "_claude_rules_providers_normalization_boundary"
     },
     {
@@ -1438,7 +1293,6 @@
       "rationale": "Keys come from settings only - never code, defaults, tests, fixtures, or comments - and are sent to exactly one endpoint: the selected provider's.",
       "community": 29,
       "norm_label": "no api key in code rule",
-      "community_name": "No API Key In Code Rule",
       "id": "_claude_rules_providers_no_key_rule"
     },
     {
@@ -1452,7 +1306,6 @@
       "contributor": null,
       "community": 28,
       "norm_label": "local ai providers",
-      "community_name": "Local AI Providers",
       "id": "_claude_rules_providers_local_providers"
     },
     {
@@ -1467,7 +1320,6 @@
       "rationale": "processText JSON must be fence-stripped, parsed inside try/catch, and field-validated before use - never trust a language model's JSON blindly or return a half-filled object on failure.",
       "community": 31,
       "norm_label": "provider text output validation",
-      "community_name": "Provider Text Output Validation",
       "id": "_claude_rules_providers_text_validation"
     },
     {
@@ -1481,7 +1333,6 @@
       "contributor": null,
       "community": 30,
       "norm_label": "provider unit test requirement",
-      "community_name": "Provider Unit Test Requirement",
       "id": "_claude_rules_providers_test_requirement"
     },
     {
@@ -1495,7 +1346,6 @@
       "contributor": null,
       "community": 9,
       "norm_label": "docs/design/02-providers.md",
-      "community_name": "docs/contracts.md",
       "id": "docs_design_02_providers_spec"
     },
     {
@@ -1509,7 +1359,6 @@
       "contributor": null,
       "community": 9,
       "norm_label": "docs/contracts.md",
-      "community_name": "docs/contracts.md",
       "id": "docs_contracts_interfaces"
     },
     {
@@ -1524,7 +1373,6 @@
       "rationale": "Single typed wrapper for all AnkiConnect traffic; the URL is passed in at construction rather than read from this.settings inside a standalone function, so the client isn't coupled to the plugin instance.",
       "community": 32,
       "norm_label": "ankiconnectclient",
-      "community_name": "AnkiConnectClient",
       "id": "_claude_rules_sync_engine_ankiconnectclient"
     },
     {
@@ -1539,7 +1387,6 @@
       "rationale": "No anki_note_id -> addNote then write the ID back; has an ID -> updateNoteFields, never create; AnkiConnect reports the note missing -> clear the ID then addNote; re-running sync on an unchanged note must be a no-op, never a duplicate.",
       "community": 12,
       "norm_label": "idempotent sync rule",
-      "community_name": "docs/design/01-sync.md",
       "id": "_claude_rules_sync_engine_idempotent_sync"
     },
     {
@@ -1554,7 +1401,6 @@
       "rationale": "A section runs from its heading to the next heading of the same or higher level, or EOF; alternative schemes (YAML in body, custom delimiters, HTML comments) require a design-doc change before a code change.",
       "community": 12,
       "norm_label": "heading-based content parsing",
-      "community_name": "docs/design/01-sync.md",
       "id": "_claude_rules_sync_engine_content_parsing"
     },
     {
@@ -1569,7 +1415,6 @@
       "rationale": "Default prefix _obsidian_ is what stops Anki's Check Media from deleting plugin files; the word component comes from user content and must be sanitized (strip path separators/control chars, truncate) while still allowing Unicode.",
       "community": 9,
       "norm_label": "media filename format",
-      "community_name": "docs/contracts.md",
       "id": "_claude_rules_sync_engine_media_filename_format"
     },
     {
@@ -1584,7 +1429,6 @@
       "rationale": "Adding audio/image appends into the matching ## Section rather than rewriting the whole file, preserving everything else byte for byte.",
       "community": 33,
       "norm_label": "content update append rule",
-      "community_name": "Content Update Append Rule",
       "id": "_claude_rules_sync_engine_content_append_rule"
     },
     {
@@ -1599,7 +1443,6 @@
       "rationale": "Every case (AnkiConnect offline, note not found, duplicate note, parse error, model not found) needs an explicit branch and a user-facing Notice; a silent catch {} is never acceptable.",
       "community": 12,
       "norm_label": "sync error path coverage",
-      "community_name": "docs/design/01-sync.md",
       "id": "_claude_rules_sync_engine_error_paths"
     },
     {
@@ -1613,7 +1456,6 @@
       "contributor": null,
       "community": 12,
       "norm_label": "docs/design/01-sync.md",
-      "community_name": "docs/design/01-sync.md",
       "id": "docs_design_01_sync_spec"
     },
     {
@@ -1627,7 +1469,6 @@
       "contributor": null,
       "community": 12,
       "norm_label": "docs/design/03-note.md",
-      "community_name": "docs/design/01-sync.md",
       "id": "docs_design_03_note_spec"
     },
     {
@@ -1642,7 +1483,6 @@
       "rationale": "All user-facing strings in English for the Obsidian community store; sentence case; bold for literal UI labels; arrow notation for navigation; reuse the existing emoji set instead of inventing icons; failure copy states what happened and what to do next.",
       "community": 9,
       "norm_label": "copy style rules",
-      "community_name": "docs/contracts.md",
       "id": "_claude_rules_ui_copy_copy_style"
     },
     {
@@ -1656,7 +1496,6 @@
       "contributor": null,
       "community": 12,
       "norm_label": "button state cycle",
-      "community_name": "docs/design/01-sync.md",
       "id": "_claude_rules_ui_copy_button_state_cycle"
     },
     {
@@ -1671,7 +1510,6 @@
       "rationale": "AI calls take 5-30s; a persistent Notice that updates as work progresses, replaced by a success toast, is required - a static Processing... with no updates is a bug.",
       "community": 35,
       "norm_label": "long operation feedback",
-      "community_name": "Long Operation Feedback",
       "id": "_claude_rules_ui_copy_long_operation_feedback"
     },
     {
@@ -1686,7 +1524,6 @@
       "rationale": "Use Obsidian CSS variables, never hardcoded hex, so the plugin looks correct in light/dark/community themes; prefix CSS classes to avoid collisions with other plugins.",
       "community": 37,
       "norm_label": "themed styling rule",
-      "community_name": "Themed Styling Rule",
       "id": "_claude_rules_ui_copy_styling_rule"
     },
     {
@@ -1701,7 +1538,6 @@
       "rationale": "Settings tab and sidebar view must read and write the same this.settings object and both re-render on change; two copies drifting apart is called out as the single most likely bug in this area.",
       "community": 36,
       "norm_label": "shared settings state rule",
-      "community_name": "Shared Settings State Rule",
       "id": "_claude_rules_ui_copy_shared_settings_state"
     },
     {
@@ -1716,7 +1552,6 @@
       "rationale": "Every listener from a view or modal uses registerDomEvent/registerEvent/registerInterval, or is torn down in onClose; detached listeners survive plugin reload and cause duplicate handlers.",
       "community": 34,
       "norm_label": "listener cleanup rule",
-      "community_name": "Listener Cleanup Rule",
       "id": "_claude_rules_ui_copy_listener_cleanup"
     },
     {
@@ -1730,7 +1565,6 @@
       "contributor": null,
       "community": 9,
       "norm_label": "docs/design/05-ui.md",
-      "community_name": "docs/contracts.md",
       "id": "docs_design_05_ui_spec"
     },
     {
@@ -1744,7 +1578,6 @@
       "contributor": null,
       "community": 9,
       "norm_label": "docs/design/06-settings.md",
-      "community_name": "docs/contracts.md",
       "id": "docs_design_06_settings_spec"
     },
     {
@@ -1758,7 +1591,6 @@
       "contributor": null,
       "community": 9,
       "norm_label": "docs/design/07-sidebar.md",
-      "community_name": "docs/contracts.md",
       "id": "docs_design_07_sidebar_spec"
     },
     {
@@ -1772,7 +1604,6 @@
       "contributor": null,
       "community": 9,
       "norm_label": "add ai provider checklist",
-      "community_name": "docs/contracts.md",
       "id": "_claude_skills_add_ai_provider_skill_checklist"
     },
     {
@@ -1787,7 +1618,6 @@
       "rationale": "Determine the task (text/audio/image) and cloud-vs-local before writing code; if a vendor's response shape doesn't fit the normalized output, stop and ask rather than unilaterally widening the shared interface.",
       "community": 9,
       "norm_label": "add provider pre-check",
-      "community_name": "docs/contracts.md",
       "id": "_claude_skills_add_ai_provider_skill_precheck"
     },
     {
@@ -1801,7 +1631,6 @@
       "contributor": null,
       "community": 8,
       "norm_label": "graphify full pipeline",
-      "community_name": "Graphify Full Pipeline",
       "id": "_claude_skills_graphify_skill_pipeline"
     },
     {
@@ -1816,7 +1645,6 @@
       "rationale": "If graphify-out/graph.json already exists and the request is a natural-language question rather than an explicit rebuild command, skip Steps 1-5 entirely and jump straight to query - the graph is already built.",
       "community": 55,
       "norm_label": "graphify query fast path",
-      "community_name": "Graphify Query Fast Path",
       "id": "_claude_skills_graphify_skill_fast_path"
     },
     {
@@ -1831,7 +1659,6 @@
       "rationale": "Code is extracted structurally via AST with no LLM or API key needed; semantic extraction for docs/papers/images uses Gemini only if a key is already set, otherwise the host agent itself is the LLM. graphify never reads ANTHROPIC_API_KEY or OPENAI_API_KEY, so a code-only corpus skips semantic extraction entirely and needs no key.",
       "community": 54,
       "norm_label": "ast vs semantic extraction split",
-      "community_name": "AST vs Semantic Extraction Split",
       "id": "_claude_skills_graphify_skill_ast_semantic_split"
     },
     {
@@ -1846,7 +1673,6 @@
       "rationale": "Cache entries are keyed to the extraction prompt file (SPEC_PATH) so a prompt upgrade re-extracts affected files instead of replaying stale results, while unchanged prompts keep their cached entries (#1939).",
       "community": 8,
       "norm_label": "semantic extraction cache (step b0)",
-      "community_name": "Graphify Full Pipeline",
       "id": "_claude_skills_graphify_skill_extraction_cache"
     },
     {
@@ -1861,7 +1687,6 @@
       "rationale": "All chunk subagents must be dispatched in a single message with subagent_type=general-purpose, never Explore (which is read-only and cannot write chunk files, silently dropping results); real token counts are read from the Agent tool's usage field and patched into each chunk JSON before merging since the chunk JSON's own token fields are placeholder zeros.",
       "community": 8,
       "norm_label": "parallel subagent dispatch (steps b1-b3)",
-      "community_name": "Graphify Full Pipeline",
       "id": "_claude_skills_graphify_skill_subagent_dispatch"
     },
     {
@@ -1876,7 +1701,6 @@
       "rationale": "to_json() refuses to write a new graph.json that is smaller than the existing one, so an empty or bad extraction can't silently clobber a good graph; overriding an intentional shrink requires --force.",
       "community": 20,
       "norm_label": "graph shrink guard (#479)",
-      "community_name": "build_merge Direct Graph Read",
       "id": "_claude_skills_graphify_skill_shrink_guard"
     },
     {
@@ -1890,7 +1714,6 @@
       "contributor": null,
       "community": 57,
       "norm_label": "graph health check (step 4.5)",
-      "community_name": "Graph Health Check (Step 4.5)",
       "id": "_claude_skills_graphify_skill_health_check"
     },
     {
@@ -1905,7 +1728,6 @@
       "rationale": "Only semantic files that actually produced output this run get stamped in the manifest; a changed file whose chunk failed or was omitted must stay unstamped, or have its stale semantic_hash cleared, so the next --update re-queues it instead of losing its content forever.",
       "community": 21,
       "norm_label": "manifest stamping rule (#2015/#1948)",
-      "community_name": "Incremental --update Flow",
       "id": "_claude_skills_graphify_skill_manifest_stamping"
     },
     {
@@ -1920,7 +1742,6 @@
       "rationale": "Never invent an edge (use AMBIGUOUS instead), never skip the corpus-size warning, always show token cost, never hide cohesion scores behind symbols, never run HTML viz above 5000 nodes without warning.",
       "community": 58,
       "norm_label": "graphify honesty rules",
-      "community_name": "Graphify Honesty Rules",
       "id": "_claude_skills_graphify_skill_honesty_rules"
     },
     {
@@ -1935,7 +1756,6 @@
       "rationale": "After the pipeline finishes, pick the single most interesting suggested question - the one crossing the most community boundaries - and offer to trace it; the graph is the map, and the skill's job afterward is to be the guide, ending each answer with a follow-up so exploration continues.",
       "community": 56,
       "norm_label": "post-pipeline guide behavior",
-      "community_name": "Post-Pipeline Guide Behavior",
       "id": "_claude_skills_graphify_skill_guide_step"
     },
     {
@@ -1949,7 +1769,6 @@
       "contributor": null,
       "community": 8,
       "norm_label": "add url & watch folder reference",
-      "community_name": "Graphify Full Pipeline",
       "id": "_claude_skills_graphify_references_add_watch_overview"
     },
     {
@@ -1963,7 +1782,6 @@
       "contributor": null,
       "community": 38,
       "norm_label": "/graphify add url ingestion",
-      "community_name": "/graphify add URL Ingestion",
       "id": "_claude_skills_graphify_references_add_watch_ingest"
     },
     {
@@ -1978,7 +1796,6 @@
       "rationale": "Code-only changes trigger an immediate AST rebuild with no LLM needed; doc/paper/image changes only write a needs_update flag because they require LLM semantic re-extraction; a 3s debounce absorbs a burst of parallel agent writes so a wave of edits doesn't trigger one rebuild per file.",
       "community": 39,
       "norm_label": "--watch background watcher",
-      "community_name": "--watch Background Watcher",
       "id": "_claude_skills_graphify_references_add_watch_watcher"
     },
     {
@@ -1992,7 +1809,6 @@
       "contributor": null,
       "community": 8,
       "norm_label": "extra exports & benchmark reference",
-      "community_name": "Graphify Full Pipeline",
       "id": "_claude_skills_graphify_references_exports_overview"
     },
     {
@@ -2007,7 +1823,6 @@
       "rationale": "Both use MERGE so re-running never creates duplicates; FalkorDB's GRAPH.QUERY runs one statement at a time (no bulk cypher-shell import like Neo4j), so --falkordb-push is preferred over the raw cypher.txt for loading.",
       "community": 42,
       "norm_label": "neo4j / falkordb export",
-      "community_name": "Neo4j / FalkorDB Export",
       "id": "_claude_skills_graphify_references_exports_neo4j_falkordb"
     },
     {
@@ -2022,7 +1837,6 @@
       "rationale": "Exposes query_graph/get_node/get_neighbors/get_community/god_nodes/graph_stats/shortest_path over stdio; Claude Desktop can't run $(...) and uv-tool installs mean system python3 can't import graphify, so its config must use the absolute interpreter path from .graphify_python.",
       "community": 41,
       "norm_label": "graphify mcp server",
-      "community_name": "Graphify MCP Server",
       "id": "_claude_skills_graphify_references_exports_mcp_server"
     },
     {
@@ -2037,7 +1851,6 @@
       "rationale": "Only runs when total_words exceeds 5000 - for small corpora the graph's value is structural clarity, not token compression.",
       "community": 40,
       "norm_label": "token reduction benchmark",
-      "community_name": "Token Reduction Benchmark",
       "id": "_claude_skills_graphify_references_exports_benchmark"
     },
     {
@@ -2052,7 +1865,6 @@
       "rationale": "IDs must be {full-repo-relative-stem}_{entity} using every directory level, matching exactly what the AST extractor generates, so semantic and AST nodes for the same entity dedupe instead of creating orphan ghost-duplicates; chunk-number suffixes are never appended.",
       "community": 46,
       "norm_label": "node id format rule",
-      "community_name": "Node ID Format Rule",
       "id": "_claude_skills_graphify_references_extraction_spec_node_id_format"
     },
     {
@@ -2067,7 +1879,6 @@
       "rationale": "Discrete values (0.95/0.85/0.75/0.65/0.55) are required for INFERRED edges instead of a continuous range, because production data showed models collapsing continuous guidance into a 0.5/0.85+ bimodal split; anything not matching the ladder should be AMBIGUOUS rather than a low float.",
       "community": 44,
       "norm_label": "confidence score rubric",
-      "community_name": "Confidence Score Rubric",
       "id": "_claude_skills_graphify_references_extraction_spec_confidence_rubric"
     },
     {
@@ -2082,7 +1893,6 @@
       "rationale": "semantically_similar_to edges are only for genuinely non-obvious, cross-cutting similarity (e.g. two validators that never call each other), scored 0.6-0.95 - not for trivially similar things.",
       "community": 47,
       "norm_label": "semantic similarity edge guidance",
-      "community_name": "Semantic Similarity Edge Guidance",
       "id": "_claude_skills_graphify_references_extraction_spec_semantic_similarity_edges"
     },
     {
@@ -2097,7 +1907,6 @@
       "rationale": "Hyperedges are for 3+ nodes participating together in a pattern not captured by pairwise edges (e.g. all classes implementing a common protocol); capped at 3 per chunk to avoid overuse.",
       "community": 45,
       "norm_label": "hyperedge usage guidance",
-      "community_name": "Hyperedge Usage Guidance",
       "id": "_claude_skills_graphify_references_extraction_spec_hyperedge_guidance"
     },
     {
@@ -2112,7 +1921,6 @@
       "rationale": "calls edges must point caller to callee, never reversed, and must stay within a single language - a Python function can never `calls` a JS/TS/Go/Rust/Java symbol.",
       "community": 43,
       "norm_label": "calls edge direction & language-purity rule",
-      "community_name": "Calls Edge Direction & Language-Purity Rule",
       "id": "_claude_skills_graphify_references_extraction_spec_calls_edge_direction"
     },
     {
@@ -2126,7 +1934,6 @@
       "contributor": null,
       "community": 8,
       "norm_label": "extraction subagent prompt template",
-      "community_name": "Graphify Full Pipeline",
       "id": "_claude_skills_graphify_references_extraction_spec_subagent_prompt"
     },
     {
@@ -2140,7 +1947,6 @@
       "contributor": null,
       "community": 8,
       "norm_label": "github clone & merge reference",
-      "community_name": "Graphify Full Pipeline",
       "id": "_claude_skills_graphify_references_github_and_merge_overview"
     },
     {
@@ -2155,7 +1961,6 @@
       "rationale": "Clones into ~/.graphify/repos/<owner>/<repo> and reuses existing clones on repeat runs; merge-graphs tags each node in the merged graph with a repo attribute so results can be filtered by origin.",
       "community": 1,
       "norm_label": "github clone & cross-repo merge",
-      "community_name": "graphify Skill (/graphify)",
       "id": "_claude_skills_graphify_references_github_and_merge_clone"
     },
     {
@@ -2170,7 +1975,6 @@
       "rationale": "Running the skill pipeline separately on each subfolder would clobber the same graphify-out/ directory, so each subfolder is extracted via the CLI directly (which places graphify-out/ inside the scanned path) and merged afterward with merge-graphs at the project root.",
       "community": 48,
       "norm_label": "monorepo multi-subfolder merge",
-      "community_name": "Monorepo Multi-Subfolder Merge",
       "id": "_claude_skills_graphify_references_github_and_merge_monorepo"
     },
     {
@@ -2184,7 +1988,6 @@
       "contributor": null,
       "community": 8,
       "norm_label": "commit hook & claude.md integration reference",
-      "community_name": "Graphify Full Pipeline",
       "id": "_claude_skills_graphify_references_hooks_overview"
     },
     {
@@ -2199,7 +2002,6 @@
       "rationale": "Triggers once per commit, detects changed code files via git diff HEAD~1 and re-runs AST extraction only; doc/image changes are ignored by the hook and need a manual /graphify --update; it appends to an existing post-commit hook rather than replacing it.",
       "community": 1,
       "norm_label": "post-commit auto-rebuild hook",
-      "community_name": "graphify Skill (/graphify)",
       "id": "_claude_skills_graphify_references_hooks_post_commit"
     },
     {
@@ -2214,7 +2016,6 @@
       "rationale": "graphify claude install writes a ## graphify section into the project's CLAUDE.md instructing Claude to check the graph before answering codebase questions and rebuild it after code changes, so no manual /graphify invocation is needed in future sessions.",
       "community": 8,
       "norm_label": "native claude.md integration",
-      "community_name": "Graphify Full Pipeline",
       "id": "_claude_skills_graphify_references_hooks_claude_md_integration"
     },
     {
@@ -2228,7 +2029,6 @@
       "contributor": null,
       "community": 8,
       "norm_label": "query/path/explain reference",
-      "community_name": "Graphify Full Pipeline",
       "id": "_claude_skills_graphify_references_query_overview"
     },
     {
@@ -2243,7 +2043,6 @@
       "rationale": "graphify query matches via case-folded substring plus IDF with no stemming, synonyms, or cross-language matching, so a wording mismatch between the question and the graph's own vocabulary collapses the answer to noise unless the question is expanded first using only tokens actually present in the graph's label vocabulary - never invented tokens.",
       "community": 51,
       "norm_label": "constrained query expansion (step 0)",
-      "community_name": "Constrained Query Expansion (Step 0)",
       "id": "_claude_skills_graphify_references_query_vocab_expansion"
     },
     {
@@ -2257,7 +2056,6 @@
       "contributor": null,
       "community": 49,
       "norm_label": "bfs vs dfs traversal modes",
-      "community_name": "BFS vs DFS Traversal Modes",
       "id": "_claude_skills_graphify_references_query_bfs_dfs_modes"
     },
     {
@@ -2272,7 +2070,6 @@
       "rationale": "Answers are saved back into the graph via save-result with --outcome useful/dead_end/corrected so a later --update extracts the Q&A as a node, and future sessions read preferred sources and avoid dead ends via LESSONS.md - a self-improving loop.",
       "community": 50,
       "norm_label": "save-result feedback loop",
-      "community_name": "save-result Feedback Loop",
       "id": "_claude_skills_graphify_references_query_save_result_loop"
     },
     {
@@ -2286,7 +2083,6 @@
       "contributor": null,
       "community": 8,
       "norm_label": "transcribe video/audio reference",
-      "community_name": "Graphify Full Pipeline",
       "id": "_claude_skills_graphify_references_transcribe_overview"
     },
     {
@@ -2301,7 +2097,6 @@
       "rationale": "Rather than a separate API call, the host model writes its own one-sentence domain hint from the corpus's god-node labels and passes it as Whisper's initial_prompt to improve accuracy on domain vocabulary; falls back to a generic punctuation-only prompt when the corpus is video-only.",
       "community": 52,
       "norm_label": "self-composed whisper prompt",
-      "community_name": "Self-Composed Whisper Prompt",
       "id": "_claude_skills_graphify_references_transcribe_whisper_prompt"
     },
     {
@@ -2315,7 +2110,6 @@
       "contributor": null,
       "community": 8,
       "norm_label": "incremental update & cluster-only reference",
-      "community_name": "Graphify Full Pipeline",
       "id": "_claude_skills_graphify_references_update_overview"
     },
     {
@@ -2330,7 +2124,6 @@
       "rationale": "detect_incremental finds new/changed/deleted files since the last run; if every changed file is code, semantic extraction is skipped entirely since no LLM is needed.",
       "community": 21,
       "norm_label": "incremental --update flow",
-      "community_name": "Incremental --update Flow",
       "id": "_claude_skills_graphify_references_update_incremental"
     },
     {
@@ -2345,7 +2138,6 @@
       "rationale": "build_merge() reads graph.json directly instead of round-tripping through NetworkX so edge direction (calls/implements/imports) is always preserved (#801); prune_sources is only for genuinely deleted files since changed files are reconciled by replace-on-re-extract (#1344), and root= keeps prune paths relativized to the same base as the freshly merged nodes.",
       "community": 20,
       "norm_label": "build_merge direct graph read",
-      "community_name": "build_merge Direct Graph Read",
       "id": "_claude_skills_graphify_references_update_build_merge"
     },
     {
@@ -2360,7 +2152,6 @@
       "rationale": "cluster-only re-clusters, names communities, and regenerates GRAPH_REPORT.md/graph.json/graph.html from the existing graph by itself; Steps 5-9 must not be re-run afterward because they read intermediate files that a prior build's cleanup already deleted (#1392).",
       "community": 53,
       "norm_label": "--cluster-only self-contained rerun",
-      "community_name": "--cluster-only Self-Contained Rerun",
       "id": "_claude_skills_graphify_references_update_cluster_only"
     },
     {
@@ -2374,7 +2165,6 @@
       "contributor": null,
       "community": 22,
       "norm_label": "node.js build & lint ci",
-      "community_name": "Node.js Build & Lint CI",
       "id": "_github_workflows_lint_ci"
     },
     {
@@ -2389,7 +2179,6 @@
       "rationale": "Optional styles.css is handled via a conditional step (styles.outputs.exists) so plugins without a stylesheet don't fail attestation or the release step by referencing a missing file.",
       "community": 22,
       "norm_label": "obsidian plugin release ci",
-      "community_name": "Node.js Build & Lint CI",
       "id": "_github_workflows_release_ci"
     },
     {
@@ -2403,7 +2192,6 @@
       "contributor": null,
       "community": 60,
       "norm_label": "claude.md \u2014 claude code specifics",
-      "community_name": "CLAUDE.md \u2014 Claude Code specifics",
       "id": "claude_overview"
     },
     {
@@ -2417,7 +2205,6 @@
       "contributor": null,
       "community": 61,
       "norm_label": "use plan mode for src/sync, src/providers, manifest.json",
-      "community_name": "Use plan mode for src/sync, src/providers, manifest.json",
       "id": "claude_plan_mode_paths"
     },
     {
@@ -2431,7 +2218,6 @@
       "contributor": null,
       "community": 59,
       "norm_label": "graphify usage rules (query/path/explain/update)",
-      "community_name": "graphify usage rules (query/path/explain/update)",
       "id": "claude_graphify_rules"
     },
     {
@@ -2445,7 +2231,6 @@
       "contributor": null,
       "community": 74,
       "norm_label": "readme.md \u2014 obsidian sample plugin boilerplate",
-      "community_name": "README.md \u2014 Obsidian Sample Plugin boilerplate",
       "id": "readme_overview"
     },
     {
@@ -2459,7 +2244,6 @@
       "contributor": null,
       "community": 11,
       "norm_label": "module 1: core sync engine",
-      "community_name": "Milestone 1: Core Sync + Settings",
       "id": "docs_design_01_sync_overview"
     },
     {
@@ -2473,7 +2257,6 @@
       "contributor": null,
       "community": 63,
       "norm_label": "sync data flow (\u00a71.3)",
-      "community_name": "Sync data flow (\u00a71.3)",
       "id": "docs_design_01_sync_data_flow"
     },
     {
@@ -2487,7 +2270,6 @@
       "contributor": null,
       "community": 4,
       "norm_label": "dynamic field mapping (\u00a71.5)",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
       "id": "docs_design_01_sync_field_mapping"
     },
     {
@@ -2501,7 +2283,6 @@
       "contributor": null,
       "community": 24,
       "norm_label": "sync error handling (\u00a71.6)",
-      "community_name": "AnkiConnectError class",
       "id": "docs_design_01_sync_error_handling"
     },
     {
@@ -2515,7 +2296,6 @@
       "contributor": null,
       "community": 64,
       "norm_label": "one-way sync only, no conflict resolution at m1-2",
-      "community_name": "One-way sync only, no conflict resolution at M1-2",
       "id": "docs_design_01_sync_no_conflict_resolution"
     },
     {
@@ -2529,7 +2309,6 @@
       "contributor": null,
       "community": 11,
       "norm_label": "module 5: ui/ux",
-      "community_name": "Milestone 1: Core Sync + Settings",
       "id": "docs_design_05_ui_overview"
     },
     {
@@ -2543,7 +2322,6 @@
       "contributor": null,
       "community": 68,
       "norm_label": "button visual feedback states (\u00a75.1)",
-      "community_name": "Button visual feedback states (\u00a75.1)",
       "id": "docs_design_05_ui_visual_feedback"
     },
     {
@@ -2557,7 +2335,6 @@
       "contributor": null,
       "community": 67,
       "norm_label": "toast notifications (\u00a75.2)",
-      "community_name": "Toast notifications (\u00a75.2)",
       "id": "docs_design_05_ui_toast_notifications"
     },
     {
@@ -2571,7 +2348,6 @@
       "contributor": null,
       "community": 11,
       "norm_label": "module 6: settings tab (connection flow)",
-      "community_name": "Milestone 1: Core Sync + Settings",
       "id": "docs_design_06_settings_overview"
     },
     {
@@ -2585,7 +2361,6 @@
       "contributor": null,
       "community": 69,
       "norm_label": "ankiconnect url connect-button flow (\u00a76.1)",
-      "community_name": "AnkiConnect URL Connect-button flow (\u00a76.1)",
       "id": "docs_design_06_settings_connection_flow"
     },
     {
@@ -2599,7 +2374,6 @@
       "contributor": null,
       "community": 71,
       "norm_label": "roadmap.md \u2014 development roadmap",
-      "community_name": "roadmap.md \u2014 development roadmap",
       "id": "docs_design_roadmap_overview"
     },
     {
@@ -2613,7 +2387,6 @@
       "contributor": null,
       "community": 11,
       "norm_label": "milestone 1: core sync + settings",
-      "community_name": "Milestone 1: Core Sync + Settings",
       "id": "docs_design_roadmap_milestone1"
     },
     {
@@ -2627,7 +2400,6 @@
       "contributor": null,
       "community": 11,
       "norm_label": "milestone 2: sidebar modal + dynamic fields",
-      "community_name": "Milestone 1: Core Sync + Settings",
       "id": "docs_design_roadmap_milestone2"
     },
     {
@@ -2641,7 +2413,6 @@
       "contributor": null,
       "community": 11,
       "norm_label": "milestone 3: ai integration",
-      "community_name": "Milestone 1: Core Sync + Settings",
       "id": "docs_design_roadmap_milestone3"
     },
     {
@@ -2655,7 +2426,6 @@
       "contributor": null,
       "community": 11,
       "norm_label": "milestone 4: polish & ux",
-      "community_name": "Milestone 1: Core Sync + Settings",
       "id": "docs_design_roadmap_milestone4"
     },
     {
@@ -2669,7 +2439,6 @@
       "contributor": null,
       "community": 1,
       "norm_label": "graphify skill (/graphify)",
-      "community_name": "graphify Skill (/graphify)",
       "id": "opencode_skills_graphify_skill_graphify_skill"
     },
     {
@@ -2683,7 +2452,6 @@
       "contributor": null,
       "community": 1,
       "norm_label": "honesty rules",
-      "community_name": "graphify Skill (/graphify)",
       "id": "opencode_skills_graphify_skill_honesty_rules"
     },
     {
@@ -2697,7 +2465,6 @@
       "contributor": null,
       "community": 1,
       "norm_label": "semantic extraction (step 3 part b)",
-      "community_name": "graphify Skill (/graphify)",
       "id": "opencode_skills_graphify_skill_semantic_extraction"
     },
     {
@@ -2711,7 +2478,6 @@
       "contributor": null,
       "community": 1,
       "norm_label": "structural ast extraction (step 3 part a)",
-      "community_name": "graphify Skill (/graphify)",
       "id": "opencode_skills_graphify_skill_ast_extraction"
     },
     {
@@ -2725,7 +2491,6 @@
       "contributor": null,
       "community": 1,
       "norm_label": "/graphify add <url>",
-      "community_name": "graphify Skill (/graphify)",
       "id": "opencode_skills_graphify_references_add_watch_add_url"
     },
     {
@@ -2739,7 +2504,6 @@
       "contributor": null,
       "community": 1,
       "norm_label": "--watch (auto-rebuild watcher)",
-      "community_name": "graphify Skill (/graphify)",
       "id": "opencode_skills_graphify_references_add_watch_watch_mode"
     },
     {
@@ -2753,7 +2517,6 @@
       "contributor": null,
       "community": 1,
       "norm_label": "wiki export (--wiki)",
-      "community_name": "graphify Skill (/graphify)",
       "id": "opencode_skills_graphify_references_exports_wiki_export"
     },
     {
@@ -2767,7 +2530,6 @@
       "contributor": null,
       "community": 1,
       "norm_label": "neo4j export (--neo4j/--neo4j-push)",
-      "community_name": "graphify Skill (/graphify)",
       "id": "opencode_skills_graphify_references_exports_neo4j_export"
     },
     {
@@ -2781,7 +2543,6 @@
       "contributor": null,
       "community": 1,
       "norm_label": "falkordb export (--falkordb/--falkordb-push)",
-      "community_name": "graphify Skill (/graphify)",
       "id": "opencode_skills_graphify_references_exports_falkordb_export"
     },
     {
@@ -2795,7 +2556,6 @@
       "contributor": null,
       "community": 1,
       "norm_label": "mcp stdio server (--mcp)",
-      "community_name": "graphify Skill (/graphify)",
       "id": "opencode_skills_graphify_references_exports_mcp_server"
     },
     {
@@ -2809,7 +2569,6 @@
       "contributor": null,
       "community": 1,
       "norm_label": "token reduction benchmark",
-      "community_name": "graphify Skill (/graphify)",
       "id": "opencode_skills_graphify_references_exports_benchmark"
     },
     {
@@ -2823,7 +2582,6 @@
       "contributor": null,
       "community": 1,
       "norm_label": "node id format rule",
-      "community_name": "graphify Skill (/graphify)",
       "id": "opencode_skills_graphify_references_extraction_spec_node_id_format"
     },
     {
@@ -2837,7 +2595,6 @@
       "contributor": null,
       "community": 1,
       "norm_label": "confidence score rubric (extracted/inferred/ambiguous)",
-      "community_name": "graphify Skill (/graphify)",
       "id": "opencode_skills_graphify_references_extraction_spec_confidence_rubric"
     },
     {
@@ -2851,7 +2608,6 @@
       "contributor": null,
       "community": 1,
       "norm_label": "native claude.md integration (graphify claude install)",
-      "community_name": "graphify Skill (/graphify)",
       "id": "opencode_skills_graphify_references_hooks_claude_md_integration"
     },
     {
@@ -2865,7 +2621,6 @@
       "contributor": null,
       "community": 1,
       "norm_label": "/graphify query",
-      "community_name": "graphify Skill (/graphify)",
       "id": "opencode_skills_graphify_references_query_query_command"
     },
     {
@@ -2879,7 +2634,6 @@
       "contributor": null,
       "community": 1,
       "norm_label": "/graphify path",
-      "community_name": "graphify Skill (/graphify)",
       "id": "opencode_skills_graphify_references_query_path_command"
     },
     {
@@ -2893,7 +2647,6 @@
       "contributor": null,
       "community": 1,
       "norm_label": "/graphify explain",
-      "community_name": "graphify Skill (/graphify)",
       "id": "opencode_skills_graphify_references_query_explain_command"
     },
     {
@@ -2907,7 +2660,6 @@
       "contributor": null,
       "community": 1,
       "norm_label": "constrained query expansion (step 0)",
-      "community_name": "graphify Skill (/graphify)",
       "id": "opencode_skills_graphify_references_query_vocab_expansion"
     },
     {
@@ -2921,7 +2673,6 @@
       "contributor": null,
       "community": 1,
       "norm_label": "bfs/dfs traversal modes",
-      "community_name": "graphify Skill (/graphify)",
       "id": "opencode_skills_graphify_references_query_traversal_modes"
     },
     {
@@ -2935,7 +2686,6 @@
       "contributor": null,
       "community": 1,
       "norm_label": "save-result feedback loop (work memory)",
-      "community_name": "graphify Skill (/graphify)",
       "id": "opencode_skills_graphify_references_query_save_result"
     },
     {
@@ -2949,7 +2699,6 @@
       "contributor": null,
       "community": 1,
       "norm_label": "whisper domain-hint prompt",
-      "community_name": "graphify Skill (/graphify)",
       "id": "opencode_skills_graphify_references_transcribe_whisper_prompt"
     },
     {
@@ -2963,7 +2712,6 @@
       "contributor": null,
       "community": 1,
       "norm_label": "/graphify --update",
-      "community_name": "graphify Skill (/graphify)",
       "id": "opencode_skills_graphify_references_update_update_command"
     },
     {
@@ -2977,7 +2725,6 @@
       "contributor": null,
       "community": 1,
       "norm_label": "incremental re-extraction flow",
-      "community_name": "graphify Skill (/graphify)",
       "id": "opencode_skills_graphify_references_update_incremental_update"
     },
     {
@@ -2991,7 +2738,6 @@
       "contributor": null,
       "community": 1,
       "norm_label": "--cluster-only",
-      "community_name": "graphify Skill (/graphify)",
       "id": "opencode_skills_graphify_references_update_cluster_only"
     },
     {
@@ -3005,7 +2751,6 @@
       "contributor": null,
       "community": 13,
       "norm_label": "agents.md non-negotiables (9 rules)",
-      "community_name": "MediaResult interface",
       "id": "agents_non_negotiables"
     },
     {
@@ -3019,7 +2764,6 @@
       "contributor": null,
       "community": 23,
       "norm_label": "definition of done (lint + type-check + test:unit)",
-      "community_name": "Definition of Done (lint + type-check + test:unit)",
       "id": "agents_definition_of_done"
     },
     {
@@ -3033,7 +2777,6 @@
       "contributor": null,
       "community": 4,
       "norm_label": "repo layout (src/ module organization)",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
       "id": "agents_repo_layout"
     },
     {
@@ -3047,7 +2790,6 @@
       "contributor": null,
       "community": 1,
       "norm_label": "agents.md graphify integration rules",
-      "community_name": "graphify Skill (/graphify)",
       "id": "agents_graphify_section"
     },
     {
@@ -3061,7 +2803,6 @@
       "contributor": null,
       "community": 4,
       "norm_label": "ankifrontmatter interface",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
       "id": "docs_contracts_ankifrontmatter"
     },
     {
@@ -3075,7 +2816,6 @@
       "contributor": null,
       "community": 4,
       "norm_label": "parsednote interface",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
       "id": "docs_contracts_parsednote"
     },
     {
@@ -3089,7 +2829,6 @@
       "contributor": null,
       "community": 4,
       "norm_label": "field mapping algorithm (3-pass deterministic)",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
       "id": "docs_contracts_field_mapping_algorithm"
     },
     {
@@ -3103,7 +2842,6 @@
       "contributor": null,
       "community": 4,
       "norm_label": "field_aliases map",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
       "id": "docs_contracts_field_aliases"
     },
     {
@@ -3117,7 +2855,6 @@
       "contributor": null,
       "community": 16,
       "norm_label": "textresult interface",
-      "community_name": "TextProvider interface",
       "id": "docs_contracts_textresult"
     },
     {
@@ -3131,7 +2868,6 @@
       "contributor": null,
       "community": 13,
       "norm_label": "mediaresult interface",
-      "community_name": "MediaResult interface",
       "id": "docs_contracts_mediaresult"
     },
     {
@@ -3145,7 +2881,6 @@
       "contributor": null,
       "community": 16,
       "norm_label": "textprovider interface",
-      "community_name": "TextProvider interface",
       "id": "docs_contracts_textprovider"
     },
     {
@@ -3159,7 +2894,6 @@
       "contributor": null,
       "community": 13,
       "norm_label": "audioprovider interface",
-      "community_name": "MediaResult interface",
       "id": "docs_contracts_audioprovider"
     },
     {
@@ -3173,7 +2907,6 @@
       "contributor": null,
       "community": 13,
       "norm_label": "imageprovider interface",
-      "community_name": "MediaResult interface",
       "id": "docs_contracts_imageprovider"
     },
     {
@@ -3187,7 +2920,6 @@
       "contributor": null,
       "community": 16,
       "norm_label": "texttask type",
-      "community_name": "TextProvider interface",
       "id": "docs_contracts_texttask"
     },
     {
@@ -3201,7 +2933,6 @@
       "contributor": null,
       "community": 25,
       "norm_label": "sanitizeforfilename function",
-      "community_name": "Media File Naming Format",
       "id": "docs_contracts_sanitizeforfilename"
     },
     {
@@ -3215,7 +2946,6 @@
       "contributor": null,
       "community": 25,
       "norm_label": "media file naming format",
-      "community_name": "Media File Naming Format",
       "id": "docs_contracts_media_file_naming"
     },
     {
@@ -3229,7 +2959,6 @@
       "contributor": null,
       "community": 24,
       "norm_label": "ankiconnecterror class",
-      "community_name": "AnkiConnectError class",
       "id": "docs_contracts_ankiconnecterror"
     },
     {
@@ -3243,7 +2972,6 @@
       "contributor": null,
       "community": 62,
       "norm_label": "providererror class",
-      "community_name": "ProviderError class",
       "id": "docs_contracts_providererror"
     },
     {
@@ -3257,7 +2985,6 @@
       "contributor": null,
       "community": 13,
       "norm_label": "q14: audiooptions/imageoptions shape undefined",
-      "community_name": "MediaResult interface",
       "id": "docs_design_open_questions_audiooptions_imageoptions"
     },
     {
@@ -3271,7 +2998,6 @@
       "contributor": null,
       "community": 4,
       "norm_label": "q10: milestone 1 acceptance criteria checklist",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
       "id": "docs_design_open_questions_milestone1_acceptance"
     },
     {
@@ -3285,7 +3011,6 @@
       "contributor": null,
       "community": 23,
       "norm_label": "q12: playwright-for-obsidian proposal (use vitest instead)",
-      "community_name": "Definition of Done (lint + type-check + test:unit)",
       "id": "docs_design_open_questions_playwright"
     },
     {
@@ -3299,7 +3024,6 @@
       "contributor": null,
       "community": 70,
       "norm_label": "q13: translate docs/design to english",
-      "community_name": "Q13: Translate docs/design to English",
       "id": "docs_design_open_questions_translate_design"
     },
     {
@@ -3311,10 +3035,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_readme_architecture_overview",
       "community": 4,
-      "norm_label": "design doc architecture overview",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
-      "id": "docs_design_readme_architecture_overview"
+      "norm_label": "design doc architecture overview"
     },
     {
       "label": "No Media In Vault Principle",
@@ -3325,10 +3048,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_readme_no_vault_media_principle",
       "community": 26,
-      "norm_label": "no media in vault principle",
-      "community_name": "Media File Naming Convention (_obsidian_ prefix)",
-      "id": "docs_design_readme_no_vault_media_principle"
+      "norm_label": "no media in vault principle"
     },
     {
       "label": "Module Numbering Gap (3 to 5) Is Intentional",
@@ -3339,10 +3061,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_readme_module_numbering_gap_decision",
       "community": 27,
-      "norm_label": "module numbering gap (3 to 5) is intentional",
-      "community_name": "Module Numbering Gap (3 to 5) Note",
-      "id": "docs_design_readme_module_numbering_gap_decision"
+      "norm_label": "module numbering gap (3 to 5) is intentional"
     },
     {
       "label": "Provider Abstraction Layer",
@@ -3353,10 +3074,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_02_providers_abstraction_layer",
       "community": 6,
-      "norm_label": "provider abstraction layer",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
-      "id": "docs_design_02_providers_abstraction_layer"
+      "norm_label": "provider abstraction layer"
     },
     {
       "label": "Common Provider Interface (processText/generateAudio/generateImage)",
@@ -3367,10 +3087,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_02_providers_provider_interface",
       "community": 6,
-      "norm_label": "common provider interface (processtext/generateaudio/generateimage)",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
-      "id": "docs_design_02_providers_provider_interface"
+      "norm_label": "common provider interface (processtext/generateaudio/generateimage)"
     },
     {
       "label": "AI Provider Manager",
@@ -3381,10 +3100,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_02_providers_ai_provider_manager_component",
       "community": 4,
-      "norm_label": "ai provider manager",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
-      "id": "docs_design_02_providers_ai_provider_manager_component"
+      "norm_label": "ai provider manager"
     },
     {
       "label": "processText()",
@@ -3395,10 +3113,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_02_providers_processtext",
       "community": 0,
-      "norm_label": "processtext()",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_02_providers_processtext"
+      "norm_label": "processtext()"
     },
     {
       "label": "generateAudio()",
@@ -3409,10 +3126,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_02_providers_generateaudio",
       "community": 0,
-      "norm_label": "generateaudio()",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_02_providers_generateaudio"
+      "norm_label": "generateaudio()"
     },
     {
       "label": "generateImage()",
@@ -3423,10 +3139,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_02_providers_generateimage",
       "community": 0,
-      "norm_label": "generateimage()",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_02_providers_generateimage"
+      "norm_label": "generateimage()"
     },
     {
       "label": "targetFields (processText input)",
@@ -3437,10 +3152,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_02_providers_targetfields",
       "community": 0,
-      "norm_label": "targetfields (processtext input)",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_02_providers_targetfields"
+      "norm_label": "targetfields (processtext input)"
     },
     {
       "label": "TextResult (processText output)",
@@ -3451,10 +3165,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_02_providers_textresult",
       "community": 0,
-      "norm_label": "textresult (processtext output)",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_02_providers_textresult"
+      "norm_label": "textresult (processtext output)"
     },
     {
       "label": "OpenAI GPT-4/3.5 (Text, Cloud)",
@@ -3465,10 +3178,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_02_providers_openai_gpt",
       "community": 6,
-      "norm_label": "openai gpt-4/3.5 (text, cloud)",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
-      "id": "docs_design_02_providers_openai_gpt"
+      "norm_label": "openai gpt-4/3.5 (text, cloud)"
     },
     {
       "label": "Claude (Text, Cloud)",
@@ -3479,10 +3191,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_02_providers_claude",
       "community": 6,
-      "norm_label": "claude (text, cloud)",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
-      "id": "docs_design_02_providers_claude"
+      "norm_label": "claude (text, cloud)"
     },
     {
       "label": "Gemini (Text, Cloud)",
@@ -3493,10 +3204,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_02_providers_gemini",
       "community": 6,
-      "norm_label": "gemini (text, cloud)",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
-      "id": "docs_design_02_providers_gemini"
+      "norm_label": "gemini (text, cloud)"
     },
     {
       "label": "Ollama (Text, Local)",
@@ -3507,10 +3217,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_02_providers_ollama",
       "community": 6,
-      "norm_label": "ollama (text, local)",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
-      "id": "docs_design_02_providers_ollama"
+      "norm_label": "ollama (text, local)"
     },
     {
       "label": "LM Studio (Text, Local)",
@@ -3521,10 +3230,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_02_providers_lm_studio",
       "community": 6,
-      "norm_label": "lm studio (text, local)",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
-      "id": "docs_design_02_providers_lm_studio"
+      "norm_label": "lm studio (text, local)"
     },
     {
       "label": "OpenAI TTS (Audio, Cloud)",
@@ -3535,10 +3243,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_02_providers_openai_tts",
       "community": 6,
-      "norm_label": "openai tts (audio, cloud)",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
-      "id": "docs_design_02_providers_openai_tts"
+      "norm_label": "openai tts (audio, cloud)"
     },
     {
       "label": "Azure Speech (Audio, Cloud)",
@@ -3549,10 +3256,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_02_providers_azure_speech",
       "community": 6,
-      "norm_label": "azure speech (audio, cloud)",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
-      "id": "docs_design_02_providers_azure_speech"
+      "norm_label": "azure speech (audio, cloud)"
     },
     {
       "label": "ElevenLabs (Audio, Cloud)",
@@ -3563,10 +3269,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_02_providers_elevenlabs",
       "community": 6,
-      "norm_label": "elevenlabs (audio, cloud)",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
-      "id": "docs_design_02_providers_elevenlabs"
+      "norm_label": "elevenlabs (audio, cloud)"
     },
     {
       "label": "Edge TTS (Audio, Cloud, free)",
@@ -3577,10 +3282,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_02_providers_edge_tts",
       "community": 6,
-      "norm_label": "edge tts (audio, cloud, free)",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
-      "id": "docs_design_02_providers_edge_tts"
+      "norm_label": "edge tts (audio, cloud, free)"
     },
     {
       "label": "sherpa-onnx (Audio, Local)",
@@ -3591,10 +3295,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_02_providers_sherpa_onnx",
       "community": 6,
-      "norm_label": "sherpa-onnx (audio, local)",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
-      "id": "docs_design_02_providers_sherpa_onnx"
+      "norm_label": "sherpa-onnx (audio, local)"
     },
     {
       "label": "DALL-E 3 (Image, Cloud)",
@@ -3605,10 +3308,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_02_providers_dalle3",
       "community": 6,
-      "norm_label": "dall-e 3 (image, cloud)",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
-      "id": "docs_design_02_providers_dalle3"
+      "norm_label": "dall-e 3 (image, cloud)"
     },
     {
       "label": "Stability AI (Image, Cloud)",
@@ -3619,10 +3321,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_02_providers_stability_ai",
       "community": 6,
-      "norm_label": "stability ai (image, cloud)",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
-      "id": "docs_design_02_providers_stability_ai"
+      "norm_label": "stability ai (image, cloud)"
     },
     {
       "label": "Replicate (Image, Cloud)",
@@ -3633,10 +3334,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_02_providers_replicate",
       "community": 6,
-      "norm_label": "replicate (image, cloud)",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
-      "id": "docs_design_02_providers_replicate"
+      "norm_label": "replicate (image, cloud)"
     },
     {
       "label": "Automatic1111 (Image, Local)",
@@ -3647,10 +3347,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_02_providers_automatic1111",
       "community": 6,
-      "norm_label": "automatic1111 (image, local)",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
-      "id": "docs_design_02_providers_automatic1111"
+      "norm_label": "automatic1111 (image, local)"
     },
     {
       "label": "ComfyUI (Image, Local)",
@@ -3661,10 +3360,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_02_providers_comfyui",
       "community": 6,
-      "norm_label": "comfyui (image, local)",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
-      "id": "docs_design_02_providers_comfyui"
+      "norm_label": "comfyui (image, local)"
     },
     {
       "label": "anki-controls Markdown Code Block",
@@ -3675,10 +3373,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_03_note_custom_markdown_block",
       "community": 4,
-      "norm_label": "anki-controls markdown code block",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
-      "id": "docs_design_03_note_custom_markdown_block"
+      "norm_label": "anki-controls markdown code block"
     },
     {
       "label": "Sync Button",
@@ -3689,10 +3386,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_03_note_sync_button",
       "community": 0,
-      "norm_label": "sync button",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_03_note_sync_button"
+      "norm_label": "sync button"
     },
     {
       "label": "Delete Button",
@@ -3703,10 +3399,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_03_note_delete_button",
       "community": 66,
-      "norm_label": "delete button",
-      "community_name": "Delete Button",
-      "id": "docs_design_03_note_delete_button"
+      "norm_label": "delete button"
     },
     {
       "label": "Generate with AI Button",
@@ -3717,10 +3412,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_03_note_generate_with_ai_button",
       "community": 0,
-      "norm_label": "generate with ai button",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_03_note_generate_with_ai_button"
+      "norm_label": "generate with ai button"
     },
     {
       "label": "Add Audio Button",
@@ -3731,10 +3425,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_03_note_add_audio_button",
       "community": 0,
-      "norm_label": "add audio button",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_03_note_add_audio_button"
+      "norm_label": "add audio button"
     },
     {
       "label": "Add Image Button",
@@ -3745,10 +3438,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_03_note_add_image_button",
       "community": 0,
-      "norm_label": "add image button",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_03_note_add_image_button"
+      "norm_label": "add image button"
     },
     {
       "label": "Shared Pre-check For 3 AI Buttons",
@@ -3759,10 +3451,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_03_note_precheck",
       "community": 0,
-      "norm_label": "shared pre-check for 3 ai buttons",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_03_note_precheck"
+      "norm_label": "shared pre-check for 3 ai buttons"
     },
     {
       "label": "Content Parsing Logic (heading-based)",
@@ -3773,10 +3464,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_03_note_content_parsing_logic",
       "community": 65,
-      "norm_label": "content parsing logic (heading-based)",
-      "community_name": "Content Parsing Logic (heading-based)",
-      "id": "docs_design_03_note_content_parsing_logic"
+      "norm_label": "content parsing logic (heading-based)"
     },
     {
       "label": "Content Update Logic (Overwrite/Append)",
@@ -3787,10 +3477,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_03_note_content_update_logic",
       "community": 0,
-      "norm_label": "content update logic (overwrite/append)",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_03_note_content_update_logic"
+      "norm_label": "content update logic (overwrite/append)"
     },
     {
       "label": "Media File Naming Convention (_obsidian_ prefix)",
@@ -3801,10 +3490,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_03_note_media_file_naming_convention",
       "community": 26,
-      "norm_label": "media file naming convention (_obsidian_ prefix)",
-      "community_name": "Media File Naming Convention (_obsidian_ prefix)",
-      "id": "docs_design_03_note_media_file_naming_convention"
+      "norm_label": "media file naming convention (_obsidian_ prefix)"
     },
     {
       "label": "Auto-generate Content Structure",
@@ -3815,10 +3503,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_03_note_auto_generate_content_structure",
       "community": 0,
-      "norm_label": "auto-generate content structure",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_03_note_auto_generate_content_structure"
+      "norm_label": "auto-generate content structure"
     },
     {
       "label": "Create Note From Selection (Hotkey / Quick Capture)",
@@ -3829,10 +3516,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_03_note_create_note_from_selection",
       "community": 0,
-      "norm_label": "create note from selection (hotkey / quick capture)",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_03_note_create_note_from_selection"
+      "norm_label": "create note from selection (hotkey / quick capture)"
     },
     {
       "label": "sanitizeForFilename()",
@@ -3843,10 +3529,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_03_note_sanitizeforfilename",
       "community": 0,
-      "norm_label": "sanitizeforfilename()",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_03_note_sanitizeforfilename"
+      "norm_label": "sanitizeforfilename()"
     },
     {
       "label": "AI Buttons Never Write To Anki Directly (Sync-only) Principle",
@@ -3857,10 +3542,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_03_note_ai_write_isolation_principle",
       "community": 0,
-      "norm_label": "ai buttons never write to anki directly (sync-only) principle",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_03_note_ai_write_isolation_principle"
+      "norm_label": "ai buttons never write to anki directly (sync-only) principle"
     },
     {
       "label": "Never Overwrite User-Entered Section Content Principle",
@@ -3871,10 +3555,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_03_note_no_overwrite_principle",
       "community": 0,
-      "norm_label": "never overwrite user-entered section content principle",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_03_note_no_overwrite_principle"
+      "norm_label": "never overwrite user-entered section content principle"
     },
     {
       "label": "PDF Selection Support Deferred (M1-2/v1) Decision",
@@ -3885,10 +3568,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_03_note_pdf_out_of_scope_decision",
       "community": 0,
-      "norm_label": "pdf selection support deferred (m1-2/v1) decision",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_03_note_pdf_out_of_scope_decision"
+      "norm_label": "pdf selection support deferred (m1-2/v1) decision"
     },
     {
       "label": "No Default Hotkey Shipped Decision",
@@ -3899,10 +3581,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_03_note_no_default_hotkey_decision",
       "community": 0,
-      "norm_label": "no default hotkey shipped decision",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_03_note_no_default_hotkey_decision"
+      "norm_label": "no default hotkey shipped decision"
     },
     {
       "label": "Module Numbering Gap (3 to 5) Note",
@@ -3913,10 +3594,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_03_note_module_numbering_gap_note",
       "community": 27,
-      "norm_label": "module numbering gap (3 to 5) note",
-      "community_name": "Module Numbering Gap (3 to 5) Note",
-      "id": "docs_design_03_note_module_numbering_gap_note"
+      "norm_label": "module numbering gap (3 to 5) note"
     },
     {
       "label": "Sidebar Modal (Right Sidebar View Panel)",
@@ -3927,10 +3607,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_07_sidebar_sidebar_modal",
       "community": 0,
-      "norm_label": "sidebar modal (right sidebar view panel)",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_07_sidebar_sidebar_modal"
+      "norm_label": "sidebar modal (right sidebar view panel)"
     },
     {
       "label": "Tab 1 \u2014 Note (Deck/Model/Folder/Field checkboxes)",
@@ -3941,10 +3620,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_07_sidebar_tab1_note",
       "community": 0,
-      "norm_label": "tab 1 \u2014 note (deck/model/folder/field checkboxes)",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_07_sidebar_tab1_note"
+      "norm_label": "tab 1 \u2014 note (deck/model/folder/field checkboxes)"
     },
     {
       "label": "Tab 2 \u2014 Audio (Voice/Language/Overwrite-Append/rows)",
@@ -3955,10 +3633,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_07_sidebar_tab2_audio",
       "community": 0,
-      "norm_label": "tab 2 \u2014 audio (voice/language/overwrite-append/rows)",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_07_sidebar_tab2_audio"
+      "norm_label": "tab 2 \u2014 audio (voice/language/overwrite-append/rows)"
     },
     {
       "label": "Tab 3 \u2014 Image (Overwrite-Append/single row)",
@@ -3969,10 +3646,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_07_sidebar_tab3_image",
       "community": 0,
-      "norm_label": "tab 3 \u2014 image (overwrite-append/single row)",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_07_sidebar_tab3_image"
+      "norm_label": "tab 3 \u2014 image (overwrite-append/single row)"
     },
     {
       "label": "Deck Dropdown",
@@ -3983,10 +3659,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_07_sidebar_deck_dropdown",
       "community": 0,
-      "norm_label": "deck dropdown",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_07_sidebar_deck_dropdown"
+      "norm_label": "deck dropdown"
     },
     {
       "label": "Model Dropdown",
@@ -3997,10 +3672,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_07_sidebar_model_dropdown",
       "community": 0,
-      "norm_label": "model dropdown",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_07_sidebar_model_dropdown"
+      "norm_label": "model dropdown"
     },
     {
       "label": "Folder Select (save notes to)",
@@ -4011,10 +3685,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_07_sidebar_folder_select",
       "community": 0,
-      "norm_label": "folder select (save notes to)",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_07_sidebar_folder_select"
+      "norm_label": "folder select (save notes to)"
     },
     {
       "label": "Field Checkboxes (Generate with AI)",
@@ -4025,10 +3698,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_07_sidebar_field_checkboxes",
       "community": 0,
-      "norm_label": "field checkboxes (generate with ai)",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_07_sidebar_field_checkboxes"
+      "norm_label": "field checkboxes (generate with ai)"
     },
     {
       "label": "Connection Status + Test Connection",
@@ -4039,10 +3711,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_07_sidebar_connection_status",
       "community": 0,
-      "norm_label": "connection status + test connection",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_07_sidebar_connection_status"
+      "norm_label": "connection status + test connection"
     },
     {
       "label": "Action: Create New Note (2-branch)",
@@ -4053,10 +3724,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_07_sidebar_create_new_note_action",
       "community": 4,
-      "norm_label": "action: create new note (2-branch)",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
-      "id": "docs_design_07_sidebar_create_new_note_action"
+      "norm_label": "action: create new note (2-branch)"
     },
     {
       "label": "Branch A \u2014 Deck/Model Already Configured",
@@ -4067,10 +3737,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_07_sidebar_branch_a",
       "community": 4,
-      "norm_label": "branch a \u2014 deck/model already configured",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
-      "id": "docs_design_07_sidebar_branch_a"
+      "norm_label": "branch a \u2014 deck/model already configured"
     },
     {
       "label": "Branch B \u2014 First-Time Setup Modal",
@@ -4081,10 +3750,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_07_sidebar_branch_b",
       "community": 4,
-      "norm_label": "branch b \u2014 first-time setup modal",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
-      "id": "docs_design_07_sidebar_branch_b"
+      "norm_label": "branch b \u2014 first-time setup modal"
     },
     {
       "label": "Persistence (Deck/Model/Folder + per-pair field-mapping config)",
@@ -4095,10 +3763,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_07_sidebar_persistence",
       "community": 0,
-      "norm_label": "persistence (deck/model/folder + per-pair field-mapping config)",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_07_sidebar_persistence"
+      "norm_label": "persistence (deck/model/folder + per-pair field-mapping config)"
     },
     {
       "label": "Ribbon Icon (create note + open modal)",
@@ -4109,10 +3776,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_07_sidebar_ribbon_icon",
       "community": 4,
-      "norm_label": "ribbon icon (create note + open modal)",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
-      "id": "docs_design_07_sidebar_ribbon_icon"
+      "norm_label": "ribbon icon (create note + open modal)"
     },
     {
       "label": "Command: \"Anki: Create new note\" (id create-note)",
@@ -4123,10 +3789,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_07_sidebar_create_note_command",
       "community": 4,
-      "norm_label": "command: \"anki: create new note\" (id create-note)",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
-      "id": "docs_design_07_sidebar_create_note_command"
+      "norm_label": "command: \"anki: create new note\" (id create-note)"
     },
     {
       "label": "Command: \"Anki: Open Deck & Model Selector\"",
@@ -4137,10 +3802,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_07_sidebar_open_selector_command",
       "community": 0,
-      "norm_label": "command: \"anki: open deck & model selector\"",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_07_sidebar_open_selector_command"
+      "norm_label": "command: \"anki: open deck & model selector\""
     },
     {
       "label": "modelFieldNames(model)",
@@ -4151,10 +3815,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_07_sidebar_modelfieldnames",
       "community": 0,
-      "norm_label": "modelfieldnames(model)",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_07_sidebar_modelfieldnames"
+      "norm_label": "modelfieldnames(model)"
     },
     {
       "label": "Settings Tab (global provider) vs Sidebar Tab 2/3 (per Deck+Model mapping) \u2014 Independent Layers",
@@ -4165,10 +3828,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_07_sidebar_two_layer_config_rationale",
       "community": 0,
-      "norm_label": "settings tab (global provider) vs sidebar tab 2/3 (per deck+model mapping) \u2014 independent layers",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_07_sidebar_two_layer_config_rationale"
+      "norm_label": "settings tab (global provider) vs sidebar tab 2/3 (per deck+model mapping) \u2014 independent layers"
     },
     {
       "label": "Scenario 1: Create Note via Icon/Command",
@@ -4179,10 +3841,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_scenarios_scenario1",
       "community": 4,
-      "norm_label": "scenario 1: create note via icon/command",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
-      "id": "docs_design_scenarios_scenario1"
+      "norm_label": "scenario 1: create note via icon/command"
     },
     {
       "label": "Scenario 2: Create Note From Selected Text (Hotkey)",
@@ -4193,10 +3854,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_scenarios_scenario2",
       "community": 0,
-      "norm_label": "scenario 2: create note from selected text (hotkey)",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_scenarios_scenario2"
+      "norm_label": "scenario 2: create note from selected text (hotkey)"
     },
     {
       "label": "Scenario 3: Add Audio (Tab 2 Config)",
@@ -4207,10 +3867,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_scenarios_scenario3",
       "community": 0,
-      "norm_label": "scenario 3: add audio (tab 2 config)",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_scenarios_scenario3"
+      "norm_label": "scenario 3: add audio (tab 2 config)"
     },
     {
       "label": "Scenario 3b: Add Image (Tab 3 Config)",
@@ -4221,10 +3880,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_scenarios_scenario3b",
       "community": 0,
-      "norm_label": "scenario 3b: add image (tab 3 config)",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_scenarios_scenario3b"
+      "norm_label": "scenario 3b: add image (tab 3 config)"
     },
     {
       "label": "Scenario 4: Change Deck/Model For Already-Synced Note",
@@ -4235,10 +3893,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_scenarios_scenario4",
       "community": 4,
-      "norm_label": "scenario 4: change deck/model for already-synced note",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
-      "id": "docs_design_scenarios_scenario4"
+      "norm_label": "scenario 4: change deck/model for already-synced note"
     },
     {
       "label": "Warning Only Applies To Already-Synced Notes",
@@ -4249,10 +3906,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "docs_design_scenarios_scenario4_sync_warning_rationale",
       "community": 4,
-      "norm_label": "warning only applies to already-synced notes",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
-      "id": "docs_design_scenarios_scenario4_sync_warning_rationale"
+      "norm_label": "warning only applies to already-synced notes"
     }
   ],
   "links": [
@@ -4263,9 +3919,9 @@
       "source_location": "L3",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "opencode_opencode",
-      "target": "opencode_opencode_plugin",
-      "confidence_score": 1.0
+      "target": "opencode_opencode_plugin"
     },
     {
       "relation": "contains",
@@ -4274,9 +3930,9 @@
       "source_location": "L2",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "opencode_opencode",
-      "target": "opencode_opencode_schema",
-      "confidence_score": 1.0
+      "target": "opencode_opencode_schema"
     },
     {
       "relation": "extends",
@@ -4286,9 +3942,9 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "opencode_opencode_plugin",
-      "target": "ref_opencode_plugins_graphify_js",
-      "confidence_score": 1.0
+      "target": "ref_opencode_plugins_graphify_js"
     },
     {
       "relation": "contains",
@@ -4297,9 +3953,9 @@
       "source_location": "L12",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "opencode_plugins_graphify",
-      "target": "opencode_plugins_graphify_graphifyplugin",
-      "confidence_score": 1.0
+      "target": "opencode_plugins_graphify_graphifyplugin"
     },
     {
       "relation": "rationale_for",
@@ -4308,9 +3964,9 @@
       "source_location": "L4",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "opencode_plugins_graphify_rationale_4",
-      "target": "opencode_plugins_graphify",
-      "confidence_score": 1.0
+      "target": "opencode_plugins_graphify"
     },
     {
       "relation": "contains",
@@ -4319,9 +3975,9 @@
       "source_location": "L7",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "manifest",
-      "target": "manifest_author",
-      "confidence_score": 1.0
+      "target": "manifest_author"
     },
     {
       "relation": "contains",
@@ -4330,9 +3986,9 @@
       "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "manifest",
-      "target": "manifest_authorurl",
-      "confidence_score": 1.0
+      "target": "manifest_authorurl"
     },
     {
       "relation": "contains",
@@ -4341,9 +3997,9 @@
       "source_location": "L6",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "manifest",
-      "target": "manifest_description",
-      "confidence_score": 1.0
+      "target": "manifest_description"
     },
     {
       "relation": "contains",
@@ -4352,9 +4008,9 @@
       "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "manifest",
-      "target": "manifest_fundingurl",
-      "confidence_score": 1.0
+      "target": "manifest_fundingurl"
     },
     {
       "relation": "contains",
@@ -4363,9 +4019,9 @@
       "source_location": "L2",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "manifest",
-      "target": "manifest_id",
-      "confidence_score": 1.0
+      "target": "manifest_id"
     },
     {
       "relation": "contains",
@@ -4374,9 +4030,9 @@
       "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "manifest",
-      "target": "manifest_isdesktoponly",
-      "confidence_score": 1.0
+      "target": "manifest_isdesktoponly"
     },
     {
       "relation": "contains",
@@ -4385,9 +4041,9 @@
       "source_location": "L5",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "manifest",
-      "target": "manifest_minappversion",
-      "confidence_score": 1.0
+      "target": "manifest_minappversion"
     },
     {
       "relation": "contains",
@@ -4396,9 +4052,9 @@
       "source_location": "L3",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "manifest",
-      "target": "manifest_name",
-      "confidence_score": 1.0
+      "target": "manifest_name"
     },
     {
       "relation": "contains",
@@ -4407,9 +4063,9 @@
       "source_location": "L4",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "manifest",
-      "target": "manifest_version",
-      "confidence_score": 1.0
+      "target": "manifest_version"
     },
     {
       "relation": "contains",
@@ -4418,9 +4074,9 @@
       "source_location": "L4",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package",
-      "target": "package_description",
-      "confidence_score": 1.0
+      "target": "package_description"
     },
     {
       "relation": "contains",
@@ -4429,9 +4085,9 @@
       "source_location": "L18",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package",
-      "target": "package_devdependencies",
-      "confidence_score": 1.0
+      "target": "package_devdependencies"
     },
     {
       "relation": "contains",
@@ -4440,9 +4096,9 @@
       "source_location": "L16",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package",
-      "target": "package_keywords",
-      "confidence_score": 1.0
+      "target": "package_keywords"
     },
     {
       "relation": "contains",
@@ -4451,9 +4107,9 @@
       "source_location": "L17",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package",
-      "target": "package_license",
-      "confidence_score": 1.0
+      "target": "package_license"
     },
     {
       "relation": "contains",
@@ -4462,9 +4118,9 @@
       "source_location": "L5",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package",
-      "target": "package_main",
-      "confidence_score": 1.0
+      "target": "package_main"
     },
     {
       "relation": "contains",
@@ -4473,9 +4129,9 @@
       "source_location": "L2",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package",
-      "target": "package_name",
-      "confidence_score": 1.0
+      "target": "package_name"
     },
     {
       "relation": "contains",
@@ -4484,9 +4140,9 @@
       "source_location": "L7",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package",
-      "target": "package_scripts",
-      "confidence_score": 1.0
+      "target": "package_scripts"
     },
     {
       "relation": "contains",
@@ -4495,9 +4151,9 @@
       "source_location": "L6",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package",
-      "target": "package_type",
-      "confidence_score": 1.0
+      "target": "package_type"
     },
     {
       "relation": "contains",
@@ -4506,9 +4162,9 @@
       "source_location": "L3",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package",
-      "target": "package_version",
-      "confidence_score": 1.0
+      "target": "package_version"
     },
     {
       "relation": "contains",
@@ -4517,9 +4173,9 @@
       "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_scripts",
-      "target": "package_scripts_build",
-      "confidence_score": 1.0
+      "target": "package_scripts_build"
     },
     {
       "relation": "contains",
@@ -4528,9 +4184,9 @@
       "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_scripts",
-      "target": "package_scripts_dev",
-      "confidence_score": 1.0
+      "target": "package_scripts_dev"
     },
     {
       "relation": "contains",
@@ -4539,9 +4195,9 @@
       "source_location": "L14",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_scripts",
-      "target": "package_scripts_format_write",
-      "confidence_score": 1.0
+      "target": "package_scripts_format_write"
     },
     {
       "relation": "contains",
@@ -4550,9 +4206,9 @@
       "source_location": "L11",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_scripts",
-      "target": "package_scripts_lint",
-      "confidence_score": 1.0
+      "target": "package_scripts_lint"
     },
     {
       "relation": "contains",
@@ -4561,9 +4217,9 @@
       "source_location": "L13",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_scripts",
-      "target": "package_scripts_test_unit",
-      "confidence_score": 1.0
+      "target": "package_scripts_test_unit"
     },
     {
       "relation": "contains",
@@ -4572,9 +4228,9 @@
       "source_location": "L12",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_scripts",
-      "target": "package_scripts_type_check",
-      "confidence_score": 1.0
+      "target": "package_scripts_type_check"
     },
     {
       "relation": "contains",
@@ -4583,9 +4239,9 @@
       "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_scripts",
-      "target": "package_scripts_version",
-      "confidence_score": 1.0
+      "target": "package_scripts_version"
     },
     {
       "relation": "contains",
@@ -4594,9 +4250,9 @@
       "source_location": "L21",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies",
-      "target": "package_devdependencies_esbuild",
-      "confidence_score": 1.0
+      "target": "package_devdependencies_esbuild"
     },
     {
       "relation": "contains",
@@ -4605,9 +4261,9 @@
       "source_location": "L22",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies",
-      "target": "package_devdependencies_eslint",
-      "confidence_score": 1.0
+      "target": "package_devdependencies_eslint"
     },
     {
       "relation": "contains",
@@ -4616,9 +4272,9 @@
       "source_location": "L19",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies",
-      "target": "package_devdependencies_eslint_js",
-      "confidence_score": 1.0
+      "target": "package_devdependencies_eslint_js"
     },
     {
       "relation": "contains",
@@ -4627,9 +4283,9 @@
       "source_location": "L23",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies",
-      "target": "package_devdependencies_eslint_plugin_obsidianmd",
-      "confidence_score": 1.0
+      "target": "package_devdependencies_eslint_plugin_obsidianmd"
     },
     {
       "relation": "contains",
@@ -4638,9 +4294,9 @@
       "source_location": "L24",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies",
-      "target": "package_devdependencies_globals",
-      "confidence_score": 1.0
+      "target": "package_devdependencies_globals"
     },
     {
       "relation": "contains",
@@ -4649,9 +4305,9 @@
       "source_location": "L25",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies",
-      "target": "package_devdependencies_jiti",
-      "confidence_score": 1.0
+      "target": "package_devdependencies_jiti"
     },
     {
       "relation": "contains",
@@ -4660,9 +4316,9 @@
       "source_location": "L26",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies",
-      "target": "package_devdependencies_obsidian",
-      "confidence_score": 1.0
+      "target": "package_devdependencies_obsidian"
     },
     {
       "relation": "contains",
@@ -4671,9 +4327,9 @@
       "source_location": "L27",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies",
-      "target": "package_devdependencies_prettier",
-      "confidence_score": 1.0
+      "target": "package_devdependencies_prettier"
     },
     {
       "relation": "contains",
@@ -4682,9 +4338,9 @@
       "source_location": "L20",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies",
-      "target": "package_devdependencies_types_node",
-      "confidence_score": 1.0
+      "target": "package_devdependencies_types_node"
     },
     {
       "relation": "contains",
@@ -4693,9 +4349,9 @@
       "source_location": "L28",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies",
-      "target": "package_devdependencies_typescript",
-      "confidence_score": 1.0
+      "target": "package_devdependencies_typescript"
     },
     {
       "relation": "contains",
@@ -4704,9 +4360,9 @@
       "source_location": "L29",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies",
-      "target": "package_devdependencies_typescript_eslint",
-      "confidence_score": 1.0
+      "target": "package_devdependencies_typescript_eslint"
     },
     {
       "relation": "contains",
@@ -4715,9 +4371,9 @@
       "source_location": "L30",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies",
-      "target": "package_devdependencies_vitest",
-      "confidence_score": 1.0
+      "target": "package_devdependencies_vitest"
     },
     {
       "relation": "imports",
@@ -4727,9 +4383,9 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies_eslint_js",
-      "target": "eslint_js",
-      "confidence_score": 1.0
+      "target": "eslint_js"
     },
     {
       "relation": "imports",
@@ -4739,9 +4395,9 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies_types_node",
-      "target": "types_node",
-      "confidence_score": 1.0
+      "target": "types_node"
     },
     {
       "relation": "imports",
@@ -4751,9 +4407,9 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies_esbuild",
-      "target": "esbuild",
-      "confidence_score": 1.0
+      "target": "esbuild"
     },
     {
       "relation": "imports",
@@ -4763,9 +4419,9 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies_eslint",
-      "target": "eslint",
-      "confidence_score": 1.0
+      "target": "eslint"
     },
     {
       "relation": "imports",
@@ -4775,9 +4431,9 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies_eslint_plugin_obsidianmd",
-      "target": "eslint_plugin_obsidianmd",
-      "confidence_score": 1.0
+      "target": "eslint_plugin_obsidianmd"
     },
     {
       "relation": "imports",
@@ -4787,9 +4443,9 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies_globals",
-      "target": "globals",
-      "confidence_score": 1.0
+      "target": "globals"
     },
     {
       "relation": "imports",
@@ -4799,9 +4455,9 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies_jiti",
-      "target": "jiti",
-      "confidence_score": 1.0
+      "target": "jiti"
     },
     {
       "relation": "imports",
@@ -4811,9 +4467,9 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies_obsidian",
-      "target": "obsidian",
-      "confidence_score": 1.0
+      "target": "obsidian"
     },
     {
       "relation": "imports",
@@ -4823,9 +4479,9 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies_prettier",
-      "target": "prettier",
-      "confidence_score": 1.0
+      "target": "prettier"
     },
     {
       "relation": "imports",
@@ -4835,9 +4491,9 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies_typescript",
-      "target": "typescript",
-      "confidence_score": 1.0
+      "target": "typescript"
     },
     {
       "relation": "imports",
@@ -4847,9 +4503,9 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies_typescript_eslint",
-      "target": "typescript_eslint",
-      "confidence_score": 1.0
+      "target": "typescript_eslint"
     },
     {
       "relation": "imports",
@@ -4859,9 +4515,9 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "package_devdependencies_vitest",
-      "target": "vitest",
-      "confidence_score": 1.0
+      "target": "vitest"
     },
     {
       "relation": "contains",
@@ -4870,9 +4526,9 @@
       "source_location": "L3",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "src_main",
-      "target": "src_main_ankibridgeplugin",
-      "confidence_score": 1.0
+      "target": "src_main_ankibridgeplugin"
     },
     {
       "relation": "method",
@@ -4881,9 +4537,9 @@
       "source_location": "L4",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "src_main_ankibridgeplugin",
-      "target": "src_main_ankibridgeplugin_onload",
-      "confidence_score": 1.0
+      "target": "src_main_ankibridgeplugin_onload"
     },
     {
       "relation": "method",
@@ -4892,9 +4548,9 @@
       "source_location": "L6",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "src_main_ankibridgeplugin",
-      "target": "src_main_ankibridgeplugin_onunload",
-      "confidence_score": 1.0
+      "target": "src_main_ankibridgeplugin_onunload"
     },
     {
       "relation": "imports_from",
@@ -4904,9 +4560,9 @@
       "source_location": "L2",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "src_note_medianaming_test",
-      "target": "src_note_medianaming",
-      "confidence_score": 1.0
+      "target": "src_note_medianaming"
     },
     {
       "relation": "imports",
@@ -4916,31 +4572,31 @@
       "source_location": "L2",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "src_note_medianaming_test",
-      "target": "src_note_medianaming_sanitizeforfilename",
-      "confidence_score": 1.0
+      "target": "src_note_medianaming_sanitizeforfilename"
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/note/mediaNaming.ts",
-      "source_location": "L6",
+      "source_location": "L1",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "src_note_medianaming",
-      "target": "src_note_medianaming_sanitizeforfilename",
-      "confidence_score": 1.0
+      "target": "src_note_medianaming_sanitizeforfilename"
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/types.ts",
-      "source_location": "L65",
+      "source_location": "L60",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "src_types",
-      "target": "src_types_ankiconnecterror",
-      "confidence_score": 1.0
+      "target": "src_types_ankiconnecterror"
     },
     {
       "relation": "contains",
@@ -4949,20 +4605,20 @@
       "source_location": "L2",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "src_types",
-      "target": "src_types_ankifrontmatter",
-      "confidence_score": 1.0
+      "target": "src_types_ankifrontmatter"
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/types.ts",
-      "source_location": "L52",
+      "source_location": "L55",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "src_types",
-      "target": "src_types_audiooptions",
-      "confidence_score": 1.0
+      "target": "src_types_audiooptions"
     },
     {
       "relation": "contains",
@@ -4971,20 +4627,20 @@
       "source_location": "L38",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "src_types",
-      "target": "src_types_audioprovider",
-      "confidence_score": 1.0
+      "target": "src_types_audioprovider"
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/types.ts",
-      "source_location": "L58",
+      "source_location": "L57",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "src_types",
-      "target": "src_types_imageoptions",
-      "confidence_score": 1.0
+      "target": "src_types_imageoptions"
     },
     {
       "relation": "contains",
@@ -4993,9 +4649,9 @@
       "source_location": "L44",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "src_types",
-      "target": "src_types_imageprovider",
-      "confidence_score": 1.0
+      "target": "src_types_imageprovider"
     },
     {
       "relation": "contains",
@@ -5004,9 +4660,9 @@
       "source_location": "L22",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "src_types",
-      "target": "src_types_mediaresult",
-      "confidence_score": 1.0
+      "target": "src_types_mediaresult"
     },
     {
       "relation": "contains",
@@ -5015,20 +4671,20 @@
       "source_location": "L11",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "src_types",
-      "target": "src_types_parsednote",
-      "confidence_score": 1.0
+      "target": "src_types_parsednote"
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/types.ts",
-      "source_location": "L74",
+      "source_location": "L69",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "src_types",
-      "target": "src_types_providererror",
-      "confidence_score": 1.0
+      "target": "src_types_providererror"
     },
     {
       "relation": "contains",
@@ -5037,9 +4693,9 @@
       "source_location": "L28",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "src_types",
-      "target": "src_types_textprovider",
-      "confidence_score": 1.0
+      "target": "src_types_textprovider"
     },
     {
       "relation": "contains",
@@ -5048,9 +4704,9 @@
       "source_location": "L18",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "src_types",
-      "target": "src_types_textresult",
-      "confidence_score": 1.0
+      "target": "src_types_textresult"
     },
     {
       "relation": "contains",
@@ -5059,9 +4715,9 @@
       "source_location": "L50",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "src_types",
-      "target": "src_types_texttask",
-      "confidence_score": 1.0
+      "target": "src_types_texttask"
     },
     {
       "relation": "method",
@@ -5070,9 +4726,9 @@
       "source_location": "L31",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "src_types_textprovider",
-      "target": "src_types_textprovider_processtext",
-      "confidence_score": 1.0
+      "target": "src_types_textprovider_processtext"
     },
     {
       "relation": "method",
@@ -5081,9 +4737,9 @@
       "source_location": "L41",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "src_types_audioprovider",
-      "target": "src_types_audioprovider_generateaudio",
-      "confidence_score": 1.0
+      "target": "src_types_audioprovider_generateaudio"
     },
     {
       "relation": "method",
@@ -5092,31 +4748,31 @@
       "source_location": "L47",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "src_types_imageprovider",
-      "target": "src_types_imageprovider_generateimage",
-      "confidence_score": 1.0
+      "target": "src_types_imageprovider_generateimage"
     },
     {
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/types.ts",
-      "source_location": "L66",
+      "source_location": "L61",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "src_types_ankiconnecterror",
-      "target": "src_types_ankiconnecterror_constructor",
-      "confidence_score": 1.0
+      "target": "src_types_ankiconnecterror_constructor"
     },
     {
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/types.ts",
-      "source_location": "L75",
+      "source_location": "L70",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "src_types_providererror",
-      "target": "src_types_providererror_constructor",
-      "confidence_score": 1.0
+      "target": "src_types_providererror_constructor"
     },
     {
       "relation": "contains",
@@ -5125,9 +4781,9 @@
       "source_location": "L2",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "tsconfig",
-      "target": "tsconfig_compileroptions",
-      "confidence_score": 1.0
+      "target": "tsconfig_compileroptions"
     },
     {
       "relation": "contains",
@@ -5136,9 +4792,9 @@
       "source_location": "L18",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "tsconfig",
-      "target": "tsconfig_include",
-      "confidence_score": 1.0
+      "target": "tsconfig_include"
     },
     {
       "relation": "contains",
@@ -5147,9 +4803,9 @@
       "source_location": "L15",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "tsconfig_compileroptions",
-      "target": "tsconfig_compileroptions_allowsyntheticdefaultimports",
-      "confidence_score": 1.0
+      "target": "tsconfig_compileroptions_allowsyntheticdefaultimports"
     },
     {
       "relation": "contains",
@@ -5158,9 +4814,9 @@
       "source_location": "L14",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "tsconfig_compileroptions",
-      "target": "tsconfig_compileroptions_forceconsistentcasinginfilenames",
-      "confidence_score": 1.0
+      "target": "tsconfig_compileroptions_forceconsistentcasinginfilenames"
     },
     {
       "relation": "contains",
@@ -5169,9 +4825,9 @@
       "source_location": "L3",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "tsconfig_compileroptions",
-      "target": "tsconfig_compileroptions_inlinesourcemap",
-      "confidence_score": 1.0
+      "target": "tsconfig_compileroptions_inlinesourcemap"
     },
     {
       "relation": "contains",
@@ -5180,9 +4836,9 @@
       "source_location": "L4",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "tsconfig_compileroptions",
-      "target": "tsconfig_compileroptions_inlinesources",
-      "confidence_score": 1.0
+      "target": "tsconfig_compileroptions_inlinesources"
     },
     {
       "relation": "contains",
@@ -5191,9 +4847,9 @@
       "source_location": "L12",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "tsconfig_compileroptions",
-      "target": "tsconfig_compileroptions_isolatedmodules",
-      "confidence_score": 1.0
+      "target": "tsconfig_compileroptions_isolatedmodules"
     },
     {
       "relation": "contains",
@@ -5202,9 +4858,9 @@
       "source_location": "L16",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "tsconfig_compileroptions",
-      "target": "tsconfig_compileroptions_lib",
-      "confidence_score": 1.0
+      "target": "tsconfig_compileroptions_lib"
     },
     {
       "relation": "contains",
@@ -5213,9 +4869,9 @@
       "source_location": "L5",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "tsconfig_compileroptions",
-      "target": "tsconfig_compileroptions_module",
-      "confidence_score": 1.0
+      "target": "tsconfig_compileroptions_module"
     },
     {
       "relation": "contains",
@@ -5224,9 +4880,9 @@
       "source_location": "L11",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "tsconfig_compileroptions",
-      "target": "tsconfig_compileroptions_moduleresolution",
-      "confidence_score": 1.0
+      "target": "tsconfig_compileroptions_moduleresolution"
     },
     {
       "relation": "contains",
@@ -5235,9 +4891,9 @@
       "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "tsconfig_compileroptions",
-      "target": "tsconfig_compileroptions_nofallthroughcasesinswitch",
-      "confidence_score": 1.0
+      "target": "tsconfig_compileroptions_nofallthroughcasesinswitch"
     },
     {
       "relation": "contains",
@@ -5246,9 +4902,9 @@
       "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "tsconfig_compileroptions",
-      "target": "tsconfig_compileroptions_noimplicitreturns",
-      "confidence_score": 1.0
+      "target": "tsconfig_compileroptions_noimplicitreturns"
     },
     {
       "relation": "contains",
@@ -5257,9 +4913,9 @@
       "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "tsconfig_compileroptions",
-      "target": "tsconfig_compileroptions_nouncheckedindexedaccess",
-      "confidence_score": 1.0
+      "target": "tsconfig_compileroptions_nouncheckedindexedaccess"
     },
     {
       "relation": "contains",
@@ -5268,9 +4924,9 @@
       "source_location": "L13",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "tsconfig_compileroptions",
-      "target": "tsconfig_compileroptions_skiplibcheck",
-      "confidence_score": 1.0
+      "target": "tsconfig_compileroptions_skiplibcheck"
     },
     {
       "relation": "contains",
@@ -5279,9 +4935,9 @@
       "source_location": "L7",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "tsconfig_compileroptions",
-      "target": "tsconfig_compileroptions_strict",
-      "confidence_score": 1.0
+      "target": "tsconfig_compileroptions_strict"
     },
     {
       "relation": "contains",
@@ -5290,9 +4946,9 @@
       "source_location": "L6",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "tsconfig_compileroptions",
-      "target": "tsconfig_compileroptions_target",
-      "confidence_score": 1.0
+      "target": "tsconfig_compileroptions_target"
     },
     {
       "relation": "extends",
@@ -5302,9 +4958,9 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "tsconfig_compileroptions_lib",
-      "target": "ref_dom",
-      "confidence_score": 1.0
+      "target": "ref_dom"
     },
     {
       "relation": "extends",
@@ -5314,9 +4970,9 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "tsconfig_compileroptions_lib",
-      "target": "ref_es2021",
-      "confidence_score": 1.0
+      "target": "ref_es2021"
     },
     {
       "relation": "extends",
@@ -5326,9 +4982,9 @@
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "tsconfig_include",
-      "target": "ref_src_ts",
-      "confidence_score": 1.0
+      "target": "ref_src_ts"
     },
     {
       "relation": "contains",
@@ -5337,9 +4993,9 @@
       "source_location": "L6",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "version_bump",
-      "target": "version_bump_manifest",
-      "confidence_score": 1.0
+      "target": "version_bump_manifest"
     },
     {
       "relation": "contains",
@@ -5348,31 +5004,9 @@
       "source_location": "L13",
       "weight": 1.0,
       "_origin": "ast",
+      "confidence_score": 1.0,
       "source": "version_bump",
-      "target": "version_bump_versions",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".opencode/skills/graphify/references/github-and-merge.md",
-      "source_location": "L1",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "opencode_skills_graphify_references_github_and_merge",
-      "target": "opencode_skills_graphify_references_github_and_merge_graphify_reference_github_clone_and_cross_repo_merge",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".opencode/skills/graphify/references/github-and-merge.md",
-      "source_location": "L5",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "opencode_skills_graphify_references_github_and_merge_graphify_reference_github_clone_and_cross_repo_merge",
-      "target": "opencode_skills_graphify_references_github_and_merge_step_0_clone_github_repo_s_only_if_a_github_url_was_given",
-      "confidence_score": 1.0
+      "target": "version_bump_versions"
     },
     {
       "relation": "references",
@@ -7460,5 +7094,5 @@
       "source_file": ".opencode/skills/graphify/SKILL.md"
     }
   ],
-  "built_at_commit": "42365a4d624efd8fa0044f6fb98bf4f12cfc8881"
+  "built_at_commit": "3d0de7392679c4b5395f2a3b25d1f2f41cee517a"
 }

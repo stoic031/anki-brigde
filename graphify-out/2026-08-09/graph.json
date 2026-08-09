@@ -879,7 +879,7 @@
       "label": "sanitizeForFilename()",
       "file_type": "code",
       "source_file": "src/note/mediaNaming.ts",
-      "source_location": "L6",
+      "source_location": "L1",
       "_origin": "ast",
       "id": "src_note_medianaming_sanitizeforfilename",
       "community": 18,
@@ -1022,7 +1022,7 @@
       "label": "AudioOptions",
       "file_type": "code",
       "source_file": "src/types.ts",
-      "source_location": "L52",
+      "source_location": "L55",
       "_origin": "ast",
       "id": "src_types_audiooptions",
       "community": 5,
@@ -1033,7 +1033,7 @@
       "label": "ImageOptions",
       "file_type": "code",
       "source_file": "src/types.ts",
-      "source_location": "L58",
+      "source_location": "L57",
       "_origin": "ast",
       "id": "src_types_imageoptions",
       "community": 5,
@@ -1044,7 +1044,7 @@
       "label": "AnkiConnectError",
       "file_type": "code",
       "source_file": "src/types.ts",
-      "source_location": "L65",
+      "source_location": "L60",
       "_origin": "ast",
       "id": "src_types_ankiconnecterror",
       "community": 5,
@@ -1055,7 +1055,7 @@
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "src/types.ts",
-      "source_location": "L66",
+      "source_location": "L61",
       "_origin": "ast",
       "id": "src_types_ankiconnecterror_constructor",
       "community": 5,
@@ -1066,7 +1066,7 @@
       "label": "ProviderError",
       "file_type": "code",
       "source_file": "src/types.ts",
-      "source_location": "L74",
+      "source_location": "L69",
       "_origin": "ast",
       "id": "src_types_providererror",
       "community": 5,
@@ -1077,7 +1077,7 @@
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "src/types.ts",
-      "source_location": "L75",
+      "source_location": "L70",
       "_origin": "ast",
       "id": "src_types_providererror_constructor",
       "community": 5,
@@ -1393,8 +1393,8 @@
       "rationale": "Ensures the installed graphify skill/instructions are consulted before doing anything else whenever the user types /graphify.",
       "community": 8,
       "norm_label": "graphify-first directive",
-      "community_name": "Graphify Full Pipeline",
-      "id": "_claude_claude_graphify_directive"
+      "id": "_claude_claude_graphify_directive",
+      "community_name": "Graphify Full Pipeline"
     },
     {
       "label": "Provider Adapter Pattern",
@@ -1408,8 +1408,8 @@
       "rationale": "One provider per file; adding a provider must not require editing providerManager.ts beyond one registration entry, keeping the manager a thin registry.",
       "community": 9,
       "norm_label": "provider adapter pattern",
-      "community_name": "docs/contracts.md",
-      "id": "_claude_rules_providers_adapter_pattern"
+      "id": "_claude_rules_providers_adapter_pattern",
+      "community_name": "docs/contracts.md"
     },
     {
       "label": "Normalize At Adapter Boundary",
@@ -1423,8 +1423,8 @@
       "rationale": "The provider returns the shared shape from docs/contracts.md so nothing downstream needs to know which vendor answered.",
       "community": 9,
       "norm_label": "normalize at adapter boundary",
-      "community_name": "docs/contracts.md",
-      "id": "_claude_rules_providers_normalization_boundary"
+      "id": "_claude_rules_providers_normalization_boundary",
+      "community_name": "docs/contracts.md"
     },
     {
       "label": "No API Key In Code Rule",
@@ -1438,8 +1438,8 @@
       "rationale": "Keys come from settings only - never code, defaults, tests, fixtures, or comments - and are sent to exactly one endpoint: the selected provider's.",
       "community": 29,
       "norm_label": "no api key in code rule",
-      "community_name": "No API Key In Code Rule",
-      "id": "_claude_rules_providers_no_key_rule"
+      "id": "_claude_rules_providers_no_key_rule",
+      "community_name": "No API Key In Code Rule"
     },
     {
       "label": "Local AI Providers",
@@ -1452,8 +1452,8 @@
       "contributor": null,
       "community": 28,
       "norm_label": "local ai providers",
-      "community_name": "Local AI Providers",
-      "id": "_claude_rules_providers_local_providers"
+      "id": "_claude_rules_providers_local_providers",
+      "community_name": "Local AI Providers"
     },
     {
       "label": "Provider Text Output Validation",
@@ -1467,8 +1467,8 @@
       "rationale": "processText JSON must be fence-stripped, parsed inside try/catch, and field-validated before use - never trust a language model's JSON blindly or return a half-filled object on failure.",
       "community": 31,
       "norm_label": "provider text output validation",
-      "community_name": "Provider Text Output Validation",
-      "id": "_claude_rules_providers_text_validation"
+      "id": "_claude_rules_providers_text_validation",
+      "community_name": "Provider Text Output Validation"
     },
     {
       "label": "Provider Unit Test Requirement",
@@ -1481,8 +1481,8 @@
       "contributor": null,
       "community": 30,
       "norm_label": "provider unit test requirement",
-      "community_name": "Provider Unit Test Requirement",
-      "id": "_claude_rules_providers_test_requirement"
+      "id": "_claude_rules_providers_test_requirement",
+      "community_name": "Provider Unit Test Requirement"
     },
     {
       "label": "docs/design/02-providers.md",
@@ -1495,8 +1495,8 @@
       "contributor": null,
       "community": 9,
       "norm_label": "docs/design/02-providers.md",
-      "community_name": "docs/contracts.md",
-      "id": "docs_design_02_providers_spec"
+      "id": "docs_design_02_providers_spec",
+      "community_name": "docs/contracts.md"
     },
     {
       "label": "docs/contracts.md",
@@ -1509,8 +1509,8 @@
       "contributor": null,
       "community": 9,
       "norm_label": "docs/contracts.md",
-      "community_name": "docs/contracts.md",
-      "id": "docs_contracts_interfaces"
+      "id": "docs_contracts_interfaces",
+      "community_name": "docs/contracts.md"
     },
     {
       "label": "AnkiConnectClient",
@@ -1524,8 +1524,8 @@
       "rationale": "Single typed wrapper for all AnkiConnect traffic; the URL is passed in at construction rather than read from this.settings inside a standalone function, so the client isn't coupled to the plugin instance.",
       "community": 32,
       "norm_label": "ankiconnectclient",
-      "community_name": "AnkiConnectClient",
-      "id": "_claude_rules_sync_engine_ankiconnectclient"
+      "id": "_claude_rules_sync_engine_ankiconnectclient",
+      "community_name": "AnkiConnectClient"
     },
     {
       "label": "Idempotent Sync Rule",
@@ -1539,8 +1539,8 @@
       "rationale": "No anki_note_id -> addNote then write the ID back; has an ID -> updateNoteFields, never create; AnkiConnect reports the note missing -> clear the ID then addNote; re-running sync on an unchanged note must be a no-op, never a duplicate.",
       "community": 12,
       "norm_label": "idempotent sync rule",
-      "community_name": "docs/design/01-sync.md",
-      "id": "_claude_rules_sync_engine_idempotent_sync"
+      "id": "_claude_rules_sync_engine_idempotent_sync",
+      "community_name": "docs/design/01-sync.md"
     },
     {
       "label": "Heading-Based Content Parsing",
@@ -1554,8 +1554,8 @@
       "rationale": "A section runs from its heading to the next heading of the same or higher level, or EOF; alternative schemes (YAML in body, custom delimiters, HTML comments) require a design-doc change before a code change.",
       "community": 12,
       "norm_label": "heading-based content parsing",
-      "community_name": "docs/design/01-sync.md",
-      "id": "_claude_rules_sync_engine_content_parsing"
+      "id": "_claude_rules_sync_engine_content_parsing",
+      "community_name": "docs/design/01-sync.md"
     },
     {
       "label": "Media Filename Format",
@@ -1569,8 +1569,8 @@
       "rationale": "Default prefix _obsidian_ is what stops Anki's Check Media from deleting plugin files; the word component comes from user content and must be sanitized (strip path separators/control chars, truncate) while still allowing Unicode.",
       "community": 9,
       "norm_label": "media filename format",
-      "community_name": "docs/contracts.md",
-      "id": "_claude_rules_sync_engine_media_filename_format"
+      "id": "_claude_rules_sync_engine_media_filename_format",
+      "community_name": "docs/contracts.md"
     },
     {
       "label": "Content Update Append Rule",
@@ -1584,8 +1584,8 @@
       "rationale": "Adding audio/image appends into the matching ## Section rather than rewriting the whole file, preserving everything else byte for byte.",
       "community": 33,
       "norm_label": "content update append rule",
-      "community_name": "Content Update Append Rule",
-      "id": "_claude_rules_sync_engine_content_append_rule"
+      "id": "_claude_rules_sync_engine_content_append_rule",
+      "community_name": "Content Update Append Rule"
     },
     {
       "label": "Sync Error Path Coverage",
@@ -1599,8 +1599,8 @@
       "rationale": "Every case (AnkiConnect offline, note not found, duplicate note, parse error, model not found) needs an explicit branch and a user-facing Notice; a silent catch {} is never acceptable.",
       "community": 12,
       "norm_label": "sync error path coverage",
-      "community_name": "docs/design/01-sync.md",
-      "id": "_claude_rules_sync_engine_error_paths"
+      "id": "_claude_rules_sync_engine_error_paths",
+      "community_name": "docs/design/01-sync.md"
     },
     {
       "label": "docs/design/01-sync.md",
@@ -1613,8 +1613,8 @@
       "contributor": null,
       "community": 12,
       "norm_label": "docs/design/01-sync.md",
-      "community_name": "docs/design/01-sync.md",
-      "id": "docs_design_01_sync_spec"
+      "id": "docs_design_01_sync_spec",
+      "community_name": "docs/design/01-sync.md"
     },
     {
       "label": "docs/design/03-note.md",
@@ -1627,8 +1627,8 @@
       "contributor": null,
       "community": 12,
       "norm_label": "docs/design/03-note.md",
-      "community_name": "docs/design/01-sync.md",
-      "id": "docs_design_03_note_spec"
+      "id": "docs_design_03_note_spec",
+      "community_name": "docs/design/01-sync.md"
     },
     {
       "label": "Copy Style Rules",
@@ -1642,8 +1642,8 @@
       "rationale": "All user-facing strings in English for the Obsidian community store; sentence case; bold for literal UI labels; arrow notation for navigation; reuse the existing emoji set instead of inventing icons; failure copy states what happened and what to do next.",
       "community": 9,
       "norm_label": "copy style rules",
-      "community_name": "docs/contracts.md",
-      "id": "_claude_rules_ui_copy_copy_style"
+      "id": "_claude_rules_ui_copy_copy_style",
+      "community_name": "docs/contracts.md"
     },
     {
       "label": "Button State Cycle",
@@ -1656,8 +1656,8 @@
       "contributor": null,
       "community": 12,
       "norm_label": "button state cycle",
-      "community_name": "docs/design/01-sync.md",
-      "id": "_claude_rules_ui_copy_button_state_cycle"
+      "id": "_claude_rules_ui_copy_button_state_cycle",
+      "community_name": "docs/design/01-sync.md"
     },
     {
       "label": "Long Operation Feedback",
@@ -1671,8 +1671,8 @@
       "rationale": "AI calls take 5-30s; a persistent Notice that updates as work progresses, replaced by a success toast, is required - a static Processing... with no updates is a bug.",
       "community": 35,
       "norm_label": "long operation feedback",
-      "community_name": "Long Operation Feedback",
-      "id": "_claude_rules_ui_copy_long_operation_feedback"
+      "id": "_claude_rules_ui_copy_long_operation_feedback",
+      "community_name": "Long Operation Feedback"
     },
     {
       "label": "Themed Styling Rule",
@@ -1686,8 +1686,8 @@
       "rationale": "Use Obsidian CSS variables, never hardcoded hex, so the plugin looks correct in light/dark/community themes; prefix CSS classes to avoid collisions with other plugins.",
       "community": 37,
       "norm_label": "themed styling rule",
-      "community_name": "Themed Styling Rule",
-      "id": "_claude_rules_ui_copy_styling_rule"
+      "id": "_claude_rules_ui_copy_styling_rule",
+      "community_name": "Themed Styling Rule"
     },
     {
       "label": "Shared Settings State Rule",
@@ -1701,8 +1701,8 @@
       "rationale": "Settings tab and sidebar view must read and write the same this.settings object and both re-render on change; two copies drifting apart is called out as the single most likely bug in this area.",
       "community": 36,
       "norm_label": "shared settings state rule",
-      "community_name": "Shared Settings State Rule",
-      "id": "_claude_rules_ui_copy_shared_settings_state"
+      "id": "_claude_rules_ui_copy_shared_settings_state",
+      "community_name": "Shared Settings State Rule"
     },
     {
       "label": "Listener Cleanup Rule",
@@ -1716,8 +1716,8 @@
       "rationale": "Every listener from a view or modal uses registerDomEvent/registerEvent/registerInterval, or is torn down in onClose; detached listeners survive plugin reload and cause duplicate handlers.",
       "community": 34,
       "norm_label": "listener cleanup rule",
-      "community_name": "Listener Cleanup Rule",
-      "id": "_claude_rules_ui_copy_listener_cleanup"
+      "id": "_claude_rules_ui_copy_listener_cleanup",
+      "community_name": "Listener Cleanup Rule"
     },
     {
       "label": "docs/design/05-ui.md",
@@ -1730,8 +1730,8 @@
       "contributor": null,
       "community": 9,
       "norm_label": "docs/design/05-ui.md",
-      "community_name": "docs/contracts.md",
-      "id": "docs_design_05_ui_spec"
+      "id": "docs_design_05_ui_spec",
+      "community_name": "docs/contracts.md"
     },
     {
       "label": "docs/design/06-settings.md",
@@ -1744,8 +1744,8 @@
       "contributor": null,
       "community": 9,
       "norm_label": "docs/design/06-settings.md",
-      "community_name": "docs/contracts.md",
-      "id": "docs_design_06_settings_spec"
+      "id": "docs_design_06_settings_spec",
+      "community_name": "docs/contracts.md"
     },
     {
       "label": "docs/design/07-sidebar.md",
@@ -1758,8 +1758,8 @@
       "contributor": null,
       "community": 9,
       "norm_label": "docs/design/07-sidebar.md",
-      "community_name": "docs/contracts.md",
-      "id": "docs_design_07_sidebar_spec"
+      "id": "docs_design_07_sidebar_spec",
+      "community_name": "docs/contracts.md"
     },
     {
       "label": "Add AI Provider Checklist",
@@ -1772,8 +1772,8 @@
       "contributor": null,
       "community": 9,
       "norm_label": "add ai provider checklist",
-      "community_name": "docs/contracts.md",
-      "id": "_claude_skills_add_ai_provider_skill_checklist"
+      "id": "_claude_skills_add_ai_provider_skill_checklist",
+      "community_name": "docs/contracts.md"
     },
     {
       "label": "Add Provider Pre-Check",
@@ -1787,8 +1787,8 @@
       "rationale": "Determine the task (text/audio/image) and cloud-vs-local before writing code; if a vendor's response shape doesn't fit the normalized output, stop and ask rather than unilaterally widening the shared interface.",
       "community": 9,
       "norm_label": "add provider pre-check",
-      "community_name": "docs/contracts.md",
-      "id": "_claude_skills_add_ai_provider_skill_precheck"
+      "id": "_claude_skills_add_ai_provider_skill_precheck",
+      "community_name": "docs/contracts.md"
     },
     {
       "label": "Graphify Full Pipeline",
@@ -1801,8 +1801,8 @@
       "contributor": null,
       "community": 8,
       "norm_label": "graphify full pipeline",
-      "community_name": "Graphify Full Pipeline",
-      "id": "_claude_skills_graphify_skill_pipeline"
+      "id": "_claude_skills_graphify_skill_pipeline",
+      "community_name": "Graphify Full Pipeline"
     },
     {
       "label": "Graphify Query Fast Path",
@@ -1816,8 +1816,8 @@
       "rationale": "If graphify-out/graph.json already exists and the request is a natural-language question rather than an explicit rebuild command, skip Steps 1-5 entirely and jump straight to query - the graph is already built.",
       "community": 55,
       "norm_label": "graphify query fast path",
-      "community_name": "Graphify Query Fast Path",
-      "id": "_claude_skills_graphify_skill_fast_path"
+      "id": "_claude_skills_graphify_skill_fast_path",
+      "community_name": "Graphify Query Fast Path"
     },
     {
       "label": "AST vs Semantic Extraction Split",
@@ -1831,8 +1831,8 @@
       "rationale": "Code is extracted structurally via AST with no LLM or API key needed; semantic extraction for docs/papers/images uses Gemini only if a key is already set, otherwise the host agent itself is the LLM. graphify never reads ANTHROPIC_API_KEY or OPENAI_API_KEY, so a code-only corpus skips semantic extraction entirely and needs no key.",
       "community": 54,
       "norm_label": "ast vs semantic extraction split",
-      "community_name": "AST vs Semantic Extraction Split",
-      "id": "_claude_skills_graphify_skill_ast_semantic_split"
+      "id": "_claude_skills_graphify_skill_ast_semantic_split",
+      "community_name": "AST vs Semantic Extraction Split"
     },
     {
       "label": "Semantic Extraction Cache (Step B0)",
@@ -1846,8 +1846,8 @@
       "rationale": "Cache entries are keyed to the extraction prompt file (SPEC_PATH) so a prompt upgrade re-extracts affected files instead of replaying stale results, while unchanged prompts keep their cached entries (#1939).",
       "community": 8,
       "norm_label": "semantic extraction cache (step b0)",
-      "community_name": "Graphify Full Pipeline",
-      "id": "_claude_skills_graphify_skill_extraction_cache"
+      "id": "_claude_skills_graphify_skill_extraction_cache",
+      "community_name": "Graphify Full Pipeline"
     },
     {
       "label": "Parallel Subagent Dispatch (Steps B1-B3)",
@@ -1861,8 +1861,8 @@
       "rationale": "All chunk subagents must be dispatched in a single message with subagent_type=general-purpose, never Explore (which is read-only and cannot write chunk files, silently dropping results); real token counts are read from the Agent tool's usage field and patched into each chunk JSON before merging since the chunk JSON's own token fields are placeholder zeros.",
       "community": 8,
       "norm_label": "parallel subagent dispatch (steps b1-b3)",
-      "community_name": "Graphify Full Pipeline",
-      "id": "_claude_skills_graphify_skill_subagent_dispatch"
+      "id": "_claude_skills_graphify_skill_subagent_dispatch",
+      "community_name": "Graphify Full Pipeline"
     },
     {
       "label": "Graph Shrink Guard (#479)",
@@ -1876,8 +1876,8 @@
       "rationale": "to_json() refuses to write a new graph.json that is smaller than the existing one, so an empty or bad extraction can't silently clobber a good graph; overriding an intentional shrink requires --force.",
       "community": 20,
       "norm_label": "graph shrink guard (#479)",
-      "community_name": "build_merge Direct Graph Read",
-      "id": "_claude_skills_graphify_skill_shrink_guard"
+      "id": "_claude_skills_graphify_skill_shrink_guard",
+      "community_name": "build_merge Direct Graph Read"
     },
     {
       "label": "Graph Health Check (Step 4.5)",
@@ -1890,8 +1890,8 @@
       "contributor": null,
       "community": 57,
       "norm_label": "graph health check (step 4.5)",
-      "community_name": "Graph Health Check (Step 4.5)",
-      "id": "_claude_skills_graphify_skill_health_check"
+      "id": "_claude_skills_graphify_skill_health_check",
+      "community_name": "Graph Health Check (Step 4.5)"
     },
     {
       "label": "Manifest Stamping Rule (#2015/#1948)",
@@ -1905,8 +1905,8 @@
       "rationale": "Only semantic files that actually produced output this run get stamped in the manifest; a changed file whose chunk failed or was omitted must stay unstamped, or have its stale semantic_hash cleared, so the next --update re-queues it instead of losing its content forever.",
       "community": 21,
       "norm_label": "manifest stamping rule (#2015/#1948)",
-      "community_name": "Incremental --update Flow",
-      "id": "_claude_skills_graphify_skill_manifest_stamping"
+      "id": "_claude_skills_graphify_skill_manifest_stamping",
+      "community_name": "Incremental --update Flow"
     },
     {
       "label": "Graphify Honesty Rules",
@@ -1920,8 +1920,8 @@
       "rationale": "Never invent an edge (use AMBIGUOUS instead), never skip the corpus-size warning, always show token cost, never hide cohesion scores behind symbols, never run HTML viz above 5000 nodes without warning.",
       "community": 58,
       "norm_label": "graphify honesty rules",
-      "community_name": "Graphify Honesty Rules",
-      "id": "_claude_skills_graphify_skill_honesty_rules"
+      "id": "_claude_skills_graphify_skill_honesty_rules",
+      "community_name": "Graphify Honesty Rules"
     },
     {
       "label": "Post-Pipeline Guide Behavior",
@@ -1935,8 +1935,8 @@
       "rationale": "After the pipeline finishes, pick the single most interesting suggested question - the one crossing the most community boundaries - and offer to trace it; the graph is the map, and the skill's job afterward is to be the guide, ending each answer with a follow-up so exploration continues.",
       "community": 56,
       "norm_label": "post-pipeline guide behavior",
-      "community_name": "Post-Pipeline Guide Behavior",
-      "id": "_claude_skills_graphify_skill_guide_step"
+      "id": "_claude_skills_graphify_skill_guide_step",
+      "community_name": "Post-Pipeline Guide Behavior"
     },
     {
       "label": "Add URL & Watch Folder Reference",
@@ -1949,8 +1949,8 @@
       "contributor": null,
       "community": 8,
       "norm_label": "add url & watch folder reference",
-      "community_name": "Graphify Full Pipeline",
-      "id": "_claude_skills_graphify_references_add_watch_overview"
+      "id": "_claude_skills_graphify_references_add_watch_overview",
+      "community_name": "Graphify Full Pipeline"
     },
     {
       "label": "/graphify add URL Ingestion",
@@ -1963,8 +1963,8 @@
       "contributor": null,
       "community": 38,
       "norm_label": "/graphify add url ingestion",
-      "community_name": "/graphify add URL Ingestion",
-      "id": "_claude_skills_graphify_references_add_watch_ingest"
+      "id": "_claude_skills_graphify_references_add_watch_ingest",
+      "community_name": "/graphify add URL Ingestion"
     },
     {
       "label": "--watch Background Watcher",
@@ -1978,8 +1978,8 @@
       "rationale": "Code-only changes trigger an immediate AST rebuild with no LLM needed; doc/paper/image changes only write a needs_update flag because they require LLM semantic re-extraction; a 3s debounce absorbs a burst of parallel agent writes so a wave of edits doesn't trigger one rebuild per file.",
       "community": 39,
       "norm_label": "--watch background watcher",
-      "community_name": "--watch Background Watcher",
-      "id": "_claude_skills_graphify_references_add_watch_watcher"
+      "id": "_claude_skills_graphify_references_add_watch_watcher",
+      "community_name": "--watch Background Watcher"
     },
     {
       "label": "Extra Exports & Benchmark Reference",
@@ -1992,8 +1992,8 @@
       "contributor": null,
       "community": 8,
       "norm_label": "extra exports & benchmark reference",
-      "community_name": "Graphify Full Pipeline",
-      "id": "_claude_skills_graphify_references_exports_overview"
+      "id": "_claude_skills_graphify_references_exports_overview",
+      "community_name": "Graphify Full Pipeline"
     },
     {
       "label": "Neo4j / FalkorDB Export",
@@ -2007,8 +2007,8 @@
       "rationale": "Both use MERGE so re-running never creates duplicates; FalkorDB's GRAPH.QUERY runs one statement at a time (no bulk cypher-shell import like Neo4j), so --falkordb-push is preferred over the raw cypher.txt for loading.",
       "community": 42,
       "norm_label": "neo4j / falkordb export",
-      "community_name": "Neo4j / FalkorDB Export",
-      "id": "_claude_skills_graphify_references_exports_neo4j_falkordb"
+      "id": "_claude_skills_graphify_references_exports_neo4j_falkordb",
+      "community_name": "Neo4j / FalkorDB Export"
     },
     {
       "label": "Graphify MCP Server",
@@ -2022,8 +2022,8 @@
       "rationale": "Exposes query_graph/get_node/get_neighbors/get_community/god_nodes/graph_stats/shortest_path over stdio; Claude Desktop can't run $(...) and uv-tool installs mean system python3 can't import graphify, so its config must use the absolute interpreter path from .graphify_python.",
       "community": 41,
       "norm_label": "graphify mcp server",
-      "community_name": "Graphify MCP Server",
-      "id": "_claude_skills_graphify_references_exports_mcp_server"
+      "id": "_claude_skills_graphify_references_exports_mcp_server",
+      "community_name": "Graphify MCP Server"
     },
     {
       "label": "Token Reduction Benchmark",
@@ -2037,8 +2037,8 @@
       "rationale": "Only runs when total_words exceeds 5000 - for small corpora the graph's value is structural clarity, not token compression.",
       "community": 40,
       "norm_label": "token reduction benchmark",
-      "community_name": "Token Reduction Benchmark",
-      "id": "_claude_skills_graphify_references_exports_benchmark"
+      "id": "_claude_skills_graphify_references_exports_benchmark",
+      "community_name": "Token Reduction Benchmark"
     },
     {
       "label": "Node ID Format Rule",
@@ -2052,8 +2052,8 @@
       "rationale": "IDs must be {full-repo-relative-stem}_{entity} using every directory level, matching exactly what the AST extractor generates, so semantic and AST nodes for the same entity dedupe instead of creating orphan ghost-duplicates; chunk-number suffixes are never appended.",
       "community": 46,
       "norm_label": "node id format rule",
-      "community_name": "Node ID Format Rule",
-      "id": "_claude_skills_graphify_references_extraction_spec_node_id_format"
+      "id": "_claude_skills_graphify_references_extraction_spec_node_id_format",
+      "community_name": "Node ID Format Rule"
     },
     {
       "label": "Confidence Score Rubric",
@@ -2067,8 +2067,8 @@
       "rationale": "Discrete values (0.95/0.85/0.75/0.65/0.55) are required for INFERRED edges instead of a continuous range, because production data showed models collapsing continuous guidance into a 0.5/0.85+ bimodal split; anything not matching the ladder should be AMBIGUOUS rather than a low float.",
       "community": 44,
       "norm_label": "confidence score rubric",
-      "community_name": "Confidence Score Rubric",
-      "id": "_claude_skills_graphify_references_extraction_spec_confidence_rubric"
+      "id": "_claude_skills_graphify_references_extraction_spec_confidence_rubric",
+      "community_name": "Confidence Score Rubric"
     },
     {
       "label": "Semantic Similarity Edge Guidance",
@@ -2082,8 +2082,8 @@
       "rationale": "semantically_similar_to edges are only for genuinely non-obvious, cross-cutting similarity (e.g. two validators that never call each other), scored 0.6-0.95 - not for trivially similar things.",
       "community": 47,
       "norm_label": "semantic similarity edge guidance",
-      "community_name": "Semantic Similarity Edge Guidance",
-      "id": "_claude_skills_graphify_references_extraction_spec_semantic_similarity_edges"
+      "id": "_claude_skills_graphify_references_extraction_spec_semantic_similarity_edges",
+      "community_name": "Semantic Similarity Edge Guidance"
     },
     {
       "label": "Hyperedge Usage Guidance",
@@ -2097,8 +2097,8 @@
       "rationale": "Hyperedges are for 3+ nodes participating together in a pattern not captured by pairwise edges (e.g. all classes implementing a common protocol); capped at 3 per chunk to avoid overuse.",
       "community": 45,
       "norm_label": "hyperedge usage guidance",
-      "community_name": "Hyperedge Usage Guidance",
-      "id": "_claude_skills_graphify_references_extraction_spec_hyperedge_guidance"
+      "id": "_claude_skills_graphify_references_extraction_spec_hyperedge_guidance",
+      "community_name": "Hyperedge Usage Guidance"
     },
     {
       "label": "Calls Edge Direction & Language-Purity Rule",
@@ -2112,8 +2112,8 @@
       "rationale": "calls edges must point caller to callee, never reversed, and must stay within a single language - a Python function can never `calls` a JS/TS/Go/Rust/Java symbol.",
       "community": 43,
       "norm_label": "calls edge direction & language-purity rule",
-      "community_name": "Calls Edge Direction & Language-Purity Rule",
-      "id": "_claude_skills_graphify_references_extraction_spec_calls_edge_direction"
+      "id": "_claude_skills_graphify_references_extraction_spec_calls_edge_direction",
+      "community_name": "Calls Edge Direction & Language-Purity Rule"
     },
     {
       "label": "Extraction Subagent Prompt Template",
@@ -2126,8 +2126,8 @@
       "contributor": null,
       "community": 8,
       "norm_label": "extraction subagent prompt template",
-      "community_name": "Graphify Full Pipeline",
-      "id": "_claude_skills_graphify_references_extraction_spec_subagent_prompt"
+      "id": "_claude_skills_graphify_references_extraction_spec_subagent_prompt",
+      "community_name": "Graphify Full Pipeline"
     },
     {
       "label": "GitHub Clone & Merge Reference",
@@ -2140,8 +2140,8 @@
       "contributor": null,
       "community": 8,
       "norm_label": "github clone & merge reference",
-      "community_name": "Graphify Full Pipeline",
-      "id": "_claude_skills_graphify_references_github_and_merge_overview"
+      "id": "_claude_skills_graphify_references_github_and_merge_overview",
+      "community_name": "Graphify Full Pipeline"
     },
     {
       "label": "GitHub Clone & Cross-Repo Merge",
@@ -2155,8 +2155,8 @@
       "rationale": "Clones into ~/.graphify/repos/<owner>/<repo> and reuses existing clones on repeat runs; merge-graphs tags each node in the merged graph with a repo attribute so results can be filtered by origin.",
       "community": 1,
       "norm_label": "github clone & cross-repo merge",
-      "community_name": "graphify Skill (/graphify)",
-      "id": "_claude_skills_graphify_references_github_and_merge_clone"
+      "id": "_claude_skills_graphify_references_github_and_merge_clone",
+      "community_name": "graphify Skill (/graphify)"
     },
     {
       "label": "Monorepo Multi-Subfolder Merge",
@@ -2170,8 +2170,8 @@
       "rationale": "Running the skill pipeline separately on each subfolder would clobber the same graphify-out/ directory, so each subfolder is extracted via the CLI directly (which places graphify-out/ inside the scanned path) and merged afterward with merge-graphs at the project root.",
       "community": 48,
       "norm_label": "monorepo multi-subfolder merge",
-      "community_name": "Monorepo Multi-Subfolder Merge",
-      "id": "_claude_skills_graphify_references_github_and_merge_monorepo"
+      "id": "_claude_skills_graphify_references_github_and_merge_monorepo",
+      "community_name": "Monorepo Multi-Subfolder Merge"
     },
     {
       "label": "Commit Hook & CLAUDE.md Integration Reference",
@@ -2184,8 +2184,8 @@
       "contributor": null,
       "community": 8,
       "norm_label": "commit hook & claude.md integration reference",
-      "community_name": "Graphify Full Pipeline",
-      "id": "_claude_skills_graphify_references_hooks_overview"
+      "id": "_claude_skills_graphify_references_hooks_overview",
+      "community_name": "Graphify Full Pipeline"
     },
     {
       "label": "Post-Commit Auto-Rebuild Hook",
@@ -2199,8 +2199,8 @@
       "rationale": "Triggers once per commit, detects changed code files via git diff HEAD~1 and re-runs AST extraction only; doc/image changes are ignored by the hook and need a manual /graphify --update; it appends to an existing post-commit hook rather than replacing it.",
       "community": 1,
       "norm_label": "post-commit auto-rebuild hook",
-      "community_name": "graphify Skill (/graphify)",
-      "id": "_claude_skills_graphify_references_hooks_post_commit"
+      "id": "_claude_skills_graphify_references_hooks_post_commit",
+      "community_name": "graphify Skill (/graphify)"
     },
     {
       "label": "Native CLAUDE.md Integration",
@@ -2214,8 +2214,8 @@
       "rationale": "graphify claude install writes a ## graphify section into the project's CLAUDE.md instructing Claude to check the graph before answering codebase questions and rebuild it after code changes, so no manual /graphify invocation is needed in future sessions.",
       "community": 8,
       "norm_label": "native claude.md integration",
-      "community_name": "Graphify Full Pipeline",
-      "id": "_claude_skills_graphify_references_hooks_claude_md_integration"
+      "id": "_claude_skills_graphify_references_hooks_claude_md_integration",
+      "community_name": "Graphify Full Pipeline"
     },
     {
       "label": "Query/Path/Explain Reference",
@@ -2228,8 +2228,8 @@
       "contributor": null,
       "community": 8,
       "norm_label": "query/path/explain reference",
-      "community_name": "Graphify Full Pipeline",
-      "id": "_claude_skills_graphify_references_query_overview"
+      "id": "_claude_skills_graphify_references_query_overview",
+      "community_name": "Graphify Full Pipeline"
     },
     {
       "label": "Constrained Query Expansion (Step 0)",
@@ -2243,8 +2243,8 @@
       "rationale": "graphify query matches via case-folded substring plus IDF with no stemming, synonyms, or cross-language matching, so a wording mismatch between the question and the graph's own vocabulary collapses the answer to noise unless the question is expanded first using only tokens actually present in the graph's label vocabulary - never invented tokens.",
       "community": 51,
       "norm_label": "constrained query expansion (step 0)",
-      "community_name": "Constrained Query Expansion (Step 0)",
-      "id": "_claude_skills_graphify_references_query_vocab_expansion"
+      "id": "_claude_skills_graphify_references_query_vocab_expansion",
+      "community_name": "Constrained Query Expansion (Step 0)"
     },
     {
       "label": "BFS vs DFS Traversal Modes",
@@ -2257,8 +2257,8 @@
       "contributor": null,
       "community": 49,
       "norm_label": "bfs vs dfs traversal modes",
-      "community_name": "BFS vs DFS Traversal Modes",
-      "id": "_claude_skills_graphify_references_query_bfs_dfs_modes"
+      "id": "_claude_skills_graphify_references_query_bfs_dfs_modes",
+      "community_name": "BFS vs DFS Traversal Modes"
     },
     {
       "label": "save-result Feedback Loop",
@@ -2272,8 +2272,8 @@
       "rationale": "Answers are saved back into the graph via save-result with --outcome useful/dead_end/corrected so a later --update extracts the Q&A as a node, and future sessions read preferred sources and avoid dead ends via LESSONS.md - a self-improving loop.",
       "community": 50,
       "norm_label": "save-result feedback loop",
-      "community_name": "save-result Feedback Loop",
-      "id": "_claude_skills_graphify_references_query_save_result_loop"
+      "id": "_claude_skills_graphify_references_query_save_result_loop",
+      "community_name": "save-result Feedback Loop"
     },
     {
       "label": "Transcribe Video/Audio Reference",
@@ -2286,8 +2286,8 @@
       "contributor": null,
       "community": 8,
       "norm_label": "transcribe video/audio reference",
-      "community_name": "Graphify Full Pipeline",
-      "id": "_claude_skills_graphify_references_transcribe_overview"
+      "id": "_claude_skills_graphify_references_transcribe_overview",
+      "community_name": "Graphify Full Pipeline"
     },
     {
       "label": "Self-Composed Whisper Prompt",
@@ -2301,8 +2301,8 @@
       "rationale": "Rather than a separate API call, the host model writes its own one-sentence domain hint from the corpus's god-node labels and passes it as Whisper's initial_prompt to improve accuracy on domain vocabulary; falls back to a generic punctuation-only prompt when the corpus is video-only.",
       "community": 52,
       "norm_label": "self-composed whisper prompt",
-      "community_name": "Self-Composed Whisper Prompt",
-      "id": "_claude_skills_graphify_references_transcribe_whisper_prompt"
+      "id": "_claude_skills_graphify_references_transcribe_whisper_prompt",
+      "community_name": "Self-Composed Whisper Prompt"
     },
     {
       "label": "Incremental Update & Cluster-Only Reference",
@@ -2315,8 +2315,8 @@
       "contributor": null,
       "community": 8,
       "norm_label": "incremental update & cluster-only reference",
-      "community_name": "Graphify Full Pipeline",
-      "id": "_claude_skills_graphify_references_update_overview"
+      "id": "_claude_skills_graphify_references_update_overview",
+      "community_name": "Graphify Full Pipeline"
     },
     {
       "label": "Incremental --update Flow",
@@ -2330,8 +2330,8 @@
       "rationale": "detect_incremental finds new/changed/deleted files since the last run; if every changed file is code, semantic extraction is skipped entirely since no LLM is needed.",
       "community": 21,
       "norm_label": "incremental --update flow",
-      "community_name": "Incremental --update Flow",
-      "id": "_claude_skills_graphify_references_update_incremental"
+      "id": "_claude_skills_graphify_references_update_incremental",
+      "community_name": "Incremental --update Flow"
     },
     {
       "label": "build_merge Direct Graph Read",
@@ -2345,8 +2345,8 @@
       "rationale": "build_merge() reads graph.json directly instead of round-tripping through NetworkX so edge direction (calls/implements/imports) is always preserved (#801); prune_sources is only for genuinely deleted files since changed files are reconciled by replace-on-re-extract (#1344), and root= keeps prune paths relativized to the same base as the freshly merged nodes.",
       "community": 20,
       "norm_label": "build_merge direct graph read",
-      "community_name": "build_merge Direct Graph Read",
-      "id": "_claude_skills_graphify_references_update_build_merge"
+      "id": "_claude_skills_graphify_references_update_build_merge",
+      "community_name": "build_merge Direct Graph Read"
     },
     {
       "label": "--cluster-only Self-Contained Rerun",
@@ -2360,8 +2360,8 @@
       "rationale": "cluster-only re-clusters, names communities, and regenerates GRAPH_REPORT.md/graph.json/graph.html from the existing graph by itself; Steps 5-9 must not be re-run afterward because they read intermediate files that a prior build's cleanup already deleted (#1392).",
       "community": 53,
       "norm_label": "--cluster-only self-contained rerun",
-      "community_name": "--cluster-only Self-Contained Rerun",
-      "id": "_claude_skills_graphify_references_update_cluster_only"
+      "id": "_claude_skills_graphify_references_update_cluster_only",
+      "community_name": "--cluster-only Self-Contained Rerun"
     },
     {
       "label": "Node.js Build & Lint CI",
@@ -2374,8 +2374,8 @@
       "contributor": null,
       "community": 22,
       "norm_label": "node.js build & lint ci",
-      "community_name": "Node.js Build & Lint CI",
-      "id": "_github_workflows_lint_ci"
+      "id": "_github_workflows_lint_ci",
+      "community_name": "Node.js Build & Lint CI"
     },
     {
       "label": "Obsidian Plugin Release CI",
@@ -2389,8 +2389,8 @@
       "rationale": "Optional styles.css is handled via a conditional step (styles.outputs.exists) so plugins without a stylesheet don't fail attestation or the release step by referencing a missing file.",
       "community": 22,
       "norm_label": "obsidian plugin release ci",
-      "community_name": "Node.js Build & Lint CI",
-      "id": "_github_workflows_release_ci"
+      "id": "_github_workflows_release_ci",
+      "community_name": "Node.js Build & Lint CI"
     },
     {
       "label": "CLAUDE.md \u2014 Claude Code specifics",
@@ -2403,8 +2403,8 @@
       "contributor": null,
       "community": 60,
       "norm_label": "claude.md \u2014 claude code specifics",
-      "community_name": "CLAUDE.md \u2014 Claude Code specifics",
-      "id": "claude_overview"
+      "id": "claude_overview",
+      "community_name": "CLAUDE.md \u2014 Claude Code specifics"
     },
     {
       "label": "Use plan mode for src/sync, src/providers, manifest.json",
@@ -2417,8 +2417,8 @@
       "contributor": null,
       "community": 61,
       "norm_label": "use plan mode for src/sync, src/providers, manifest.json",
-      "community_name": "Use plan mode for src/sync, src/providers, manifest.json",
-      "id": "claude_plan_mode_paths"
+      "id": "claude_plan_mode_paths",
+      "community_name": "Use plan mode for src/sync, src/providers, manifest.json"
     },
     {
       "label": "graphify usage rules (query/path/explain/update)",
@@ -2431,8 +2431,8 @@
       "contributor": null,
       "community": 59,
       "norm_label": "graphify usage rules (query/path/explain/update)",
-      "community_name": "graphify usage rules (query/path/explain/update)",
-      "id": "claude_graphify_rules"
+      "id": "claude_graphify_rules",
+      "community_name": "graphify usage rules (query/path/explain/update)"
     },
     {
       "label": "README.md \u2014 Obsidian Sample Plugin boilerplate",
@@ -2445,8 +2445,8 @@
       "contributor": null,
       "community": 74,
       "norm_label": "readme.md \u2014 obsidian sample plugin boilerplate",
-      "community_name": "README.md \u2014 Obsidian Sample Plugin boilerplate",
-      "id": "readme_overview"
+      "id": "readme_overview",
+      "community_name": "README.md \u2014 Obsidian Sample Plugin boilerplate"
     },
     {
       "label": "Module 1: Core Sync Engine",
@@ -2459,8 +2459,8 @@
       "contributor": null,
       "community": 11,
       "norm_label": "module 1: core sync engine",
-      "community_name": "Milestone 1: Core Sync + Settings",
-      "id": "docs_design_01_sync_overview"
+      "id": "docs_design_01_sync_overview",
+      "community_name": "Milestone 1: Core Sync + Settings"
     },
     {
       "label": "Sync data flow (\u00a71.3)",
@@ -2473,8 +2473,8 @@
       "contributor": null,
       "community": 63,
       "norm_label": "sync data flow (\u00a71.3)",
-      "community_name": "Sync data flow (\u00a71.3)",
-      "id": "docs_design_01_sync_data_flow"
+      "id": "docs_design_01_sync_data_flow",
+      "community_name": "Sync data flow (\u00a71.3)"
     },
     {
       "label": "Dynamic Field Mapping (\u00a71.5)",
@@ -2487,8 +2487,8 @@
       "contributor": null,
       "community": 4,
       "norm_label": "dynamic field mapping (\u00a71.5)",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
-      "id": "docs_design_01_sync_field_mapping"
+      "id": "docs_design_01_sync_field_mapping",
+      "community_name": "Scenario 1: Create Note via Icon/Command"
     },
     {
       "label": "Sync Error Handling (\u00a71.6)",
@@ -2501,8 +2501,8 @@
       "contributor": null,
       "community": 24,
       "norm_label": "sync error handling (\u00a71.6)",
-      "community_name": "AnkiConnectError class",
-      "id": "docs_design_01_sync_error_handling"
+      "id": "docs_design_01_sync_error_handling",
+      "community_name": "AnkiConnectError class"
     },
     {
       "label": "One-way sync only, no conflict resolution at M1-2",
@@ -2515,8 +2515,8 @@
       "contributor": null,
       "community": 64,
       "norm_label": "one-way sync only, no conflict resolution at m1-2",
-      "community_name": "One-way sync only, no conflict resolution at M1-2",
-      "id": "docs_design_01_sync_no_conflict_resolution"
+      "id": "docs_design_01_sync_no_conflict_resolution",
+      "community_name": "One-way sync only, no conflict resolution at M1-2"
     },
     {
       "label": "Module 5: UI/UX",
@@ -2529,8 +2529,8 @@
       "contributor": null,
       "community": 11,
       "norm_label": "module 5: ui/ux",
-      "community_name": "Milestone 1: Core Sync + Settings",
-      "id": "docs_design_05_ui_overview"
+      "id": "docs_design_05_ui_overview",
+      "community_name": "Milestone 1: Core Sync + Settings"
     },
     {
       "label": "Button visual feedback states (\u00a75.1)",
@@ -2543,8 +2543,8 @@
       "contributor": null,
       "community": 68,
       "norm_label": "button visual feedback states (\u00a75.1)",
-      "community_name": "Button visual feedback states (\u00a75.1)",
-      "id": "docs_design_05_ui_visual_feedback"
+      "id": "docs_design_05_ui_visual_feedback",
+      "community_name": "Button visual feedback states (\u00a75.1)"
     },
     {
       "label": "Toast notifications (\u00a75.2)",
@@ -2557,8 +2557,8 @@
       "contributor": null,
       "community": 67,
       "norm_label": "toast notifications (\u00a75.2)",
-      "community_name": "Toast notifications (\u00a75.2)",
-      "id": "docs_design_05_ui_toast_notifications"
+      "id": "docs_design_05_ui_toast_notifications",
+      "community_name": "Toast notifications (\u00a75.2)"
     },
     {
       "label": "Module 6: Settings Tab (Connection Flow)",
@@ -2571,8 +2571,8 @@
       "contributor": null,
       "community": 11,
       "norm_label": "module 6: settings tab (connection flow)",
-      "community_name": "Milestone 1: Core Sync + Settings",
-      "id": "docs_design_06_settings_overview"
+      "id": "docs_design_06_settings_overview",
+      "community_name": "Milestone 1: Core Sync + Settings"
     },
     {
       "label": "AnkiConnect URL Connect-button flow (\u00a76.1)",
@@ -2585,8 +2585,8 @@
       "contributor": null,
       "community": 69,
       "norm_label": "ankiconnect url connect-button flow (\u00a76.1)",
-      "community_name": "AnkiConnect URL Connect-button flow (\u00a76.1)",
-      "id": "docs_design_06_settings_connection_flow"
+      "id": "docs_design_06_settings_connection_flow",
+      "community_name": "AnkiConnect URL Connect-button flow (\u00a76.1)"
     },
     {
       "label": "roadmap.md \u2014 development roadmap",
@@ -2599,8 +2599,8 @@
       "contributor": null,
       "community": 71,
       "norm_label": "roadmap.md \u2014 development roadmap",
-      "community_name": "roadmap.md \u2014 development roadmap",
-      "id": "docs_design_roadmap_overview"
+      "id": "docs_design_roadmap_overview",
+      "community_name": "roadmap.md \u2014 development roadmap"
     },
     {
       "label": "Milestone 1: Core Sync + Settings",
@@ -2613,8 +2613,8 @@
       "contributor": null,
       "community": 11,
       "norm_label": "milestone 1: core sync + settings",
-      "community_name": "Milestone 1: Core Sync + Settings",
-      "id": "docs_design_roadmap_milestone1"
+      "id": "docs_design_roadmap_milestone1",
+      "community_name": "Milestone 1: Core Sync + Settings"
     },
     {
       "label": "Milestone 2: Sidebar Modal + Dynamic Fields",
@@ -2627,8 +2627,8 @@
       "contributor": null,
       "community": 11,
       "norm_label": "milestone 2: sidebar modal + dynamic fields",
-      "community_name": "Milestone 1: Core Sync + Settings",
-      "id": "docs_design_roadmap_milestone2"
+      "id": "docs_design_roadmap_milestone2",
+      "community_name": "Milestone 1: Core Sync + Settings"
     },
     {
       "label": "Milestone 3: AI Integration",
@@ -2641,8 +2641,8 @@
       "contributor": null,
       "community": 11,
       "norm_label": "milestone 3: ai integration",
-      "community_name": "Milestone 1: Core Sync + Settings",
-      "id": "docs_design_roadmap_milestone3"
+      "id": "docs_design_roadmap_milestone3",
+      "community_name": "Milestone 1: Core Sync + Settings"
     },
     {
       "label": "Milestone 4: Polish & UX",
@@ -2655,8 +2655,8 @@
       "contributor": null,
       "community": 11,
       "norm_label": "milestone 4: polish & ux",
-      "community_name": "Milestone 1: Core Sync + Settings",
-      "id": "docs_design_roadmap_milestone4"
+      "id": "docs_design_roadmap_milestone4",
+      "community_name": "Milestone 1: Core Sync + Settings"
     },
     {
       "label": "graphify Skill (/graphify)",
@@ -2669,8 +2669,8 @@
       "contributor": null,
       "community": 1,
       "norm_label": "graphify skill (/graphify)",
-      "community_name": "graphify Skill (/graphify)",
-      "id": "opencode_skills_graphify_skill_graphify_skill"
+      "id": "opencode_skills_graphify_skill_graphify_skill",
+      "community_name": "graphify Skill (/graphify)"
     },
     {
       "label": "Honesty Rules",
@@ -2683,8 +2683,8 @@
       "contributor": null,
       "community": 1,
       "norm_label": "honesty rules",
-      "community_name": "graphify Skill (/graphify)",
-      "id": "opencode_skills_graphify_skill_honesty_rules"
+      "id": "opencode_skills_graphify_skill_honesty_rules",
+      "community_name": "graphify Skill (/graphify)"
     },
     {
       "label": "Semantic Extraction (Step 3 Part B)",
@@ -2697,8 +2697,8 @@
       "contributor": null,
       "community": 1,
       "norm_label": "semantic extraction (step 3 part b)",
-      "community_name": "graphify Skill (/graphify)",
-      "id": "opencode_skills_graphify_skill_semantic_extraction"
+      "id": "opencode_skills_graphify_skill_semantic_extraction",
+      "community_name": "graphify Skill (/graphify)"
     },
     {
       "label": "Structural AST Extraction (Step 3 Part A)",
@@ -2711,8 +2711,8 @@
       "contributor": null,
       "community": 1,
       "norm_label": "structural ast extraction (step 3 part a)",
-      "community_name": "graphify Skill (/graphify)",
-      "id": "opencode_skills_graphify_skill_ast_extraction"
+      "id": "opencode_skills_graphify_skill_ast_extraction",
+      "community_name": "graphify Skill (/graphify)"
     },
     {
       "label": "/graphify add <url>",
@@ -2725,8 +2725,8 @@
       "contributor": null,
       "community": 1,
       "norm_label": "/graphify add <url>",
-      "community_name": "graphify Skill (/graphify)",
-      "id": "opencode_skills_graphify_references_add_watch_add_url"
+      "id": "opencode_skills_graphify_references_add_watch_add_url",
+      "community_name": "graphify Skill (/graphify)"
     },
     {
       "label": "--watch (auto-rebuild watcher)",
@@ -2739,8 +2739,8 @@
       "contributor": null,
       "community": 1,
       "norm_label": "--watch (auto-rebuild watcher)",
-      "community_name": "graphify Skill (/graphify)",
-      "id": "opencode_skills_graphify_references_add_watch_watch_mode"
+      "id": "opencode_skills_graphify_references_add_watch_watch_mode",
+      "community_name": "graphify Skill (/graphify)"
     },
     {
       "label": "Wiki export (--wiki)",
@@ -2753,8 +2753,8 @@
       "contributor": null,
       "community": 1,
       "norm_label": "wiki export (--wiki)",
-      "community_name": "graphify Skill (/graphify)",
-      "id": "opencode_skills_graphify_references_exports_wiki_export"
+      "id": "opencode_skills_graphify_references_exports_wiki_export",
+      "community_name": "graphify Skill (/graphify)"
     },
     {
       "label": "Neo4j export (--neo4j/--neo4j-push)",
@@ -2767,8 +2767,8 @@
       "contributor": null,
       "community": 1,
       "norm_label": "neo4j export (--neo4j/--neo4j-push)",
-      "community_name": "graphify Skill (/graphify)",
-      "id": "opencode_skills_graphify_references_exports_neo4j_export"
+      "id": "opencode_skills_graphify_references_exports_neo4j_export",
+      "community_name": "graphify Skill (/graphify)"
     },
     {
       "label": "FalkorDB export (--falkordb/--falkordb-push)",
@@ -2781,8 +2781,8 @@
       "contributor": null,
       "community": 1,
       "norm_label": "falkordb export (--falkordb/--falkordb-push)",
-      "community_name": "graphify Skill (/graphify)",
-      "id": "opencode_skills_graphify_references_exports_falkordb_export"
+      "id": "opencode_skills_graphify_references_exports_falkordb_export",
+      "community_name": "graphify Skill (/graphify)"
     },
     {
       "label": "MCP stdio server (--mcp)",
@@ -2795,8 +2795,8 @@
       "contributor": null,
       "community": 1,
       "norm_label": "mcp stdio server (--mcp)",
-      "community_name": "graphify Skill (/graphify)",
-      "id": "opencode_skills_graphify_references_exports_mcp_server"
+      "id": "opencode_skills_graphify_references_exports_mcp_server",
+      "community_name": "graphify Skill (/graphify)"
     },
     {
       "label": "Token reduction benchmark",
@@ -2809,8 +2809,8 @@
       "contributor": null,
       "community": 1,
       "norm_label": "token reduction benchmark",
-      "community_name": "graphify Skill (/graphify)",
-      "id": "opencode_skills_graphify_references_exports_benchmark"
+      "id": "opencode_skills_graphify_references_exports_benchmark",
+      "community_name": "graphify Skill (/graphify)"
     },
     {
       "label": "Node ID Format Rule",
@@ -2823,8 +2823,8 @@
       "contributor": null,
       "community": 1,
       "norm_label": "node id format rule",
-      "community_name": "graphify Skill (/graphify)",
-      "id": "opencode_skills_graphify_references_extraction_spec_node_id_format"
+      "id": "opencode_skills_graphify_references_extraction_spec_node_id_format",
+      "community_name": "graphify Skill (/graphify)"
     },
     {
       "label": "Confidence Score Rubric (EXTRACTED/INFERRED/AMBIGUOUS)",
@@ -2837,8 +2837,8 @@
       "contributor": null,
       "community": 1,
       "norm_label": "confidence score rubric (extracted/inferred/ambiguous)",
-      "community_name": "graphify Skill (/graphify)",
-      "id": "opencode_skills_graphify_references_extraction_spec_confidence_rubric"
+      "id": "opencode_skills_graphify_references_extraction_spec_confidence_rubric",
+      "community_name": "graphify Skill (/graphify)"
     },
     {
       "label": "Native CLAUDE.md Integration (graphify claude install)",
@@ -2851,8 +2851,8 @@
       "contributor": null,
       "community": 1,
       "norm_label": "native claude.md integration (graphify claude install)",
-      "community_name": "graphify Skill (/graphify)",
-      "id": "opencode_skills_graphify_references_hooks_claude_md_integration"
+      "id": "opencode_skills_graphify_references_hooks_claude_md_integration",
+      "community_name": "graphify Skill (/graphify)"
     },
     {
       "label": "/graphify query",
@@ -2865,8 +2865,8 @@
       "contributor": null,
       "community": 1,
       "norm_label": "/graphify query",
-      "community_name": "graphify Skill (/graphify)",
-      "id": "opencode_skills_graphify_references_query_query_command"
+      "id": "opencode_skills_graphify_references_query_query_command",
+      "community_name": "graphify Skill (/graphify)"
     },
     {
       "label": "/graphify path",
@@ -2879,8 +2879,8 @@
       "contributor": null,
       "community": 1,
       "norm_label": "/graphify path",
-      "community_name": "graphify Skill (/graphify)",
-      "id": "opencode_skills_graphify_references_query_path_command"
+      "id": "opencode_skills_graphify_references_query_path_command",
+      "community_name": "graphify Skill (/graphify)"
     },
     {
       "label": "/graphify explain",
@@ -2893,8 +2893,8 @@
       "contributor": null,
       "community": 1,
       "norm_label": "/graphify explain",
-      "community_name": "graphify Skill (/graphify)",
-      "id": "opencode_skills_graphify_references_query_explain_command"
+      "id": "opencode_skills_graphify_references_query_explain_command",
+      "community_name": "graphify Skill (/graphify)"
     },
     {
       "label": "Constrained Query Expansion (Step 0)",
@@ -2907,8 +2907,8 @@
       "contributor": null,
       "community": 1,
       "norm_label": "constrained query expansion (step 0)",
-      "community_name": "graphify Skill (/graphify)",
-      "id": "opencode_skills_graphify_references_query_vocab_expansion"
+      "id": "opencode_skills_graphify_references_query_vocab_expansion",
+      "community_name": "graphify Skill (/graphify)"
     },
     {
       "label": "BFS/DFS Traversal Modes",
@@ -2921,8 +2921,8 @@
       "contributor": null,
       "community": 1,
       "norm_label": "bfs/dfs traversal modes",
-      "community_name": "graphify Skill (/graphify)",
-      "id": "opencode_skills_graphify_references_query_traversal_modes"
+      "id": "opencode_skills_graphify_references_query_traversal_modes",
+      "community_name": "graphify Skill (/graphify)"
     },
     {
       "label": "save-result Feedback Loop (Work Memory)",
@@ -2935,8 +2935,8 @@
       "contributor": null,
       "community": 1,
       "norm_label": "save-result feedback loop (work memory)",
-      "community_name": "graphify Skill (/graphify)",
-      "id": "opencode_skills_graphify_references_query_save_result"
+      "id": "opencode_skills_graphify_references_query_save_result",
+      "community_name": "graphify Skill (/graphify)"
     },
     {
       "label": "Whisper Domain-Hint Prompt",
@@ -2949,8 +2949,8 @@
       "contributor": null,
       "community": 1,
       "norm_label": "whisper domain-hint prompt",
-      "community_name": "graphify Skill (/graphify)",
-      "id": "opencode_skills_graphify_references_transcribe_whisper_prompt"
+      "id": "opencode_skills_graphify_references_transcribe_whisper_prompt",
+      "community_name": "graphify Skill (/graphify)"
     },
     {
       "label": "/graphify --update",
@@ -2963,8 +2963,8 @@
       "contributor": null,
       "community": 1,
       "norm_label": "/graphify --update",
-      "community_name": "graphify Skill (/graphify)",
-      "id": "opencode_skills_graphify_references_update_update_command"
+      "id": "opencode_skills_graphify_references_update_update_command",
+      "community_name": "graphify Skill (/graphify)"
     },
     {
       "label": "Incremental Re-extraction Flow",
@@ -2977,8 +2977,8 @@
       "contributor": null,
       "community": 1,
       "norm_label": "incremental re-extraction flow",
-      "community_name": "graphify Skill (/graphify)",
-      "id": "opencode_skills_graphify_references_update_incremental_update"
+      "id": "opencode_skills_graphify_references_update_incremental_update",
+      "community_name": "graphify Skill (/graphify)"
     },
     {
       "label": "--cluster-only",
@@ -2991,8 +2991,8 @@
       "contributor": null,
       "community": 1,
       "norm_label": "--cluster-only",
-      "community_name": "graphify Skill (/graphify)",
-      "id": "opencode_skills_graphify_references_update_cluster_only"
+      "id": "opencode_skills_graphify_references_update_cluster_only",
+      "community_name": "graphify Skill (/graphify)"
     },
     {
       "label": "AGENTS.md Non-Negotiables (9 rules)",
@@ -3005,8 +3005,8 @@
       "contributor": null,
       "community": 13,
       "norm_label": "agents.md non-negotiables (9 rules)",
-      "community_name": "MediaResult interface",
-      "id": "agents_non_negotiables"
+      "id": "agents_non_negotiables",
+      "community_name": "MediaResult interface"
     },
     {
       "label": "Definition of Done (lint + type-check + test:unit)",
@@ -3019,8 +3019,8 @@
       "contributor": null,
       "community": 23,
       "norm_label": "definition of done (lint + type-check + test:unit)",
-      "community_name": "Definition of Done (lint + type-check + test:unit)",
-      "id": "agents_definition_of_done"
+      "id": "agents_definition_of_done",
+      "community_name": "Definition of Done (lint + type-check + test:unit)"
     },
     {
       "label": "Repo Layout (src/ module organization)",
@@ -3033,8 +3033,8 @@
       "contributor": null,
       "community": 4,
       "norm_label": "repo layout (src/ module organization)",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
-      "id": "agents_repo_layout"
+      "id": "agents_repo_layout",
+      "community_name": "Scenario 1: Create Note via Icon/Command"
     },
     {
       "label": "AGENTS.md graphify Integration Rules",
@@ -3047,8 +3047,8 @@
       "contributor": null,
       "community": 1,
       "norm_label": "agents.md graphify integration rules",
-      "community_name": "graphify Skill (/graphify)",
-      "id": "agents_graphify_section"
+      "id": "agents_graphify_section",
+      "community_name": "graphify Skill (/graphify)"
     },
     {
       "label": "AnkiFrontmatter interface",
@@ -3061,8 +3061,8 @@
       "contributor": null,
       "community": 4,
       "norm_label": "ankifrontmatter interface",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
-      "id": "docs_contracts_ankifrontmatter"
+      "id": "docs_contracts_ankifrontmatter",
+      "community_name": "Scenario 1: Create Note via Icon/Command"
     },
     {
       "label": "ParsedNote interface",
@@ -3075,8 +3075,8 @@
       "contributor": null,
       "community": 4,
       "norm_label": "parsednote interface",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
-      "id": "docs_contracts_parsednote"
+      "id": "docs_contracts_parsednote",
+      "community_name": "Scenario 1: Create Note via Icon/Command"
     },
     {
       "label": "Field Mapping Algorithm (3-pass deterministic)",
@@ -3089,8 +3089,8 @@
       "contributor": null,
       "community": 4,
       "norm_label": "field mapping algorithm (3-pass deterministic)",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
-      "id": "docs_contracts_field_mapping_algorithm"
+      "id": "docs_contracts_field_mapping_algorithm",
+      "community_name": "Scenario 1: Create Note via Icon/Command"
     },
     {
       "label": "FIELD_ALIASES map",
@@ -3103,8 +3103,8 @@
       "contributor": null,
       "community": 4,
       "norm_label": "field_aliases map",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
-      "id": "docs_contracts_field_aliases"
+      "id": "docs_contracts_field_aliases",
+      "community_name": "Scenario 1: Create Note via Icon/Command"
     },
     {
       "label": "TextResult interface",
@@ -3117,8 +3117,8 @@
       "contributor": null,
       "community": 16,
       "norm_label": "textresult interface",
-      "community_name": "TextProvider interface",
-      "id": "docs_contracts_textresult"
+      "id": "docs_contracts_textresult",
+      "community_name": "TextProvider interface"
     },
     {
       "label": "MediaResult interface",
@@ -3131,8 +3131,8 @@
       "contributor": null,
       "community": 13,
       "norm_label": "mediaresult interface",
-      "community_name": "MediaResult interface",
-      "id": "docs_contracts_mediaresult"
+      "id": "docs_contracts_mediaresult",
+      "community_name": "MediaResult interface"
     },
     {
       "label": "TextProvider interface",
@@ -3145,8 +3145,8 @@
       "contributor": null,
       "community": 16,
       "norm_label": "textprovider interface",
-      "community_name": "TextProvider interface",
-      "id": "docs_contracts_textprovider"
+      "id": "docs_contracts_textprovider",
+      "community_name": "TextProvider interface"
     },
     {
       "label": "AudioProvider interface",
@@ -3159,8 +3159,8 @@
       "contributor": null,
       "community": 13,
       "norm_label": "audioprovider interface",
-      "community_name": "MediaResult interface",
-      "id": "docs_contracts_audioprovider"
+      "id": "docs_contracts_audioprovider",
+      "community_name": "MediaResult interface"
     },
     {
       "label": "ImageProvider interface",
@@ -3173,8 +3173,8 @@
       "contributor": null,
       "community": 13,
       "norm_label": "imageprovider interface",
-      "community_name": "MediaResult interface",
-      "id": "docs_contracts_imageprovider"
+      "id": "docs_contracts_imageprovider",
+      "community_name": "MediaResult interface"
     },
     {
       "label": "TextTask type",
@@ -3187,8 +3187,8 @@
       "contributor": null,
       "community": 16,
       "norm_label": "texttask type",
-      "community_name": "TextProvider interface",
-      "id": "docs_contracts_texttask"
+      "id": "docs_contracts_texttask",
+      "community_name": "TextProvider interface"
     },
     {
       "label": "sanitizeForFilename function",
@@ -3201,8 +3201,8 @@
       "contributor": null,
       "community": 25,
       "norm_label": "sanitizeforfilename function",
-      "community_name": "Media File Naming Format",
-      "id": "docs_contracts_sanitizeforfilename"
+      "id": "docs_contracts_sanitizeforfilename",
+      "community_name": "Media File Naming Format"
     },
     {
       "label": "Media File Naming Format",
@@ -3215,8 +3215,8 @@
       "contributor": null,
       "community": 25,
       "norm_label": "media file naming format",
-      "community_name": "Media File Naming Format",
-      "id": "docs_contracts_media_file_naming"
+      "id": "docs_contracts_media_file_naming",
+      "community_name": "Media File Naming Format"
     },
     {
       "label": "AnkiConnectError class",
@@ -3229,8 +3229,8 @@
       "contributor": null,
       "community": 24,
       "norm_label": "ankiconnecterror class",
-      "community_name": "AnkiConnectError class",
-      "id": "docs_contracts_ankiconnecterror"
+      "id": "docs_contracts_ankiconnecterror",
+      "community_name": "AnkiConnectError class"
     },
     {
       "label": "ProviderError class",
@@ -3243,8 +3243,8 @@
       "contributor": null,
       "community": 62,
       "norm_label": "providererror class",
-      "community_name": "ProviderError class",
-      "id": "docs_contracts_providererror"
+      "id": "docs_contracts_providererror",
+      "community_name": "ProviderError class"
     },
     {
       "label": "Q14: AudioOptions/ImageOptions shape undefined",
@@ -3257,8 +3257,8 @@
       "contributor": null,
       "community": 13,
       "norm_label": "q14: audiooptions/imageoptions shape undefined",
-      "community_name": "MediaResult interface",
-      "id": "docs_design_open_questions_audiooptions_imageoptions"
+      "id": "docs_design_open_questions_audiooptions_imageoptions",
+      "community_name": "MediaResult interface"
     },
     {
       "label": "Q10: Milestone 1 acceptance criteria checklist",
@@ -3271,8 +3271,8 @@
       "contributor": null,
       "community": 4,
       "norm_label": "q10: milestone 1 acceptance criteria checklist",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
-      "id": "docs_design_open_questions_milestone1_acceptance"
+      "id": "docs_design_open_questions_milestone1_acceptance",
+      "community_name": "Scenario 1: Create Note via Icon/Command"
     },
     {
       "label": "Q12: Playwright-for-Obsidian proposal (use Vitest instead)",
@@ -3285,8 +3285,8 @@
       "contributor": null,
       "community": 23,
       "norm_label": "q12: playwright-for-obsidian proposal (use vitest instead)",
-      "community_name": "Definition of Done (lint + type-check + test:unit)",
-      "id": "docs_design_open_questions_playwright"
+      "id": "docs_design_open_questions_playwright",
+      "community_name": "Definition of Done (lint + type-check + test:unit)"
     },
     {
       "label": "Q13: Translate docs/design to English",
@@ -3299,8 +3299,8 @@
       "contributor": null,
       "community": 70,
       "norm_label": "q13: translate docs/design to english",
-      "community_name": "Q13: Translate docs/design to English",
-      "id": "docs_design_open_questions_translate_design"
+      "id": "docs_design_open_questions_translate_design",
+      "community_name": "Q13: Translate docs/design to English"
     },
     {
       "label": "Design Doc Architecture Overview",
@@ -3313,8 +3313,8 @@
       "contributor": null,
       "community": 4,
       "norm_label": "design doc architecture overview",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
-      "id": "docs_design_readme_architecture_overview"
+      "id": "docs_design_readme_architecture_overview",
+      "community_name": "Scenario 1: Create Note via Icon/Command"
     },
     {
       "label": "No Media In Vault Principle",
@@ -3327,8 +3327,8 @@
       "contributor": null,
       "community": 26,
       "norm_label": "no media in vault principle",
-      "community_name": "Media File Naming Convention (_obsidian_ prefix)",
-      "id": "docs_design_readme_no_vault_media_principle"
+      "id": "docs_design_readme_no_vault_media_principle",
+      "community_name": "Media File Naming Convention (_obsidian_ prefix)"
     },
     {
       "label": "Module Numbering Gap (3 to 5) Is Intentional",
@@ -3341,8 +3341,8 @@
       "contributor": null,
       "community": 27,
       "norm_label": "module numbering gap (3 to 5) is intentional",
-      "community_name": "Module Numbering Gap (3 to 5) Note",
-      "id": "docs_design_readme_module_numbering_gap_decision"
+      "id": "docs_design_readme_module_numbering_gap_decision",
+      "community_name": "Module Numbering Gap (3 to 5) Note"
     },
     {
       "label": "Provider Abstraction Layer",
@@ -3355,8 +3355,8 @@
       "contributor": null,
       "community": 6,
       "norm_label": "provider abstraction layer",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
-      "id": "docs_design_02_providers_abstraction_layer"
+      "id": "docs_design_02_providers_abstraction_layer",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)"
     },
     {
       "label": "Common Provider Interface (processText/generateAudio/generateImage)",
@@ -3369,8 +3369,8 @@
       "contributor": null,
       "community": 6,
       "norm_label": "common provider interface (processtext/generateaudio/generateimage)",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
-      "id": "docs_design_02_providers_provider_interface"
+      "id": "docs_design_02_providers_provider_interface",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)"
     },
     {
       "label": "AI Provider Manager",
@@ -3383,8 +3383,8 @@
       "contributor": null,
       "community": 4,
       "norm_label": "ai provider manager",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
-      "id": "docs_design_02_providers_ai_provider_manager_component"
+      "id": "docs_design_02_providers_ai_provider_manager_component",
+      "community_name": "Scenario 1: Create Note via Icon/Command"
     },
     {
       "label": "processText()",
@@ -3397,8 +3397,8 @@
       "contributor": null,
       "community": 0,
       "norm_label": "processtext()",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_02_providers_processtext"
+      "id": "docs_design_02_providers_processtext",
+      "community_name": "Generate with AI Button"
     },
     {
       "label": "generateAudio()",
@@ -3411,8 +3411,8 @@
       "contributor": null,
       "community": 0,
       "norm_label": "generateaudio()",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_02_providers_generateaudio"
+      "id": "docs_design_02_providers_generateaudio",
+      "community_name": "Generate with AI Button"
     },
     {
       "label": "generateImage()",
@@ -3425,8 +3425,8 @@
       "contributor": null,
       "community": 0,
       "norm_label": "generateimage()",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_02_providers_generateimage"
+      "id": "docs_design_02_providers_generateimage",
+      "community_name": "Generate with AI Button"
     },
     {
       "label": "targetFields (processText input)",
@@ -3439,8 +3439,8 @@
       "contributor": null,
       "community": 0,
       "norm_label": "targetfields (processtext input)",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_02_providers_targetfields"
+      "id": "docs_design_02_providers_targetfields",
+      "community_name": "Generate with AI Button"
     },
     {
       "label": "TextResult (processText output)",
@@ -3453,8 +3453,8 @@
       "contributor": null,
       "community": 0,
       "norm_label": "textresult (processtext output)",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_02_providers_textresult"
+      "id": "docs_design_02_providers_textresult",
+      "community_name": "Generate with AI Button"
     },
     {
       "label": "OpenAI GPT-4/3.5 (Text, Cloud)",
@@ -3467,8 +3467,8 @@
       "contributor": null,
       "community": 6,
       "norm_label": "openai gpt-4/3.5 (text, cloud)",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
-      "id": "docs_design_02_providers_openai_gpt"
+      "id": "docs_design_02_providers_openai_gpt",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)"
     },
     {
       "label": "Claude (Text, Cloud)",
@@ -3481,8 +3481,8 @@
       "contributor": null,
       "community": 6,
       "norm_label": "claude (text, cloud)",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
-      "id": "docs_design_02_providers_claude"
+      "id": "docs_design_02_providers_claude",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)"
     },
     {
       "label": "Gemini (Text, Cloud)",
@@ -3495,8 +3495,8 @@
       "contributor": null,
       "community": 6,
       "norm_label": "gemini (text, cloud)",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
-      "id": "docs_design_02_providers_gemini"
+      "id": "docs_design_02_providers_gemini",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)"
     },
     {
       "label": "Ollama (Text, Local)",
@@ -3509,8 +3509,8 @@
       "contributor": null,
       "community": 6,
       "norm_label": "ollama (text, local)",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
-      "id": "docs_design_02_providers_ollama"
+      "id": "docs_design_02_providers_ollama",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)"
     },
     {
       "label": "LM Studio (Text, Local)",
@@ -3523,8 +3523,8 @@
       "contributor": null,
       "community": 6,
       "norm_label": "lm studio (text, local)",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
-      "id": "docs_design_02_providers_lm_studio"
+      "id": "docs_design_02_providers_lm_studio",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)"
     },
     {
       "label": "OpenAI TTS (Audio, Cloud)",
@@ -3537,8 +3537,8 @@
       "contributor": null,
       "community": 6,
       "norm_label": "openai tts (audio, cloud)",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
-      "id": "docs_design_02_providers_openai_tts"
+      "id": "docs_design_02_providers_openai_tts",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)"
     },
     {
       "label": "Azure Speech (Audio, Cloud)",
@@ -3551,8 +3551,8 @@
       "contributor": null,
       "community": 6,
       "norm_label": "azure speech (audio, cloud)",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
-      "id": "docs_design_02_providers_azure_speech"
+      "id": "docs_design_02_providers_azure_speech",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)"
     },
     {
       "label": "ElevenLabs (Audio, Cloud)",
@@ -3565,8 +3565,8 @@
       "contributor": null,
       "community": 6,
       "norm_label": "elevenlabs (audio, cloud)",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
-      "id": "docs_design_02_providers_elevenlabs"
+      "id": "docs_design_02_providers_elevenlabs",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)"
     },
     {
       "label": "Edge TTS (Audio, Cloud, free)",
@@ -3579,8 +3579,8 @@
       "contributor": null,
       "community": 6,
       "norm_label": "edge tts (audio, cloud, free)",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
-      "id": "docs_design_02_providers_edge_tts"
+      "id": "docs_design_02_providers_edge_tts",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)"
     },
     {
       "label": "sherpa-onnx (Audio, Local)",
@@ -3593,8 +3593,8 @@
       "contributor": null,
       "community": 6,
       "norm_label": "sherpa-onnx (audio, local)",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
-      "id": "docs_design_02_providers_sherpa_onnx"
+      "id": "docs_design_02_providers_sherpa_onnx",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)"
     },
     {
       "label": "DALL-E 3 (Image, Cloud)",
@@ -3607,8 +3607,8 @@
       "contributor": null,
       "community": 6,
       "norm_label": "dall-e 3 (image, cloud)",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
-      "id": "docs_design_02_providers_dalle3"
+      "id": "docs_design_02_providers_dalle3",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)"
     },
     {
       "label": "Stability AI (Image, Cloud)",
@@ -3621,8 +3621,8 @@
       "contributor": null,
       "community": 6,
       "norm_label": "stability ai (image, cloud)",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
-      "id": "docs_design_02_providers_stability_ai"
+      "id": "docs_design_02_providers_stability_ai",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)"
     },
     {
       "label": "Replicate (Image, Cloud)",
@@ -3635,8 +3635,8 @@
       "contributor": null,
       "community": 6,
       "norm_label": "replicate (image, cloud)",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
-      "id": "docs_design_02_providers_replicate"
+      "id": "docs_design_02_providers_replicate",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)"
     },
     {
       "label": "Automatic1111 (Image, Local)",
@@ -3649,8 +3649,8 @@
       "contributor": null,
       "community": 6,
       "norm_label": "automatic1111 (image, local)",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
-      "id": "docs_design_02_providers_automatic1111"
+      "id": "docs_design_02_providers_automatic1111",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)"
     },
     {
       "label": "ComfyUI (Image, Local)",
@@ -3663,8 +3663,8 @@
       "contributor": null,
       "community": 6,
       "norm_label": "comfyui (image, local)",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
-      "id": "docs_design_02_providers_comfyui"
+      "id": "docs_design_02_providers_comfyui",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)"
     },
     {
       "label": "anki-controls Markdown Code Block",
@@ -3677,8 +3677,8 @@
       "contributor": null,
       "community": 4,
       "norm_label": "anki-controls markdown code block",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
-      "id": "docs_design_03_note_custom_markdown_block"
+      "id": "docs_design_03_note_custom_markdown_block",
+      "community_name": "Scenario 1: Create Note via Icon/Command"
     },
     {
       "label": "Sync Button",
@@ -3691,8 +3691,8 @@
       "contributor": null,
       "community": 0,
       "norm_label": "sync button",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_03_note_sync_button"
+      "id": "docs_design_03_note_sync_button",
+      "community_name": "Generate with AI Button"
     },
     {
       "label": "Delete Button",
@@ -3705,8 +3705,8 @@
       "contributor": null,
       "community": 66,
       "norm_label": "delete button",
-      "community_name": "Delete Button",
-      "id": "docs_design_03_note_delete_button"
+      "id": "docs_design_03_note_delete_button",
+      "community_name": "Delete Button"
     },
     {
       "label": "Generate with AI Button",
@@ -3719,8 +3719,8 @@
       "contributor": null,
       "community": 0,
       "norm_label": "generate with ai button",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_03_note_generate_with_ai_button"
+      "id": "docs_design_03_note_generate_with_ai_button",
+      "community_name": "Generate with AI Button"
     },
     {
       "label": "Add Audio Button",
@@ -3733,8 +3733,8 @@
       "contributor": null,
       "community": 0,
       "norm_label": "add audio button",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_03_note_add_audio_button"
+      "id": "docs_design_03_note_add_audio_button",
+      "community_name": "Generate with AI Button"
     },
     {
       "label": "Add Image Button",
@@ -3747,8 +3747,8 @@
       "contributor": null,
       "community": 0,
       "norm_label": "add image button",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_03_note_add_image_button"
+      "id": "docs_design_03_note_add_image_button",
+      "community_name": "Generate with AI Button"
     },
     {
       "label": "Shared Pre-check For 3 AI Buttons",
@@ -3761,8 +3761,8 @@
       "contributor": null,
       "community": 0,
       "norm_label": "shared pre-check for 3 ai buttons",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_03_note_precheck"
+      "id": "docs_design_03_note_precheck",
+      "community_name": "Generate with AI Button"
     },
     {
       "label": "Content Parsing Logic (heading-based)",
@@ -3775,8 +3775,8 @@
       "contributor": null,
       "community": 65,
       "norm_label": "content parsing logic (heading-based)",
-      "community_name": "Content Parsing Logic (heading-based)",
-      "id": "docs_design_03_note_content_parsing_logic"
+      "id": "docs_design_03_note_content_parsing_logic",
+      "community_name": "Content Parsing Logic (heading-based)"
     },
     {
       "label": "Content Update Logic (Overwrite/Append)",
@@ -3789,8 +3789,8 @@
       "contributor": null,
       "community": 0,
       "norm_label": "content update logic (overwrite/append)",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_03_note_content_update_logic"
+      "id": "docs_design_03_note_content_update_logic",
+      "community_name": "Generate with AI Button"
     },
     {
       "label": "Media File Naming Convention (_obsidian_ prefix)",
@@ -3803,8 +3803,8 @@
       "contributor": null,
       "community": 26,
       "norm_label": "media file naming convention (_obsidian_ prefix)",
-      "community_name": "Media File Naming Convention (_obsidian_ prefix)",
-      "id": "docs_design_03_note_media_file_naming_convention"
+      "id": "docs_design_03_note_media_file_naming_convention",
+      "community_name": "Media File Naming Convention (_obsidian_ prefix)"
     },
     {
       "label": "Auto-generate Content Structure",
@@ -3817,8 +3817,8 @@
       "contributor": null,
       "community": 0,
       "norm_label": "auto-generate content structure",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_03_note_auto_generate_content_structure"
+      "id": "docs_design_03_note_auto_generate_content_structure",
+      "community_name": "Generate with AI Button"
     },
     {
       "label": "Create Note From Selection (Hotkey / Quick Capture)",
@@ -3831,8 +3831,8 @@
       "contributor": null,
       "community": 0,
       "norm_label": "create note from selection (hotkey / quick capture)",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_03_note_create_note_from_selection"
+      "id": "docs_design_03_note_create_note_from_selection",
+      "community_name": "Generate with AI Button"
     },
     {
       "label": "sanitizeForFilename()",
@@ -3845,8 +3845,8 @@
       "contributor": null,
       "community": 0,
       "norm_label": "sanitizeforfilename()",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_03_note_sanitizeforfilename"
+      "id": "docs_design_03_note_sanitizeforfilename",
+      "community_name": "Generate with AI Button"
     },
     {
       "label": "AI Buttons Never Write To Anki Directly (Sync-only) Principle",
@@ -3859,8 +3859,8 @@
       "contributor": null,
       "community": 0,
       "norm_label": "ai buttons never write to anki directly (sync-only) principle",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_03_note_ai_write_isolation_principle"
+      "id": "docs_design_03_note_ai_write_isolation_principle",
+      "community_name": "Generate with AI Button"
     },
     {
       "label": "Never Overwrite User-Entered Section Content Principle",
@@ -3873,8 +3873,8 @@
       "contributor": null,
       "community": 0,
       "norm_label": "never overwrite user-entered section content principle",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_03_note_no_overwrite_principle"
+      "id": "docs_design_03_note_no_overwrite_principle",
+      "community_name": "Generate with AI Button"
     },
     {
       "label": "PDF Selection Support Deferred (M1-2/v1) Decision",
@@ -3887,8 +3887,8 @@
       "contributor": null,
       "community": 0,
       "norm_label": "pdf selection support deferred (m1-2/v1) decision",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_03_note_pdf_out_of_scope_decision"
+      "id": "docs_design_03_note_pdf_out_of_scope_decision",
+      "community_name": "Generate with AI Button"
     },
     {
       "label": "No Default Hotkey Shipped Decision",
@@ -3901,8 +3901,8 @@
       "contributor": null,
       "community": 0,
       "norm_label": "no default hotkey shipped decision",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_03_note_no_default_hotkey_decision"
+      "id": "docs_design_03_note_no_default_hotkey_decision",
+      "community_name": "Generate with AI Button"
     },
     {
       "label": "Module Numbering Gap (3 to 5) Note",
@@ -3915,8 +3915,8 @@
       "contributor": null,
       "community": 27,
       "norm_label": "module numbering gap (3 to 5) note",
-      "community_name": "Module Numbering Gap (3 to 5) Note",
-      "id": "docs_design_03_note_module_numbering_gap_note"
+      "id": "docs_design_03_note_module_numbering_gap_note",
+      "community_name": "Module Numbering Gap (3 to 5) Note"
     },
     {
       "label": "Sidebar Modal (Right Sidebar View Panel)",
@@ -3929,8 +3929,8 @@
       "contributor": null,
       "community": 0,
       "norm_label": "sidebar modal (right sidebar view panel)",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_07_sidebar_sidebar_modal"
+      "id": "docs_design_07_sidebar_sidebar_modal",
+      "community_name": "Generate with AI Button"
     },
     {
       "label": "Tab 1 \u2014 Note (Deck/Model/Folder/Field checkboxes)",
@@ -3943,8 +3943,8 @@
       "contributor": null,
       "community": 0,
       "norm_label": "tab 1 \u2014 note (deck/model/folder/field checkboxes)",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_07_sidebar_tab1_note"
+      "id": "docs_design_07_sidebar_tab1_note",
+      "community_name": "Generate with AI Button"
     },
     {
       "label": "Tab 2 \u2014 Audio (Voice/Language/Overwrite-Append/rows)",
@@ -3957,8 +3957,8 @@
       "contributor": null,
       "community": 0,
       "norm_label": "tab 2 \u2014 audio (voice/language/overwrite-append/rows)",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_07_sidebar_tab2_audio"
+      "id": "docs_design_07_sidebar_tab2_audio",
+      "community_name": "Generate with AI Button"
     },
     {
       "label": "Tab 3 \u2014 Image (Overwrite-Append/single row)",
@@ -3971,8 +3971,8 @@
       "contributor": null,
       "community": 0,
       "norm_label": "tab 3 \u2014 image (overwrite-append/single row)",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_07_sidebar_tab3_image"
+      "id": "docs_design_07_sidebar_tab3_image",
+      "community_name": "Generate with AI Button"
     },
     {
       "label": "Deck Dropdown",
@@ -3985,8 +3985,8 @@
       "contributor": null,
       "community": 0,
       "norm_label": "deck dropdown",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_07_sidebar_deck_dropdown"
+      "id": "docs_design_07_sidebar_deck_dropdown",
+      "community_name": "Generate with AI Button"
     },
     {
       "label": "Model Dropdown",
@@ -3999,8 +3999,8 @@
       "contributor": null,
       "community": 0,
       "norm_label": "model dropdown",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_07_sidebar_model_dropdown"
+      "id": "docs_design_07_sidebar_model_dropdown",
+      "community_name": "Generate with AI Button"
     },
     {
       "label": "Folder Select (save notes to)",
@@ -4013,8 +4013,8 @@
       "contributor": null,
       "community": 0,
       "norm_label": "folder select (save notes to)",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_07_sidebar_folder_select"
+      "id": "docs_design_07_sidebar_folder_select",
+      "community_name": "Generate with AI Button"
     },
     {
       "label": "Field Checkboxes (Generate with AI)",
@@ -4027,8 +4027,8 @@
       "contributor": null,
       "community": 0,
       "norm_label": "field checkboxes (generate with ai)",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_07_sidebar_field_checkboxes"
+      "id": "docs_design_07_sidebar_field_checkboxes",
+      "community_name": "Generate with AI Button"
     },
     {
       "label": "Connection Status + Test Connection",
@@ -4041,8 +4041,8 @@
       "contributor": null,
       "community": 0,
       "norm_label": "connection status + test connection",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_07_sidebar_connection_status"
+      "id": "docs_design_07_sidebar_connection_status",
+      "community_name": "Generate with AI Button"
     },
     {
       "label": "Action: Create New Note (2-branch)",
@@ -4055,8 +4055,8 @@
       "contributor": null,
       "community": 4,
       "norm_label": "action: create new note (2-branch)",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
-      "id": "docs_design_07_sidebar_create_new_note_action"
+      "id": "docs_design_07_sidebar_create_new_note_action",
+      "community_name": "Scenario 1: Create Note via Icon/Command"
     },
     {
       "label": "Branch A \u2014 Deck/Model Already Configured",
@@ -4069,8 +4069,8 @@
       "contributor": null,
       "community": 4,
       "norm_label": "branch a \u2014 deck/model already configured",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
-      "id": "docs_design_07_sidebar_branch_a"
+      "id": "docs_design_07_sidebar_branch_a",
+      "community_name": "Scenario 1: Create Note via Icon/Command"
     },
     {
       "label": "Branch B \u2014 First-Time Setup Modal",
@@ -4083,8 +4083,8 @@
       "contributor": null,
       "community": 4,
       "norm_label": "branch b \u2014 first-time setup modal",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
-      "id": "docs_design_07_sidebar_branch_b"
+      "id": "docs_design_07_sidebar_branch_b",
+      "community_name": "Scenario 1: Create Note via Icon/Command"
     },
     {
       "label": "Persistence (Deck/Model/Folder + per-pair field-mapping config)",
@@ -4097,8 +4097,8 @@
       "contributor": null,
       "community": 0,
       "norm_label": "persistence (deck/model/folder + per-pair field-mapping config)",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_07_sidebar_persistence"
+      "id": "docs_design_07_sidebar_persistence",
+      "community_name": "Generate with AI Button"
     },
     {
       "label": "Ribbon Icon (create note + open modal)",
@@ -4111,8 +4111,8 @@
       "contributor": null,
       "community": 4,
       "norm_label": "ribbon icon (create note + open modal)",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
-      "id": "docs_design_07_sidebar_ribbon_icon"
+      "id": "docs_design_07_sidebar_ribbon_icon",
+      "community_name": "Scenario 1: Create Note via Icon/Command"
     },
     {
       "label": "Command: \"Anki: Create new note\" (id create-note)",
@@ -4125,8 +4125,8 @@
       "contributor": null,
       "community": 4,
       "norm_label": "command: \"anki: create new note\" (id create-note)",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
-      "id": "docs_design_07_sidebar_create_note_command"
+      "id": "docs_design_07_sidebar_create_note_command",
+      "community_name": "Scenario 1: Create Note via Icon/Command"
     },
     {
       "label": "Command: \"Anki: Open Deck & Model Selector\"",
@@ -4139,8 +4139,8 @@
       "contributor": null,
       "community": 0,
       "norm_label": "command: \"anki: open deck & model selector\"",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_07_sidebar_open_selector_command"
+      "id": "docs_design_07_sidebar_open_selector_command",
+      "community_name": "Generate with AI Button"
     },
     {
       "label": "modelFieldNames(model)",
@@ -4153,8 +4153,8 @@
       "contributor": null,
       "community": 0,
       "norm_label": "modelfieldnames(model)",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_07_sidebar_modelfieldnames"
+      "id": "docs_design_07_sidebar_modelfieldnames",
+      "community_name": "Generate with AI Button"
     },
     {
       "label": "Settings Tab (global provider) vs Sidebar Tab 2/3 (per Deck+Model mapping) \u2014 Independent Layers",
@@ -4167,8 +4167,8 @@
       "contributor": null,
       "community": 0,
       "norm_label": "settings tab (global provider) vs sidebar tab 2/3 (per deck+model mapping) \u2014 independent layers",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_07_sidebar_two_layer_config_rationale"
+      "id": "docs_design_07_sidebar_two_layer_config_rationale",
+      "community_name": "Generate with AI Button"
     },
     {
       "label": "Scenario 1: Create Note via Icon/Command",
@@ -4181,8 +4181,8 @@
       "contributor": null,
       "community": 4,
       "norm_label": "scenario 1: create note via icon/command",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
-      "id": "docs_design_scenarios_scenario1"
+      "id": "docs_design_scenarios_scenario1",
+      "community_name": "Scenario 1: Create Note via Icon/Command"
     },
     {
       "label": "Scenario 2: Create Note From Selected Text (Hotkey)",
@@ -4195,8 +4195,8 @@
       "contributor": null,
       "community": 0,
       "norm_label": "scenario 2: create note from selected text (hotkey)",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_scenarios_scenario2"
+      "id": "docs_design_scenarios_scenario2",
+      "community_name": "Generate with AI Button"
     },
     {
       "label": "Scenario 3: Add Audio (Tab 2 Config)",
@@ -4209,8 +4209,8 @@
       "contributor": null,
       "community": 0,
       "norm_label": "scenario 3: add audio (tab 2 config)",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_scenarios_scenario3"
+      "id": "docs_design_scenarios_scenario3",
+      "community_name": "Generate with AI Button"
     },
     {
       "label": "Scenario 3b: Add Image (Tab 3 Config)",
@@ -4223,8 +4223,8 @@
       "contributor": null,
       "community": 0,
       "norm_label": "scenario 3b: add image (tab 3 config)",
-      "community_name": "Generate with AI Button",
-      "id": "docs_design_scenarios_scenario3b"
+      "id": "docs_design_scenarios_scenario3b",
+      "community_name": "Generate with AI Button"
     },
     {
       "label": "Scenario 4: Change Deck/Model For Already-Synced Note",
@@ -4237,8 +4237,8 @@
       "contributor": null,
       "community": 4,
       "norm_label": "scenario 4: change deck/model for already-synced note",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
-      "id": "docs_design_scenarios_scenario4"
+      "id": "docs_design_scenarios_scenario4",
+      "community_name": "Scenario 1: Create Note via Icon/Command"
     },
     {
       "label": "Warning Only Applies To Already-Synced Notes",
@@ -4251,8 +4251,8 @@
       "contributor": null,
       "community": 4,
       "norm_label": "warning only applies to already-synced notes",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
-      "id": "docs_design_scenarios_scenario4_sync_warning_rationale"
+      "id": "docs_design_scenarios_scenario4_sync_warning_rationale",
+      "community_name": "Scenario 1: Create Note via Icon/Command"
     }
   ],
   "links": [
@@ -4924,7 +4924,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/note/mediaNaming.ts",
-      "source_location": "L6",
+      "source_location": "L1",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_note_medianaming",
@@ -4935,7 +4935,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/types.ts",
-      "source_location": "L65",
+      "source_location": "L60",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_types",
@@ -4957,7 +4957,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/types.ts",
-      "source_location": "L52",
+      "source_location": "L55",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_types",
@@ -4979,7 +4979,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/types.ts",
-      "source_location": "L58",
+      "source_location": "L57",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_types",
@@ -5023,7 +5023,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/types.ts",
-      "source_location": "L74",
+      "source_location": "L69",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_types",
@@ -5100,7 +5100,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/types.ts",
-      "source_location": "L66",
+      "source_location": "L61",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_types_ankiconnecterror",
@@ -5111,7 +5111,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/types.ts",
-      "source_location": "L75",
+      "source_location": "L70",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_types_providererror",
@@ -7460,5 +7460,5 @@
       "source_file": ".opencode/skills/graphify/SKILL.md"
     }
   ],
-  "built_at_commit": "42365a4d624efd8fa0044f6fb98bf4f12cfc8881"
+  "built_at_commit": "d8fff680ae1217ebc01b8e4341e7ea43479dfff4"
 }
