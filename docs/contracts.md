@@ -27,12 +27,20 @@ manipulation.
 ## 2. Parsed note
 
 ```ts
+type SectionValue = string | string[]; // list sections (lines starting with '-') are string[]; everything else is string
+
 interface ParsedNote {
  frontmatter: AnkiFrontmatter;
- sections: Map<string, string>; // key = normalized heading (lowercased, trimmed)
+ sections: Map<string, SectionValue>; // key = normalized heading (lowercased, trimmed)
  raw: string;
 }
 ```
+
+A section's value is a **string** for text content and for `[sound:...]`/`<img src="...">`
+tags (extracted verbatim, whole-section match only — a tag merely mentioned inside a
+longer sentence does not trigger extraction). It is a **string array** only when the
+section is a bullet list (every collected line starts with `-`, marker stripped). An
+empty section is `''`, never `undefined` — the key is still present in the map.
 
 Normalize keys with `heading.trim().toLowerCase()`. Keep the original spelling around so
 warnings can quote what the user actually typed.
