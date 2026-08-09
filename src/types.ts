@@ -49,12 +49,17 @@ export interface ImageProvider {
 
 export type TextTask = 'extract-vocabulary' | 'generate-example' | 'rewrite';
 
-// AudioOptions / ImageOptions are referenced by §4 but not yet defined anywhere in
-// docs/contracts.md or docs/design/ — see docs/design-open-questions.md.
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- placeholder until shape is specified, see docs/design-open-questions.md #14
-export interface AudioOptions {}
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- placeholder until shape is specified, see docs/design-open-questions.md #14
-export interface ImageOptions {}
+export interface AudioOptions {
+	voice: string; // Sidebar Modal Tab 2, e.g. "Male" | "Female" — docs/design/07-sidebar.md §7.2.2
+	language: string; // Sidebar Modal Tab 2, provider-dependent list — docs/design/07-sidebar.md §7.2.2
+	speed?: number; // docs/design/02-providers.md §2.4 mentions this; no UI sets it yet, providers may default it
+}
+
+export interface ImageOptions {
+	size?: string; // docs/design/02-providers.md §2.4 mentions this; no UI sets it yet, providers may default it
+	steps?: number; // docs/design/02-providers.md §2.4 mentions this; no UI sets it yet, providers may default it
+	negativePrompt?: string; // Settings Tab Image provider config — docs/design/06-settings.md §6.2
+}
 
 // §6 Errors
 export class AnkiConnectError extends Error {

@@ -98,6 +98,18 @@ interface MediaResult {
  mimeType: string;
 }
 
+interface AudioOptions {
+ voice: string; // Sidebar Modal Tab 2, e.g. "Male" | "Female" — docs/design/07-sidebar.md §7.2.2
+ language: string; // Sidebar Modal Tab 2, provider-dependent list — docs/design/07-sidebar.md §7.2.2
+ speed?: number; // docs/design/02-providers.md §2.4 mentions this; no UI sets it yet, providers may default it
+}
+
+interface ImageOptions {
+ size?: string; // docs/design/02-providers.md §2.4 mentions this; no UI sets it yet, providers may default it
+ steps?: number; // docs/design/02-providers.md §2.4 mentions this; no UI sets it yet, providers may default it
+ negativePrompt?: string; // Settings Tab Image provider config — docs/design/06-settings.md §6.2
+}
+
 interface TextProvider {
  id: string;
  isCloud: boolean;
