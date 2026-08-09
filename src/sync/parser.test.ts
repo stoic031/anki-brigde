@@ -134,3 +134,49 @@ describe('parseSections', () => {
 		expect(sections.get('example')).toBe('診察を受けました。\n\n### Note\n\nInformal register.');
 	});
 });
+
+describe('parseSections edge cases', () => {
+	it('returns an empty map for content with no headings at all', () => {
+		const sections = parseSections('just some prose, no headings anywhere\nmore text\n');
+		expect(sections.size).toBe(0);
+	});
+
+	it('ignores content before the first heading', () => {
+		const sections = parseSections('orphan text before any heading\n\n## Word\n\n診察\n');
+		expect(sections.size).toBe(1);
+		expect(sections.get('word')).toBe('診察');
+	});
+
+	it('does not treat a hashes-plus-whitespace-only line as a section heading', () => {
+		const sections = parseSections('## Word\n\n診察\n\n##   \n\nstray text\n');
+		expect(sections.has('')).toBe(false);
+		expect(sections.get('word')).toBe('診察\n\n##   \n\nstray text');
+	});
+
+	it('resolves back-to-back headings to an empty first section', () => {
+		const sections = parseSections('## Word\n## Meaning\n\nKhám bệnh\n');
+		expect(sections.get('word')).toBe('');
+		expect(sections.get('meaning')).toBe('Khám bệnh');
+	});
+
+	it('keeps only the last occurrence of a duplicate heading, case-insensitively', () => {
+		const sections = parseSections('## Example\n\nfirst\n\n## EXAMPLE\n\nsecond\n');
+		expect(sections.size).toBe(1);
+		expect(sections.get('example')).toBe('second');
+	});
+
+	it('maps a whitespace-only section body to "", not the whitespace itself', () => {
+		const sections = parseSections('## Word\n\n   \n\t\n   \n\n## Meaning\n\nKhám bệnh\n');
+		expect(sections.get('word')).toBe('');
+	});
+
+	it('preserves multi-line Japanese text and normalizes a Japanese heading key', () => {
+		const sections = parseSections('## 読み方\n\nしんさつ\n診察を受けました。\n');
+		expect(sections.get('読み方')).toBe('しんさつ\n診察を受けました。');
+	});
+
+	it('recognizes a Japanese list item with no space after the dash', () => {
+		const sections = parseSections('## Collocations\n\n-診察を受ける\n-診察室\n');
+		expect(sections.get('collocations')).toEqual(['診察を受ける', '診察室']);
+	});
+});

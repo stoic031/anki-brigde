@@ -44,13 +44,13 @@ export function parseSections(content: string): Map<string, SectionValue> {
 	for (const line of lines) {
 		const heading = /^(#{1,6})\s+(.+?)\s*$/.exec(line);
 		const hashes = heading?.[1];
-		const headingText = heading?.[2];
-		if (hashes !== undefined && headingText !== undefined) {
+		const headingText = heading?.[2]?.trim();
+		if (hashes !== undefined && headingText) {
 			const level = hashes.length;
 			if (level <= 2) {
 				// a heading of the same or higher level ends the current section (.claude/rules/sync-engine.md)
 				commit();
-				currentKey = level === 2 ? headingText.trim().toLowerCase() : null;
+				currentKey = level === 2 ? headingText.toLowerCase() : null;
 				buffer = [];
 				continue;
 			}
