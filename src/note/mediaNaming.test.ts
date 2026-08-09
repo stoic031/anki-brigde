@@ -29,4 +29,14 @@ describe('sanitizeForFilename', () => {
 	it('truncates to 40 characters', () => {
 		expect(sanitizeForFilename('a'.repeat(200))).toBe('a'.repeat(40));
 	});
+
+	it('appends an underscore to Windows-reserved device names', () => {
+		expect(sanitizeForFilename('con')).toBe('con_');
+		expect(sanitizeForFilename('COM1')).toBe('COM1_');
+	});
+
+	it('does not split a surrogate pair when truncating to 40 characters', () => {
+		const input = 'a'.repeat(39) + '😀';
+		expect(sanitizeForFilename(input)).toBe(input);
+	});
 });
