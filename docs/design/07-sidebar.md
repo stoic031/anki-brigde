@@ -130,59 +130,46 @@ Input: [Word ▼]   →   Output: [Image ▼]
 
 ## 7.3. Action: Create New Note
 
-Có 2 nhánh, phụ thuộc việc Deck+Model đã từng được cấu hình ở Tab 1 hay chưa (xem §7.4
-Persistence).
-
-**Nhánh A — đã từng cấu hình Deck+Model (trường hợp thường gặp):**
+Trước khi tạo note, plugin resolve Deck/Model/Folder theo thứ tự sau (xem §7.4
+Persistence):
 
 ```
 [1] User bấm icon "+" trong Ribbon, hoặc chạy command "Anki: Create new note"
     ↓
-[2] Plugin hỏi tên note: "Enter note name:"
+[2] Resolve Deck/Model/Folder:
+    ├─ Tab 1 đã có giá trị "hiện tại" (đã dùng/lưu từ lần trước) → dùng luôn, sang [3]
+    ├─ Tab 1 chưa có, nhưng Settings Tab (06-settings.md §6.1) đã cấu hình Deck/Model/
+    │  Folder mặc định → seed giá trị "hiện tại" của Tab 1 bằng default này, sang [3]
+    └─ Cả Tab 1 lẫn Settings Tab đều chưa cấu hình gì → hiện Notice "Please configure
+       Deck, Model, and Save location in Settings first", tự mở Obsidian Settings tới
+       tab của plugin, KHÔNG tạo note, dừng lại (không có bước nào tiếp theo)
     ↓
-[3] User nhập tên (VD: "診察")
+[3] Plugin hỏi tên note: "Enter note name:"
     ↓
-[4] Plugin tạo note ngay bằng Deck/Model/Folder đã lưu gần nhất (Tab 1, §7.4):
+[4] User nhập tên (VD: "診察")
+    ↓
+[5] Plugin tạo note ngay bằng Deck/Model/Folder đã resolve ở bước [2]:
     - Frontmatter: anki_deck, anki_model
     - Content: `anki-controls` code block + section theo modelFieldNames (03-note.md §3.6)
-    - Vị trí: Folder đã lưu ở Tab 1
+    - Vị trí: Folder đã resolve ở bước [2]
     ↓
-[5] Mở note mới trong editor
+[6] Mở note mới trong editor
     ↓
-[6] Nếu Sidebar Modal chưa mở → tự mở ra (Tab 1), để user xem lại/đổi Deck/Model/Folder
+[7] Nếu Sidebar Modal chưa mở → tự mở ra (Tab 1), để user xem lại/đổi Deck/Model/Folder
     cho note vừa tạo nếu cần. Note vừa tạo chưa sync (không có anki_note_id) nên đổi
     Deck/Model ở bước này chỉ ghi đè frontmatter, không cần cảnh báo như Scenario 4.
 ```
 
-**Nhánh B — chưa từng cấu hình gì (lần đầu dùng plugin):**
-
-```
-[1] User bấm icon "+" trong Ribbon, hoặc chạy command "Anki: Create new note"
-    ↓
-[2] Chưa có Deck/Model nào được lưu → Plugin KHÔNG tạo note ngay. Thay vào đó hiện
-    1 modal ở giữa màn hình (center dialog, tách biệt với Sidebar Modal đang đóng):
-    ┌─────────────────────────────┐
-    │  Set up Anki Bridge          │
-    │  Select Deck:  [ ▼ ]          │
-    │  Select Model: [ ▼ ]          │
-    │  Save notes to: [ ▼ ]          │
-    │        [Create new note]      │
-    └─────────────────────────────┘
-    ↓
-[3] User chọn Deck, Model, Folder → bấm "Create new note"
-    ↓
-[4] Plugin lưu Deck/Model/Folder này làm cấu hình Tab 1 (persist, §7.4)
-    ↓
-[5] Tiếp tục từ bước [2] của Nhánh A (hỏi tên note → tạo note → mở note → mở Sidebar
-    Modal Tab 1, giờ đã có Deck/Model/Folder + field checkboxes khả dụng)
-```
+Không còn modal "Set up Anki Bridge" ở giữa màn hình — Settings Tab đã có đủ Deck/Model/
+Folder mặc định (§6.1) nên không cần hỏi lại user ngay tại thời điểm tạo note; nếu chưa
+cấu hình gì cả thì điều hướng thẳng tới Settings thay vì hỏi lại trong 1 modal riêng.
 
 ## 7.4. Persistence
 
 **Deck/Model/Folder "hiện tại":**
 
-- Lưu vào plugin settings. Đây là giá trị dùng cho §7.3 Nhánh A và cho hotkey tạo note
-  từ selection (`03-note.md` §3.7).
+- Lưu vào plugin settings. Đây là giá trị dùng cho §7.3 (khi đã có) và cho hotkey tạo
+  note từ selection (`03-note.md` §3.7).
 - Khi mở lại Obsidian → Tab 1 tự động chọn lại Deck/Model/Folder đã lưu.
 
 **Cấu hình field-mapping theo từng cặp Deck+Model:**
@@ -199,5 +186,9 @@ Persistence).
 
 **Sync với Settings Tab:**
 
-- Deck/Model dropdown ở Settings Tab (`06-settings.md` §6.1) là giá trị mặc định độc
-  lập cho mục đích kết nối/preview, không đọc/ghi vào cấu hình Tab 1 ở đây.
+- Deck/Model/Folder ở Settings Tab (`06-settings.md` §6.1) là nguồn **fallback** cho
+  giá trị "hiện tại" của Tab 1 khi Tab 1 chưa từng được set (xem §7.3 bước [2]) — không
+  còn là giá trị độc lập chỉ dùng cho kết nối/preview.
+- Sau khi Tab 1 đã được seed (hoặc user tự đổi trong Tab 1), Tab 1 giữ giá trị "hiện
+  tại" của riêng nó; đổi Deck/Model/Folder default trong Settings Tab sau đó **không**
+  tự động ghi đè lại giá trị đã có ở Tab 1.

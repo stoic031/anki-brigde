@@ -33,14 +33,30 @@
 
 - Hiển thị sau khi Connect thành công
 - Populate từ API `deckNames`
-- User chọn deck mặc định cho tất cả notes mới
+- User chọn Deck mặc định dùng để tạo note mới khi Sidebar Modal Tab 1 chưa có giá trị
+  "hiện tại" nào (xem `07-sidebar.md` §7.3/§7.4) — đây là default thật, không chỉ để
+  connect/preview
 - Lưu vào settings
 
 **Model Dropdown:**
 
 - Hiển thị sau khi Connect thành công
 - Populate từ API `modelNames`
-- User chọn model mặc định cho tất cả notes mới
+- User chọn Model mặc định dùng để tạo note mới khi Sidebar Modal Tab 1 chưa có giá trị
+  "hiện tại" nào — cùng vai trò default như Deck Dropdown ở trên
+- Lưu vào settings
+
+**Save notes to (Folder) Select:**
+
+```
+Save notes to: [/ (vault root) ▼]
+```
+
+- Populate từ danh sách folder trong vault. Không phụ thuộc AnkiConnect nên **luôn hiện**,
+  không cần chờ Connect thành công như Deck/Model ở trên
+- Mặc định = `/` (vault root) nếu user chưa từng chọn
+- Vai trò giống Deck/Model Dropdown: Folder mặc định dùng để tạo note mới khi Tab 1 chưa
+  có giá trị "hiện tại" nào
 - Lưu vào settings
 
 ## 6.2. AI Provider Settings
