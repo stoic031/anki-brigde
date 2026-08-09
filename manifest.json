@@ -2,7 +2,7 @@
 	"id": "anki-bridge",
 	"name": "Anki Bridge",
 	"version": "1.0.0",
-	"minAppVersion": "1.0.0",
+	"minAppVersion": "1.4.4",
 	"description": "Sync flashcards from Obsidian to Anki",
 	"author": "Andy Nguyen",
 	"authorUrl": "https://github.com/stoic031",
