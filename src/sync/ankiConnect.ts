@@ -77,4 +77,16 @@ export class AnkiConnectClient {
 	async deleteNotes(noteIds: number[]): Promise<void> {
 		await this.invoke<null>('deleteNotes', { notes: noteIds });
 	}
+
+	async deckNames(): Promise<string[]> {
+		return this.invoke<string[]>('deckNames');
+	}
+
+	async modelNames(): Promise<string[]> {
+		return this.invoke<string[]>('modelNames');
+	}
+
+	async modelFieldNames(modelName: string): Promise<string[]> {
+		return this.invoke<string[]>('modelFieldNames', { modelName });
+	}
 }
