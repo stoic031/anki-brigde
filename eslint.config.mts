@@ -28,7 +28,7 @@ export default defineConfig(
 						'vitest.config.ts',
 					],
 				},
-				tsconfigRootDir: import.meta.dirname,
+				tsconfigRootDir: import.meta.dirname as string,
 				extraFileExtensions: ['.json'],
 			},
 		},
