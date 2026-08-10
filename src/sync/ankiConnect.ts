@@ -53,4 +53,28 @@ export class AnkiConnectClient {
 		if (data.error) throw new AnkiConnectError(action, data.error);
 		return data.result;
 	}
+
+	async addNote(note: {
+		deckName: string;
+		modelName: string;
+		fields: Record<string, string>;
+		tags?: string[];
+	}): Promise<number> {
+		return this.invoke<number>('addNote', {
+			note: {
+				deckName: note.deckName,
+				modelName: note.modelName,
+				fields: note.fields,
+				tags: note.tags ?? [],
+			},
+		});
+	}
+
+	async updateNoteFields(noteId: number, fields: Record<string, string>): Promise<void> {
+		await this.invoke<null>('updateNoteFields', { note: { id: noteId, fields } });
+	}
+
+	async deleteNotes(noteIds: number[]): Promise<void> {
+		await this.invoke<null>('deleteNotes', { notes: noteIds });
+	}
 }
