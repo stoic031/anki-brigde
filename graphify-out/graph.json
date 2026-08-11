@@ -915,8 +915,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectclient",
-      "community": 77,
-      "community_name": "AnkiConnectClient",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "ankiconnectclient"
     },
     {
@@ -926,8 +926,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectclient_constructor",
-      "community": 77,
-      "community_name": "AnkiConnectClient",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": ".constructor()"
     },
     {
@@ -937,8 +937,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectclient_invoke",
-      "community": 77,
-      "community_name": "AnkiConnectClient",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": ".invoke()"
     },
     {
@@ -948,8 +948,8 @@
       "source_location": "L57",
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectclient_addnote",
-      "community": 77,
-      "community_name": "AnkiConnectClient",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": ".addnote()"
     },
     {
@@ -959,8 +959,8 @@
       "source_location": "L73",
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectclient_updatenotefields",
-      "community": 77,
-      "community_name": "AnkiConnectClient",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": ".updatenotefields()"
     },
     {
@@ -970,8 +970,8 @@
       "source_location": "L77",
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectclient_deletenotes",
-      "community": 77,
-      "community_name": "AnkiConnectClient",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": ".deletenotes()"
     },
     {
@@ -981,8 +981,8 @@
       "source_location": "L81",
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectclient_decknames",
-      "community": 77,
-      "community_name": "AnkiConnectClient",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": ".decknames()"
     },
     {
@@ -992,8 +992,8 @@
       "source_location": "L85",
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectclient_modelnames",
-      "community": 77,
-      "community_name": "AnkiConnectClient",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": ".modelnames()"
     },
     {
@@ -1003,8 +1003,8 @@
       "source_location": "L89",
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectclient_modelfieldnames",
-      "community": 77,
-      "community_name": "AnkiConnectClient",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": ".modelfieldnames()"
     },
     {
@@ -1165,7 +1165,7 @@
       "label": "isNoteNotFound()",
       "file_type": "code",
       "source_file": "src/sync/syncEngine.ts",
-      "source_location": "L32",
+      "source_location": "L38",
       "_origin": "ast",
       "id": "src_sync_syncengine_isnotenotfound",
       "community": 5,
@@ -1173,10 +1173,21 @@
       "norm_label": "isnotenotfound()"
     },
     {
+      "label": "toSyncError()",
+      "file_type": "code",
+      "source_file": "src/sync/syncEngine.ts",
+      "source_location": "L49",
+      "_origin": "ast",
+      "id": "src_sync_syncengine_tosyncerror",
+      "community": 5,
+      "community_name": "types.ts",
+      "norm_label": "tosyncerror()"
+    },
+    {
       "label": "createNote()",
       "file_type": "code",
       "source_file": "src/sync/syncEngine.ts",
-      "source_location": "L40",
+      "source_location": "L67",
       "_origin": "ast",
       "id": "src_sync_syncengine_createnote",
       "community": 5,
@@ -1388,6 +1399,28 @@
       "source_location": "L77",
       "_origin": "ast",
       "id": "src_types_providererror_constructor",
+      "community": 5,
+      "community_name": "types.ts",
+      "norm_label": ".constructor()"
+    },
+    {
+      "label": "SyncError",
+      "file_type": "code",
+      "source_file": "src/types.ts",
+      "source_location": "L85",
+      "_origin": "ast",
+      "id": "src_types_syncerror",
+      "community": 5,
+      "community_name": "types.ts",
+      "norm_label": "syncerror"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "src/types.ts",
+      "source_location": "L86",
+      "_origin": "ast",
+      "id": "src_types_syncerror_constructor",
       "community": 5,
       "community_name": "types.ts",
       "norm_label": ".constructor()"
@@ -5462,7 +5495,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/sync/syncEngine.ts",
-      "source_location": "L47",
+      "source_location": "L74",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_sync_syncengine_createnote",
@@ -5474,7 +5507,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/sync/syncEngine.ts",
-      "source_location": "L22",
+      "source_location": "L25",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_sync_syncengine_syncnote",
@@ -5486,7 +5519,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/sync/syncEngine.ts",
-      "source_location": "L13",
+      "source_location": "L16",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_sync_syncengine_syncnote",
@@ -5580,7 +5613,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/sync/syncEngine.ts",
-      "source_location": "L14",
+      "source_location": "L17",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_sync_syncengine_syncnote",
@@ -5812,7 +5845,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/sync/syncEngine.ts",
-      "source_location": "L53",
+      "source_location": "L80",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_sync_syncengine_createnote",
@@ -5825,7 +5858,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/sync/syncEngine.ts",
-      "source_location": "L27",
+      "source_location": "L30",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_sync_syncengine_syncnote",
@@ -5861,7 +5894,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/sync/syncEngine.ts",
-      "source_location": "L12",
+      "source_location": "L15",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_sync_syncengine_syncnote",
@@ -5871,7 +5904,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/sync/syncEngine.ts",
-      "source_location": "L40",
+      "source_location": "L67",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_sync_syncengine",
@@ -5882,7 +5915,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/sync/syncEngine.ts",
-      "source_location": "L32",
+      "source_location": "L38",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_sync_syncengine",
@@ -5898,6 +5931,17 @@
       "_origin": "ast",
       "source": "src_sync_syncengine",
       "target": "src_sync_syncengine_syncnote",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sync/syncEngine.ts",
+      "source_location": "L49",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_syncengine",
+      "target": "src_sync_syncengine_tosyncerror",
       "confidence_score": 1.0
     },
     {
@@ -5937,11 +5981,23 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sync/syncEngine.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_syncengine",
+      "target": "src_types_syncerror",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/sync/syncEngine.ts",
-      "source_location": "L17",
+      "source_location": "L20",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_sync_syncengine_syncnote",
@@ -5953,11 +6009,23 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/sync/syncEngine.ts",
-      "source_location": "L24",
+      "source_location": "L27",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_sync_syncengine_syncnote",
       "target": "src_sync_syncengine_isnotenotfound",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sync/syncEngine.ts",
+      "source_location": "L34",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_syncengine_syncnote",
+      "target": "src_sync_syncengine_tosyncerror",
       "confidence_score": 1.0
     },
     {
@@ -6074,6 +6142,17 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/types.ts",
+      "source_location": "L85",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_types",
+      "target": "src_types_syncerror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/types.ts",
       "source_location": "L30",
       "weight": 1.0,
       "_origin": "ast",
@@ -6156,6 +6235,17 @@
       "_origin": "ast",
       "source": "src_types_providererror",
       "target": "src_types_providererror_constructor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/types.ts",
+      "source_location": "L86",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_types_syncerror",
+      "target": "src_types_syncerror_constructor",
       "confidence_score": 1.0
     },
     {
@@ -8511,5 +8601,5 @@
       "source_file": ".opencode/skills/graphify/SKILL.md"
     }
   ],
-  "built_at_commit": "96e34a47cc0fe842768ee7e0f8388c9127be82c1"
+  "built_at_commit": "2e1f25e9b7d82b1253168f25263420116b8dd2a7"
 }
