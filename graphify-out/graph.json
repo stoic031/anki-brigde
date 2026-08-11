@@ -1014,8 +1014,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_sync_fieldmapper",
-      "community": 77,
-      "community_name": "AnkiConnectClient",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "fieldmapper.ts"
     },
     {
@@ -1025,8 +1025,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "src_sync_fieldmapper_mapcontenttofields",
-      "community": 77,
-      "community_name": "AnkiConnectClient",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "mapcontenttofields()"
     },
     {
@@ -1036,8 +1036,8 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "src_sync_fieldmapper_stringifysectionvalue",
-      "community": 77,
-      "community_name": "AnkiConnectClient",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "stringifysectionvalue()"
     },
     {
@@ -1047,8 +1047,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_sync_parser_test",
-      "community": 77,
-      "community_name": "AnkiConnectClient",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "parser.test.ts"
     },
     {
@@ -1058,8 +1058,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "src_sync_parser_test_fakereaderapp",
-      "community": 77,
-      "community_name": "AnkiConnectClient",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "fakereaderapp()"
     },
     {
@@ -1069,8 +1069,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "src_sync_parser_test_fakewriterapp",
-      "community": 77,
-      "community_name": "AnkiConnectClient",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "fakewriterapp()"
     },
     {
@@ -1080,8 +1080,8 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "src_sync_parser_test_file",
-      "community": 77,
-      "community_name": "AnkiConnectClient",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "file"
     },
     {
@@ -1091,8 +1091,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_sync_parser",
-      "community": 77,
-      "community_name": "AnkiConnectClient",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "parser.ts"
     },
     {
@@ -1102,8 +1102,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "src_sync_parser_readankifrontmatter",
-      "community": 77,
-      "community_name": "AnkiConnectClient",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "readankifrontmatter()"
     },
     {
@@ -1113,8 +1113,8 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "src_sync_parser_writeankifrontmatter",
-      "community": 77,
-      "community_name": "AnkiConnectClient",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "writeankifrontmatter()"
     },
     {
@@ -1124,8 +1124,8 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "src_sync_parser_parsesections",
-      "community": 77,
-      "community_name": "AnkiConnectClient",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "parsesections()"
     },
     {
@@ -1135,8 +1135,8 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "src_sync_parser_extractsectionvalue",
-      "community": 77,
-      "community_name": "AnkiConnectClient",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "extractsectionvalue()"
     },
     {
@@ -1146,20 +1146,42 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_sync_syncengine",
-      "community": 77,
-      "community_name": "AnkiConnectClient",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "syncengine.ts"
     },
     {
       "label": "syncNote()",
       "file_type": "code",
       "source_file": "src/sync/syncEngine.ts",
-      "source_location": "L6",
+      "source_location": "L7",
       "_origin": "ast",
       "id": "src_sync_syncengine_syncnote",
-      "community": 77,
-      "community_name": "AnkiConnectClient",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "syncnote()"
+    },
+    {
+      "label": "isNoteNotFound()",
+      "file_type": "code",
+      "source_file": "src/sync/syncEngine.ts",
+      "source_location": "L32",
+      "_origin": "ast",
+      "id": "src_sync_syncengine_isnotenotfound",
+      "community": 5,
+      "community_name": "types.ts",
+      "norm_label": "isnotenotfound()"
+    },
+    {
+      "label": "createNote()",
+      "file_type": "code",
+      "source_file": "src/sync/syncEngine.ts",
+      "source_location": "L40",
+      "_origin": "ast",
+      "id": "src_sync_syncengine_createnote",
+      "community": 5,
+      "community_name": "types.ts",
+      "norm_label": "createnote()"
     },
     {
       "label": "types.ts",
@@ -1179,8 +1201,8 @@
       "source_location": "L2",
       "_origin": "ast",
       "id": "src_types_ankifrontmatter",
-      "community": 77,
-      "community_name": "AnkiConnectClient",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "ankifrontmatter"
     },
     {
@@ -1190,8 +1212,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "src_types_sectionvalue",
-      "community": 77,
-      "community_name": "AnkiConnectClient",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "sectionvalue"
     },
     {
@@ -5440,10 +5462,10 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/sync/syncEngine.ts",
-      "source_location": "L16",
+      "source_location": "L47",
       "weight": 1.0,
       "_origin": "ast",
-      "source": "src_sync_syncengine_syncnote",
+      "source": "src_sync_syncengine_createnote",
       "target": "src_sync_ankiconnect_ankiconnectclient_addnote"
     },
     {
@@ -5452,7 +5474,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/sync/syncEngine.ts",
-      "source_location": "L24",
+      "source_location": "L22",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_sync_syncengine_syncnote",
@@ -5464,7 +5486,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/sync/syncEngine.ts",
-      "source_location": "L12",
+      "source_location": "L13",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_sync_syncengine_syncnote",
@@ -5558,7 +5580,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/sync/syncEngine.ts",
-      "source_location": "L13",
+      "source_location": "L14",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_sync_syncengine_syncnote",
@@ -5767,7 +5789,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/sync/syncEngine.ts",
-      "source_location": "L7",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_sync_syncengine_syncnote",
@@ -5789,9 +5811,21 @@
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
+      "source_file": "src/sync/syncEngine.ts",
+      "source_location": "L53",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_syncengine_createnote",
+      "target": "src_sync_parser_writeankifrontmatter",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/sync/syncEngine.ts",
-      "source_location": "L22",
+      "source_location": "L27",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_sync_syncengine_syncnote",
@@ -5827,7 +5861,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/sync/syncEngine.ts",
-      "source_location": "L11",
+      "source_location": "L12",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_sync_syncengine_syncnote",
@@ -5837,11 +5871,93 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/sync/syncEngine.ts",
-      "source_location": "L6",
+      "source_location": "L40",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_syncengine",
+      "target": "src_sync_syncengine_createnote",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sync/syncEngine.ts",
+      "source_location": "L32",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_syncengine",
+      "target": "src_sync_syncengine_isnotenotfound",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sync/syncEngine.ts",
+      "source_location": "L7",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_sync_syncengine",
       "target": "src_sync_syncengine_syncnote",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sync/syncEngine.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_syncengine",
+      "target": "src_types",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sync/syncEngine.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_syncengine",
+      "target": "src_types_ankiconnecterror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sync/syncEngine.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_syncengine",
+      "target": "src_types_ankifrontmatter",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sync/syncEngine.ts",
+      "source_location": "L17",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_syncengine_syncnote",
+      "target": "src_sync_syncengine_createnote",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sync/syncEngine.ts",
+      "source_location": "L24",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_syncengine_syncnote",
+      "target": "src_sync_syncengine_isnotenotfound",
       "confidence_score": 1.0
     },
     {
@@ -8395,5 +8511,5 @@
       "source_file": ".opencode/skills/graphify/SKILL.md"
     }
   ],
-  "built_at_commit": "36501fa68bb7088350586983a8db1aa65988d89b"
+  "built_at_commit": "96e34a47cc0fe842768ee7e0f8388c9127be82c1"
 }

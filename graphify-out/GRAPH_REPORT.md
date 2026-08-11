@@ -1,16 +1,16 @@
 # Graph Report - anki-bridge  (2026-08-11)
 
 ## Corpus Check
-- 58 files · ~37,267 words
+- 58 files · ~37,369 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 341 nodes · 349 edges · 78 communities (20 shown, 58 thin omitted)
+- 343 nodes · 357 edges · 78 communities (19 shown, 59 thin omitted)
 - Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 15 edges (avg confidence: 0.86)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `36501fa6`
+- Built from commit: `96e34a47`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -96,11 +96,11 @@
 2. `graphify Skill (/graphify)` - 17 edges
 3. `compilerOptions` - 16 edges
 4. `AnkiConnectClient` - 10 edges
-5. `Graphify Full Pipeline` - 9 edges
-6. `Generate with AI Button` - 9 edges
-7. `Tab 1 — Note (Deck/Model/Folder/Field checkboxes)` - 9 edges
-8. `scripts` - 8 edges
-9. `syncNote()` - 8 edges
+5. `syncNote()` - 9 edges
+6. `Graphify Full Pipeline` - 9 edges
+7. `Generate with AI Button` - 9 edges
+8. `Tab 1 — Note (Deck/Model/Folder/Field checkboxes)` - 9 edges
+9. `scripts` - 8 edges
 10. `Create Note From Selection (Hotkey / Quick Capture)` - 8 edges
 
 ## Surprising Connections (you probably didn't know these)
@@ -129,7 +129,7 @@
 - **Pluggable AI Provider Interfaces** — docs_contracts_textprovider, docs_contracts_audioprovider, docs_contracts_imageprovider, docs_design_02_providers_abstraction_layer [INFERRED 0.85]
 - **AST + Semantic Extraction Forming the Merged Graph Build** — opencode_skills_graphify_skill_ast_extraction, opencode_skills_graphify_skill_semantic_extraction, opencode_skills_graphify_references_extraction_spec_node_id_format, opencode_skills_graphify_references_extraction_spec_confidence_rubric [INFERRED 0.85]
 
-## Communities (78 total, 58 thin omitted)
+## Communities (78 total, 59 thin omitted)
 
 ### Community 0 - "Generate with AI Button"
 Cohesion: 0.11
@@ -152,8 +152,8 @@ Cohesion: 0.13
 Nodes (18): Repo Layout (src/ module organization), AnkiFrontmatter interface, FIELD_ALIASES map, Field Mapping Algorithm (3-pass deterministic), ParsedNote interface, Dynamic Field Mapping (§1.5), AI Provider Manager, anki-controls Markdown Code Block (+10 more)
 
 ### Community 5 - "types.ts"
-Cohesion: 0.11
-Nodes (12): AnkiConnectResponse, AnkiConnectError, AudioOptions, AudioProvider, ImageOptions, ImageProvider, MediaResult, ParsedNote (+4 more)
+Cohesion: 0.09
+Nodes (24): AnkiConnectResponse, mapContentToFields(), stringifySectionValue(), extractSectionValue(), parseSections(), readAnkiFrontmatter(), file, writeAnkiFrontmatter() (+16 more)
 
 ### Community 6 - "Common Provider Interface (processText/generateAudio/generateImage)"
 Cohesion: 0.12
@@ -195,14 +195,10 @@ Nodes (3): plugin, $schema, .opencode/plugins/graphify.js
 Cohesion: 0.67
 Nodes (3): TextProvider interface, TextResult interface, TextTask type
 
-### Community 77 - "AnkiConnectClient"
-Cohesion: 0.15
-Nodes (11): AnkiConnectClient, mapContentToFields(), stringifySectionValue(), extractSectionValue(), parseSections(), readAnkiFrontmatter(), file, writeAnkiFrontmatter() (+3 more)
-
 ## Knowledge Gaps
 - **144 isolated node(s):** `$schema`, `.opencode/plugins/graphify.js`, `id`, `name`, `version` (+139 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **58 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **59 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_

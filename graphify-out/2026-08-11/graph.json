@@ -887,69 +887,14 @@
       "norm_label": "sanitizeforfilename()"
     },
     {
-      "label": "ankiConnect.test.ts",
-      "file_type": "code",
-      "source_file": "src/sync/ankiConnect.test.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "src_sync_ankiconnect_test",
-      "community": 77,
-      "community_name": "AnkiConnectClient",
-      "norm_label": "ankiconnect.test.ts"
-    },
-    {
-      "label": "{ requestUrl }",
-      "file_type": "code",
-      "source_file": "src/sync/ankiConnect.test.ts",
-      "source_location": "L5",
-      "_origin": "ast",
-      "id": "src_sync_ankiconnect_test_requesturl",
-      "community": 77,
-      "community_name": "AnkiConnectClient",
-      "norm_label": "{ requesturl }"
-    },
-    {
-      "label": "jsonResponse()",
-      "file_type": "code",
-      "source_file": "src/sync/ankiConnect.test.ts",
-      "source_location": "L33",
-      "_origin": "ast",
-      "id": "src_sync_ankiconnect_test_jsonresponse",
-      "community": 77,
-      "community_name": "AnkiConnectClient",
-      "norm_label": "jsonresponse()"
-    },
-    {
-      "label": "sentBody()",
-      "file_type": "code",
-      "source_file": "src/sync/ankiConnect.test.ts",
-      "source_location": "L37",
-      "_origin": "ast",
-      "id": "src_sync_ankiconnect_test_sentbody",
-      "community": 77,
-      "community_name": "AnkiConnectClient",
-      "norm_label": "sentbody()"
-    },
-    {
-      "label": "client()",
-      "file_type": "code",
-      "source_file": "src/sync/ankiConnect.test.ts",
-      "source_location": "L89",
-      "_origin": "ast",
-      "id": "src_sync_ankiconnect_test_client",
-      "community": 77,
-      "community_name": "AnkiConnectClient",
-      "norm_label": "client()"
-    },
-    {
       "label": "ankiConnect.ts",
       "file_type": "code",
       "source_file": "src/sync/ankiConnect.ts",
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_sync_ankiconnect",
-      "community": 77,
-      "community_name": "AnkiConnectClient",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "ankiconnect.ts"
     },
     {
@@ -959,8 +904,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectresponse",
-      "community": 77,
-      "community_name": "AnkiConnectClient",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "ankiconnectresponse"
     },
     {
@@ -1069,8 +1014,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_sync_fieldmapper",
-      "community": 5,
-      "community_name": "types.ts",
+      "community": 77,
+      "community_name": "AnkiConnectClient",
       "norm_label": "fieldmapper.ts"
     },
     {
@@ -1080,8 +1025,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "src_sync_fieldmapper_mapcontenttofields",
-      "community": 5,
-      "community_name": "types.ts",
+      "community": 77,
+      "community_name": "AnkiConnectClient",
       "norm_label": "mapcontenttofields()"
     },
     {
@@ -1091,8 +1036,8 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "src_sync_fieldmapper_stringifysectionvalue",
-      "community": 5,
-      "community_name": "types.ts",
+      "community": 77,
+      "community_name": "AnkiConnectClient",
       "norm_label": "stringifysectionvalue()"
     },
     {
@@ -1102,8 +1047,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_sync_parser_test",
-      "community": 5,
-      "community_name": "types.ts",
+      "community": 77,
+      "community_name": "AnkiConnectClient",
       "norm_label": "parser.test.ts"
     },
     {
@@ -1113,8 +1058,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "src_sync_parser_test_fakereaderapp",
-      "community": 5,
-      "community_name": "types.ts",
+      "community": 77,
+      "community_name": "AnkiConnectClient",
       "norm_label": "fakereaderapp()"
     },
     {
@@ -1124,8 +1069,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "src_sync_parser_test_fakewriterapp",
-      "community": 5,
-      "community_name": "types.ts",
+      "community": 77,
+      "community_name": "AnkiConnectClient",
       "norm_label": "fakewriterapp()"
     },
     {
@@ -1135,8 +1080,8 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "src_sync_parser_test_file",
-      "community": 5,
-      "community_name": "types.ts",
+      "community": 77,
+      "community_name": "AnkiConnectClient",
       "norm_label": "file"
     },
     {
@@ -1146,8 +1091,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_sync_parser",
-      "community": 5,
-      "community_name": "types.ts",
+      "community": 77,
+      "community_name": "AnkiConnectClient",
       "norm_label": "parser.ts"
     },
     {
@@ -1157,8 +1102,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "src_sync_parser_readankifrontmatter",
-      "community": 5,
-      "community_name": "types.ts",
+      "community": 77,
+      "community_name": "AnkiConnectClient",
       "norm_label": "readankifrontmatter()"
     },
     {
@@ -1168,8 +1113,8 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "src_sync_parser_writeankifrontmatter",
-      "community": 5,
-      "community_name": "types.ts",
+      "community": 77,
+      "community_name": "AnkiConnectClient",
       "norm_label": "writeankifrontmatter()"
     },
     {
@@ -1179,8 +1124,8 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "src_sync_parser_parsesections",
-      "community": 5,
-      "community_name": "types.ts",
+      "community": 77,
+      "community_name": "AnkiConnectClient",
       "norm_label": "parsesections()"
     },
     {
@@ -1190,9 +1135,31 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "src_sync_parser_extractsectionvalue",
-      "community": 5,
-      "community_name": "types.ts",
+      "community": 77,
+      "community_name": "AnkiConnectClient",
       "norm_label": "extractsectionvalue()"
+    },
+    {
+      "label": "syncEngine.ts",
+      "file_type": "code",
+      "source_file": "src/sync/syncEngine.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_sync_syncengine",
+      "community": 77,
+      "community_name": "AnkiConnectClient",
+      "norm_label": "syncengine.ts"
+    },
+    {
+      "label": "syncNote()",
+      "file_type": "code",
+      "source_file": "src/sync/syncEngine.ts",
+      "source_location": "L6",
+      "_origin": "ast",
+      "id": "src_sync_syncengine_syncnote",
+      "community": 77,
+      "community_name": "AnkiConnectClient",
+      "norm_label": "syncnote()"
     },
     {
       "label": "types.ts",
@@ -1212,8 +1179,8 @@
       "source_location": "L2",
       "_origin": "ast",
       "id": "src_types_ankifrontmatter",
-      "community": 5,
-      "community_name": "types.ts",
+      "community": 77,
+      "community_name": "AnkiConnectClient",
       "norm_label": "ankifrontmatter"
     },
     {
@@ -1223,8 +1190,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "src_types_sectionvalue",
-      "community": 5,
-      "community_name": "types.ts",
+      "community": 77,
+      "community_name": "AnkiConnectClient",
       "norm_label": "sectionvalue"
     },
     {
@@ -1366,8 +1333,8 @@
       "source_location": "L67",
       "_origin": "ast",
       "id": "src_types_ankiconnecterror",
-      "community": 77,
-      "community_name": "AnkiConnectClient",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "ankiconnecterror"
     },
     {
@@ -1377,8 +1344,8 @@
       "source_location": "L68",
       "_origin": "ast",
       "id": "src_types_ankiconnecterror_constructor",
-      "community": 77,
-      "community_name": "AnkiConnectClient",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": ".constructor()"
     },
     {
@@ -5262,98 +5229,6 @@
       "confidence_score": 1.0
     },
     {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/sync/ankiConnect.test.ts",
-      "source_location": "L2",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_sync_ankiconnect_test",
-      "target": "src_sync_ankiconnect",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/sync/ankiConnect.test.ts",
-      "source_location": "L2",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_sync_ankiconnect_test",
-      "target": "src_sync_ankiconnect_ankiconnectclient",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/sync/ankiConnect.test.ts",
-      "source_location": "L89",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_sync_ankiconnect_test",
-      "target": "src_sync_ankiconnect_test_client",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/sync/ankiConnect.test.ts",
-      "source_location": "L33",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_sync_ankiconnect_test",
-      "target": "src_sync_ankiconnect_test_jsonresponse",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/sync/ankiConnect.test.ts",
-      "source_location": "L5",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_sync_ankiconnect_test",
-      "target": "src_sync_ankiconnect_test_requesturl",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/sync/ankiConnect.test.ts",
-      "source_location": "L37",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_sync_ankiconnect_test",
-      "target": "src_sync_ankiconnect_test_sentbody",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/sync/ankiConnect.test.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_sync_ankiconnect_test",
-      "target": "src_types",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/sync/ankiConnect.test.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_sync_ankiconnect_test",
-      "target": "src_types_ankiconnecterror",
-      "confidence_score": 1.0
-    },
-    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/sync/ankiConnect.ts",
@@ -5397,6 +5272,18 @@
       "_origin": "ast",
       "source": "src_sync_ankiconnect",
       "target": "src_types_ankiconnecterror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sync/syncEngine.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_syncengine",
+      "target": "src_sync_ankiconnect",
       "confidence_score": 1.0
     },
     {
@@ -5488,6 +5375,18 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sync/syncEngine.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_syncengine",
+      "target": "src_sync_ankiconnect_ankiconnectclient",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
@@ -5536,6 +5435,42 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/sync/syncEngine.ts",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_syncengine_syncnote",
+      "target": "src_sync_ankiconnect_ankiconnectclient_addnote"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/sync/syncEngine.ts",
+      "source_location": "L24",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_syncengine_syncnote",
+      "target": "src_sync_ankiconnect_ankiconnectclient_updatenotefields"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/sync/syncEngine.ts",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_syncengine_syncnote",
+      "target": "src_sync_ankiconnect_ankiconnectclient_modelfieldnames"
+    },
+    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/sync/fieldMapper.ts",
@@ -5582,6 +5517,18 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sync/syncEngine.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_syncengine",
+      "target": "src_sync_fieldmapper",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
@@ -5592,6 +5539,30 @@
       "source": "src_sync_fieldmapper_mapcontenttofields",
       "target": "src_sync_fieldmapper_stringifysectionvalue",
       "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sync/syncEngine.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_syncengine",
+      "target": "src_sync_fieldmapper_mapcontenttofields",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/sync/syncEngine.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_syncengine_syncnote",
+      "target": "src_sync_fieldmapper_mapcontenttofields"
     },
     {
       "relation": "references",
@@ -5767,6 +5738,66 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sync/syncEngine.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_syncengine",
+      "target": "src_sync_parser",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sync/syncEngine.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_syncengine",
+      "target": "src_sync_parser_readankifrontmatter",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/sync/syncEngine.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_syncengine_syncnote",
+      "target": "src_sync_parser_readankifrontmatter"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sync/syncEngine.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_syncengine",
+      "target": "src_sync_parser_writeankifrontmatter",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/sync/syncEngine.ts",
+      "source_location": "L22",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_syncengine_syncnote",
+      "target": "src_sync_parser_writeankifrontmatter"
+    },
+    {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
@@ -5776,6 +5807,41 @@
       "_origin": "ast",
       "source": "src_sync_parser_parsesections",
       "target": "src_sync_parser_extractsectionvalue",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sync/syncEngine.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_syncengine",
+      "target": "src_sync_parser_parsesections",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/sync/syncEngine.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_syncengine_syncnote",
+      "target": "src_sync_parser_parsesections"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sync/syncEngine.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_syncengine",
+      "target": "src_sync_syncengine_syncnote",
       "confidence_score": 1.0
     },
     {
@@ -8329,5 +8395,5 @@
       "source_file": ".opencode/skills/graphify/SKILL.md"
     }
   ],
-  "built_at_commit": "5f97422d68610dacd47e0cf6c0f6688e0705cd15"
+  "built_at_commit": "36501fa68bb7088350586983a8db1aa65988d89b"
 }

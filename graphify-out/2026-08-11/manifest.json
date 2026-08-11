@@ -15,7 +15,7 @@
     "semantic_hash": "f6cbf4c40270082b43cac9d981ed5a9b"
   },
   "eslint.config.mts": {
-    "mtime": 1786369115.6286216,
+    "mtime": 1786456717.2868612,
     "ast_hash": "3032c99a2b0066c22f99d16b937555a8",
     "semantic_hash": ""
   },
@@ -35,7 +35,7 @@
     "semantic_hash": "954cae785e819ae30fc5735f76730805"
   },
   "tsconfig.json": {
-    "mtime": 1786369055.2682586,
+    "mtime": 1786456717.2905955,
     "ast_hash": "e52f438509716af7643bbd3260bc1d45",
     "semantic_hash": ""
   },
@@ -60,7 +60,7 @@
     "semantic_hash": "97ca27b0527213c1b54351601d617443"
   },
   ".claude/rules/sync-engine.md": {
-    "mtime": 1786368950.028338,
+    "mtime": 1786456717.2866426,
     "ast_hash": "161293aaa8dfdd9c9570fd340655ba61",
     "semantic_hash": ""
   },
@@ -295,13 +295,13 @@
     "semantic_hash": ""
   },
   "src/sync/ankiConnect.ts": {
-    "mtime": 1786369970.4374244,
+    "mtime": 1786456717.2904263,
     "ast_hash": "3994912b1e4901f1d8b57203ac47f949",
     "semantic_hash": ""
   },
-  "src/sync/ankiConnect.test.ts": {
-    "mtime": 1786370694.5717578,
-    "ast_hash": "5f806c71a2a5b9f470a2e71af71d2a1b",
+  "src/sync/syncEngine.ts": {
+    "mtime": 1786456977.6434028,
+    "ast_hash": "ee352e209d21f8485f247c7130d49da2",
     "semantic_hash": ""
   }
 }
