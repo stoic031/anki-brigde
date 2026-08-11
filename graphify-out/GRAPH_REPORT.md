@@ -1,16 +1,16 @@
 # Graph Report - anki-bridge  (2026-08-11)
 
 ## Corpus Check
-- 58 files · ~37,521 words
+- 60 files · ~38,880 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 346 nodes · 362 edges · 77 communities (19 shown, 58 thin omitted)
+- 356 nodes · 381 edges · 77 communities (19 shown, 58 thin omitted)
 - Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 15 edges (avg confidence: 0.86)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `2e1f25e9`
+- Built from commit: `c600a2dd`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -94,8 +94,8 @@
 1. `Common Provider Interface (processText/generateAudio/generateImage)` - 20 edges
 2. `graphify Skill (/graphify)` - 17 edges
 3. `compilerOptions` - 16 edges
-4. `AnkiConnectClient` - 10 edges
-5. `syncNote()` - 10 edges
+4. `AnkiConnectClient` - 12 edges
+5. `syncNote()` - 11 edges
 6. `Graphify Full Pipeline` - 9 edges
 7. `Generate with AI Button` - 9 edges
 8. `Tab 1 — Note (Deck/Model/Folder/Field checkboxes)` - 9 edges
@@ -151,8 +151,8 @@ Cohesion: 0.13
 Nodes (18): Repo Layout (src/ module organization), AnkiFrontmatter interface, FIELD_ALIASES map, Field Mapping Algorithm (3-pass deterministic), ParsedNote interface, Dynamic Field Mapping (§1.5), AI Provider Manager, anki-controls Markdown Code Block (+10 more)
 
 ### Community 5 - "types.ts"
-Cohesion: 0.07
-Nodes (27): AnkiConnectClient, AnkiConnectResponse, mapContentToFields(), stringifySectionValue(), extractSectionValue(), parseSections(), readAnkiFrontmatter(), file (+19 more)
+Cohesion: 0.06
+Nodes (30): AnkiConnectClient, AnkiConnectResponse, { requestUrl }, mapContentToFields(), stringifySectionValue(), extractSectionValue(), parseSections(), readAnkiFrontmatter() (+22 more)
 
 ### Community 6 - "Common Provider Interface (processText/generateAudio/generateImage)"
 Cohesion: 0.12
@@ -195,7 +195,7 @@ Cohesion: 0.67
 Nodes (3): TextProvider interface, TextResult interface, TextTask type
 
 ## Knowledge Gaps
-- **144 isolated node(s):** `$schema`, `.opencode/plugins/graphify.js`, `id`, `name`, `version` (+139 more)
+- **147 isolated node(s):** `$schema`, `.opencode/plugins/graphify.js`, `id`, `name`, `version` (+142 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **58 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -203,13 +203,13 @@ Nodes (3): TextProvider interface, TextResult interface, TextTask type
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `Common Provider Interface (processText/generateAudio/generateImage)` connect `Common Provider Interface (processText/generateAudio/generateImage)` to `Generate with AI Button`, `Scenario 1: Create Note via Icon/Command`?**
-  _High betweenness centrality (0.017) - this node is a cross-community bridge._
+  _High betweenness centrality (0.016) - this node is a cross-community bridge._
 - **Why does `devDependencies` connect `devDependencies` to `package.json`?**
-  _High betweenness centrality (0.011) - this node is a cross-community bridge._
+  _High betweenness centrality (0.010) - this node is a cross-community bridge._
 - **Why does `Scenario 1: Create Note via Icon/Command` connect `Scenario 1: Create Note via Icon/Command` to `Generate with AI Button`?**
   _High betweenness centrality (0.009) - this node is a cross-community bridge._
 - **What connects `$schema`, `.opencode/plugins/graphify.js`, `id` to the rest of the system?**
-  _144 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _147 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Generate with AI Button` be split into smaller, more focused modules?**
   _Cohesion score 0.11229946524064172 - nodes in this community are weakly interconnected._
 - **Should `graphify Skill (/graphify)` be split into smaller, more focused modules?**
