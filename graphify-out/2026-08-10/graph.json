@@ -887,6 +887,160 @@
       "norm_label": "sanitizeforfilename()"
     },
     {
+      "label": "ankiConnect.ts",
+      "file_type": "code",
+      "source_file": "src/sync/ankiConnect.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_sync_ankiconnect",
+      "community": 77,
+      "community_name": "AnkiConnectClient",
+      "norm_label": "ankiconnect.ts"
+    },
+    {
+      "label": "AnkiConnectResponse",
+      "file_type": "code",
+      "source_file": "src/sync/ankiConnect.ts",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "src_sync_ankiconnect_ankiconnectresponse",
+      "community": 77,
+      "community_name": "AnkiConnectClient",
+      "norm_label": "ankiconnectresponse"
+    },
+    {
+      "label": "AnkiConnectClient",
+      "file_type": "code",
+      "source_file": "src/sync/ankiConnect.ts",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "src_sync_ankiconnect_ankiconnectclient",
+      "community": 77,
+      "community_name": "AnkiConnectClient",
+      "norm_label": "ankiconnectclient"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "src/sync/ankiConnect.ts",
+      "source_location": "L10",
+      "_origin": "ast",
+      "id": "src_sync_ankiconnect_ankiconnectclient_constructor",
+      "community": 77,
+      "community_name": "AnkiConnectClient",
+      "norm_label": ".constructor()"
+    },
+    {
+      "label": ".invoke()",
+      "file_type": "code",
+      "source_file": "src/sync/ankiConnect.ts",
+      "source_location": "L15",
+      "_origin": "ast",
+      "id": "src_sync_ankiconnect_ankiconnectclient_invoke",
+      "community": 77,
+      "community_name": "AnkiConnectClient",
+      "norm_label": ".invoke()"
+    },
+    {
+      "label": ".addNote()",
+      "file_type": "code",
+      "source_file": "src/sync/ankiConnect.ts",
+      "source_location": "L57",
+      "_origin": "ast",
+      "id": "src_sync_ankiconnect_ankiconnectclient_addnote",
+      "community": 77,
+      "community_name": "AnkiConnectClient",
+      "norm_label": ".addnote()"
+    },
+    {
+      "label": ".updateNoteFields()",
+      "file_type": "code",
+      "source_file": "src/sync/ankiConnect.ts",
+      "source_location": "L73",
+      "_origin": "ast",
+      "id": "src_sync_ankiconnect_ankiconnectclient_updatenotefields",
+      "community": 77,
+      "community_name": "AnkiConnectClient",
+      "norm_label": ".updatenotefields()"
+    },
+    {
+      "label": ".deleteNotes()",
+      "file_type": "code",
+      "source_file": "src/sync/ankiConnect.ts",
+      "source_location": "L77",
+      "_origin": "ast",
+      "id": "src_sync_ankiconnect_ankiconnectclient_deletenotes",
+      "community": 77,
+      "community_name": "AnkiConnectClient",
+      "norm_label": ".deletenotes()"
+    },
+    {
+      "label": ".deckNames()",
+      "file_type": "code",
+      "source_file": "src/sync/ankiConnect.ts",
+      "source_location": "L81",
+      "_origin": "ast",
+      "id": "src_sync_ankiconnect_ankiconnectclient_decknames",
+      "community": 77,
+      "community_name": "AnkiConnectClient",
+      "norm_label": ".decknames()"
+    },
+    {
+      "label": ".modelNames()",
+      "file_type": "code",
+      "source_file": "src/sync/ankiConnect.ts",
+      "source_location": "L85",
+      "_origin": "ast",
+      "id": "src_sync_ankiconnect_ankiconnectclient_modelnames",
+      "community": 77,
+      "community_name": "AnkiConnectClient",
+      "norm_label": ".modelnames()"
+    },
+    {
+      "label": ".modelFieldNames()",
+      "file_type": "code",
+      "source_file": "src/sync/ankiConnect.ts",
+      "source_location": "L89",
+      "_origin": "ast",
+      "id": "src_sync_ankiconnect_ankiconnectclient_modelfieldnames",
+      "community": 77,
+      "community_name": "AnkiConnectClient",
+      "norm_label": ".modelfieldnames()"
+    },
+    {
+      "label": "fieldMapper.ts",
+      "file_type": "code",
+      "source_file": "src/sync/fieldMapper.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_sync_fieldmapper",
+      "community": 5,
+      "community_name": "types.ts",
+      "norm_label": "fieldmapper.ts"
+    },
+    {
+      "label": "mapContentToFields()",
+      "file_type": "code",
+      "source_file": "src/sync/fieldMapper.ts",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "src_sync_fieldmapper_mapcontenttofields",
+      "community": 5,
+      "community_name": "types.ts",
+      "norm_label": "mapcontenttofields()"
+    },
+    {
+      "label": "stringifySectionValue()",
+      "file_type": "code",
+      "source_file": "src/sync/fieldMapper.ts",
+      "source_location": "L20",
+      "_origin": "ast",
+      "id": "src_sync_fieldmapper_stringifysectionvalue",
+      "community": 5,
+      "community_name": "types.ts",
+      "norm_label": "stringifysectionvalue()"
+    },
+    {
       "label": "parser.test.ts",
       "file_type": "code",
       "source_file": "src/sync/parser.test.ts",
@@ -1157,8 +1311,8 @@
       "source_location": "L67",
       "_origin": "ast",
       "id": "src_types_ankiconnecterror",
-      "community": 5,
-      "community_name": "types.ts",
+      "community": 77,
+      "community_name": "AnkiConnectClient",
       "norm_label": "ankiconnecterror"
     },
     {
@@ -1168,8 +1322,8 @@
       "source_location": "L68",
       "_origin": "ast",
       "id": "src_types_ankiconnecterror_constructor",
-      "community": 5,
-      "community_name": "types.ts",
+      "community": 77,
+      "community_name": "AnkiConnectClient",
       "norm_label": ".constructor()"
     },
     {
@@ -1393,10 +1547,21 @@
       "norm_label": "dom"
     },
     {
+      "label": "types",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L17",
+      "_origin": "ast",
+      "id": "tsconfig_compileroptions_types",
+      "community": 3,
+      "community_name": "compilerOptions",
+      "norm_label": "types"
+    },
+    {
       "label": "include",
       "file_type": "code",
       "source_file": "tsconfig.json",
-      "source_location": "L18",
+      "source_location": "L19",
       "_origin": "ast",
       "id": "tsconfig_include",
       "community": 3,
@@ -1407,7 +1572,7 @@
       "label": "src/**/*.ts",
       "file_type": "concept",
       "source_file": "tsconfig.json",
-      "source_location": "L18",
+      "source_location": "L19",
       "_origin": "ast",
       "id": "ref_src_ts",
       "community": 3,
@@ -5042,6 +5207,258 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sync/ankiConnect.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_ankiconnect",
+      "target": "src_sync_ankiconnect_ankiconnectclient",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sync/ankiConnect.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_ankiconnect",
+      "target": "src_sync_ankiconnect_ankiconnectresponse",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sync/ankiConnect.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_ankiconnect",
+      "target": "src_types",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sync/ankiConnect.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_ankiconnect",
+      "target": "src_types_ankiconnecterror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sync/ankiConnect.ts",
+      "source_location": "L57",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_ankiconnect_ankiconnectclient",
+      "target": "src_sync_ankiconnect_ankiconnectclient_addnote",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sync/ankiConnect.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_ankiconnect_ankiconnectclient",
+      "target": "src_sync_ankiconnect_ankiconnectclient_constructor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sync/ankiConnect.ts",
+      "source_location": "L81",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_ankiconnect_ankiconnectclient",
+      "target": "src_sync_ankiconnect_ankiconnectclient_decknames",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sync/ankiConnect.ts",
+      "source_location": "L77",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_ankiconnect_ankiconnectclient",
+      "target": "src_sync_ankiconnect_ankiconnectclient_deletenotes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sync/ankiConnect.ts",
+      "source_location": "L15",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_ankiconnect_ankiconnectclient",
+      "target": "src_sync_ankiconnect_ankiconnectclient_invoke",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sync/ankiConnect.ts",
+      "source_location": "L89",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_ankiconnect_ankiconnectclient",
+      "target": "src_sync_ankiconnect_ankiconnectclient_modelfieldnames",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sync/ankiConnect.ts",
+      "source_location": "L85",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_ankiconnect_ankiconnectclient",
+      "target": "src_sync_ankiconnect_ankiconnectclient_modelnames",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sync/ankiConnect.ts",
+      "source_location": "L73",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_ankiconnect_ankiconnectclient",
+      "target": "src_sync_ankiconnect_ankiconnectclient_updatenotefields",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sync/ankiConnect.ts",
+      "source_location": "L63",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_ankiconnect_ankiconnectclient_addnote",
+      "target": "src_sync_ankiconnect_ankiconnectclient_invoke",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sync/ankiConnect.ts",
+      "source_location": "L82",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_ankiconnect_ankiconnectclient_decknames",
+      "target": "src_sync_ankiconnect_ankiconnectclient_invoke",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sync/ankiConnect.ts",
+      "source_location": "L90",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_ankiconnect_ankiconnectclient_modelfieldnames",
+      "target": "src_sync_ankiconnect_ankiconnectclient_invoke",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sync/ankiConnect.ts",
+      "source_location": "L86",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_ankiconnect_ankiconnectclient_modelnames",
+      "target": "src_sync_ankiconnect_ankiconnectclient_invoke",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sync/fieldMapper.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_fieldmapper",
+      "target": "src_sync_fieldmapper_mapcontenttofields",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sync/fieldMapper.ts",
+      "source_location": "L20",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_fieldmapper",
+      "target": "src_sync_fieldmapper_stringifysectionvalue",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sync/fieldMapper.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_fieldmapper",
+      "target": "src_types",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sync/fieldMapper.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_fieldmapper",
+      "target": "src_types_sectionvalue",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/sync/fieldMapper.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_fieldmapper_mapcontenttofields",
+      "target": "src_sync_fieldmapper_stringifysectionvalue",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/sync/fieldMapper.ts",
+      "source_location": "L21",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_sync_fieldmapper_stringifysectionvalue",
+      "target": "src_types_sectionvalue"
+    },
+    {
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -5427,7 +5844,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "tsconfig.json",
-      "source_location": "L18",
+      "source_location": "L19",
       "weight": 1.0,
       "_origin": "ast",
       "source": "tsconfig",
@@ -5589,6 +6006,17 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L17",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "tsconfig_compileroptions",
+      "target": "tsconfig_compileroptions_types",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "extends",
       "confidence": "EXTRACTED",
       "source_file": "tsconfig.json",
@@ -5616,7 +6044,7 @@
       "relation": "extends",
       "confidence": "EXTRACTED",
       "source_file": "tsconfig.json",
-      "source_location": "L18",
+      "source_location": "L19",
       "weight": 1.0,
       "context": "import",
       "_origin": "ast",
@@ -7754,5 +8182,5 @@
       "source_file": ".opencode/skills/graphify/SKILL.md"
     }
   ],
-  "built_at_commit": "55d1f31de4b7db4c353b6d0b444010be2cce0d6f"
+  "built_at_commit": "c2a9992dae084b2bb04781a1ce75da484502cadf"
 }
