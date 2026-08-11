@@ -220,8 +220,8 @@
     "semantic_hash": ""
   },
   "src/types.ts": {
-    "mtime": 1786282214.1685731,
-    "ast_hash": "3fa0f7b60e196bbac16df2612c428186",
+    "mtime": 1786458030.6269093,
+    "ast_hash": "040c70fb94686a8c298afe2acc482d26",
     "semantic_hash": ""
   },
   "vitest.config.ts": {
@@ -300,8 +300,8 @@
     "semantic_hash": ""
   },
   "src/sync/syncEngine.ts": {
-    "mtime": 1786457664.4582584,
-    "ast_hash": "817bb3c53c5952251ab9b2524893949e",
+    "mtime": 1786458042.963147,
+    "ast_hash": "8f56decd5bd1116ca84abeea6f4e0a6b",
     "semantic_hash": ""
   }
 }
