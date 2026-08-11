@@ -1,16 +1,16 @@
-# Graph Report - anki-bridge  (2026-08-09)
+# Graph Report - anki-bridge  (2026-08-10)
 
 ## Corpus Check
-- 53 files · ~35,526 words
+- 58 files · ~37,783 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 314 nodes · 294 edges · 77 communities (19 shown, 58 thin omitted)
-- Extraction: 95% EXTRACTED · 5% INFERRED · 0% AMBIGUOUS · INFERRED: 15 edges (avg confidence: 0.86)
+- 344 nodes · 341 edges · 78 communities (20 shown, 58 thin omitted)
+- Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 15 edges (avg confidence: 0.86)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `42365a4d`
+- Built from commit: `5f97422d`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -89,18 +89,19 @@
 - roadmap.md — development roadmap
 - README.md — Obsidian Sample Plugin boilerplate
 - graphify reference: GitHub clone and cross-repo merge
+- AnkiConnectClient
 
 ## God Nodes (most connected - your core abstractions)
 1. `Common Provider Interface (processText/generateAudio/generateImage)` - 20 edges
 2. `graphify Skill (/graphify)` - 17 edges
-3. `compilerOptions` - 15 edges
-4. `Graphify Full Pipeline` - 9 edges
-5. `Generate with AI Button` - 9 edges
-6. `Tab 1 — Note (Deck/Model/Folder/Field checkboxes)` - 9 edges
-7. `scripts` - 8 edges
-8. `Create Note From Selection (Hotkey / Quick Capture)` - 8 edges
-9. `Scenario 2: Create Note From Selected Text (Hotkey)` - 8 edges
-10. `Add Audio Button` - 7 edges
+3. `compilerOptions` - 16 edges
+4. `AnkiConnectClient` - 10 edges
+5. `Graphify Full Pipeline` - 9 edges
+6. `Generate with AI Button` - 9 edges
+7. `Tab 1 — Note (Deck/Model/Folder/Field checkboxes)` - 9 edges
+8. `scripts` - 8 edges
+9. `Create Note From Selection (Hotkey / Quick Capture)` - 8 edges
+10. `Scenario 2: Create Note From Selected Text (Hotkey)` - 8 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `graphify Skill (/graphify)` --references--> `GitHub Clone & Cross-Repo Merge`  [EXTRACTED]
@@ -128,7 +129,7 @@
 - **Pluggable AI Provider Interfaces** — docs_contracts_textprovider, docs_contracts_audioprovider, docs_contracts_imageprovider, docs_design_02_providers_abstraction_layer [INFERRED 0.85]
 - **AST + Semantic Extraction Forming the Merged Graph Build** — opencode_skills_graphify_skill_ast_extraction, opencode_skills_graphify_skill_semantic_extraction, opencode_skills_graphify_references_extraction_spec_node_id_format, opencode_skills_graphify_references_extraction_spec_confidence_rubric [INFERRED 0.85]
 
-## Communities (77 total, 58 thin omitted)
+## Communities (78 total, 58 thin omitted)
 
 ### Community 0 - "Generate with AI Button"
 Cohesion: 0.11
@@ -144,15 +145,15 @@ Nodes (25): esbuild, eslint, @eslint/js, eslint-plugin-obsidianmd, globals, jiti
 
 ### Community 3 - "compilerOptions"
 Cohesion: 0.10
-Nodes (19): DOM, ES2021, src/**/*.ts, compilerOptions, allowSyntheticDefaultImports, forceConsistentCasingInFileNames, inlineSourceMap, inlineSources (+11 more)
+Nodes (20): DOM, ES2021, src/**/*.ts, compilerOptions, allowSyntheticDefaultImports, forceConsistentCasingInFileNames, inlineSourceMap, inlineSources (+12 more)
 
 ### Community 4 - "Scenario 1: Create Note via Icon/Command"
 Cohesion: 0.13
 Nodes (18): Repo Layout (src/ module organization), AnkiFrontmatter interface, FIELD_ALIASES map, Field Mapping Algorithm (3-pass deterministic), ParsedNote interface, Dynamic Field Mapping (§1.5), AI Provider Manager, anki-controls Markdown Code Block (+10 more)
 
 ### Community 5 - "types.ts"
-Cohesion: 0.11
-Nodes (12): AnkiConnectError, AnkiFrontmatter, AudioOptions, AudioProvider, ImageOptions, ImageProvider, MediaResult, ParsedNote (+4 more)
+Cohesion: 0.09
+Nodes (19): mapContentToFields(), stringifySectionValue(), extractSectionValue(), parseSections(), readAnkiFrontmatter(), file, writeAnkiFrontmatter(), AnkiFrontmatter (+11 more)
 
 ### Community 6 - "Common Provider Interface (processText/generateAudio/generateImage)"
 Cohesion: 0.12
@@ -194,8 +195,12 @@ Nodes (3): plugin, $schema, .opencode/plugins/graphify.js
 Cohesion: 0.67
 Nodes (3): TextProvider interface, TextResult interface, TextTask type
 
+### Community 77 - "AnkiConnectClient"
+Cohesion: 0.15
+Nodes (4): AnkiConnectClient, AnkiConnectResponse, { requestUrl }, AnkiConnectError
+
 ## Knowledge Gaps
-- **142 isolated node(s):** `$schema`, `.opencode/plugins/graphify.js`, `id`, `name`, `version` (+137 more)
+- **145 isolated node(s):** `$schema`, `.opencode/plugins/graphify.js`, `id`, `name`, `version` (+140 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **58 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -203,13 +208,13 @@ Nodes (3): TextProvider interface, TextResult interface, TextTask type
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `Common Provider Interface (processText/generateAudio/generateImage)` connect `Common Provider Interface (processText/generateAudio/generateImage)` to `Generate with AI Button`, `Scenario 1: Create Note via Icon/Command`?**
-  _High betweenness centrality (0.020) - this node is a cross-community bridge._
+  _High betweenness centrality (0.017) - this node is a cross-community bridge._
 - **Why does `devDependencies` connect `devDependencies` to `package.json`?**
-  _High betweenness centrality (0.013) - this node is a cross-community bridge._
-- **Why does `Scenario 1: Create Note via Icon/Command` connect `Scenario 1: Create Note via Icon/Command` to `Generate with AI Button`?**
   _High betweenness centrality (0.011) - this node is a cross-community bridge._
+- **Why does `Scenario 1: Create Note via Icon/Command` connect `Scenario 1: Create Note via Icon/Command` to `Generate with AI Button`?**
+  _High betweenness centrality (0.009) - this node is a cross-community bridge._
 - **What connects `$schema`, `.opencode/plugins/graphify.js`, `id` to the rest of the system?**
-  _142 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _145 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Generate with AI Button` be split into smaller, more focused modules?**
   _Cohesion score 0.11229946524064172 - nodes in this community are weakly interconnected._
 - **Should `graphify Skill (/graphify)` be split into smaller, more focused modules?**

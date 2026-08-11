@@ -298,10 +298,5 @@
     "mtime": 1786369970.4374244,
     "ast_hash": "3994912b1e4901f1d8b57203ac47f949",
     "semantic_hash": ""
-  },
-  "src/sync/ankiConnect.test.ts": {
-    "mtime": 1786370694.5717578,
-    "ast_hash": "5f806c71a2a5b9f470a2e71af71d2a1b",
-    "semantic_hash": ""
   }
 }
