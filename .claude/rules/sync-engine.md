@@ -11,37 +11,64 @@ Spec: `docs/design/01-sync.md` and `docs/design/03-note.md`. Contracts: `docs/co
 ## AnkiConnect access
 
 All AnkiConnect traffic goes through one typed wrapper in `sync/ankiConnect.ts`.
-Never call `fetch` against AnkiConnect from UI, sync-engine, or provider code.
+Never call `fetch` against AnkiConnect from UI, sync-engine, or provider code — use
+Obsidian's `requestUrl` instead (`eslint-plugin-obsidianmd` flags bare `fetch`; it
+also sidesteps the CORS failures documented in `AGENTS.md`'s troubleshooting section).
+`requestUrl` has no built-in timeout/abort, unlike `fetch` — race one with
+`setTimeout` instead of `AbortSignal.timeout`.
 
 ```ts
 // sync/ankiConnect.ts
+import { requestUrl } from 'obsidian';
+
 export class AnkiConnectClient {
  constructor(
   private url: string,
   private timeoutMs = 5000,
  ) {}
 
- private async request<T>(
+ async invoke<T>(
   action: string,
   params: Record<string, unknown> = {},
  ): Promise<T> {
-  const res = await fetch(this.url, {
-   method: 'POST',
-   signal: AbortSignal.timeout(this.timeoutMs),
-   body: JSON.stringify({ action, version: 6, params }),
+  const timeoutError = new Error('timeout');
+  let timer: ReturnType<typeof window.setTimeout> | undefined;
+  const timeout = new Promise<never>((_, reject) => {
+   timer = window.setTimeout(() => reject(timeoutError), this.timeoutMs);
   });
-  const data = await res.json();
+
+  let text: string;
+  try {
+   const response = await Promise.race([
+    requestUrl({
+     url: this.url,
+     method: 'POST',
+     contentType: 'application/json',
+     body: JSON.stringify({ action, version: 6, params }),
+     throw: false,
+    }),
+    timeout,
+   ]);
+   text = response.text;
+  } catch (err) {
+   if (err === timeoutError) throw new AnkiConnectError(action, `timed out after ${this.timeoutMs}ms`);
+   throw new AnkiConnectError(action, 'could not reach AnkiConnect — is Anki running?');
+  } finally {
+   window.clearTimeout(timer);
+  }
+
+  const data = JSON.parse(text) as { result: T; error: string | null };
   if (data.error) throw new AnkiConnectError(action, data.error);
-  return data.result as T;
+  return data.result;
  }
 
  deckNames() {
-  return this.request<string[]>('deckNames');
+  return this.invoke<string[]>('deckNames');
  }
  modelFieldNames(modelName: string) {
-  return this.request<string[]>('modelFieldNames', { modelName });
+  return this.invoke<string[]>('modelFieldNames', { modelName });
  }
- // one small typed method per action
+ // one small typed method per action, each calling invoke()
 }
 ```
 
