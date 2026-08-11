@@ -887,61 +887,6 @@
       "norm_label": "sanitizeforfilename()"
     },
     {
-      "label": "ankiConnect.test.ts",
-      "file_type": "code",
-      "source_file": "src/sync/ankiConnect.test.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "src_sync_ankiconnect_test",
-      "community": 5,
-      "community_name": "types.ts",
-      "norm_label": "ankiconnect.test.ts"
-    },
-    {
-      "label": "{ requestUrl }",
-      "file_type": "code",
-      "source_file": "src/sync/ankiConnect.test.ts",
-      "source_location": "L5",
-      "_origin": "ast",
-      "id": "src_sync_ankiconnect_test_requesturl",
-      "community": 5,
-      "community_name": "types.ts",
-      "norm_label": "{ requesturl }"
-    },
-    {
-      "label": "jsonResponse()",
-      "file_type": "code",
-      "source_file": "src/sync/ankiConnect.test.ts",
-      "source_location": "L33",
-      "_origin": "ast",
-      "id": "src_sync_ankiconnect_test_jsonresponse",
-      "community": 5,
-      "community_name": "types.ts",
-      "norm_label": "jsonresponse()"
-    },
-    {
-      "label": "sentBody()",
-      "file_type": "code",
-      "source_file": "src/sync/ankiConnect.test.ts",
-      "source_location": "L37",
-      "_origin": "ast",
-      "id": "src_sync_ankiconnect_test_sentbody",
-      "community": 5,
-      "community_name": "types.ts",
-      "norm_label": "sentbody()"
-    },
-    {
-      "label": "client()",
-      "file_type": "code",
-      "source_file": "src/sync/ankiConnect.test.ts",
-      "source_location": "L89",
-      "_origin": "ast",
-      "id": "src_sync_ankiconnect_test_client",
-      "community": 5,
-      "community_name": "types.ts",
-      "norm_label": "client()"
-    },
-    {
       "label": "ankiConnect.ts",
       "file_type": "code",
       "source_file": "src/sync/ankiConnect.ts",
@@ -1193,61 +1138,6 @@
       "community": 5,
       "community_name": "types.ts",
       "norm_label": "extractsectionvalue()"
-    },
-    {
-      "label": "syncEngine.test.ts",
-      "file_type": "code",
-      "source_file": "src/sync/syncEngine.test.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "src_sync_syncengine_test",
-      "community": 5,
-      "community_name": "types.ts",
-      "norm_label": "syncengine.test.ts"
-    },
-    {
-      "label": "FIELDS",
-      "file_type": "code",
-      "source_file": "src/sync/syncEngine.test.ts",
-      "source_location": "L8",
-      "_origin": "ast",
-      "id": "src_sync_syncengine_test_fields",
-      "community": 5,
-      "community_name": "types.ts",
-      "norm_label": "fields"
-    },
-    {
-      "label": "fakeApp()",
-      "file_type": "code",
-      "source_file": "src/sync/syncEngine.test.ts",
-      "source_location": "L10",
-      "_origin": "ast",
-      "id": "src_sync_syncengine_test_fakeapp",
-      "community": 5,
-      "community_name": "types.ts",
-      "norm_label": "fakeapp()"
-    },
-    {
-      "label": "fakeClient()",
-      "file_type": "code",
-      "source_file": "src/sync/syncEngine.test.ts",
-      "source_location": "L31",
-      "_origin": "ast",
-      "id": "src_sync_syncengine_test_fakeclient",
-      "community": 5,
-      "community_name": "types.ts",
-      "norm_label": "fakeclient()"
-    },
-    {
-      "label": "file",
-      "file_type": "code",
-      "source_file": "src/sync/syncEngine.test.ts",
-      "source_location": "L50",
-      "_origin": "ast",
-      "id": "src_sync_syncengine_test_file",
-      "community": 5,
-      "community_name": "types.ts",
-      "norm_label": "file"
     },
     {
       "label": "syncEngine.ts",
@@ -5394,98 +5284,6 @@
       "confidence_score": 1.0
     },
     {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/sync/ankiConnect.test.ts",
-      "source_location": "L2",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_sync_ankiconnect_test",
-      "target": "src_sync_ankiconnect",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/sync/ankiConnect.test.ts",
-      "source_location": "L2",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_sync_ankiconnect_test",
-      "target": "src_sync_ankiconnect_ankiconnectclient",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/sync/ankiConnect.test.ts",
-      "source_location": "L89",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_sync_ankiconnect_test",
-      "target": "src_sync_ankiconnect_test_client",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/sync/ankiConnect.test.ts",
-      "source_location": "L33",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_sync_ankiconnect_test",
-      "target": "src_sync_ankiconnect_test_jsonresponse",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/sync/ankiConnect.test.ts",
-      "source_location": "L5",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_sync_ankiconnect_test",
-      "target": "src_sync_ankiconnect_test_requesturl",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/sync/ankiConnect.test.ts",
-      "source_location": "L37",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_sync_ankiconnect_test",
-      "target": "src_sync_ankiconnect_test_sentbody",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/sync/ankiConnect.test.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_sync_ankiconnect_test",
-      "target": "src_types",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/sync/ankiConnect.test.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_sync_ankiconnect_test",
-      "target": "src_types_ankiconnecterror",
-      "confidence_score": 1.0
-    },
-    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/sync/ankiConnect.ts",
@@ -5540,18 +5338,6 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_sync_syncengine",
-      "target": "src_sync_ankiconnect",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/sync/syncEngine.test.ts",
-      "source_location": "L4",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_sync_syncengine_test",
       "target": "src_sync_ankiconnect",
       "confidence_score": 1.0
     },
@@ -5652,18 +5438,6 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_sync_syncengine",
-      "target": "src_sync_ankiconnect_ankiconnectclient",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/sync/syncEngine.test.ts",
-      "source_location": "L4",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_sync_syncengine_test",
       "target": "src_sync_ankiconnect_ankiconnectclient",
       "confidence_score": 1.0
     },
@@ -6125,110 +5899,6 @@
       "_origin": "ast",
       "source": "src_sync_syncengine_syncnote",
       "target": "src_sync_parser_parsesections"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/sync/syncEngine.test.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_sync_syncengine_test",
-      "target": "src_sync_syncengine",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/sync/syncEngine.test.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_sync_syncengine_test",
-      "target": "src_sync_syncengine_syncnote",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/sync/syncEngine.test.ts",
-      "source_location": "L10",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_sync_syncengine_test",
-      "target": "src_sync_syncengine_test_fakeapp",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/sync/syncEngine.test.ts",
-      "source_location": "L31",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_sync_syncengine_test",
-      "target": "src_sync_syncengine_test_fakeclient",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/sync/syncEngine.test.ts",
-      "source_location": "L8",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_sync_syncengine_test",
-      "target": "src_sync_syncengine_test_fields",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/sync/syncEngine.test.ts",
-      "source_location": "L50",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_sync_syncengine_test",
-      "target": "src_sync_syncengine_test_file",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/sync/syncEngine.test.ts",
-      "source_location": "L5",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_sync_syncengine_test",
-      "target": "src_types",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/sync/syncEngine.test.ts",
-      "source_location": "L5",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_sync_syncengine_test",
-      "target": "src_types_ankiconnecterror",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/sync/syncEngine.test.ts",
-      "source_location": "L5",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_sync_syncengine_test",
-      "target": "src_types_syncerror",
-      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -8931,5 +8601,5 @@
       "source_file": ".opencode/skills/graphify/SKILL.md"
     }
   ],
-  "built_at_commit": "c600a2dd801a5413a0f478e7e204dd6bf301ee4d"
+  "built_at_commit": "2e1f25e9b7d82b1253168f25263420116b8dd2a7"
 }

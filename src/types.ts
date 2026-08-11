@@ -81,3 +81,12 @@ export class ProviderError extends Error {
 		super(`${providerId}: ${cause}`);
 	}
 }
+
+export class SyncError extends Error {
+	constructor(
+		public reason: 'offline' | 'duplicate' | 'parse-error' | 'model-not-found',
+		message: string,
+	) {
+		super(message);
+	}
+}
