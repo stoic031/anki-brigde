@@ -30,9 +30,9 @@
     "semantic_hash": ""
   },
   "src/main.ts": {
-    "mtime": 1786805020.8364618,
-    "ast_hash": "9a6ebd53fca016286d9f7b28e4fd92b8",
-    "semantic_hash": ""
+    "mtime": 1785418977.5978215,
+    "ast_hash": "954cae785e819ae30fc5735f76730805",
+    "semantic_hash": "954cae785e819ae30fc5735f76730805"
   },
   "tsconfig.json": {
     "mtime": 1786456717.2905955,
@@ -220,7 +220,7 @@
     "semantic_hash": ""
   },
   "src/types.ts": {
-    "mtime": 1786804901.6426642,
+    "mtime": 1786458262.2876043,
     "ast_hash": "040c70fb94686a8c298afe2acc482d26",
     "semantic_hash": ""
   },
@@ -300,28 +300,18 @@
     "semantic_hash": ""
   },
   "src/sync/syncEngine.ts": {
-    "mtime": 1786804901.6425138,
+    "mtime": 1786458262.287432,
     "ast_hash": "8f56decd5bd1116ca84abeea6f4e0a6b",
     "semantic_hash": ""
   },
   "src/sync/ankiConnect.test.ts": {
-    "mtime": 1786804901.642127,
+    "mtime": 1786458356.6492424,
     "ast_hash": "5f806c71a2a5b9f470a2e71af71d2a1b",
     "semantic_hash": ""
   },
   "src/sync/syncEngine.test.ts": {
-    "mtime": 1786804901.6423995,
+    "mtime": 1786458650.3249755,
     "ast_hash": "4e2be6c7997c3f4678f7e79d87569993",
-    "semantic_hash": ""
-  },
-  "src/note/controlsBlock.test.ts": {
-    "mtime": 1786805017.8216288,
-    "ast_hash": "15acee66d4a7a651daa9d0d012abdacc",
-    "semantic_hash": ""
-  },
-  "src/note/controlsBlock.ts": {
-    "mtime": 1786805012.7295163,
-    "ast_hash": "3c49b0058b312c8b7db2c6bc21686018",
     "semantic_hash": ""
   }
 }
