@@ -170,9 +170,9 @@
     "semantic_hash": ""
   },
   "docs/design/05-ui.md": {
-    "mtime": 1787064836.6208696,
-    "ast_hash": "ec56e13ec2d4214420986367fcb46edc",
-    "semantic_hash": "ec56e13ec2d4214420986367fcb46edc"
+    "mtime": 1787065457.8594615,
+    "ast_hash": "5ac051889d1129da05b4cd49ecf3af0c",
+    "semantic_hash": ""
   },
   "docs/design/06-settings.md": {
     "mtime": 1786267729.4961514,
@@ -315,13 +315,28 @@
     "semantic_hash": ""
   },
   "src/note/controlsBlock.test.ts": {
-    "mtime": 1787064836.626869,
-    "ast_hash": "5165c3df6bd0958522ad60cd76ddf01b",
+    "mtime": 1787065518.0235732,
+    "ast_hash": "fb956eeb5affb240b4c04c3a3653560d",
     "semantic_hash": ""
   },
   "src/note/controlsBlock.ts": {
-    "mtime": 1787064836.6270702,
-    "ast_hash": "7d456d1fee14132a4cdb1e9d42c849a8",
+    "mtime": 1787065487.3126392,
+    "ast_hash": "1e3eb8c7f967d16db447c951434ffd7b",
+    "semantic_hash": ""
+  },
+  "src/utils/constants.ts": {
+    "mtime": 1787065457.8665633,
+    "ast_hash": "3c360fd41fb53eba06dce836f6d290d2",
+    "semantic_hash": ""
+  },
+  "src/ui/toast.test.ts": {
+    "mtime": 1787065468.7866805,
+    "ast_hash": "5e8f19550b452a83116b20ed1cd1c067",
+    "semantic_hash": ""
+  },
+  "src/ui/toast.ts": {
+    "mtime": 1787065468.7868855,
+    "ast_hash": "9ba91bda8f73753d44dd4b41e8b47409",
     "semantic_hash": ""
   },
   "src/ui/toast.test.ts": {
