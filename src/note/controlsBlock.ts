@@ -1,10 +1,11 @@
 import type { App, MarkdownPostProcessorContext, Plugin } from 'obsidian';
-import { Notice, TFile } from 'obsidian';
+import { TFile } from 'obsidian';
 import { readAnkiFrontmatter } from '../sync/parser';
 import { syncNote } from '../sync/syncEngine';
 import { AnkiConnectClient } from '../sync/ankiConnect';
 import { DEFAULT_ANKI_CONNECT_URL } from '../utils/constants';
 import { SyncError } from '../types';
+import { toastError, toastSuccess } from '../ui/toast';
 
 // docs/design/03-note.md §3.1
 export const CONTROLS_BLOCK_LANGUAGE = 'anki-controls';
@@ -90,7 +91,7 @@ async function handleSync(
 		const client = new AnkiConnectClient(DEFAULT_ANKI_CONNECT_URL);
 		await syncNote(app, file, client);
 		button.setText('✅ Done!');
-		new Notice('✅ Note synced to Anki!', 3000);
+		toastSuccess('✅ Note synced to Anki!');
 		window.setTimeout(() => {
 			button.setText(label);
 			button.disabled = false;
@@ -104,7 +105,7 @@ async function handleSync(
 				? `❌ ${err.message}`
 				: '❌ Failed to sync. Please check Anki connection.';
 		button.setText('❌ Error');
-		new Notice(message, 5000);
+		toastError(message);
 		window.setTimeout(() => {
 			button.setText(label);
 			button.disabled = false;
