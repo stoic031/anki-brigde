@@ -30,8 +30,13 @@
     "semantic_hash": ""
   },
   "src/main.ts": {
+<<<<<<< HEAD
     "mtime": 1787066720.9706635,
     "ast_hash": "ebd2495729ef5592fa2274b0597e94ef",
+=======
+    "mtime": 1787061696.1278846,
+    "ast_hash": "9a6ebd53fca016286d9f7b28e4fd92b8",
+>>>>>>> origin/features/19-sync-delete-button-actions
     "semantic_hash": ""
   },
   "tsconfig.json": {
@@ -170,9 +175,15 @@
     "semantic_hash": ""
   },
   "docs/design/05-ui.md": {
+<<<<<<< HEAD
     "mtime": 1787066651.159047,
     "ast_hash": "ec56e13ec2d4214420986367fcb46edc",
     "semantic_hash": "ec56e13ec2d4214420986367fcb46edc"
+=======
+    "mtime": 1787063886.3993318,
+    "ast_hash": "5ac051889d1129da05b4cd49ecf3af0c",
+    "semantic_hash": ""
+>>>>>>> origin/features/19-sync-delete-button-actions
   },
   "docs/design/06-settings.md": {
     "mtime": 1786267729.4961514,
@@ -315,6 +326,7 @@
     "semantic_hash": ""
   },
   "src/note/controlsBlock.test.ts": {
+<<<<<<< HEAD
     "mtime": 1787066651.1659782,
     "ast_hash": "5165c3df6bd0958522ad60cd76ddf01b",
     "semantic_hash": ""
@@ -322,6 +334,20 @@
   "src/note/controlsBlock.ts": {
     "mtime": 1787066651.1662507,
     "ast_hash": "7d456d1fee14132a4cdb1e9d42c849a8",
+=======
+    "mtime": 1787063927.9308603,
+    "ast_hash": "a859256f087416d4dcd8232904977ff8",
+    "semantic_hash": ""
+  },
+  "src/note/controlsBlock.ts": {
+    "mtime": 1787063927.9402595,
+    "ast_hash": "2ff2da7e49237858be2457c60aef4b1a",
+    "semantic_hash": ""
+  },
+  "src/utils/constants.ts": {
+    "mtime": 1787062111.9477642,
+    "ast_hash": "3c360fd41fb53eba06dce836f6d290d2",
+>>>>>>> origin/features/19-sync-delete-button-actions
     "semantic_hash": ""
   },
   "src/settings.test.ts": {

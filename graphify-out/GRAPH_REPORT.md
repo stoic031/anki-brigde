@@ -1,6 +1,7 @@
 # Graph Report - anki-bridge  (2026-08-18)
 
 ## Corpus Check
+<<<<<<< HEAD
 - 69 files · ~40,577 words
 - Verdict: corpus is large enough that graph structure adds value.
 
@@ -11,6 +12,18 @@
 
 ## Graph Freshness
 - Built from commit: `b7054a3f`
+=======
+- 63 files · ~40,295 words
+- Verdict: corpus is large enough that graph structure adds value.
+
+## Summary
+- 373 nodes · 423 edges · 76 communities (19 shown, 57 thin omitted)
+- Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 15 edges (avg confidence: 0.86)
+- Token cost: 0 input · 0 output
+
+## Graph Freshness
+- Built from commit: `907f2cf3`
+>>>>>>> origin/features/19-sync-delete-button-actions
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -96,8 +109,8 @@
 1. `Common Provider Interface (processText/generateAudio/generateImage)` - 20 edges
 2. `graphify Skill (/graphify)` - 17 edges
 3. `compilerOptions` - 16 edges
-4. `AnkiConnectClient` - 12 edges
-5. `syncNote()` - 11 edges
+4. `AnkiConnectClient` - 14 edges
+5. `syncNote()` - 13 edges
 6. `Graphify Full Pipeline` - 9 edges
 7. `Generate with AI Button` - 9 edges
 8. `Tab 1 — Note (Deck/Model/Folder/Field checkboxes)` - 9 edges
@@ -154,7 +167,7 @@ Nodes (18): Repo Layout (src/ module organization), AnkiFrontmatter interface, F
 
 ### Community 5 - "types.ts"
 Cohesion: 0.06
-Nodes (30): AnkiConnectClient, AnkiConnectResponse, { requestUrl }, mapContentToFields(), stringifySectionValue(), extractSectionValue(), parseSections(), readAnkiFrontmatter() (+22 more)
+Nodes (28): AnkiConnectClient, AnkiConnectResponse, { requestUrl }, mapContentToFields(), stringifySectionValue(), extractSectionValue(), parseSections(), file (+20 more)
 
 ### Community 6 - "Common Provider Interface (processText/generateAudio/generateImage)"
 Cohesion: 0.12
@@ -189,12 +202,17 @@ Cohesion: 0.50
 Nodes (5): AGENTS.md Non-Negotiables (9 rules), AudioProvider interface, ImageProvider interface, MediaResult interface, Q14: AudioOptions/ImageOptions shape undefined
 
 ### Community 14 - "controlsBlock.ts"
+<<<<<<< HEAD
 Cohesion: 0.18
 Nodes (7): ALWAYS_VISIBLE_BUTTONS, ControlAction, ControlButtonSpec, DELETE_BUTTON, renderControlsBlock(), RenderedButton, { TFile }
 
 ### Community 15 - "main.ts"
 Cohesion: 0.12
 Nodes (14): plugin, $schema, .opencode/plugins/graphify.js, AnkiBridgePlugin, registerControlsBlock(), AnkiBridgeSettings, DEFAULT_SETTINGS, loadSettings() (+6 more)
+=======
+Cohesion: 0.10
+Nodes (20): plugin, $schema, .opencode/plugins/graphify.js, AnkiBridgePlugin, ALWAYS_VISIBLE_BUTTONS, ControlAction, ControlButtonSpec, DELETE_BUTTON (+12 more)
+>>>>>>> origin/features/19-sync-delete-button-actions
 
 ### Community 16 - "TextProvider interface"
 Cohesion: 0.67
@@ -209,11 +227,19 @@ Nodes (3): TextProvider interface, TextResult interface, TextTask type
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `Common Provider Interface (processText/generateAudio/generateImage)` connect `Common Provider Interface (processText/generateAudio/generateImage)` to `Generate with AI Button`, `Scenario 1: Create Note via Icon/Command`?**
+<<<<<<< HEAD
   _High betweenness centrality (0.012) - this node is a cross-community bridge._
 - **Why does `readAnkiFrontmatter()` connect `types.ts` to `controlsBlock.ts`?**
   _High betweenness centrality (0.012) - this node is a cross-community bridge._
 - **Why does `devDependencies` connect `devDependencies` to `package.json`?**
   _High betweenness centrality (0.008) - this node is a cross-community bridge._
+=======
+  _High betweenness centrality (0.014) - this node is a cross-community bridge._
+- **Why does `devDependencies` connect `devDependencies` to `package.json`?**
+  _High betweenness centrality (0.009) - this node is a cross-community bridge._
+- **Why does `AnkiConnectClient` connect `types.ts` to `controlsBlock.ts`?**
+  _High betweenness centrality (0.009) - this node is a cross-community bridge._
+>>>>>>> origin/features/19-sync-delete-button-actions
 - **What connects `$schema`, `.opencode/plugins/graphify.js`, `id` to the rest of the system?**
   _154 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Generate with AI Button` be split into smaller, more focused modules?**
