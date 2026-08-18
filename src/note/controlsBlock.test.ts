@@ -11,6 +11,7 @@ const { syncNote } = vi.hoisted(() => ({ syncNote: vi.fn() }));
 vi.mock('../sync/syncEngine', () => ({ syncNote }));
 
 import { AnkiConnectClient } from '../sync/ankiConnect';
+import { SyncError } from '../types';
 import {
 	CONTROLS_BLOCK_LANGUAGE,
 	CONTROLS_BUTTON_CLASS,
@@ -25,7 +26,9 @@ function fakeApp(frontmatter?: Record<string, unknown> | null): App {
 	const file = Object.create(TFile.prototype) as InstanceType<typeof TFile>;
 	return {
 		vault: { getAbstractFileByPath: () => file },
-		metadataCache: { getFileCache: () => (frontmatter ? { frontmatter } : null) },
+		metadataCache: {
+			getFileCache: () => (frontmatter ? { frontmatter } : null),
+		},
 	} as unknown as App;
 }
 
@@ -43,7 +46,14 @@ function fakeEl() {
 	const buttons: RenderedButton[] = [];
 	const container = {
 		createEl: vi.fn(
-			(_tag: string, info: { cls: string[]; text: string; attr: Record<string, unknown> }) => {
+			(
+				_tag: string,
+				info: {
+					cls: string[];
+					text: string;
+					attr: Record<string, unknown>;
+				},
+			) => {
 				const listeners: Record<string, Array<() => unknown>> = {};
 				const button: RenderedButton = {
 					cls: info.cls,
@@ -71,14 +81,19 @@ function fakeEl() {
 }
 
 function fakeCtx(): MarkdownPostProcessorContext {
-	return { sourcePath: SOURCE_PATH } as unknown as MarkdownPostProcessorContext;
+	return {
+		sourcePath: SOURCE_PATH,
+	} as unknown as MarkdownPostProcessorContext;
 }
 
 describe('registerControlsBlock', () => {
 	it('registers the anki-controls language with Obsidian, delegating to renderControlsBlock with plugin.app', () => {
 		const registerMarkdownCodeBlockProcessor = vi.fn();
 		const app = fakeApp({ anki_note_id: 1 });
-		const plugin = { app, registerMarkdownCodeBlockProcessor } as unknown as Plugin;
+		const plugin = {
+			app,
+			registerMarkdownCodeBlockProcessor,
+		} as unknown as Plugin;
 
 		registerControlsBlock(plugin);
 
@@ -88,14 +103,17 @@ describe('registerControlsBlock', () => {
 		);
 
 		const { el, buttons } = fakeEl();
-		const processor = registerMarkdownCodeBlockProcessor.mock.calls[0]?.[1] as (
+		const processor = registerMarkdownCodeBlockProcessor.mock
+			.calls[0]?.[1] as (
 			source: string,
 			el: HTMLElement,
 			ctx: MarkdownPostProcessorContext,
 		) => void;
 		processor('', el, fakeCtx());
 
-		expect(buttons.some((b) => b.attr['data-action'] === 'delete')).toBe(true);
+		expect(buttons.some((b) => b.attr['data-action'] === 'delete')).toBe(
+			true,
+		);
 	});
 });
 
@@ -106,7 +124,9 @@ describe('renderControlsBlock', () => {
 		renderControlsBlock(fakeApp(), '', el, fakeCtx());
 
 		expect(createDiv).toHaveBeenCalledTimes(1);
-		expect(createDiv).toHaveBeenCalledWith({ cls: CONTROLS_CONTAINER_CLASS });
+		expect(createDiv).toHaveBeenCalledWith({
+			cls: CONTROLS_CONTAINER_CLASS,
+		});
 	});
 
 	it('renders Sync, Generate with AI, Add audio, and Add image when there is no anki_note_id', () => {
@@ -125,7 +145,12 @@ describe('renderControlsBlock', () => {
 	it('also renders Delete when frontmatter has anki_note_id', () => {
 		const { el, buttons } = fakeEl();
 
-		renderControlsBlock(fakeApp({ anki_note_id: 12345 }), '', el, fakeCtx());
+		renderControlsBlock(
+			fakeApp({ anki_note_id: 12345 }),
+			'',
+			el,
+			fakeCtx(),
+		);
 
 		expect(buttons.map((b) => b.attr['data-action'])).toEqual([
 			'sync',
@@ -146,7 +171,9 @@ describe('renderControlsBlock', () => {
 			fakeCtx(),
 		);
 
-		expect(buttons.some((b) => b.attr['data-action'] === 'delete')).toBe(false);
+		expect(buttons.some((b) => b.attr['data-action'] === 'delete')).toBe(
+			false,
+		);
 	});
 
 	it('omits Delete when there is no frontmatter at all', () => {
@@ -154,7 +181,9 @@ describe('renderControlsBlock', () => {
 
 		renderControlsBlock(fakeApp(null), '', el, fakeCtx());
 
-		expect(buttons.some((b) => b.attr['data-action'] === 'delete')).toBe(false);
+		expect(buttons.some((b) => b.attr['data-action'] === 'delete')).toBe(
+			false,
+		);
 	});
 
 	it('gives each button a semantic class and label', () => {
@@ -163,11 +192,17 @@ describe('renderControlsBlock', () => {
 		renderControlsBlock(fakeApp({ anki_note_id: 1 }), '', el, fakeCtx());
 
 		const sync = buttons.find((b) => b.attr['data-action'] === 'sync');
-		expect(sync?.cls).toEqual([CONTROLS_BUTTON_CLASS, `${CONTROLS_BUTTON_CLASS}--sync`]);
+		expect(sync?.cls).toEqual([
+			CONTROLS_BUTTON_CLASS,
+			`${CONTROLS_BUTTON_CLASS}--sync`,
+		]);
 		expect(sync?.text).toBe('🔄 Sync');
 
 		const del = buttons.find((b) => b.attr['data-action'] === 'delete');
-		expect(del?.cls).toEqual([CONTROLS_BUTTON_CLASS, `${CONTROLS_BUTTON_CLASS}--delete`]);
+		expect(del?.cls).toEqual([
+			CONTROLS_BUTTON_CLASS,
+			`${CONTROLS_BUTTON_CLASS}--delete`,
+		]);
 		expect(del?.text).toBe('🗑️ Delete');
 	});
 });
@@ -204,7 +239,11 @@ describe('sync button handler', () => {
 		await button.dispatch('click');
 
 		expect(syncNote).toHaveBeenCalledTimes(1);
-		expect(syncNote).toHaveBeenCalledWith(app, expect.anything(), expect.any(AnkiConnectClient));
+		expect(syncNote).toHaveBeenCalledWith(
+			app,
+			expect.anything(),
+			expect.any(AnkiConnectClient),
+		);
 	});
 
 	it('shows the processing state immediately, before syncNote resolves', () => {
@@ -232,8 +271,8 @@ describe('sync button handler', () => {
 		expect(button.disabled).toBe(false);
 	});
 
-	it('shows error, toasts, then reverts after 3s when syncNote rejects', async () => {
-		syncNote.mockRejectedValue(new Error('Anki is not running'));
+	it('shows the generic fallback toast, then reverts after 3s, for a non-SyncError rejection', async () => {
+		syncNote.mockRejectedValue(new Error('boom'));
 		const { button } = renderAndGetSyncButton();
 
 		await button.dispatch('click');
@@ -248,6 +287,24 @@ describe('sync button handler', () => {
 
 		expect(button.text).toBe('🔄 Sync');
 		expect(button.disabled).toBe(false);
+	});
+
+	it('shows the SyncError-specific message instead of the generic fallback', async () => {
+		syncNote.mockRejectedValue(
+			new SyncError(
+				'model-not-found',
+				'Model not found in Anki. Please select it again.',
+			),
+		);
+		const { button } = renderAndGetSyncButton();
+
+		await button.dispatch('click');
+
+		expect(button.text).toBe('❌ Error');
+		expect(Notice).toHaveBeenCalledWith(
+			'❌ Model not found in Anki. Please select it again.',
+			5000,
+		);
 	});
 
 	it('ignores a click while already processing', () => {
