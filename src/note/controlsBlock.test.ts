@@ -1,5 +1,9 @@
 import { describe, expect, it, vi } from 'vitest';
-import type { MarkdownPostProcessorContext, Plugin } from 'obsidian';
+import type { App, MarkdownPostProcessorContext, Plugin } from 'obsidian';
+
+const { TFile } = vi.hoisted(() => ({ TFile: class FakeTFile {} }));
+vi.mock('obsidian', () => ({ TFile }));
+
 import {
 	CONTROLS_BLOCK_LANGUAGE,
 	CONTROLS_BUTTON_CLASS,
@@ -7,6 +11,16 @@ import {
 	registerControlsBlock,
 	renderControlsBlock,
 } from './controlsBlock';
+
+const SOURCE_PATH = 'QA-71-has-note-id.md';
+
+function fakeApp(frontmatter?: Record<string, unknown> | null): App {
+	const file = Object.create(TFile.prototype) as InstanceType<typeof TFile>;
+	return {
+		vault: { getAbstractFileByPath: () => file },
+		metadataCache: { getFileCache: () => (frontmatter ? { frontmatter } : null) },
+	} as unknown as App;
+}
 
 interface RenderedButton {
 	cls: string[];
@@ -27,21 +41,32 @@ function fakeEl() {
 	return { el, createDiv, buttons };
 }
 
-function fakeCtx(frontmatter?: Record<string, unknown> | null): MarkdownPostProcessorContext {
-	return { frontmatter } as unknown as MarkdownPostProcessorContext;
+function fakeCtx(): MarkdownPostProcessorContext {
+	return { sourcePath: SOURCE_PATH } as unknown as MarkdownPostProcessorContext;
 }
 
 describe('registerControlsBlock', () => {
-	it('registers the anki-controls language with Obsidian', () => {
+	it('registers the anki-controls language with Obsidian, delegating to renderControlsBlock with plugin.app', () => {
 		const registerMarkdownCodeBlockProcessor = vi.fn();
-		const plugin = { registerMarkdownCodeBlockProcessor } as unknown as Plugin;
+		const app = fakeApp({ anki_note_id: 1 });
+		const plugin = { app, registerMarkdownCodeBlockProcessor } as unknown as Plugin;
 
 		registerControlsBlock(plugin);
 
 		expect(registerMarkdownCodeBlockProcessor).toHaveBeenCalledWith(
 			CONTROLS_BLOCK_LANGUAGE,
-			renderControlsBlock,
+			expect.any(Function),
 		);
+
+		const { el, buttons } = fakeEl();
+		const processor = registerMarkdownCodeBlockProcessor.mock.calls[0]?.[1] as (
+			source: string,
+			el: HTMLElement,
+			ctx: MarkdownPostProcessorContext,
+		) => void;
+		processor('', el, fakeCtx());
+
+		expect(buttons.some((b) => b.attr['data-action'] === 'delete')).toBe(true);
 	});
 });
 
@@ -49,7 +74,7 @@ describe('renderControlsBlock', () => {
 	it('renders a single controls container into the provided element', () => {
 		const { el, createDiv } = fakeEl();
 
-		renderControlsBlock('', el, fakeCtx());
+		renderControlsBlock(fakeApp(), '', el, fakeCtx());
 
 		expect(createDiv).toHaveBeenCalledTimes(1);
 		expect(createDiv).toHaveBeenCalledWith({ cls: CONTROLS_CONTAINER_CLASS });
@@ -58,7 +83,7 @@ describe('renderControlsBlock', () => {
 	it('renders Sync, Generate with AI, Add audio, and Add image when there is no anki_note_id', () => {
 		const { el, buttons } = fakeEl();
 
-		renderControlsBlock('', el, fakeCtx());
+		renderControlsBlock(fakeApp(), '', el, fakeCtx());
 
 		expect(buttons.map((b) => b.attr['data-action'])).toEqual([
 			'sync',
@@ -71,7 +96,7 @@ describe('renderControlsBlock', () => {
 	it('also renders Delete when frontmatter has anki_note_id', () => {
 		const { el, buttons } = fakeEl();
 
-		renderControlsBlock('', el, fakeCtx({ anki_note_id: 12345 }));
+		renderControlsBlock(fakeApp({ anki_note_id: 12345 }), '', el, fakeCtx());
 
 		expect(buttons.map((b) => b.attr['data-action'])).toEqual([
 			'sync',
@@ -85,7 +110,12 @@ describe('renderControlsBlock', () => {
 	it('omits Delete when frontmatter has no anki_note_id', () => {
 		const { el, buttons } = fakeEl();
 
-		renderControlsBlock('', el, fakeCtx({ anki_deck: 'Default', anki_model: 'Basic' }));
+		renderControlsBlock(
+			fakeApp({ anki_deck: 'Default', anki_model: 'Basic' }),
+			'',
+			el,
+			fakeCtx(),
+		);
 
 		expect(buttons.some((b) => b.attr['data-action'] === 'delete')).toBe(false);
 	});
@@ -93,7 +123,7 @@ describe('renderControlsBlock', () => {
 	it('omits Delete when there is no frontmatter at all', () => {
 		const { el, buttons } = fakeEl();
 
-		renderControlsBlock('', el, fakeCtx(null));
+		renderControlsBlock(fakeApp(null), '', el, fakeCtx());
 
 		expect(buttons.some((b) => b.attr['data-action'] === 'delete')).toBe(false);
 	});
@@ -101,7 +131,7 @@ describe('renderControlsBlock', () => {
 	it('gives each button a semantic class and label', () => {
 		const { el, buttons } = fakeEl();
 
-		renderControlsBlock('', el, fakeCtx({ anki_note_id: 1 }));
+		renderControlsBlock(fakeApp({ anki_note_id: 1 }), '', el, fakeCtx());
 
 		const sync = buttons.find((b) => b.attr['data-action'] === 'sync');
 		expect(sync?.cls).toEqual([CONTROLS_BUTTON_CLASS, `${CONTROLS_BUTTON_CLASS}--sync`]);
