@@ -157,7 +157,7 @@
       "_origin": "ast",
       "id": "opencode_opencode",
       "community": 14,
-      "community_name": "controlsBlock.ts",
+      "community_name": "opencode.json",
       "norm_label": "opencode.json"
     },
     {
@@ -168,7 +168,7 @@
       "_origin": "ast",
       "id": "opencode_opencode_schema",
       "community": 14,
-      "community_name": "controlsBlock.ts",
+      "community_name": "opencode.json",
       "norm_label": "$schema"
     },
     {
@@ -179,7 +179,7 @@
       "_origin": "ast",
       "id": "opencode_opencode_plugin",
       "community": 14,
-      "community_name": "controlsBlock.ts",
+      "community_name": "opencode.json",
       "norm_label": "plugin"
     },
     {
@@ -190,7 +190,7 @@
       "_origin": "ast",
       "id": "ref_opencode_plugins_graphify_js",
       "community": 14,
-      "community_name": "controlsBlock.ts",
+      "community_name": "opencode.json",
       "norm_label": ".opencode/plugins/graphify.js"
     },
     {
@@ -816,185 +816,42 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_main",
-      "community": 14,
-      "community_name": "controlsBlock.ts",
+      "community": 15,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "main.ts"
     },
     {
       "label": "AnkiBridgePlugin",
       "file_type": "code",
       "source_file": "src/main.ts",
-      "source_location": "L4",
+      "source_location": "L3",
       "_origin": "ast",
       "id": "src_main_ankibridgeplugin",
-      "community": 14,
-      "community_name": "controlsBlock.ts",
+      "community": 15,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "ankibridgeplugin"
     },
     {
       "label": ".onload()",
       "file_type": "code",
       "source_file": "src/main.ts",
-      "source_location": "L5",
+      "source_location": "L4",
       "_origin": "ast",
       "id": "src_main_ankibridgeplugin_onload",
-      "community": 14,
-      "community_name": "controlsBlock.ts",
+      "community": 15,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": ".onload()"
     },
     {
       "label": ".onunload()",
       "file_type": "code",
       "source_file": "src/main.ts",
-      "source_location": "L9",
+      "source_location": "L6",
       "_origin": "ast",
       "id": "src_main_ankibridgeplugin_onunload",
-      "community": 14,
-      "community_name": "controlsBlock.ts",
+      "community": 15,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": ".onunload()"
-    },
-    {
-      "label": "controlsBlock.test.ts",
-      "file_type": "code",
-      "source_file": "src/note/controlsBlock.test.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "src_note_controlsblock_test",
-      "community": 14,
-      "community_name": "controlsBlock.ts",
-      "norm_label": "controlsblock.test.ts"
-    },
-    {
-      "label": "{ TFile }",
-      "file_type": "code",
-      "source_file": "src/note/controlsBlock.test.ts",
-      "source_location": "L4",
-      "_origin": "ast",
-      "id": "src_note_controlsblock_test_tfile",
-      "community": 14,
-      "community_name": "controlsBlock.ts",
-      "norm_label": "{ tfile }"
-    },
-    {
-      "label": "fakeApp()",
-      "file_type": "code",
-      "source_file": "src/note/controlsBlock.test.ts",
-      "source_location": "L17",
-      "_origin": "ast",
-      "id": "src_note_controlsblock_test_fakeapp",
-      "community": 14,
-      "community_name": "controlsBlock.ts",
-      "norm_label": "fakeapp()"
-    },
-    {
-      "label": "RenderedButton",
-      "file_type": "code",
-      "source_file": "src/note/controlsBlock.test.ts",
-      "source_location": "L25",
-      "_origin": "ast",
-      "id": "src_note_controlsblock_test_renderedbutton",
-      "community": 14,
-      "community_name": "controlsBlock.ts",
-      "norm_label": "renderedbutton"
-    },
-    {
-      "label": "fakeEl()",
-      "file_type": "code",
-      "source_file": "src/note/controlsBlock.test.ts",
-      "source_location": "L31",
-      "_origin": "ast",
-      "id": "src_note_controlsblock_test_fakeel",
-      "community": 14,
-      "community_name": "controlsBlock.ts",
-      "norm_label": "fakeel()"
-    },
-    {
-      "label": "fakeCtx()",
-      "file_type": "code",
-      "source_file": "src/note/controlsBlock.test.ts",
-      "source_location": "L44",
-      "_origin": "ast",
-      "id": "src_note_controlsblock_test_fakectx",
-      "community": 14,
-      "community_name": "controlsBlock.ts",
-      "norm_label": "fakectx()"
-    },
-    {
-      "label": "controlsBlock.ts",
-      "file_type": "code",
-      "source_file": "src/note/controlsBlock.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "src_note_controlsblock",
-      "community": 14,
-      "community_name": "controlsBlock.ts",
-      "norm_label": "controlsblock.ts"
-    },
-    {
-      "label": "ControlAction",
-      "file_type": "code",
-      "source_file": "src/note/controlsBlock.ts",
-      "source_location": "L10",
-      "_origin": "ast",
-      "id": "src_note_controlsblock_controlaction",
-      "community": 14,
-      "community_name": "controlsBlock.ts",
-      "norm_label": "controlaction"
-    },
-    {
-      "label": "ControlButtonSpec",
-      "file_type": "code",
-      "source_file": "src/note/controlsBlock.ts",
-      "source_location": "L12",
-      "_origin": "ast",
-      "id": "src_note_controlsblock_controlbuttonspec",
-      "community": 14,
-      "community_name": "controlsBlock.ts",
-      "norm_label": "controlbuttonspec"
-    },
-    {
-      "label": "ALWAYS_VISIBLE_BUTTONS",
-      "file_type": "code",
-      "source_file": "src/note/controlsBlock.ts",
-      "source_location": "L18",
-      "_origin": "ast",
-      "id": "src_note_controlsblock_always_visible_buttons",
-      "community": 14,
-      "community_name": "controlsBlock.ts",
-      "norm_label": "always_visible_buttons"
-    },
-    {
-      "label": "DELETE_BUTTON",
-      "file_type": "code",
-      "source_file": "src/note/controlsBlock.ts",
-      "source_location": "L26",
-      "_origin": "ast",
-      "id": "src_note_controlsblock_delete_button",
-      "community": 14,
-      "community_name": "controlsBlock.ts",
-      "norm_label": "delete_button"
-    },
-    {
-      "label": "registerControlsBlock()",
-      "file_type": "code",
-      "source_file": "src/note/controlsBlock.ts",
-      "source_location": "L28",
-      "_origin": "ast",
-      "id": "src_note_controlsblock_registercontrolsblock",
-      "community": 14,
-      "community_name": "controlsBlock.ts",
-      "norm_label": "registercontrolsblock()"
-    },
-    {
-      "label": "renderControlsBlock()",
-      "file_type": "code",
-      "source_file": "src/note/controlsBlock.ts",
-      "source_location": "L34",
-      "_origin": "ast",
-      "id": "src_note_controlsblock_rendercontrolsblock",
-      "community": 14,
-      "community_name": "controlsBlock.ts",
-      "norm_label": "rendercontrolsblock()"
     },
     {
       "label": "mediaNaming.test.ts",
@@ -4896,18 +4753,6 @@
       "confidence_score": 1.0
     },
     {
-      "relation": "references",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/note/controlsBlock.ts",
-      "source_location": "L29",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_note_controlsblock_registercontrolsblock",
-      "target": "opencode_opencode_plugin"
-    },
-    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": ".opencode/plugins/graphify.js",
@@ -5484,7 +5329,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/main.ts",
-      "source_location": "L4",
+      "source_location": "L3",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_main",
@@ -5492,34 +5337,10 @@
       "confidence_score": 1.0
     },
     {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/main.ts",
-      "source_location": "L2",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_main",
-      "target": "src_note_controlsblock",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/main.ts",
-      "source_location": "L2",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_main",
-      "target": "src_note_controlsblock_registercontrolsblock",
-      "confidence_score": 1.0
-    },
-    {
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/main.ts",
-      "source_location": "L5",
+      "source_location": "L4",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_main_ankibridgeplugin",
@@ -5530,229 +5351,12 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/main.ts",
-      "source_location": "L9",
+      "source_location": "L6",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_main_ankibridgeplugin",
       "target": "src_main_ankibridgeplugin_onunload",
       "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/main.ts",
-      "source_location": "L6",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_main_ankibridgeplugin_onload",
-      "target": "src_note_controlsblock_registercontrolsblock"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/note/controlsBlock.test.ts",
-      "source_location": "L7",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_note_controlsblock_test",
-      "target": "src_note_controlsblock",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/note/controlsBlock.test.ts",
-      "source_location": "L7",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_note_controlsblock_test",
-      "target": "src_note_controlsblock_registercontrolsblock",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/note/controlsBlock.test.ts",
-      "source_location": "L7",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_note_controlsblock_test",
-      "target": "src_note_controlsblock_rendercontrolsblock",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/note/controlsBlock.test.ts",
-      "source_location": "L17",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_note_controlsblock_test",
-      "target": "src_note_controlsblock_test_fakeapp",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/note/controlsBlock.test.ts",
-      "source_location": "L44",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_note_controlsblock_test",
-      "target": "src_note_controlsblock_test_fakectx",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/note/controlsBlock.test.ts",
-      "source_location": "L31",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_note_controlsblock_test",
-      "target": "src_note_controlsblock_test_fakeel",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/note/controlsBlock.test.ts",
-      "source_location": "L25",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_note_controlsblock_test",
-      "target": "src_note_controlsblock_test_renderedbutton",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/note/controlsBlock.test.ts",
-      "source_location": "L4",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_note_controlsblock_test",
-      "target": "src_note_controlsblock_test_tfile",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/note/controlsBlock.ts",
-      "source_location": "L18",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_note_controlsblock",
-      "target": "src_note_controlsblock_always_visible_buttons",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/note/controlsBlock.ts",
-      "source_location": "L10",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_note_controlsblock",
-      "target": "src_note_controlsblock_controlaction",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/note/controlsBlock.ts",
-      "source_location": "L12",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_note_controlsblock",
-      "target": "src_note_controlsblock_controlbuttonspec",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/note/controlsBlock.ts",
-      "source_location": "L26",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_note_controlsblock",
-      "target": "src_note_controlsblock_delete_button",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/note/controlsBlock.ts",
-      "source_location": "L28",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_note_controlsblock",
-      "target": "src_note_controlsblock_registercontrolsblock",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/note/controlsBlock.ts",
-      "source_location": "L34",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_note_controlsblock",
-      "target": "src_note_controlsblock_rendercontrolsblock",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/note/controlsBlock.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_note_controlsblock",
-      "target": "src_sync_parser",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/note/controlsBlock.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_note_controlsblock",
-      "target": "src_sync_parser_readankifrontmatter",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/note/controlsBlock.ts",
-      "source_location": "L30",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_note_controlsblock_registercontrolsblock",
-      "target": "src_note_controlsblock_rendercontrolsblock",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/note/controlsBlock.ts",
-      "source_location": "L46",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_note_controlsblock_rendercontrolsblock",
-      "target": "src_sync_parser_readankifrontmatter"
     },
     {
       "relation": "imports_from",
@@ -9327,5 +8931,5 @@
       "source_file": ".opencode/skills/graphify/SKILL.md"
     }
   ],
-  "built_at_commit": "9a82aa167d3bd7d3d069a5d03e7ff3af7ce30827"
+  "built_at_commit": "c600a2dd801a5413a0f478e7e204dd6bf301ee4d"
 }

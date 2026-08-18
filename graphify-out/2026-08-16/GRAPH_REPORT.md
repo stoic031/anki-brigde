@@ -1,16 +1,16 @@
-# Graph Report - anki-bridge  (2026-08-18)
+# Graph Report - anki-bridge  (2026-08-15)
 
 ## Corpus Check
-- 62 files · ~39,605 words
+- 62 files · ~39,036 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 369 nodes · 403 edges · 76 communities (19 shown, 57 thin omitted)
-- Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 15 edges (avg confidence: 0.86)
+- 360 nodes · 391 edges · 76 communities (19 shown, 57 thin omitted)
+- Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 16 edges (avg confidence: 0.83)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `9a82aa16`
+- Built from commit: `93180b1e`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -29,7 +29,7 @@
 - Milestone 1: Core Sync + Settings
 - docs/design/01-sync.md
 - MediaResult interface
-- controlsBlock.ts
+- registerControlsBlock
 - TextProvider interface
 - graphify.js
 - mediaNaming.ts
@@ -185,16 +185,16 @@ Nodes (6): Heading-Based Content Parsing, Sync Error Path Coverage, Idempotent S
 Cohesion: 0.50
 Nodes (5): AGENTS.md Non-Negotiables (9 rules), AudioProvider interface, ImageProvider interface, MediaResult interface, Q14: AudioOptions/ImageOptions shape undefined
 
-### Community 14 - "controlsBlock.ts"
-Cohesion: 0.12
-Nodes (12): plugin, $schema, .opencode/plugins/graphify.js, AnkiBridgePlugin, ALWAYS_VISIBLE_BUTTONS, ControlAction, ControlButtonSpec, DELETE_BUTTON (+4 more)
+### Community 14 - "registerControlsBlock"
+Cohesion: 0.24
+Nodes (6): plugin, $schema, .opencode/plugins/graphify.js, AnkiBridgePlugin, registerControlsBlock(), renderControlsBlock()
 
 ### Community 16 - "TextProvider interface"
 Cohesion: 0.67
 Nodes (3): TextProvider interface, TextResult interface, TextTask type
 
 ## Knowledge Gaps
-- **153 isolated node(s):** `$schema`, `.opencode/plugins/graphify.js`, `id`, `name`, `version` (+148 more)
+- **147 isolated node(s):** `$schema`, `.opencode/plugins/graphify.js`, `id`, `name`, `version` (+142 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **57 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -202,13 +202,13 @@ Nodes (3): TextProvider interface, TextResult interface, TextTask type
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `Common Provider Interface (processText/generateAudio/generateImage)` connect `Common Provider Interface (processText/generateAudio/generateImage)` to `Generate with AI Button`, `Scenario 1: Create Note via Icon/Command`?**
-  _High betweenness centrality (0.015) - this node is a cross-community bridge._
+  _High betweenness centrality (0.016) - this node is a cross-community bridge._
 - **Why does `devDependencies` connect `devDependencies` to `package.json`?**
   _High betweenness centrality (0.010) - this node is a cross-community bridge._
 - **Why does `Scenario 1: Create Note via Icon/Command` connect `Scenario 1: Create Note via Icon/Command` to `Generate with AI Button`?**
   _High betweenness centrality (0.008) - this node is a cross-community bridge._
 - **What connects `$schema`, `.opencode/plugins/graphify.js`, `id` to the rest of the system?**
-  _153 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _147 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Generate with AI Button` be split into smaller, more focused modules?**
   _Cohesion score 0.11229946524064172 - nodes in this community are weakly interconnected._
 - **Should `graphify Skill (/graphify)` be split into smaller, more focused modules?**
