@@ -1,9 +1,16 @@
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { App, MarkdownPostProcessorContext, Plugin } from 'obsidian';
 
-const { TFile } = vi.hoisted(() => ({ TFile: class FakeTFile {} }));
-vi.mock('obsidian', () => ({ TFile }));
+const { TFile, Notice } = vi.hoisted(() => ({
+	TFile: class FakeTFile {},
+	Notice: vi.fn(),
+}));
+vi.mock('obsidian', () => ({ TFile, Notice }));
 
+const { syncNote } = vi.hoisted(() => ({ syncNote: vi.fn() }));
+vi.mock('../sync/syncEngine', () => ({ syncNote }));
+
+import { AnkiConnectClient } from '../sync/ankiConnect';
 import {
 	CONTROLS_BLOCK_LANGUAGE,
 	CONTROLS_BUTTON_CLASS,
@@ -26,15 +33,37 @@ interface RenderedButton {
 	cls: string[];
 	text: string;
 	attr: Record<string, unknown>;
+	disabled: boolean;
+	setText: (t: string) => void;
+	addEventListener: (type: string, cb: () => unknown) => void;
+	dispatch: (type: string) => unknown;
 }
 
 function fakeEl() {
 	const buttons: RenderedButton[] = [];
 	const container = {
-		createEl: vi.fn((_tag: string, info: RenderedButton) => {
-			buttons.push(info);
-			return {} as HTMLElement;
-		}),
+		createEl: vi.fn(
+			(_tag: string, info: { cls: string[]; text: string; attr: Record<string, unknown> }) => {
+				const listeners: Record<string, Array<() => unknown>> = {};
+				const button: RenderedButton = {
+					cls: info.cls,
+					text: info.text,
+					attr: info.attr,
+					disabled: false,
+					setText(t) {
+						button.text = t;
+					},
+					addEventListener(type, cb) {
+						(listeners[type] ??= []).push(cb);
+					},
+					dispatch(type) {
+						return listeners[type]?.map((cb) => cb())[0];
+					},
+				};
+				buttons.push(button);
+				return button as unknown as HTMLElement;
+			},
+		),
 	};
 	const createDiv = vi.fn(() => container as unknown as HTMLElement);
 	const el = { createDiv } as unknown as HTMLElement;
@@ -140,5 +169,94 @@ describe('renderControlsBlock', () => {
 		const del = buttons.find((b) => b.attr['data-action'] === 'delete');
 		expect(del?.cls).toEqual([CONTROLS_BUTTON_CLASS, `${CONTROLS_BUTTON_CLASS}--delete`]);
 		expect(del?.text).toBe('🗑️ Delete');
+	});
+});
+
+describe('sync button handler', () => {
+	beforeEach(() => {
+		syncNote.mockReset();
+		Notice.mockClear();
+		vi.useFakeTimers();
+		// controlsBlock.ts calls window.setTimeout for Obsidian popout-window
+		// compatibility (matches src/sync/ankiConnect.ts's convention) — vitest runs in
+		// a plain Node environment with no `window`, so alias it to globalThis.
+		vi.stubGlobal('window', globalThis);
+	});
+
+	afterEach(() => {
+		vi.useRealTimers();
+		vi.unstubAllGlobals();
+	});
+
+	function renderAndGetSyncButton() {
+		const app = fakeApp();
+		const { el, buttons } = fakeEl();
+		renderControlsBlock(app, '', el, fakeCtx());
+		const button = buttons.find((b) => b.attr['data-action'] === 'sync');
+		if (!button) throw new Error('sync button not rendered');
+		return { app, button };
+	}
+
+	it('calls syncNote with the app, file, and an AnkiConnectClient', async () => {
+		syncNote.mockResolvedValue(undefined);
+		const { app, button } = renderAndGetSyncButton();
+
+		await button.dispatch('click');
+
+		expect(syncNote).toHaveBeenCalledTimes(1);
+		expect(syncNote).toHaveBeenCalledWith(app, expect.anything(), expect.any(AnkiConnectClient));
+	});
+
+	it('shows the processing state immediately, before syncNote resolves', () => {
+		syncNote.mockResolvedValue(undefined);
+		const { button } = renderAndGetSyncButton();
+
+		void button.dispatch('click');
+
+		expect(button.disabled).toBe(true);
+		expect(button.text).toBe('⏳ Processing...');
+	});
+
+	it('shows success, toasts, then reverts after 2s', async () => {
+		syncNote.mockResolvedValue(undefined);
+		const { button } = renderAndGetSyncButton();
+
+		await button.dispatch('click');
+
+		expect(button.text).toBe('✅ Done!');
+		expect(Notice).toHaveBeenCalledWith('✅ Note synced to Anki!', 3000);
+
+		vi.advanceTimersByTime(2000);
+
+		expect(button.text).toBe('🔄 Sync');
+		expect(button.disabled).toBe(false);
+	});
+
+	it('shows error, toasts, then reverts after 3s when syncNote rejects', async () => {
+		syncNote.mockRejectedValue(new Error('Anki is not running'));
+		const { button } = renderAndGetSyncButton();
+
+		await button.dispatch('click');
+
+		expect(button.text).toBe('❌ Error');
+		expect(Notice).toHaveBeenCalledWith(
+			'❌ Failed to sync. Please check Anki connection.',
+			5000,
+		);
+
+		vi.advanceTimersByTime(3000);
+
+		expect(button.text).toBe('🔄 Sync');
+		expect(button.disabled).toBe(false);
+	});
+
+	it('ignores a click while already processing', () => {
+		syncNote.mockResolvedValue(undefined);
+		const { button } = renderAndGetSyncButton();
+
+		void button.dispatch('click');
+		void button.dispatch('click');
+
+		expect(syncNote).toHaveBeenCalledTimes(1);
 	});
 });

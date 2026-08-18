@@ -315,13 +315,13 @@
     "semantic_hash": ""
   },
   "src/note/controlsBlock.test.ts": {
-    "mtime": 1786855770.992495,
-    "ast_hash": "a67a06b22b01aba705474507c1f9ac8d",
+    "mtime": 1787060662.3465776,
+    "ast_hash": "5165c3df6bd0958522ad60cd76ddf01b",
     "semantic_hash": ""
   },
   "src/note/controlsBlock.ts": {
-    "mtime": 1786855786.4111912,
-    "ast_hash": "56c8aca8d65f324c052bb62e3df90d2e",
+    "mtime": 1787060562.1785424,
+    "ast_hash": "7d456d1fee14132a4cdb1e9d42c849a8",
     "semantic_hash": ""
   }
 }

@@ -1,6 +1,9 @@
 import type { App, MarkdownPostProcessorContext, Plugin } from 'obsidian';
-import { TFile } from 'obsidian';
+import { Notice, TFile } from 'obsidian';
 import { readAnkiFrontmatter } from '../sync/parser';
+import { syncNote } from '../sync/syncEngine';
+import { AnkiConnectClient } from '../sync/ankiConnect';
+import { DEFAULT_ANKI_CONNECT_URL } from '../utils/constants';
 
 // docs/design/03-note.md §3.1
 export const CONTROLS_BLOCK_LANGUAGE = 'anki-controls';
@@ -47,10 +50,45 @@ export function renderControlsBlock(
 	const buttons = hasNoteId ? [...ALWAYS_VISIBLE_BUTTONS, DELETE_BUTTON] : ALWAYS_VISIBLE_BUTTONS;
 
 	for (const { action, label } of buttons) {
-		container.createEl('button', {
+		const button = container.createEl('button', {
 			cls: [CONTROLS_BUTTON_CLASS, `${CONTROLS_BUTTON_CLASS}--${action}`],
 			text: label,
 			attr: { type: 'button', 'data-action': action },
 		});
+
+		if (action === 'sync' && file instanceof TFile) {
+			button.addEventListener('click', () => void handleSync(app, file, button, label));
+		}
+	}
+}
+
+// docs/design/05-ui.md §5.1-5.2
+async function handleSync(
+	app: App,
+	file: TFile,
+	button: HTMLButtonElement,
+	label: string,
+): Promise<void> {
+	if (button.disabled) return;
+
+	button.disabled = true;
+	button.setText('⏳ Processing...');
+
+	try {
+		const client = new AnkiConnectClient(DEFAULT_ANKI_CONNECT_URL);
+		await syncNote(app, file, client);
+		button.setText('✅ Done!');
+		new Notice('✅ Note synced to Anki!', 3000);
+		window.setTimeout(() => {
+			button.setText(label);
+			button.disabled = false;
+		}, 2000);
+	} catch {
+		button.setText('❌ Error');
+		new Notice('❌ Failed to sync. Please check Anki connection.', 5000);
+		window.setTimeout(() => {
+			button.setText(label);
+			button.disabled = false;
+		}, 3000);
 	}
 }
