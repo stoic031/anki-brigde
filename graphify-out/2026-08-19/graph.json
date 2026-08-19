@@ -157,7 +157,7 @@
       "_origin": "ast",
       "id": "opencode_opencode",
       "community": 15,
-      "community_name": "main.ts",
+      "community_name": "settingsTab.test.ts",
       "norm_label": "opencode.json"
     },
     {
@@ -168,7 +168,7 @@
       "_origin": "ast",
       "id": "opencode_opencode_schema",
       "community": 15,
-      "community_name": "main.ts",
+      "community_name": "settingsTab.test.ts",
       "norm_label": "$schema"
     },
     {
@@ -179,7 +179,7 @@
       "_origin": "ast",
       "id": "opencode_opencode_plugin",
       "community": 15,
-      "community_name": "main.ts",
+      "community_name": "settingsTab.test.ts",
       "norm_label": "plugin"
     },
     {
@@ -190,7 +190,7 @@
       "_origin": "ast",
       "id": "ref_opencode_plugins_graphify_js",
       "community": 15,
-      "community_name": "main.ts",
+      "community_name": "settingsTab.test.ts",
       "norm_label": ".opencode/plugins/graphify.js"
     },
     {
@@ -817,7 +817,7 @@
       "_origin": "ast",
       "id": "src_main",
       "community": 15,
-      "community_name": "main.ts",
+      "community_name": "settingsTab.test.ts",
       "norm_label": "main.ts"
     },
     {
@@ -828,7 +828,7 @@
       "_origin": "ast",
       "id": "src_main_ankibridgeplugin",
       "community": 15,
-      "community_name": "main.ts",
+      "community_name": "settingsTab.test.ts",
       "norm_label": "ankibridgeplugin"
     },
     {
@@ -839,7 +839,7 @@
       "_origin": "ast",
       "id": "src_main_ankibridgeplugin_onload",
       "community": 15,
-      "community_name": "main.ts",
+      "community_name": "settingsTab.test.ts",
       "norm_label": ".onload()"
     },
     {
@@ -850,7 +850,7 @@
       "_origin": "ast",
       "id": "src_main_ankibridgeplugin_savesettings",
       "community": 15,
-      "community_name": "main.ts",
+      "community_name": "settingsTab.test.ts",
       "norm_label": ".savesettings()"
     },
     {
@@ -861,7 +861,7 @@
       "_origin": "ast",
       "id": "src_main_ankibridgeplugin_onunload",
       "community": 15,
-      "community_name": "main.ts",
+      "community_name": "settingsTab.test.ts",
       "norm_label": ".onunload()"
     },
     {
@@ -1025,8 +1025,8 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "src_note_controlsblock_registercontrolsblock",
-      "community": 14,
-      "community_name": "controlsBlock.ts",
+      "community": 15,
+      "community_name": "settingsTab.test.ts",
       "norm_label": "registercontrolsblock()"
     },
     {
@@ -1092,7 +1092,7 @@
       "_origin": "ast",
       "id": "src_settings_test",
       "community": 15,
-      "community_name": "main.ts",
+      "community_name": "settingsTab.test.ts",
       "norm_label": "settings.test.ts"
     },
     {
@@ -1103,7 +1103,7 @@
       "_origin": "ast",
       "id": "src_settings_test_fakeplugin",
       "community": 15,
-      "community_name": "main.ts",
+      "community_name": "settingsTab.test.ts",
       "norm_label": "fakeplugin()"
     },
     {
@@ -1114,7 +1114,7 @@
       "_origin": "ast",
       "id": "src_settings",
       "community": 15,
-      "community_name": "main.ts",
+      "community_name": "settingsTab.test.ts",
       "norm_label": "settings.ts"
     },
     {
@@ -1125,7 +1125,7 @@
       "_origin": "ast",
       "id": "src_settings_ankibridgesettings",
       "community": 15,
-      "community_name": "main.ts",
+      "community_name": "settingsTab.test.ts",
       "norm_label": "ankibridgesettings"
     },
     {
@@ -1136,7 +1136,7 @@
       "_origin": "ast",
       "id": "src_settings_default_settings",
       "community": 15,
-      "community_name": "main.ts",
+      "community_name": "settingsTab.test.ts",
       "norm_label": "default_settings"
     },
     {
@@ -1147,7 +1147,7 @@
       "_origin": "ast",
       "id": "src_settings_loadsettings",
       "community": 15,
-      "community_name": "main.ts",
+      "community_name": "settingsTab.test.ts",
       "norm_label": "loadsettings()"
     },
     {
@@ -1158,7 +1158,7 @@
       "_origin": "ast",
       "id": "src_settings_savesettings",
       "community": 15,
-      "community_name": "main.ts",
+      "community_name": "settingsTab.test.ts",
       "norm_label": "savesettings()"
     },
     {
@@ -1169,7 +1169,7 @@
       "_origin": "ast",
       "id": "src_settings_resolveankiconnecturl",
       "community": 15,
-      "community_name": "main.ts",
+      "community_name": "settingsTab.test.ts",
       "norm_label": "resolveankiconnecturl()"
     },
     {
@@ -1806,8 +1806,8 @@
       "source_location": "L85",
       "_origin": "ast",
       "id": "src_types_syncerror",
-      "community": 5,
-      "community_name": "types.ts",
+      "community": 14,
+      "community_name": "controlsBlock.ts",
       "norm_label": "syncerror"
     },
     {
@@ -1817,8 +1817,8 @@
       "source_location": "L86",
       "_origin": "ast",
       "id": "src_types_syncerror_constructor",
-      "community": 5,
-      "community_name": "types.ts",
+      "community": 14,
+      "community_name": "controlsBlock.ts",
       "norm_label": ".constructor()"
     },
     {
@@ -1829,7 +1829,7 @@
       "_origin": "ast",
       "id": "src_ui_settingstab_test",
       "community": 15,
-      "community_name": "main.ts",
+      "community_name": "settingsTab.test.ts",
       "norm_label": "settingstab.test.ts"
     },
     {
@@ -1840,7 +1840,7 @@
       "_origin": "ast",
       "id": "src_ui_settingstab_test_faketextcomponent",
       "community": 78,
-      "community_name": "FakeTextComponent",
+      "community_name": "FakeButtonComponent",
       "norm_label": "faketextcomponent"
     },
     {
@@ -1851,7 +1851,7 @@
       "_origin": "ast",
       "id": "src_ui_settingstab_test_faketextcomponent_setplaceholder",
       "community": 78,
-      "community_name": "FakeTextComponent",
+      "community_name": "FakeButtonComponent",
       "norm_label": ".setplaceholder()"
     },
     {
@@ -1862,7 +1862,7 @@
       "_origin": "ast",
       "id": "src_ui_settingstab_test_faketextcomponent_setvalue",
       "community": 78,
-      "community_name": "FakeTextComponent",
+      "community_name": "FakeButtonComponent",
       "norm_label": ".setvalue()"
     },
     {
@@ -1873,7 +1873,7 @@
       "_origin": "ast",
       "id": "src_ui_settingstab_test_faketextcomponent_onchange",
       "community": 78,
-      "community_name": "FakeTextComponent",
+      "community_name": "FakeButtonComponent",
       "norm_label": ".onchange()"
     },
     {
@@ -1884,14 +1884,102 @@
       "_origin": "ast",
       "id": "src_ui_settingstab_test_faketextcomponent_triggerchange",
       "community": 78,
-      "community_name": "FakeTextComponent",
+      "community_name": "FakeButtonComponent",
       "norm_label": ".triggerchange()"
+    },
+    {
+      "label": "FakeButtonComponent",
+      "file_type": "code",
+      "source_file": "src/ui/settingsTab.test.ts",
+      "source_location": "L28",
+      "_origin": "ast",
+      "id": "src_ui_settingstab_test_fakebuttoncomponent",
+      "community": 78,
+      "community_name": "FakeButtonComponent",
+      "norm_label": "fakebuttoncomponent"
+    },
+    {
+      "label": ".setButtonText()",
+      "file_type": "code",
+      "source_file": "src/ui/settingsTab.test.ts",
+      "source_location": "L33",
+      "_origin": "ast",
+      "id": "src_ui_settingstab_test_fakebuttoncomponent_setbuttontext",
+      "community": 78,
+      "community_name": "FakeButtonComponent",
+      "norm_label": ".setbuttontext()"
+    },
+    {
+      "label": ".setDisabled()",
+      "file_type": "code",
+      "source_file": "src/ui/settingsTab.test.ts",
+      "source_location": "L37",
+      "_origin": "ast",
+      "id": "src_ui_settingstab_test_fakebuttoncomponent_setdisabled",
+      "community": 78,
+      "community_name": "FakeButtonComponent",
+      "norm_label": ".setdisabled()"
+    },
+    {
+      "label": ".onClick()",
+      "file_type": "code",
+      "source_file": "src/ui/settingsTab.test.ts",
+      "source_location": "L41",
+      "_origin": "ast",
+      "id": "src_ui_settingstab_test_fakebuttoncomponent_onclick",
+      "community": 78,
+      "community_name": "FakeButtonComponent",
+      "norm_label": ".onclick()"
+    },
+    {
+      "label": ".triggerClick()",
+      "file_type": "code",
+      "source_file": "src/ui/settingsTab.test.ts",
+      "source_location": "L45",
+      "_origin": "ast",
+      "id": "src_ui_settingstab_test_fakebuttoncomponent_triggerclick",
+      "community": 78,
+      "community_name": "FakeButtonComponent",
+      "norm_label": ".triggerclick()"
+    },
+    {
+      "label": "FakeDropdownComponent",
+      "file_type": "code",
+      "source_file": "src/ui/settingsTab.test.ts",
+      "source_location": "L50",
+      "_origin": "ast",
+      "id": "src_ui_settingstab_test_fakedropdowncomponent",
+      "community": 15,
+      "community_name": "settingsTab.test.ts",
+      "norm_label": "fakedropdowncomponent"
+    },
+    {
+      "label": ".constructor()",
+      "file_type": "code",
+      "source_file": "src/ui/settingsTab.test.ts",
+      "source_location": "L54",
+      "_origin": "ast",
+      "id": "src_ui_settingstab_test_fakedropdowncomponent_constructor",
+      "community": 15,
+      "community_name": "settingsTab.test.ts",
+      "norm_label": ".constructor()"
+    },
+    {
+      "label": ".addOption()",
+      "file_type": "code",
+      "source_file": "src/ui/settingsTab.test.ts",
+      "source_location": "L61",
+      "_origin": "ast",
+      "id": "src_ui_settingstab_test_fakedropdowncomponent_addoption",
+      "community": 15,
+      "community_name": "settingsTab.test.ts",
+      "norm_label": ".addoption()"
     },
     {
       "label": "FakeSetting",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L28",
+      "source_location": "L67",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_fakesetting",
       "community": 77,
@@ -1902,7 +1990,7 @@
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L33",
+      "source_location": "L74",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_fakesetting_constructor",
       "community": 77,
@@ -1913,7 +2001,7 @@
       "label": ".setName()",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L34",
+      "source_location": "L75",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_fakesetting_setname",
       "community": 77,
@@ -1924,7 +2012,7 @@
       "label": ".setDesc()",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L38",
+      "source_location": "L79",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_fakesetting_setdesc",
       "community": 77,
@@ -1935,7 +2023,7 @@
       "label": ".addText()",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L42",
+      "source_location": "L83",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_fakesetting_addtext",
       "community": 77,
@@ -1943,37 +2031,147 @@
       "norm_label": ".addtext()"
     },
     {
+      "label": ".addButton()",
+      "file_type": "code",
+      "source_file": "src/ui/settingsTab.test.ts",
+      "source_location": "L89",
+      "_origin": "ast",
+      "id": "src_ui_settingstab_test_fakesetting_addbutton",
+      "community": 77,
+      "community_name": "FakeSetting",
+      "norm_label": ".addbutton()"
+    },
+    {
+      "label": ".addDropdown()",
+      "file_type": "code",
+      "source_file": "src/ui/settingsTab.test.ts",
+      "source_location": "L95",
+      "_origin": "ast",
+      "id": "src_ui_settingstab_test_fakesetting_adddropdown",
+      "community": 77,
+      "community_name": "FakeSetting",
+      "norm_label": ".adddropdown()"
+    },
+    {
+      "label": "FakeEl",
+      "file_type": "code",
+      "source_file": "src/ui/settingsTab.test.ts",
+      "source_location": "L103",
+      "_origin": "ast",
+      "id": "src_ui_settingstab_test_fakeel",
+      "community": 15,
+      "community_name": "settingsTab.test.ts",
+      "norm_label": "fakeel"
+    },
+    {
+      "label": ".createDiv()",
+      "file_type": "code",
+      "source_file": "src/ui/settingsTab.test.ts",
+      "source_location": "L105",
+      "_origin": "ast",
+      "id": "src_ui_settingstab_test_fakeel_creatediv",
+      "community": 15,
+      "community_name": "settingsTab.test.ts",
+      "norm_label": ".creatediv()"
+    },
+    {
+      "label": ".toggleClass()",
+      "file_type": "code",
+      "source_file": "src/ui/settingsTab.test.ts",
+      "source_location": "L106",
+      "_origin": "ast",
+      "id": "src_ui_settingstab_test_fakeel_toggleclass",
+      "community": 15,
+      "community_name": "settingsTab.test.ts",
+      "norm_label": ".toggleclass()"
+    },
+    {
+      "label": ".hasClass()",
+      "file_type": "code",
+      "source_file": "src/ui/settingsTab.test.ts",
+      "source_location": "L107",
+      "_origin": "ast",
+      "id": "src_ui_settingstab_test_fakeel_hasclass",
+      "community": 15,
+      "community_name": "settingsTab.test.ts",
+      "norm_label": ".hasclass()"
+    },
+    {
+      "label": "fakeDiv()",
+      "file_type": "code",
+      "source_file": "src/ui/settingsTab.test.ts",
+      "source_location": "L110",
+      "_origin": "ast",
+      "id": "src_ui_settingstab_test_fakediv",
+      "community": 15,
+      "community_name": "settingsTab.test.ts",
+      "norm_label": "fakediv()"
+    },
+    {
       "label": "{ Notice, settings }",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L50",
+      "source_location": "L127",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_notice_settings",
       "community": 15,
-      "community_name": "main.ts",
+      "community_name": "settingsTab.test.ts",
       "norm_label": "{ notice, settings }"
     },
     {
       "label": "constructor()",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L57",
+      "source_location": "L134",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_constructor",
       "community": 15,
-      "community_name": "main.ts",
+      "community_name": "settingsTab.test.ts",
       "norm_label": "constructor()"
+    },
+    {
+      "label": "{ deckNames, modelNames }",
+      "file_type": "code",
+      "source_file": "src/ui/settingsTab.test.ts",
+      "source_location": "L143",
+      "_origin": "ast",
+      "id": "src_ui_settingstab_test_decknames_modelnames",
+      "community": 15,
+      "community_name": "settingsTab.test.ts",
+      "norm_label": "{ decknames, modelnames }"
+    },
+    {
+      "label": "{ toastSuccess, toastError }",
+      "file_type": "code",
+      "source_file": "src/ui/settingsTab.test.ts",
+      "source_location": "L154",
+      "_origin": "ast",
+      "id": "src_ui_settingstab_test_toastsuccess_toasterror",
+      "community": 15,
+      "community_name": "settingsTab.test.ts",
+      "norm_label": "{ toastsuccess, toasterror }"
     },
     {
       "label": "fakePlugin()",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L70",
+      "source_location": "L164",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_fakeplugin",
       "community": 15,
-      "community_name": "main.ts",
+      "community_name": "settingsTab.test.ts",
       "norm_label": "fakeplugin()"
+    },
+    {
+      "label": "renderAndConnect()",
+      "file_type": "code",
+      "source_file": "src/ui/settingsTab.test.ts",
+      "source_location": "L236",
+      "_origin": "ast",
+      "id": "src_ui_settingstab_test_renderandconnect",
+      "community": 15,
+      "community_name": "settingsTab.test.ts",
+      "norm_label": "renderandconnect()"
     },
     {
       "label": "settingsTab.ts",
@@ -1983,52 +2181,63 @@
       "_origin": "ast",
       "id": "src_ui_settingstab",
       "community": 15,
-      "community_name": "main.ts",
+      "community_name": "settingsTab.test.ts",
       "norm_label": "settingstab.ts"
     },
     {
       "label": "AnkiBridgeSettingTab",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.ts",
-      "source_location": "L7",
+      "source_location": "L10",
       "_origin": "ast",
       "id": "src_ui_settingstab_ankibridgesettingtab",
       "community": 15,
-      "community_name": "main.ts",
+      "community_name": "settingsTab.test.ts",
       "norm_label": "ankibridgesettingtab"
     },
     {
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.ts",
-      "source_location": "L8",
+      "source_location": "L11",
       "_origin": "ast",
       "id": "src_ui_settingstab_ankibridgesettingtab_constructor",
       "community": 15,
-      "community_name": "main.ts",
+      "community_name": "settingsTab.test.ts",
       "norm_label": ".constructor()"
     },
     {
       "label": ".display()",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.ts",
-      "source_location": "L15",
+      "source_location": "L18",
       "_origin": "ast",
       "id": "src_ui_settingstab_ankibridgesettingtab_display",
       "community": 15,
-      "community_name": "main.ts",
+      "community_name": "settingsTab.test.ts",
       "norm_label": ".display()"
     },
     {
       "label": "renderConnectionSection()",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.ts",
-      "source_location": "L22",
+      "source_location": "L27",
       "_origin": "ast",
       "id": "src_ui_settingstab_renderconnectionsection",
       "community": 15,
-      "community_name": "main.ts",
+      "community_name": "settingsTab.test.ts",
       "norm_label": "renderconnectionsection()"
+    },
+    {
+      "label": "handleConnect()",
+      "file_type": "code",
+      "source_file": "src/ui/settingsTab.ts",
+      "source_location": "L84",
+      "_origin": "ast",
+      "id": "src_ui_settingstab_handleconnect",
+      "community": 14,
+      "community_name": "controlsBlock.ts",
+      "norm_label": "handleconnect()"
     },
     {
       "label": "toast.test.ts",
@@ -2093,7 +2302,7 @@
       "_origin": "ast",
       "id": "src_utils_constants",
       "community": 15,
-      "community_name": "main.ts",
+      "community_name": "settingsTab.test.ts",
       "norm_label": "constants.ts"
     },
     {
@@ -2104,7 +2313,7 @@
       "_origin": "ast",
       "id": "src_utils_validation_test",
       "community": 15,
-      "community_name": "main.ts",
+      "community_name": "settingsTab.test.ts",
       "norm_label": "validation.test.ts"
     },
     {
@@ -2115,7 +2324,7 @@
       "_origin": "ast",
       "id": "src_utils_validation",
       "community": 15,
-      "community_name": "main.ts",
+      "community_name": "settingsTab.test.ts",
       "norm_label": "validation.ts"
     },
     {
@@ -2126,7 +2335,7 @@
       "_origin": "ast",
       "id": "src_utils_validation_isvalidurl",
       "community": 15,
-      "community_name": "main.ts",
+      "community_name": "settingsTab.test.ts",
       "norm_label": "isvalidurl()"
     },
     {
@@ -6136,7 +6345,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.ts",
-      "source_location": "L8",
+      "source_location": "L11",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_ankibridgesettingtab_constructor",
@@ -6185,7 +6394,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ui/settingsTab.ts",
-      "source_location": "L42",
+      "source_location": "L51",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_renderconnectionsection",
@@ -6905,6 +7114,42 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "src/ui/settingsTab.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_settingstab",
+      "target": "src_settings",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/settingsTab.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_settingstab",
+      "target": "src_settings_resolveankiconnecturl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/settingsTab.ts",
+      "source_location": "L96",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_settingstab_handleconnect",
+      "target": "src_settings_resolveankiconnecturl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "src/sync/ankiConnect.test.ts",
       "source_location": "L2",
       "weight": 1.0,
@@ -7064,6 +7309,18 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/settingsTab.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_settingstab",
+      "target": "src_sync_ankiconnect",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/sync/ankiConnect.ts",
@@ -7176,6 +7433,18 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/settingsTab.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_settingstab",
+      "target": "src_sync_ankiconnect_ankiconnectclient",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
@@ -7246,6 +7515,30 @@
       "_origin": "ast",
       "source": "src_sync_syncengine_syncnote",
       "target": "src_sync_ankiconnect_ankiconnectclient_updatenotefields"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/ui/settingsTab.ts",
+      "source_location": "L99",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_settingstab_handleconnect",
+      "target": "src_sync_ankiconnect_ankiconnectclient_decknames"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/ui/settingsTab.ts",
+      "source_location": "L100",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_settingstab_handleconnect",
+      "target": "src_sync_ankiconnect_ankiconnectclient_modelnames"
     },
     {
       "relation": "calls",
@@ -8091,7 +8384,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L66",
+      "source_location": "L160",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test",
@@ -8103,7 +8396,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L66",
+      "source_location": "L160",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test",
@@ -8114,7 +8407,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L57",
+      "source_location": "L134",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test",
@@ -8125,7 +8418,62 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L70",
+      "source_location": "L143",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_settingstab_test",
+      "target": "src_ui_settingstab_test_decknames_modelnames",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/settingsTab.test.ts",
+      "source_location": "L28",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_settingstab_test",
+      "target": "src_ui_settingstab_test_fakebuttoncomponent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/settingsTab.test.ts",
+      "source_location": "L110",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_settingstab_test",
+      "target": "src_ui_settingstab_test_fakediv",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/settingsTab.test.ts",
+      "source_location": "L50",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_settingstab_test",
+      "target": "src_ui_settingstab_test_fakedropdowncomponent",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/settingsTab.test.ts",
+      "source_location": "L103",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_settingstab_test",
+      "target": "src_ui_settingstab_test_fakeel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/settingsTab.test.ts",
+      "source_location": "L164",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test",
@@ -8136,7 +8484,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L28",
+      "source_location": "L67",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test",
@@ -8158,11 +8506,33 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L50",
+      "source_location": "L127",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test",
       "target": "src_ui_settingstab_test_notice_settings",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/settingsTab.test.ts",
+      "source_location": "L236",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_settingstab_test",
+      "target": "src_ui_settingstab_test_renderandconnect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/settingsTab.test.ts",
+      "source_location": "L154",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_settingstab_test",
+      "target": "src_ui_settingstab_test_toastsuccess_toasterror",
       "confidence_score": 1.0
     },
     {
@@ -8225,7 +8595,95 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L42",
+      "source_location": "L41",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_settingstab_test_fakebuttoncomponent",
+      "target": "src_ui_settingstab_test_fakebuttoncomponent_onclick",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/settingsTab.test.ts",
+      "source_location": "L33",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_settingstab_test_fakebuttoncomponent",
+      "target": "src_ui_settingstab_test_fakebuttoncomponent_setbuttontext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/settingsTab.test.ts",
+      "source_location": "L37",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_settingstab_test_fakebuttoncomponent",
+      "target": "src_ui_settingstab_test_fakebuttoncomponent_setdisabled",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/settingsTab.test.ts",
+      "source_location": "L45",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_settingstab_test_fakebuttoncomponent",
+      "target": "src_ui_settingstab_test_fakebuttoncomponent_triggerclick",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/settingsTab.test.ts",
+      "source_location": "L61",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_settingstab_test_fakedropdowncomponent",
+      "target": "src_ui_settingstab_test_fakedropdowncomponent_addoption",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/settingsTab.test.ts",
+      "source_location": "L54",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_settingstab_test_fakedropdowncomponent",
+      "target": "src_ui_settingstab_test_fakedropdowncomponent_constructor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/settingsTab.test.ts",
+      "source_location": "L89",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_settingstab_test_fakesetting",
+      "target": "src_ui_settingstab_test_fakesetting_addbutton",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/settingsTab.test.ts",
+      "source_location": "L95",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_settingstab_test_fakesetting",
+      "target": "src_ui_settingstab_test_fakesetting_adddropdown",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/settingsTab.test.ts",
+      "source_location": "L83",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test_fakesetting",
@@ -8236,7 +8694,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L33",
+      "source_location": "L74",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test_fakesetting",
@@ -8247,7 +8705,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L38",
+      "source_location": "L79",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test_fakesetting",
@@ -8258,7 +8716,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L34",
+      "source_location": "L75",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test_fakesetting",
@@ -8266,10 +8724,79 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/settingsTab.test.ts",
+      "source_location": "L105",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_settingstab_test_fakeel",
+      "target": "src_ui_settingstab_test_fakeel_creatediv",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/settingsTab.test.ts",
+      "source_location": "L107",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_settingstab_test_fakeel",
+      "target": "src_ui_settingstab_test_fakeel_hasclass",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/settingsTab.test.ts",
+      "source_location": "L106",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_settingstab_test_fakeel",
+      "target": "src_ui_settingstab_test_fakeel_toggleclass",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/settingsTab.test.ts",
+      "source_location": "L238",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_settingstab_test_renderandconnect",
+      "target": "src_ui_settingstab_test_fakediv",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/settingsTab.test.ts",
+      "source_location": "L237",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_settingstab_test_renderandconnect",
+      "target": "src_ui_settingstab_test_fakeplugin",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/ui/settingsTab.test.ts",
+      "source_location": "L238",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_settingstab_test_renderandconnect",
+      "target": "src_ui_settingstab_renderconnectionsection"
+    },
+    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.ts",
-      "source_location": "L7",
+      "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab",
@@ -8280,11 +8807,58 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.ts",
-      "source_location": "L22",
+      "source_location": "L84",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_settingstab",
+      "target": "src_ui_settingstab_handleconnect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/settingsTab.ts",
+      "source_location": "L27",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab",
       "target": "src_ui_settingstab_renderconnectionsection",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/settingsTab.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_settingstab",
+      "target": "src_ui_toast",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/settingsTab.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_settingstab",
+      "target": "src_ui_toast_toasterror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/settingsTab.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_settingstab",
+      "target": "src_ui_toast_toastsuccess",
       "confidence_score": 1.0
     },
     {
@@ -8327,7 +8901,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.ts",
-      "source_location": "L8",
+      "source_location": "L11",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_ankibridgesettingtab",
@@ -8338,7 +8912,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.ts",
-      "source_location": "L15",
+      "source_location": "L18",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_ankibridgesettingtab",
@@ -8350,7 +8924,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.ts",
-      "source_location": "L17",
+      "source_location": "L20",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_ankibridgesettingtab_display",
@@ -8361,13 +8935,49 @@
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
+      "source_file": "src/ui/settingsTab.ts",
+      "source_location": "L60",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_settingstab_renderconnectionsection",
+      "target": "src_ui_settingstab_handleconnect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ui/settingsTab.ts",
-      "source_location": "L35",
+      "source_location": "L44",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_renderconnectionsection",
       "target": "src_utils_validation_isvalidurl"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/settingsTab.ts",
+      "source_location": "L112",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_settingstab_handleconnect",
+      "target": "src_ui_toast_toasterror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/settingsTab.ts",
+      "source_location": "L109",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_settingstab_handleconnect",
+      "target": "src_ui_toast_toastsuccess",
+      "confidence_score": 1.0
     },
     {
       "relation": "imports_from",
@@ -10826,5 +11436,5 @@
       "source_file": ".opencode/skills/graphify/SKILL.md"
     }
   ],
-  "built_at_commit": "b5f5de7731eb5e1816c94c1528ef58c4ad4ad3b8"
+  "built_at_commit": "db299dc4afd6d0670320b74b9a9b5165b3160bc6"
 }

@@ -14,7 +14,7 @@
   "12": "docs/design/01-sync.md",
   "13": "MediaResult interface",
   "14": "controlsBlock.ts",
-  "15": "main.ts",
+  "15": "settingsTab.test.ts",
   "16": "TextProvider interface",
   "17": "graphify.js",
   "18": "mediaNaming.ts",
@@ -77,5 +77,5 @@
   "75": "vitest.config.ts",
   "76": "graphify reference: GitHub clone and cross-repo merge",
   "77": "FakeSetting",
-  "78": "FakeTextComponent"
+  "78": "FakeButtonComponent"
 }

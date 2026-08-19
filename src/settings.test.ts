@@ -11,7 +11,10 @@ import { DEFAULT_ANKI_CONNECT_URL } from './utils/constants';
 
 // Returns the spies as plain locals (not read back off `plugin`) so assertions like
 // `expect(saveData).toHaveBeenCalledWith(...)` don't trip @typescript-eslint/unbound-method.
-function fakePlugin(loadedData: unknown): { plugin: Plugin; saveData: ReturnType<typeof vi.fn> } {
+function fakePlugin(loadedData: unknown): {
+	plugin: Plugin;
+	saveData: ReturnType<typeof vi.fn>;
+} {
 	const saveData = vi.fn().mockResolvedValue(undefined);
 	const plugin = {
 		loadData: vi.fn().mockResolvedValue(loadedData),
@@ -28,10 +31,14 @@ describe('loadSettings', () => {
 	});
 
 	it('merges partial saved data over DEFAULT_SETTINGS', async () => {
-		const { plugin } = fakePlugin({ ankiConnectUrl: 'http://localhost:9999' });
+		const { plugin } = fakePlugin({
+			ankiConnectUrl: 'http://localhost:9999',
+		});
 
 		await expect(loadSettings(plugin)).resolves.toEqual({
 			ankiConnectUrl: 'http://localhost:9999',
+			defaultDeck: '',
+			defaultModel: '',
 		});
 	});
 });
@@ -41,6 +48,8 @@ describe('saveSettings', () => {
 		const { plugin, saveData } = fakePlugin(null);
 		const settings: AnkiBridgeSettings = {
 			ankiConnectUrl: 'http://localhost:1234',
+			defaultDeck: '',
+			defaultModel: '',
 		};
 
 		await saveSettings(plugin, settings);
@@ -51,21 +60,31 @@ describe('saveSettings', () => {
 
 describe('resolveAnkiConnectUrl', () => {
 	it('returns the default when the setting is blank', () => {
-		expect(resolveAnkiConnectUrl({ ankiConnectUrl: '' })).toBe(
-			DEFAULT_ANKI_CONNECT_URL,
-		);
+		expect(
+			resolveAnkiConnectUrl({
+				ankiConnectUrl: '',
+				defaultDeck: '',
+				defaultModel: '',
+			}),
+		).toBe(DEFAULT_ANKI_CONNECT_URL);
 	});
 
 	it('returns the default when the setting is whitespace only', () => {
-		expect(resolveAnkiConnectUrl({ ankiConnectUrl: '   ' })).toBe(
-			DEFAULT_ANKI_CONNECT_URL,
-		);
+		expect(
+			resolveAnkiConnectUrl({
+				ankiConnectUrl: '   ',
+				defaultDeck: '',
+				defaultModel: '',
+			}),
+		).toBe(DEFAULT_ANKI_CONNECT_URL);
 	});
 
 	it('returns the trimmed value when set', () => {
 		expect(
 			resolveAnkiConnectUrl({
 				ankiConnectUrl: '  http://localhost:9999  ',
+				defaultDeck: '',
+				defaultModel: '',
 			}),
 		).toBe('http://localhost:9999');
 	});
