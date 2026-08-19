@@ -14,7 +14,7 @@
   "12": "docs/design/01-sync.md",
   "13": "MediaResult interface",
   "14": "controlsBlock.ts",
-  "15": "settingsTab.ts",
+  "15": "settingsTab.test.ts",
   "16": "TextProvider interface",
   "17": "graphify.js",
   "18": "mediaNaming.ts",
@@ -76,5 +76,6 @@
   "74": "README.md — Obsidian Sample Plugin boilerplate",
   "75": "vitest.config.ts",
   "76": "graphify reference: GitHub clone and cross-repo merge",
-  "78": "settingsTab.test.ts"
+  "77": "FakeSetting",
+  "78": "FakeButtonComponent"
 }

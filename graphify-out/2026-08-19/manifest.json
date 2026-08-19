@@ -325,23 +325,23 @@
     "semantic_hash": ""
   },
   "src/settings.test.ts": {
-    "mtime": 1787134655.397484,
-    "ast_hash": "e80cd6c3796da33fd0f725f73d5a7bf5",
+    "mtime": 1787131896.6471894,
+    "ast_hash": "02b0ce1f9d17b76f280b322831799a15",
     "semantic_hash": ""
   },
   "src/settings.ts": {
-    "mtime": 1787134564.5721693,
-    "ast_hash": "a25b1507d19a22886f856302425a0957",
+    "mtime": 1787131896.6473172,
+    "ast_hash": "afb6fdacae751fc5ff41268044e2b109",
     "semantic_hash": ""
   },
   "src/ui/settingsTab.test.ts": {
-    "mtime": 1787134655.4708996,
-    "ast_hash": "bd9c692496edc918e6b9e57434e50baf",
+    "mtime": 1787133365.6902118,
+    "ast_hash": "cdb091d3aefa9eb09a69fcc766e64b39",
     "semantic_hash": ""
   },
   "src/ui/settingsTab.ts": {
-    "mtime": 1787134655.4211304,
-    "ast_hash": "4871ba609127860675775955a1a124d2",
+    "mtime": 1787133365.6498237,
+    "ast_hash": "de4347a667317dd9474629752f82e8de",
     "semantic_hash": ""
   },
   "src/utils/constants.ts": {
