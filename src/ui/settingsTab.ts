@@ -73,11 +73,19 @@ export function renderConnectionSection(
 
 	new Setting(dropdownsEl).setName('Default deck').addDropdown((dropdown) => {
 		deckDropdown = dropdown;
+		dropdown.onChange(async (value) => {
+			plugin.settings.defaultDeck = value;
+			await plugin.saveSettings();
+		});
 	});
 	new Setting(dropdownsEl)
 		.setName('Default model')
 		.addDropdown((dropdown) => {
 			modelDropdown = dropdown;
+			dropdown.onChange(async (value) => {
+				plugin.settings.defaultModel = value;
+				await plugin.saveSettings();
+			});
 		});
 }
 
@@ -102,8 +110,21 @@ async function handleConnect(
 
 		deckDropdown.selectEl.empty();
 		for (const name of deckNames) deckDropdown.addOption(name, name);
+		if (
+			plugin.settings.defaultDeck &&
+			deckNames.includes(plugin.settings.defaultDeck)
+		) {
+			deckDropdown.setValue(plugin.settings.defaultDeck);
+		}
+
 		modelDropdown.selectEl.empty();
 		for (const name of modelNames) modelDropdown.addOption(name, name);
+		if (
+			plugin.settings.defaultModel &&
+			modelNames.includes(plugin.settings.defaultModel)
+		) {
+			modelDropdown.setValue(plugin.settings.defaultModel);
+		}
 
 		dropdownsEl.toggleClass(DROPDOWNS_HIDDEN_CLASS, false);
 		toastSuccess('✅ Connected to Anki!');

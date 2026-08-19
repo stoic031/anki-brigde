@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type AnkiBridgePlugin from '../main';
+import type { AnkiBridgeSettings } from '../settings';
 import { DEFAULT_ANKI_CONNECT_URL } from '../utils/constants';
 
 class FakeTextComponent {
@@ -49,7 +50,9 @@ class FakeButtonComponent {
 
 class FakeDropdownComponent {
 	options: Record<string, string> = {};
+	value = '';
 	selectEl: { empty: () => void };
+	private changeCb: ((v: string) => unknown) | null = null;
 
 	constructor() {
 		this.selectEl = {
@@ -61,6 +64,18 @@ class FakeDropdownComponent {
 	addOption(value: string, display: string) {
 		this.options[value] = display;
 		return this;
+	}
+	setValue(v: string) {
+		this.value = v;
+		return this;
+	}
+	onChange(cb: (v: string) => unknown) {
+		this.changeCb = cb;
+		return this;
+	}
+	async triggerChange(v: string) {
+		this.value = v;
+		await this.changeCb?.(v);
 	}
 }
 
@@ -161,13 +176,19 @@ import { renderConnectionSection } from './settingsTab';
 
 // Returns the spy as a plain local (not read back off `plugin`) so assertions like
 // `expect(saveSettings).toHaveBeenCalled()` don't trip @typescript-eslint/unbound-method.
-function fakePlugin(ankiConnectUrl: string): {
+function fakePlugin(overrides: Partial<AnkiBridgeSettings> = {}): {
 	plugin: AnkiBridgePlugin;
 	saveSettings: ReturnType<typeof vi.fn>;
 } {
 	const saveSettings = vi.fn().mockResolvedValue(undefined);
+	const settings: AnkiBridgeSettings = {
+		ankiConnectUrl: '',
+		defaultDeck: '',
+		defaultModel: '',
+		...overrides,
+	};
 	const plugin = {
-		settings: { ankiConnectUrl },
+		settings,
 		saveSettings,
 	} as unknown as AnkiBridgePlugin;
 	return { plugin, saveSettings };
@@ -184,7 +205,9 @@ beforeEach(() => {
 
 describe('renderConnectionSection — URL field', () => {
 	it('renders the URL field with the placeholder and the current saved value', () => {
-		const { plugin } = fakePlugin('http://localhost:9999');
+		const { plugin } = fakePlugin({
+			ankiConnectUrl: 'http://localhost:9999',
+		});
 
 		renderConnectionSection(fakeDiv() as unknown as HTMLElement, plugin);
 
@@ -194,7 +217,7 @@ describe('renderConnectionSection — URL field', () => {
 	});
 
 	it('saves a valid URL and calls plugin.saveSettings', async () => {
-		const { plugin, saveSettings } = fakePlugin('');
+		const { plugin, saveSettings } = fakePlugin({ ankiConnectUrl: '' });
 
 		renderConnectionSection(fakeDiv() as unknown as HTMLElement, plugin);
 		const text = settings[0]?.textComponents[0];
@@ -205,7 +228,9 @@ describe('renderConnectionSection — URL field', () => {
 	});
 
 	it('saves a blank value as-is (resolves to the default elsewhere)', async () => {
-		const { plugin, saveSettings } = fakePlugin('http://localhost:1234');
+		const { plugin, saveSettings } = fakePlugin({
+			ankiConnectUrl: 'http://localhost:1234',
+		});
 
 		renderConnectionSection(fakeDiv() as unknown as HTMLElement, plugin);
 		const text = settings[0]?.textComponents[0];
@@ -216,7 +241,9 @@ describe('renderConnectionSection — URL field', () => {
 	});
 
 	it('shows a Notice and does not save an invalid, non-blank URL', async () => {
-		const { plugin, saveSettings } = fakePlugin('http://localhost:1234');
+		const { plugin, saveSettings } = fakePlugin({
+			ankiConnectUrl: 'http://localhost:1234',
+		});
 
 		renderConnectionSection(fakeDiv() as unknown as HTMLElement, plugin);
 		const text = settings[0]?.textComponents[0];
@@ -233,8 +260,11 @@ describe('renderConnectionSection — URL field', () => {
 const HIDDEN_CLASS = 'anki-bridge-settings__hidden';
 
 describe('renderConnectionSection — Connect button', () => {
-	function renderAndConnect() {
-		const { plugin } = fakePlugin('http://localhost:8765');
+	function renderAndConnect(overrides: Partial<AnkiBridgeSettings> = {}) {
+		const { plugin, saveSettings } = fakePlugin({
+			ankiConnectUrl: 'http://localhost:8765',
+			...overrides,
+		});
 		renderConnectionSection(fakeDiv() as unknown as HTMLElement, plugin);
 
 		const button = settings[0]?.buttonComponents[0];
@@ -246,7 +276,14 @@ describe('renderConnectionSection — Connect button', () => {
 				'expected button, both dropdowns, and their container to be rendered',
 			);
 		}
-		return { button, deckDropdown, modelDropdown, dropdownsEl };
+		return {
+			plugin,
+			saveSettings,
+			button,
+			deckDropdown,
+			modelDropdown,
+			dropdownsEl,
+		};
 	}
 
 	it('starts with the dropdowns hidden', () => {
@@ -309,5 +346,57 @@ describe('renderConnectionSection — Connect button', () => {
 
 		expect(dropdownsEl.hasClass(HIDDEN_CLASS)).toBe(true);
 		expect(toastError).toHaveBeenCalledTimes(1);
+	});
+
+	it('pre-selects the saved default deck/model if still present after connect', async () => {
+		deckNames.mockResolvedValue(['Default', 'Japanese']);
+		modelNames.mockResolvedValue(['Basic', 'Cloze']);
+		const { button, deckDropdown, modelDropdown } = renderAndConnect({
+			defaultDeck: 'Japanese',
+			defaultModel: 'Cloze',
+		});
+
+		await button.triggerClick();
+
+		expect(deckDropdown.value).toBe('Japanese');
+		expect(modelDropdown.value).toBe('Cloze');
+	});
+
+	it('leaves a saved default unselected if it is no longer in the fetched list', async () => {
+		deckNames.mockResolvedValue(['Default']);
+		modelNames.mockResolvedValue(['Basic']);
+		const { button, deckDropdown } = renderAndConnect({
+			defaultDeck: 'Deleted deck',
+		});
+
+		await button.triggerClick();
+
+		expect(deckDropdown.value).toBe('');
+	});
+
+	it('persists the selection when the user picks a deck', async () => {
+		deckNames.mockResolvedValue(['Default', 'Japanese']);
+		modelNames.mockResolvedValue(['Basic']);
+		const { plugin, saveSettings, button, deckDropdown } =
+			renderAndConnect();
+		await button.triggerClick();
+
+		await deckDropdown.triggerChange('Japanese');
+
+		expect(plugin.settings.defaultDeck).toBe('Japanese');
+		expect(saveSettings).toHaveBeenCalledTimes(1);
+	});
+
+	it('persists the selection when the user picks a model', async () => {
+		deckNames.mockResolvedValue(['Default']);
+		modelNames.mockResolvedValue(['Basic', 'Cloze']);
+		const { plugin, saveSettings, button, modelDropdown } =
+			renderAndConnect();
+		await button.triggerClick();
+
+		await modelDropdown.triggerChange('Cloze');
+
+		expect(plugin.settings.defaultModel).toBe('Cloze');
+		expect(saveSettings).toHaveBeenCalledTimes(1);
 	});
 });

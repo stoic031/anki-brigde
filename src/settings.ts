@@ -3,9 +3,15 @@ import { DEFAULT_ANKI_CONNECT_URL } from './utils/constants';
 
 export interface AnkiBridgeSettings {
 	ankiConnectUrl: string; // '' = unset — resolves to DEFAULT_ANKI_CONNECT_URL at use time, docs/design/06-settings.md §6.1
+	defaultDeck: string; // '' = unset — docs/design/06-settings.md §6.1
+	defaultModel: string; // '' = unset — docs/design/06-settings.md §6.1
 }
 
-export const DEFAULT_SETTINGS: AnkiBridgeSettings = { ankiConnectUrl: '' };
+export const DEFAULT_SETTINGS: AnkiBridgeSettings = {
+	ankiConnectUrl: '',
+	defaultDeck: '',
+	defaultModel: '',
+};
 
 export async function loadSettings(
 	plugin: Plugin,
