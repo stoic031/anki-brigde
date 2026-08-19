@@ -335,13 +335,13 @@
     "semantic_hash": ""
   },
   "src/ui/settingsTab.test.ts": {
-    "mtime": 1787131896.6475155,
-    "ast_hash": "d7f55282c9c8435715c4fde7d875fd5d",
+    "mtime": 1787133365.6902118,
+    "ast_hash": "cdb091d3aefa9eb09a69fcc766e64b39",
     "semantic_hash": ""
   },
   "src/ui/settingsTab.ts": {
-    "mtime": 1787131896.647639,
-    "ast_hash": "6983cff0f80b67458098ef5ac48c8be9",
+    "mtime": 1787133365.6498237,
+    "ast_hash": "de4347a667317dd9474629752f82e8de",
     "semantic_hash": ""
   },
   "src/utils/constants.ts": {
