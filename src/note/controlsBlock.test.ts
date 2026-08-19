@@ -1,14 +1,19 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { App, MarkdownPostProcessorContext, Plugin } from 'obsidian';
 
-const { TFile, Notice } = vi.hoisted(() => ({
+const { TFile } = vi.hoisted(() => ({
 	TFile: class FakeTFile {},
-	Notice: vi.fn(),
 }));
-vi.mock('obsidian', () => ({ TFile, Notice }));
+vi.mock('obsidian', () => ({ TFile }));
 
 const { syncNote } = vi.hoisted(() => ({ syncNote: vi.fn() }));
 vi.mock('../sync/syncEngine', () => ({ syncNote }));
+
+const { toastSuccess, toastError } = vi.hoisted(() => ({
+	toastSuccess: vi.fn(),
+	toastError: vi.fn(),
+}));
+vi.mock('../ui/toast', () => ({ toastSuccess, toastError }));
 
 import { AnkiConnectClient } from '../sync/ankiConnect';
 import { SyncError } from '../types';
@@ -210,7 +215,8 @@ describe('renderControlsBlock', () => {
 describe('sync button handler', () => {
 	beforeEach(() => {
 		syncNote.mockReset();
-		Notice.mockClear();
+		toastSuccess.mockClear();
+		toastError.mockClear();
 		vi.useFakeTimers();
 		// controlsBlock.ts calls window.setTimeout for Obsidian popout-window
 		// compatibility (matches src/sync/ankiConnect.ts's convention) — vitest runs in
@@ -263,7 +269,7 @@ describe('sync button handler', () => {
 		await button.dispatch('click');
 
 		expect(button.text).toBe('✅ Done!');
-		expect(Notice).toHaveBeenCalledWith('✅ Note synced to Anki!', 3000);
+		expect(toastSuccess).toHaveBeenCalledWith('✅ Note synced to Anki!');
 
 		vi.advanceTimersByTime(2000);
 
@@ -278,9 +284,8 @@ describe('sync button handler', () => {
 		await button.dispatch('click');
 
 		expect(button.text).toBe('❌ Error');
-		expect(Notice).toHaveBeenCalledWith(
+		expect(toastError).toHaveBeenCalledWith(
 			'❌ Failed to sync. Please check Anki connection.',
-			5000,
 		);
 
 		vi.advanceTimersByTime(3000);
@@ -301,9 +306,8 @@ describe('sync button handler', () => {
 		await button.dispatch('click');
 
 		expect(button.text).toBe('❌ Error');
-		expect(Notice).toHaveBeenCalledWith(
+		expect(toastError).toHaveBeenCalledWith(
 			'❌ Model not found in Anki. Please select it again.',
-			5000,
 		);
 	});
 
