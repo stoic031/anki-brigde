@@ -220,8 +220,8 @@
     "semantic_hash": ""
   },
   "src/types.ts": {
-    "mtime": 1788882832.3822281,
-    "ast_hash": "040c70fb94686a8c298afe2acc482d26",
+    "mtime": 1788884605.4094396,
+    "ast_hash": "a308fad6ce6b17b72c7acb43e813cc10",
     "semantic_hash": ""
   },
   "vitest.config.ts": {
@@ -290,8 +290,8 @@
     "semantic_hash": ""
   },
   "src/sync/fieldMapper.ts": {
-    "mtime": 1788883789.0349543,
-    "ast_hash": "63c14b5c44f57f6b4e2c7f21037dc00c",
+    "mtime": 1788884674.3922613,
+    "ast_hash": "ff21bc059b3f8b1d2ef4468c8e370a82",
     "semantic_hash": ""
   },
   "src/sync/ankiConnect.ts": {
@@ -300,8 +300,8 @@
     "semantic_hash": ""
   },
   "src/sync/syncEngine.ts": {
-    "mtime": 1788882832.3820198,
-    "ast_hash": "8f56decd5bd1116ca84abeea6f4e0a6b",
+    "mtime": 1788884618.7325504,
+    "ast_hash": "8774179028e999e42c9cd6f5931fef8f",
     "semantic_hash": ""
   },
   "src/sync/ankiConnect.test.ts": {
@@ -345,7 +345,7 @@
     "semantic_hash": ""
   },
   "src/utils/constants.ts": {
-    "mtime": 1788883781.816307,
+    "mtime": 1788884261.1249187,
     "ast_hash": "84166134a65a25f30bf400f4ef727e98",
     "semantic_hash": ""
   },
