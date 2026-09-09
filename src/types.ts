@@ -16,6 +16,12 @@ export interface ParsedNote {
 	raw: string;
 }
 
+// §3 Field mapping
+export interface FieldMappingResult {
+	fields: Record<string, string>;
+	warnings: string[];
+}
+
 // §4 AI providers
 export interface TextResult {
 	[fieldName: string]: string; // keyed by exact Anki field name from targetFields
