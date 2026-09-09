@@ -14,7 +14,7 @@ export async function syncNote(app: App, file: TFile, client: AnkiConnectClient)
 		const content = await app.vault.cachedRead(file);
 		const sections = parseSections(content);
 		const modelFields = await client.modelFieldNames(frontmatter.anki_model);
-		const { fields } = mapContentToFields(sections, modelFields);
+		const { fields } = mapContentToFields(sections, modelFields, frontmatter.anki_model);
 
 		if (frontmatter.anki_note_id === undefined) {
 			await createNote(app, file, client, frontmatter, fields);

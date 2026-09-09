@@ -1,7 +1,11 @@
 import type { FieldMappingResult, SectionValue } from '../types';
 import { FIELD_ALIASES } from '../utils/constants';
 
-export function mapContentToFields(sections: Map<string, SectionValue>, fields: string[]): FieldMappingResult {
+export function mapContentToFields(
+	sections: Map<string, SectionValue>,
+	fields: string[],
+	model: string,
+): FieldMappingResult {
 	const result: Record<string, string> = {};
 	const usedSections = new Set<string>();
 	const warnings: string[] = [];
@@ -43,6 +47,19 @@ export function mapContentToFields(sections: Map<string, SectionValue>, fields: 
 			usedSections.add(sectionKey);
 		}
 		warnings.push('Pass 1 and 2 mapped no fields; used positional fallback.');
+	}
+
+	// Unmapped fields default to empty string, docs/contracts.md §3 "Afterwards"
+	for (const field of fields) {
+		if (result[field] === undefined) result[field] = '';
+	}
+
+	// Unmapped sections — collapse into ONE warning, never drop silently (docs/contracts.md §3)
+	const unmapped = [...sections.keys()].filter((key) => !usedSections.has(key));
+	if (unmapped.length > 0) {
+		const noun = unmapped.length === 1 ? 'section' : 'sections';
+		const message = `${unmapped.length} ${noun} not mapped to model '${model}': ${unmapped.join(', ')}`;
+		warnings.push(message.charAt(0).toUpperCase() + message.slice(1));
 	}
 
 	return { fields: result, warnings };
