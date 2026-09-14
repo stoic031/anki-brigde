@@ -3,13 +3,13 @@ import { TFile } from 'obsidian';
 import { readAnkiFrontmatter } from '../sync/parser';
 import { syncNote, deleteNote } from '../sync/syncEngine';
 import { AnkiConnectClient } from '../sync/ankiConnect';
-import { DEFAULT_ANKI_CONNECT_URL } from '../utils/constants';
+import { CONTROLS_BLOCK_LANGUAGE, DEFAULT_ANKI_CONNECT_URL } from '../utils/constants';
 import { SyncError } from '../types';
 import { toastError, toastSuccess } from '../ui/toast';
 import { ConfirmDeleteModal } from '../ui/modals/confirmDelete';
 
+export { CONTROLS_BLOCK_LANGUAGE };
 // docs/design/03-note.md §3.1
-export const CONTROLS_BLOCK_LANGUAGE = 'anki-controls';
 export const CONTROLS_CONTAINER_CLASS = 'anki-bridge-controls';
 export const CONTROLS_BUTTON_CLASS = 'anki-bridge-controls__button';
 
