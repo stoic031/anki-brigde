@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import type { App, FrontMatterCache, TFile } from 'obsidian';
-import { syncNote } from './syncEngine';
+import { syncNote, deleteNote } from './syncEngine';
 import type { AnkiConnectClient } from './ankiConnect';
 import { AnkiConnectError, SyncError } from '../types';
 
@@ -33,18 +33,21 @@ function fakeClient(
 		modelFieldNames: ReturnType<typeof vi.fn>;
 		addNote: ReturnType<typeof vi.fn>;
 		updateNoteFields: ReturnType<typeof vi.fn>;
+		deleteNotes: ReturnType<typeof vi.fn>;
 	}> = {},
 ): {
 	client: AnkiConnectClient;
 	modelFieldNames: ReturnType<typeof vi.fn>;
 	addNote: ReturnType<typeof vi.fn>;
 	updateNoteFields: ReturnType<typeof vi.fn>;
+	deleteNotes: ReturnType<typeof vi.fn>;
 } {
 	const modelFieldNames = overrides.modelFieldNames ?? vi.fn().mockResolvedValue(['Front', 'Back']);
 	const addNote = overrides.addNote ?? vi.fn().mockResolvedValue(999);
 	const updateNoteFields = overrides.updateNoteFields ?? vi.fn().mockResolvedValue(undefined);
-	const client = { modelFieldNames, addNote, updateNoteFields } as unknown as AnkiConnectClient;
-	return { client, modelFieldNames, addNote, updateNoteFields };
+	const deleteNotes = overrides.deleteNotes ?? vi.fn().mockResolvedValue(undefined);
+	const client = { modelFieldNames, addNote, updateNoteFields, deleteNotes } as unknown as AnkiConnectClient;
+	return { client, modelFieldNames, addNote, updateNoteFields, deleteNotes };
 }
 
 const file = {} as unknown as TFile;
@@ -164,5 +167,73 @@ describe('syncNote', () => {
 			const { client } = fakeClient({ modelFieldNames: vi.fn().mockRejectedValue(original) });
 			await expect(syncNote(app, file, client)).rejects.toBe(original);
 		});
+	});
+});
+
+describe('deleteNote', () => {
+	it('deletes the note in Anki and clears anki_note_id from frontmatter', async () => {
+		const { app, frontmatter } = fakeApp(CONTENT, {
+			anki_note_id: 123,
+			anki_deck: 'Japanese::N2',
+			anki_model: 'Basic',
+		});
+		const { client, deleteNotes } = fakeClient();
+
+		await deleteNote(app, file, client);
+
+		expect(deleteNotes).toHaveBeenCalledWith([123]);
+		expect(frontmatter.anki_note_id).toBeUndefined();
+	});
+
+	it('maps a note with no anki_note_id to the parse-error SyncError, without calling deleteNotes', async () => {
+		const { app } = fakeApp(CONTENT, { anki_deck: 'Deck', anki_model: 'Basic' });
+		const { client, deleteNotes } = fakeClient();
+
+		const err = await deleteNote(app, file, client).catch((e: unknown) => e);
+
+		expect(err).toBeInstanceOf(SyncError);
+		expect(err).toMatchObject({
+			reason: 'parse-error',
+			message: 'Cannot parse note content. Please check format.',
+		});
+		expect(deleteNotes).not.toHaveBeenCalled();
+	});
+
+	it('maps a note with no frontmatter block to the parse-error SyncError', async () => {
+		const { app } = fakeApp(CONTENT, undefined);
+		const { client } = fakeClient();
+
+		const err = await deleteNote(app, file, client).catch((e: unknown) => e);
+
+		expect(err).toBeInstanceOf(SyncError);
+		expect(err).toMatchObject({
+			reason: 'parse-error',
+			message: 'Cannot parse note content. Please check format.',
+		});
+	});
+
+	it('maps an AnkiConnect offline failure on deleteNotes to the offline SyncError', async () => {
+		const { app } = fakeApp(CONTENT, { anki_note_id: 123, anki_deck: 'Deck', anki_model: 'Basic' });
+		const { client } = fakeClient({
+			deleteNotes: vi
+				.fn()
+				.mockRejectedValue(new AnkiConnectError('deleteNotes', 'could not reach AnkiConnect — is Anki running?')),
+		});
+
+		const err = await deleteNote(app, file, client).catch((e: unknown) => e);
+
+		expect(err).toBeInstanceOf(SyncError);
+		expect(err).toMatchObject({
+			reason: 'offline',
+			message: 'Anki is not running. Please start Anki and AnkiConnect.',
+		});
+	});
+
+	it('propagates an unrecognized AnkiConnectError unchanged instead of mislabeling it', async () => {
+		const { app } = fakeApp(CONTENT, { anki_note_id: 123, anki_deck: 'Deck', anki_model: 'Basic' });
+		const original = new AnkiConnectError('deleteNotes', 'something unexpected happened');
+		const { client } = fakeClient({ deleteNotes: vi.fn().mockRejectedValue(original) });
+
+		await expect(deleteNote(app, file, client)).rejects.toBe(original);
 	});
 });

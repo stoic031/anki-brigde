@@ -6,14 +6,33 @@ const { TFile } = vi.hoisted(() => ({
 }));
 vi.mock('obsidian', () => ({ TFile }));
 
-const { syncNote } = vi.hoisted(() => ({ syncNote: vi.fn() }));
-vi.mock('../sync/syncEngine', () => ({ syncNote }));
+const { syncNote, deleteNote } = vi.hoisted(() => ({
+	syncNote: vi.fn(),
+	deleteNote: vi.fn(),
+}));
+vi.mock('../sync/syncEngine', () => ({ syncNote, deleteNote }));
 
 const { toastSuccess, toastError } = vi.hoisted(() => ({
 	toastSuccess: vi.fn(),
 	toastError: vi.fn(),
 }));
 vi.mock('../ui/toast', () => ({ toastSuccess, toastError }));
+
+const { confirmDeleteOpen, confirmDeleteCapture } = vi.hoisted(() => ({
+	confirmDeleteOpen: vi.fn(),
+	confirmDeleteCapture: { onConfirm: undefined as (() => void) | undefined },
+}));
+vi.mock('../ui/modals/confirmDelete', () => ({
+	ConfirmDeleteModal: class {
+		constructor(
+			_app: unknown,
+			onConfirm: () => void,
+		) {
+			confirmDeleteCapture.onConfirm = onConfirm;
+		}
+		open = confirmDeleteOpen;
+	},
+}));
 
 import { AnkiConnectClient } from '../sync/ankiConnect';
 import { SyncError } from '../types';
@@ -42,7 +61,9 @@ interface RenderedButton {
 	text: string;
 	attr: Record<string, unknown>;
 	disabled: boolean;
+	removed: boolean;
 	setText: (t: string) => void;
+	remove: () => void;
 	addEventListener: (type: string, cb: () => unknown) => void;
 	dispatch: (type: string) => unknown;
 }
@@ -65,8 +86,12 @@ function fakeEl() {
 					text: info.text,
 					attr: info.attr,
 					disabled: false,
+					removed: false,
 					setText(t) {
 						button.text = t;
+					},
+					remove() {
+						button.removed = true;
 					},
 					addEventListener(type, cb) {
 						(listeners[type] ??= []).push(cb);
@@ -319,5 +344,116 @@ describe('sync button handler', () => {
 		void button.dispatch('click');
 
 		expect(syncNote).toHaveBeenCalledTimes(1);
+	});
+});
+
+describe('delete button handler', () => {
+	beforeEach(() => {
+		deleteNote.mockReset();
+		toastSuccess.mockClear();
+		toastError.mockClear();
+		confirmDeleteOpen.mockClear();
+		confirmDeleteCapture.onConfirm = undefined;
+		vi.useFakeTimers();
+		vi.stubGlobal('window', globalThis);
+	});
+
+	afterEach(() => {
+		vi.useRealTimers();
+		vi.unstubAllGlobals();
+	});
+
+	function renderAndGetDeleteButton() {
+		const app = fakeApp({ anki_note_id: 12345 });
+		const { el, buttons } = fakeEl();
+		renderControlsBlock(app, '', el, fakeCtx());
+		const button = buttons.find((b) => b.attr['data-action'] === 'delete');
+		if (!button) throw new Error('delete button not rendered');
+		return { app, button };
+	}
+
+	async function confirmDelete() {
+		confirmDeleteCapture.onConfirm?.();
+	}
+
+	it('opens the confirm modal on click without calling deleteNote yet', () => {
+		const { button } = renderAndGetDeleteButton();
+
+		button.dispatch('click');
+
+		expect(confirmDeleteOpen).toHaveBeenCalledTimes(1);
+		expect(deleteNote).not.toHaveBeenCalled();
+	});
+
+	it('calls deleteNote with the app, file, and an AnkiConnectClient once confirmed', async () => {
+		deleteNote.mockResolvedValue(undefined);
+		const { app, button } = renderAndGetDeleteButton();
+
+		button.dispatch('click');
+		await confirmDelete();
+
+		expect(deleteNote).toHaveBeenCalledTimes(1);
+		expect(deleteNote).toHaveBeenCalledWith(app, expect.anything(), expect.any(AnkiConnectClient));
+	});
+
+	it('shows the processing state immediately, before deleteNote resolves', () => {
+		deleteNote.mockResolvedValue(undefined);
+		const { button } = renderAndGetDeleteButton();
+
+		button.dispatch('click');
+		void confirmDelete();
+
+		expect(button.disabled).toBe(true);
+		expect(button.text).toBe('⏳ Processing...');
+	});
+
+	it('toasts success and removes the button instead of reverting it', async () => {
+		deleteNote.mockResolvedValue(undefined);
+		const { button } = renderAndGetDeleteButton();
+
+		button.dispatch('click');
+		await confirmDelete();
+
+		expect(toastSuccess).toHaveBeenCalledWith('✅ Note deleted from Anki!');
+		expect(button.removed).toBe(true);
+	});
+
+	it('shows the generic fallback toast, then reverts after 3s, for a non-SyncError rejection', async () => {
+		deleteNote.mockRejectedValue(new Error('boom'));
+		const { button } = renderAndGetDeleteButton();
+
+		button.dispatch('click');
+		await confirmDelete();
+
+		expect(button.text).toBe('❌ Error');
+		expect(toastError).toHaveBeenCalledWith('❌ Failed to delete. Please check Anki connection.');
+		expect(button.removed).toBe(false);
+
+		vi.advanceTimersByTime(3000);
+
+		expect(button.text).toBe('🗑️ Delete');
+		expect(button.disabled).toBe(false);
+	});
+
+	it('shows the SyncError-specific message instead of the generic fallback', async () => {
+		deleteNote.mockRejectedValue(new SyncError('offline', 'Anki is not running. Please start Anki and AnkiConnect.'));
+		const { button } = renderAndGetDeleteButton();
+
+		button.dispatch('click');
+		await confirmDelete();
+
+		expect(button.text).toBe('❌ Error');
+		expect(toastError).toHaveBeenCalledWith('❌ Anki is not running. Please start Anki and AnkiConnect.');
+	});
+
+	it('ignores a click while already processing', () => {
+		deleteNote.mockResolvedValue(undefined);
+		const { button } = renderAndGetDeleteButton();
+
+		button.dispatch('click');
+		void confirmDelete();
+		button.dispatch('click');
+
+		expect(confirmDeleteOpen).toHaveBeenCalledTimes(1);
 	});
 });
