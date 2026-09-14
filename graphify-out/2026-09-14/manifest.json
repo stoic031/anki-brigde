@@ -290,7 +290,7 @@
     "semantic_hash": ""
   },
   "src/sync/fieldMapper.ts": {
-    "mtime": 1789351556.5769017,
+    "mtime": 1788962892.741942,
     "ast_hash": "6680bb0c85e5e7aeefb1e0d148dd44a0",
     "semantic_hash": ""
   },
@@ -300,7 +300,7 @@
     "semantic_hash": ""
   },
   "src/sync/syncEngine.ts": {
-    "mtime": 1789351556.5771825,
+    "mtime": 1788962897.1407466,
     "ast_hash": "f1d4b897bbd7d5e022c1731aadbe2bfc",
     "semantic_hash": ""
   },
@@ -372,11 +372,6 @@
   "CHANGELOG.md": {
     "mtime": 1788882832.3622072,
     "ast_hash": "66f2be6af4d30c0659f34298aaaaac48",
-    "semantic_hash": ""
-  },
-  "src/sync/fieldMapper.test.ts": {
-    "mtime": 1789351971.9590642,
-    "ast_hash": "ee45366eee999469199c0d32cab02f69",
     "semantic_hash": ""
   }
 }

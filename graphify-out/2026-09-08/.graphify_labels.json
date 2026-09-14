@@ -3,9 +3,9 @@
   "1": "graphify Skill (/graphify)",
   "2": "devDependencies",
   "3": "compilerOptions",
-  "4": "Common Provider Interface (processText/generateAudio/generateImage)",
+  "4": "Scenario 1: Create Note via Icon/Command",
   "5": "types.ts",
-  "6": "FakeDropdownComponent",
+  "6": "Common Provider Interface (processText/generateAudio/generateImage)",
   "7": "package.json",
   "8": "Graphify Full Pipeline",
   "9": "docs/contracts.md",
@@ -76,8 +76,10 @@
   "74": "README.md — Obsidian Sample Plugin boilerplate",
   "75": "vitest.config.ts",
   "76": "graphify reference: GitHub clone and cross-repo merge",
-  "77": "FakeButtonComponent",
+  "77": "FakeDropdownComponent",
   "78": "FakeSetting",
   "79": "[1.0.0]",
-  "80": "FakeTextComponent"
+  "80": "FakeButtonComponent",
+  "81": "FakeTextComponent",
+  "82": "FakeEl"
 }

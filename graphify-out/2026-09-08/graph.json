@@ -1349,28 +1349,6 @@
       "norm_label": ".modelfieldnames()"
     },
     {
-      "label": "fieldMapper.test.ts",
-      "file_type": "code",
-      "source_file": "src/sync/fieldMapper.test.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "src_sync_fieldmapper_test",
-      "community": 5,
-      "community_name": "types.ts",
-      "norm_label": "fieldmapper.test.ts"
-    },
-    {
-      "label": "sections()",
-      "file_type": "code",
-      "source_file": "src/sync/fieldMapper.test.ts",
-      "source_location": "L5",
-      "_origin": "ast",
-      "id": "src_sync_fieldmapper_test_sections",
-      "community": 5,
-      "community_name": "types.ts",
-      "norm_label": "sections()"
-    },
-    {
       "label": "fieldMapper.ts",
       "file_type": "code",
       "source_file": "src/sync/fieldMapper.ts",
@@ -1396,7 +1374,7 @@
       "label": "stringifySectionValue()",
       "file_type": "code",
       "source_file": "src/sync/fieldMapper.ts",
-      "source_location": "L68",
+      "source_location": "L37",
       "_origin": "ast",
       "id": "src_sync_fieldmapper_stringifysectionvalue",
       "community": 5,
@@ -1657,21 +1635,10 @@
       "norm_label": "parsednote"
     },
     {
-      "label": "FieldMappingResult",
-      "file_type": "code",
-      "source_file": "src/types.ts",
-      "source_location": "L20",
-      "_origin": "ast",
-      "id": "src_types_fieldmappingresult",
-      "community": 5,
-      "community_name": "types.ts",
-      "norm_label": "fieldmappingresult"
-    },
-    {
       "label": "TextResult",
       "file_type": "code",
       "source_file": "src/types.ts",
-      "source_location": "L26",
+      "source_location": "L20",
       "_origin": "ast",
       "id": "src_types_textresult",
       "community": 5,
@@ -1682,7 +1649,7 @@
       "label": "MediaResult",
       "file_type": "code",
       "source_file": "src/types.ts",
-      "source_location": "L30",
+      "source_location": "L24",
       "_origin": "ast",
       "id": "src_types_mediaresult",
       "community": 5,
@@ -1693,7 +1660,7 @@
       "label": "TextProvider",
       "file_type": "code",
       "source_file": "src/types.ts",
-      "source_location": "L36",
+      "source_location": "L30",
       "_origin": "ast",
       "id": "src_types_textprovider",
       "community": 5,
@@ -1704,7 +1671,7 @@
       "label": ".processText()",
       "file_type": "code",
       "source_file": "src/types.ts",
-      "source_location": "L39",
+      "source_location": "L33",
       "_origin": "ast",
       "id": "src_types_textprovider_processtext",
       "community": 5,
@@ -1715,7 +1682,7 @@
       "label": "AudioProvider",
       "file_type": "code",
       "source_file": "src/types.ts",
-      "source_location": "L46",
+      "source_location": "L40",
       "_origin": "ast",
       "id": "src_types_audioprovider",
       "community": 5,
@@ -1726,7 +1693,7 @@
       "label": ".generateAudio()",
       "file_type": "code",
       "source_file": "src/types.ts",
-      "source_location": "L49",
+      "source_location": "L43",
       "_origin": "ast",
       "id": "src_types_audioprovider_generateaudio",
       "community": 5,
@@ -1737,7 +1704,7 @@
       "label": "ImageProvider",
       "file_type": "code",
       "source_file": "src/types.ts",
-      "source_location": "L52",
+      "source_location": "L46",
       "_origin": "ast",
       "id": "src_types_imageprovider",
       "community": 5,
@@ -1748,7 +1715,7 @@
       "label": ".generateImage()",
       "file_type": "code",
       "source_file": "src/types.ts",
-      "source_location": "L55",
+      "source_location": "L49",
       "_origin": "ast",
       "id": "src_types_imageprovider_generateimage",
       "community": 5,
@@ -1759,7 +1726,7 @@
       "label": "TextTask",
       "file_type": "code",
       "source_file": "src/types.ts",
-      "source_location": "L58",
+      "source_location": "L52",
       "_origin": "ast",
       "id": "src_types_texttask",
       "community": 5,
@@ -1770,7 +1737,7 @@
       "label": "AudioOptions",
       "file_type": "code",
       "source_file": "src/types.ts",
-      "source_location": "L60",
+      "source_location": "L54",
       "_origin": "ast",
       "id": "src_types_audiooptions",
       "community": 5,
@@ -1781,7 +1748,7 @@
       "label": "ImageOptions",
       "file_type": "code",
       "source_file": "src/types.ts",
-      "source_location": "L66",
+      "source_location": "L60",
       "_origin": "ast",
       "id": "src_types_imageoptions",
       "community": 5,
@@ -1792,7 +1759,7 @@
       "label": "AnkiConnectError",
       "file_type": "code",
       "source_file": "src/types.ts",
-      "source_location": "L73",
+      "source_location": "L67",
       "_origin": "ast",
       "id": "src_types_ankiconnecterror",
       "community": 5,
@@ -1803,7 +1770,7 @@
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "src/types.ts",
-      "source_location": "L74",
+      "source_location": "L68",
       "_origin": "ast",
       "id": "src_types_ankiconnecterror_constructor",
       "community": 5,
@@ -1814,7 +1781,7 @@
       "label": "ProviderError",
       "file_type": "code",
       "source_file": "src/types.ts",
-      "source_location": "L82",
+      "source_location": "L76",
       "_origin": "ast",
       "id": "src_types_providererror",
       "community": 5,
@@ -1825,7 +1792,7 @@
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "src/types.ts",
-      "source_location": "L83",
+      "source_location": "L77",
       "_origin": "ast",
       "id": "src_types_providererror_constructor",
       "community": 5,
@@ -1836,7 +1803,7 @@
       "label": "SyncError",
       "file_type": "code",
       "source_file": "src/types.ts",
-      "source_location": "L91",
+      "source_location": "L85",
       "_origin": "ast",
       "id": "src_types_syncerror",
       "community": 5,
@@ -1847,7 +1814,7 @@
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "src/types.ts",
-      "source_location": "L92",
+      "source_location": "L86",
       "_origin": "ast",
       "id": "src_types_syncerror_constructor",
       "community": 5,
@@ -1872,7 +1839,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_faketextcomponent",
-      "community": 80,
+      "community": 81,
       "community_name": "FakeTextComponent",
       "norm_label": "faketextcomponent"
     },
@@ -1883,7 +1850,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_faketextcomponent_setplaceholder",
-      "community": 80,
+      "community": 81,
       "community_name": "FakeTextComponent",
       "norm_label": ".setplaceholder()"
     },
@@ -1894,7 +1861,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_faketextcomponent_setvalue",
-      "community": 80,
+      "community": 81,
       "community_name": "FakeTextComponent",
       "norm_label": ".setvalue()"
     },
@@ -1905,7 +1872,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_faketextcomponent_onchange",
-      "community": 80,
+      "community": 81,
       "community_name": "FakeTextComponent",
       "norm_label": ".onchange()"
     },
@@ -1916,7 +1883,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_faketextcomponent_triggerchange",
-      "community": 80,
+      "community": 81,
       "community_name": "FakeTextComponent",
       "norm_label": ".triggerchange()"
     },
@@ -1927,7 +1894,7 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_fakebuttoncomponent",
-      "community": 77,
+      "community": 80,
       "community_name": "FakeButtonComponent",
       "norm_label": "fakebuttoncomponent"
     },
@@ -1938,7 +1905,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_fakebuttoncomponent_setbuttontext",
-      "community": 77,
+      "community": 80,
       "community_name": "FakeButtonComponent",
       "norm_label": ".setbuttontext()"
     },
@@ -1949,7 +1916,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_fakebuttoncomponent_setdisabled",
-      "community": 77,
+      "community": 80,
       "community_name": "FakeButtonComponent",
       "norm_label": ".setdisabled()"
     },
@@ -1960,7 +1927,7 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_fakebuttoncomponent_onclick",
-      "community": 77,
+      "community": 80,
       "community_name": "FakeButtonComponent",
       "norm_label": ".onclick()"
     },
@@ -1971,7 +1938,7 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_fakebuttoncomponent_triggerclick",
-      "community": 77,
+      "community": 80,
       "community_name": "FakeButtonComponent",
       "norm_label": ".triggerclick()"
     },
@@ -1982,7 +1949,7 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_fakedropdowncomponent",
-      "community": 6,
+      "community": 77,
       "community_name": "FakeDropdownComponent",
       "norm_label": "fakedropdowncomponent"
     },
@@ -1993,7 +1960,7 @@
       "source_location": "L57",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_fakedropdowncomponent_constructor",
-      "community": 6,
+      "community": 77,
       "community_name": "FakeDropdownComponent",
       "norm_label": ".constructor()"
     },
@@ -2004,7 +1971,7 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_fakedropdowncomponent_addoption",
-      "community": 6,
+      "community": 77,
       "community_name": "FakeDropdownComponent",
       "norm_label": ".addoption()"
     },
@@ -2015,7 +1982,7 @@
       "source_location": "L68",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_fakedropdowncomponent_setvalue",
-      "community": 6,
+      "community": 77,
       "community_name": "FakeDropdownComponent",
       "norm_label": ".setvalue()"
     },
@@ -2026,7 +1993,7 @@
       "source_location": "L72",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_fakedropdowncomponent_onchange",
-      "community": 6,
+      "community": 77,
       "community_name": "FakeDropdownComponent",
       "norm_label": ".onchange()"
     },
@@ -2037,7 +2004,7 @@
       "source_location": "L76",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_fakedropdowncomponent_triggerchange",
-      "community": 6,
+      "community": 77,
       "community_name": "FakeDropdownComponent",
       "norm_label": ".triggerchange()"
     },
@@ -2125,8 +2092,8 @@
       "source_location": "L118",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_fakeel",
-      "community": 15,
-      "community_name": "settingsTab.test.ts",
+      "community": 82,
+      "community_name": "FakeEl",
       "norm_label": "fakeel"
     },
     {
@@ -2136,8 +2103,8 @@
       "source_location": "L120",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_fakeel_creatediv",
-      "community": 15,
-      "community_name": "settingsTab.test.ts",
+      "community": 82,
+      "community_name": "FakeEl",
       "norm_label": ".creatediv()"
     },
     {
@@ -2147,8 +2114,8 @@
       "source_location": "L121",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_fakeel_toggleclass",
-      "community": 15,
-      "community_name": "settingsTab.test.ts",
+      "community": 82,
+      "community_name": "FakeEl",
       "norm_label": ".toggleclass()"
     },
     {
@@ -2158,8 +2125,8 @@
       "source_location": "L122",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_fakeel_hasclass",
-      "community": 15,
-      "community_name": "settingsTab.test.ts",
+      "community": 82,
+      "community_name": "FakeEl",
       "norm_label": ".hasclass()"
     },
     {
@@ -3884,7 +3851,7 @@
       "contributor": null,
       "community": 4,
       "norm_label": "dynamic field mapping (\u00a71.5)",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
+      "community_name": "Scenario 1: Create Note via Icon/Command",
       "id": "docs_design_01_sync_field_mapping"
     },
     {
@@ -4430,7 +4397,7 @@
       "contributor": null,
       "community": 4,
       "norm_label": "repo layout (src/ module organization)",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
+      "community_name": "Scenario 1: Create Note via Icon/Command",
       "id": "agents_repo_layout"
     },
     {
@@ -4458,7 +4425,7 @@
       "contributor": null,
       "community": 4,
       "norm_label": "ankifrontmatter interface",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
+      "community_name": "Scenario 1: Create Note via Icon/Command",
       "id": "docs_contracts_ankifrontmatter"
     },
     {
@@ -4472,7 +4439,7 @@
       "contributor": null,
       "community": 4,
       "norm_label": "parsednote interface",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
+      "community_name": "Scenario 1: Create Note via Icon/Command",
       "id": "docs_contracts_parsednote"
     },
     {
@@ -4486,7 +4453,7 @@
       "contributor": null,
       "community": 4,
       "norm_label": "field mapping algorithm (3-pass deterministic)",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
+      "community_name": "Scenario 1: Create Note via Icon/Command",
       "id": "docs_contracts_field_mapping_algorithm"
     },
     {
@@ -4500,7 +4467,7 @@
       "contributor": null,
       "community": 4,
       "norm_label": "field_aliases map",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
+      "community_name": "Scenario 1: Create Note via Icon/Command",
       "id": "docs_contracts_field_aliases"
     },
     {
@@ -4668,7 +4635,7 @@
       "contributor": null,
       "community": 4,
       "norm_label": "q10: milestone 1 acceptance criteria checklist",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
+      "community_name": "Scenario 1: Create Note via Icon/Command",
       "id": "docs_design_open_questions_milestone1_acceptance"
     },
     {
@@ -4710,7 +4677,7 @@
       "contributor": null,
       "community": 4,
       "norm_label": "design doc architecture overview",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
+      "community_name": "Scenario 1: Create Note via Icon/Command",
       "id": "docs_design_readme_architecture_overview"
     },
     {
@@ -4750,7 +4717,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 4,
+      "community": 6,
       "norm_label": "provider abstraction layer",
       "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_02_providers_abstraction_layer"
@@ -4764,7 +4731,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 4,
+      "community": 6,
       "norm_label": "common provider interface (processtext/generateaudio/generateimage)",
       "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_02_providers_provider_interface"
@@ -4780,7 +4747,7 @@
       "contributor": null,
       "community": 4,
       "norm_label": "ai provider manager",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
+      "community_name": "Scenario 1: Create Note via Icon/Command",
       "id": "docs_design_02_providers_ai_provider_manager_component"
     },
     {
@@ -4862,7 +4829,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 4,
+      "community": 6,
       "norm_label": "openai gpt-4/3.5 (text, cloud)",
       "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_02_providers_openai_gpt"
@@ -4876,7 +4843,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 4,
+      "community": 6,
       "norm_label": "claude (text, cloud)",
       "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_02_providers_claude"
@@ -4890,7 +4857,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 4,
+      "community": 6,
       "norm_label": "gemini (text, cloud)",
       "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_02_providers_gemini"
@@ -4904,7 +4871,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 4,
+      "community": 6,
       "norm_label": "ollama (text, local)",
       "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_02_providers_ollama"
@@ -4918,7 +4885,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 4,
+      "community": 6,
       "norm_label": "lm studio (text, local)",
       "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_02_providers_lm_studio"
@@ -4932,7 +4899,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 4,
+      "community": 6,
       "norm_label": "openai tts (audio, cloud)",
       "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_02_providers_openai_tts"
@@ -4946,7 +4913,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 4,
+      "community": 6,
       "norm_label": "azure speech (audio, cloud)",
       "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_02_providers_azure_speech"
@@ -4960,7 +4927,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 4,
+      "community": 6,
       "norm_label": "elevenlabs (audio, cloud)",
       "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_02_providers_elevenlabs"
@@ -4974,7 +4941,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 4,
+      "community": 6,
       "norm_label": "edge tts (audio, cloud, free)",
       "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_02_providers_edge_tts"
@@ -4988,7 +4955,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 4,
+      "community": 6,
       "norm_label": "sherpa-onnx (audio, local)",
       "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_02_providers_sherpa_onnx"
@@ -5002,7 +4969,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 4,
+      "community": 6,
       "norm_label": "dall-e 3 (image, cloud)",
       "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_02_providers_dalle3"
@@ -5016,7 +4983,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 4,
+      "community": 6,
       "norm_label": "stability ai (image, cloud)",
       "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_02_providers_stability_ai"
@@ -5030,7 +4997,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 4,
+      "community": 6,
       "norm_label": "replicate (image, cloud)",
       "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_02_providers_replicate"
@@ -5044,7 +5011,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 4,
+      "community": 6,
       "norm_label": "automatic1111 (image, local)",
       "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_02_providers_automatic1111"
@@ -5058,7 +5025,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 4,
+      "community": 6,
       "norm_label": "comfyui (image, local)",
       "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_02_providers_comfyui"
@@ -5074,7 +5041,7 @@
       "contributor": null,
       "community": 4,
       "norm_label": "anki-controls markdown code block",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
+      "community_name": "Scenario 1: Create Note via Icon/Command",
       "id": "docs_design_03_note_custom_markdown_block"
     },
     {
@@ -5452,7 +5419,7 @@
       "contributor": null,
       "community": 4,
       "norm_label": "action: create new note (2-branch)",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
+      "community_name": "Scenario 1: Create Note via Icon/Command",
       "id": "docs_design_07_sidebar_create_new_note_action"
     },
     {
@@ -5466,7 +5433,7 @@
       "contributor": null,
       "community": 4,
       "norm_label": "branch a \u2014 deck/model already configured",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
+      "community_name": "Scenario 1: Create Note via Icon/Command",
       "id": "docs_design_07_sidebar_branch_a"
     },
     {
@@ -5480,7 +5447,7 @@
       "contributor": null,
       "community": 4,
       "norm_label": "branch b \u2014 first-time setup modal",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
+      "community_name": "Scenario 1: Create Note via Icon/Command",
       "id": "docs_design_07_sidebar_branch_b"
     },
     {
@@ -5508,7 +5475,7 @@
       "contributor": null,
       "community": 4,
       "norm_label": "ribbon icon (create note + open modal)",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
+      "community_name": "Scenario 1: Create Note via Icon/Command",
       "id": "docs_design_07_sidebar_ribbon_icon"
     },
     {
@@ -5522,7 +5489,7 @@
       "contributor": null,
       "community": 4,
       "norm_label": "command: \"anki: create new note\" (id create-note)",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
+      "community_name": "Scenario 1: Create Note via Icon/Command",
       "id": "docs_design_07_sidebar_create_note_command"
     },
     {
@@ -5578,7 +5545,7 @@
       "contributor": null,
       "community": 4,
       "norm_label": "scenario 1: create note via icon/command",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
+      "community_name": "Scenario 1: Create Note via Icon/Command",
       "id": "docs_design_scenarios_scenario1"
     },
     {
@@ -5634,7 +5601,7 @@
       "contributor": null,
       "community": 4,
       "norm_label": "scenario 4: change deck/model for already-synced note",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
+      "community_name": "Scenario 1: Create Note via Icon/Command",
       "id": "docs_design_scenarios_scenario4"
     },
     {
@@ -5648,7 +5615,7 @@
       "contributor": null,
       "community": 4,
       "norm_label": "warning only applies to already-synced notes",
-      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
+      "community_name": "Scenario 1: Create Note via Icon/Command",
       "id": "docs_design_scenarios_scenario4_sync_warning_rationale"
     }
   ],
@@ -7709,65 +7676,6 @@
       "target": "src_sync_ankiconnect_ankiconnectclient_modelfieldnames"
     },
     {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/sync/fieldMapper.test.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_sync_fieldmapper_test",
-      "target": "src_sync_fieldmapper",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/sync/fieldMapper.test.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_sync_fieldmapper_test",
-      "target": "src_sync_fieldmapper_mapcontenttofields",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/sync/fieldMapper.test.ts",
-      "source_location": "L5",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_sync_fieldmapper_test",
-      "target": "src_sync_fieldmapper_test_sections",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/sync/fieldMapper.test.ts",
-      "source_location": "L2",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_sync_fieldmapper_test",
-      "target": "src_types",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/sync/fieldMapper.test.ts",
-      "source_location": "L2",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_sync_fieldmapper_test",
-      "target": "src_types_sectionvalue",
-      "confidence_score": 1.0
-    },
-    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/sync/fieldMapper.ts",
@@ -7782,7 +7690,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/sync/fieldMapper.ts",
-      "source_location": "L68",
+      "source_location": "L37",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_sync_fieldmapper",
@@ -7799,18 +7707,6 @@
       "_origin": "ast",
       "source": "src_sync_fieldmapper",
       "target": "src_types",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/sync/fieldMapper.ts",
-      "source_location": "L1",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_sync_fieldmapper",
-      "target": "src_types_fieldmappingresult",
       "confidence_score": 1.0
     },
     {
@@ -7866,7 +7762,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/sync/fieldMapper.ts",
-      "source_location": "L19",
+      "source_location": "L14",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_sync_fieldmapper_mapcontenttofields",
@@ -7903,7 +7799,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/sync/fieldMapper.ts",
-      "source_location": "L69",
+      "source_location": "L38",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_sync_fieldmapper_stringifysectionvalue",
@@ -8414,7 +8310,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/types.ts",
-      "source_location": "L73",
+      "source_location": "L67",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_types",
@@ -8436,7 +8332,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/types.ts",
-      "source_location": "L60",
+      "source_location": "L54",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_types",
@@ -8447,7 +8343,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/types.ts",
-      "source_location": "L46",
+      "source_location": "L40",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_types",
@@ -8458,18 +8354,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/types.ts",
-      "source_location": "L20",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_types",
-      "target": "src_types_fieldmappingresult",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/types.ts",
-      "source_location": "L66",
+      "source_location": "L60",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_types",
@@ -8480,7 +8365,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/types.ts",
-      "source_location": "L52",
+      "source_location": "L46",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_types",
@@ -8491,7 +8376,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/types.ts",
-      "source_location": "L30",
+      "source_location": "L24",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_types",
@@ -8513,7 +8398,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/types.ts",
-      "source_location": "L82",
+      "source_location": "L76",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_types",
@@ -8535,7 +8420,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/types.ts",
-      "source_location": "L91",
+      "source_location": "L85",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_types",
@@ -8546,7 +8431,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/types.ts",
-      "source_location": "L36",
+      "source_location": "L30",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_types",
@@ -8557,7 +8442,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/types.ts",
-      "source_location": "L26",
+      "source_location": "L20",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_types",
@@ -8568,7 +8453,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/types.ts",
-      "source_location": "L58",
+      "source_location": "L52",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_types",
@@ -8579,7 +8464,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/types.ts",
-      "source_location": "L39",
+      "source_location": "L33",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_types_textprovider",
@@ -8590,7 +8475,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/types.ts",
-      "source_location": "L49",
+      "source_location": "L43",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_types_audioprovider",
@@ -8601,7 +8486,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/types.ts",
-      "source_location": "L55",
+      "source_location": "L49",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_types_imageprovider",
@@ -8612,7 +8497,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/types.ts",
-      "source_location": "L74",
+      "source_location": "L68",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_types_ankiconnecterror",
@@ -8623,7 +8508,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/types.ts",
-      "source_location": "L83",
+      "source_location": "L77",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_types_providererror",
@@ -8634,7 +8519,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/types.ts",
-      "source_location": "L92",
+      "source_location": "L86",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_types_syncerror",
@@ -11786,5 +11671,5 @@
       "source_file": ".opencode/skills/graphify/SKILL.md"
     }
   ],
-  "built_at_commit": "edb0011af5c42317547f6905e2cb2b046081ba54"
+  "built_at_commit": "288d7c4fab063652b0a6ee763a344b0b92dabe3b"
 }

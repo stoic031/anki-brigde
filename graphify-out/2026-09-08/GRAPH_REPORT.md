@@ -1,16 +1,16 @@
-# Graph Report - anki-bridge  (2026-09-14)
+# Graph Report - anki-bridge  (2026-09-08)
 
 ## Corpus Check
-- 73 files · ~43,697 words
+- 72 files · ~42,650 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 441 nodes · 547 edges · 81 communities (20 shown, 61 thin omitted)
+- 438 nodes · 540 edges · 83 communities (21 shown, 62 thin omitted)
 - Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 15 edges (avg confidence: 0.86)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `edb0011a`
+- Built from commit: `288d7c4f`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -19,9 +19,9 @@
 - graphify Skill (/graphify)
 - devDependencies
 - compilerOptions
-- Common Provider Interface (processText/generateAudio/generateImage)
+- Scenario 1: Create Note via Icon/Command
 - types.ts
-- FakeDropdownComponent
+- Common Provider Interface (processText/generateAudio/generateImage)
 - package.json
 - Graphify Full Pipeline
 - docs/contracts.md
@@ -89,10 +89,12 @@
 - roadmap.md — development roadmap
 - README.md — Obsidian Sample Plugin boilerplate
 - graphify reference: GitHub clone and cross-repo merge
-- FakeButtonComponent
+- FakeDropdownComponent
 - FakeSetting
 - [1.0.0]
+- FakeButtonComponent
 - FakeTextComponent
+- FakeEl
 
 ## God Nodes (most connected - your core abstractions)
 1. `Common Provider Interface (processText/generateAudio/generateImage)` - 20 edges
@@ -132,7 +134,7 @@
 - **Pluggable AI Provider Interfaces** — docs_contracts_textprovider, docs_contracts_audioprovider, docs_contracts_imageprovider, docs_design_02_providers_abstraction_layer [INFERRED 0.85]
 - **AST + Semantic Extraction Forming the Merged Graph Build** — opencode_skills_graphify_skill_ast_extraction, opencode_skills_graphify_skill_semantic_extraction, opencode_skills_graphify_references_extraction_spec_node_id_format, opencode_skills_graphify_references_extraction_spec_confidence_rubric [INFERRED 0.85]
 
-## Communities (81 total, 61 thin omitted)
+## Communities (83 total, 62 thin omitted)
 
 ### Community 0 - "Generate with AI Button"
 Cohesion: 0.11
@@ -150,13 +152,17 @@ Nodes (25): esbuild, eslint, @eslint/js, eslint-plugin-obsidianmd, globals, jiti
 Cohesion: 0.10
 Nodes (20): DOM, ES2021, src/**/*.ts, compilerOptions, allowSyntheticDefaultImports, forceConsistentCasingInFileNames, inlineSourceMap, inlineSources (+12 more)
 
-### Community 4 - "Common Provider Interface (processText/generateAudio/generateImage)"
-Cohesion: 0.06
-Nodes (35): Repo Layout (src/ module organization), AnkiFrontmatter interface, FIELD_ALIASES map, Field Mapping Algorithm (3-pass deterministic), ParsedNote interface, Dynamic Field Mapping (§1.5), Provider Abstraction Layer, AI Provider Manager (+27 more)
+### Community 4 - "Scenario 1: Create Note via Icon/Command"
+Cohesion: 0.13
+Nodes (18): Repo Layout (src/ module organization), AnkiFrontmatter interface, FIELD_ALIASES map, Field Mapping Algorithm (3-pass deterministic), ParsedNote interface, Dynamic Field Mapping (§1.5), AI Provider Manager, anki-controls Markdown Code Block (+10 more)
 
 ### Community 5 - "types.ts"
 Cohesion: 0.06
-Nodes (32): AnkiConnectClient, AnkiConnectResponse, { requestUrl }, mapContentToFields(), stringifySectionValue(), extractSectionValue(), parseSections(), readAnkiFrontmatter() (+24 more)
+Nodes (31): AnkiConnectClient, AnkiConnectResponse, { requestUrl }, mapContentToFields(), stringifySectionValue(), extractSectionValue(), parseSections(), readAnkiFrontmatter() (+23 more)
+
+### Community 6 - "Common Provider Interface (processText/generateAudio/generateImage)"
+Cohesion: 0.12
+Nodes (17): Provider Abstraction Layer, Automatic1111 (Image, Local), Azure Speech (Audio, Cloud), Claude (Text, Cloud), ComfyUI (Image, Local), DALL-E 3 (Image, Cloud), Edge TTS (Audio, Cloud, free), ElevenLabs (Audio, Cloud) (+9 more)
 
 ### Community 7 - "package.json"
 Cohesion: 0.12
@@ -191,8 +197,8 @@ Cohesion: 0.15
 Nodes (17): ALWAYS_VISIBLE_BUTTONS, ControlAction, ControlButtonSpec, DELETE_BUTTON, handleSync(), renderControlsBlock(), fakeApp(), fakeCtx() (+9 more)
 
 ### Community 15 - "settingsTab.test.ts"
-Cohesion: 0.10
-Nodes (21): plugin, $schema, .opencode/plugins/graphify.js, AnkiBridgePlugin, registerControlsBlock(), AnkiBridgeSettings, DEFAULT_SETTINGS, loadSettings() (+13 more)
+Cohesion: 0.11
+Nodes (20): plugin, $schema, .opencode/plugins/graphify.js, AnkiBridgePlugin, registerControlsBlock(), AnkiBridgeSettings, DEFAULT_SETTINGS, loadSettings() (+12 more)
 
 ### Community 16 - "TextProvider interface"
 Cohesion: 0.67
@@ -205,14 +211,14 @@ Nodes (4): [1.0.0], Added, Changelog, Fixed
 ## Knowledge Gaps
 - **161 isolated node(s):** `$schema`, `.opencode/plugins/graphify.js`, `id`, `name`, `version` (+156 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **61 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **62 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `AnkiConnectClient` connect `types.ts` to `controlsBlock.ts`, `settingsTab.test.ts`?**
   _High betweenness centrality (0.016) - this node is a cross-community bridge._
-- **Why does `Common Provider Interface (processText/generateAudio/generateImage)` connect `Common Provider Interface (processText/generateAudio/generateImage)` to `Generate with AI Button`?**
+- **Why does `Common Provider Interface (processText/generateAudio/generateImage)` connect `Common Provider Interface (processText/generateAudio/generateImage)` to `Generate with AI Button`, `Scenario 1: Create Note via Icon/Command`?**
   _High betweenness centrality (0.010) - this node is a cross-community bridge._
 - **Why does `FakeSetting` connect `FakeSetting` to `settingsTab.test.ts`?**
   _High betweenness centrality (0.009) - this node is a cross-community bridge._
