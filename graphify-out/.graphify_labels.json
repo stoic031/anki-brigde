@@ -4,7 +4,7 @@
   "2": "devDependencies",
   "3": "compilerOptions",
   "4": "Common Provider Interface (processText/generateAudio/generateImage)",
-  "5": "types.ts",
+  "5": "syncEngine.ts",
   "6": "FakeDropdownComponent",
   "7": "package.json",
   "8": "Graphify Full Pipeline",
@@ -79,5 +79,7 @@
   "77": "FakeButtonComponent",
   "78": "FakeSetting",
   "79": "[1.0.0]",
-  "80": "FakeTextComponent"
+  "80": "FakeTextComponent",
+  "81": "types.ts",
+  "82": "confirmDelete.test.ts"
 }

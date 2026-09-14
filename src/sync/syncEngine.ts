@@ -35,6 +35,21 @@ export async function syncNote(app: App, file: TFile, client: AnkiConnectClient)
 	}
 }
 
+export async function deleteNote(app: App, file: TFile, client: AnkiConnectClient): Promise<void> {
+	const frontmatter = readAnkiFrontmatter(app, file);
+	if (frontmatter?.anki_note_id === undefined) {
+		throw new SyncError('parse-error', 'Cannot parse note content. Please check format.');
+	}
+
+	try {
+		await client.deleteNotes([frontmatter.anki_note_id]);
+	} catch (err) {
+		throw toSyncError(err);
+	}
+
+	await writeAnkiFrontmatter(app, file, { anki_note_id: undefined });
+}
+
 function isNoteNotFound(err: unknown): boolean {
 	return (
 		err instanceof AnkiConnectError &&

@@ -1,11 +1,12 @@
 import type { App, MarkdownPostProcessorContext, Plugin } from 'obsidian';
 import { TFile } from 'obsidian';
 import { readAnkiFrontmatter } from '../sync/parser';
-import { syncNote } from '../sync/syncEngine';
+import { syncNote, deleteNote } from '../sync/syncEngine';
 import { AnkiConnectClient } from '../sync/ankiConnect';
 import { DEFAULT_ANKI_CONNECT_URL } from '../utils/constants';
 import { SyncError } from '../types';
 import { toastError, toastSuccess } from '../ui/toast';
+import { ConfirmDeleteModal } from '../ui/modals/confirmDelete';
 
 // docs/design/03-note.md §3.1
 export const CONTROLS_BLOCK_LANGUAGE = 'anki-controls';
@@ -71,6 +72,11 @@ export function renderControlsBlock(
 				'click',
 				() => void handleSync(app, file, button, label),
 			);
+		} else if (action === 'delete' && file instanceof TFile) {
+			button.addEventListener(
+				'click',
+				() => handleDeleteClick(app, file, button),
+			);
 		}
 	}
 }
@@ -108,6 +114,45 @@ async function handleSync(
 		toastError(message);
 		window.setTimeout(() => {
 			button.setText(label);
+			button.disabled = false;
+		}, 3000);
+	}
+}
+
+// docs/design/03-note.md §3.2
+function handleDeleteClick(
+	app: App,
+	file: TFile,
+	button: HTMLButtonElement,
+): void {
+	if (button.disabled) return;
+	new ConfirmDeleteModal(app, () => void performDelete(app, file, button)).open();
+}
+
+async function performDelete(
+	app: App,
+	file: TFile,
+	button: HTMLButtonElement,
+): Promise<void> {
+	button.disabled = true;
+	button.setText('⏳ Processing...');
+
+	try {
+		const client = new AnkiConnectClient(DEFAULT_ANKI_CONNECT_URL);
+		await deleteNote(app, file, client);
+		toastSuccess('✅ Note deleted from Anki!');
+		// Action is no longer applicable once anki_note_id is cleared — hide rather
+		// than revert to the normal state (.claude/rules/ui-copy.md button states).
+		button.remove();
+	} catch (err) {
+		const message =
+			err instanceof SyncError
+				? `❌ ${err.message}`
+				: '❌ Failed to delete. Please check Anki connection.';
+		button.setText('❌ Error');
+		toastError(message);
+		window.setTimeout(() => {
+			button.setText(DELETE_BUTTON.label);
 			button.disabled = false;
 		}, 3000);
 	}

@@ -1,16 +1,16 @@
-# Graph Report - anki-bridge  (2026-09-09)
+# Graph Report - anki-bridge  (2026-09-14)
 
 ## Corpus Check
-- 72 files · ~42,812 words
+- 73 files · ~43,697 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 439 nodes · 542 edges · 78 communities (21 shown, 57 thin omitted)
+- 441 nodes · 547 edges · 81 communities (20 shown, 61 thin omitted)
 - Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 15 edges (avg confidence: 0.86)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `841a6747`
+- Built from commit: `edb0011a`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -21,6 +21,7 @@
 - compilerOptions
 - Common Provider Interface (processText/generateAudio/generateImage)
 - types.ts
+- FakeDropdownComponent
 - package.json
 - Graphify Full Pipeline
 - docs/contracts.md
@@ -28,8 +29,8 @@
 - Milestone 1: Core Sync + Settings
 - docs/design/01-sync.md
 - MediaResult interface
-- controlsBlock.test.ts
-- settingsTab.ts
+- controlsBlock.ts
+- settingsTab.test.ts
 - TextProvider interface
 - graphify.js
 - mediaNaming.ts
@@ -88,8 +89,10 @@
 - roadmap.md — development roadmap
 - README.md — Obsidian Sample Plugin boilerplate
 - graphify reference: GitHub clone and cross-repo merge
-- settingsTab.test.ts
+- FakeButtonComponent
+- FakeSetting
 - [1.0.0]
+- FakeTextComponent
 
 ## God Nodes (most connected - your core abstractions)
 1. `Common Provider Interface (processText/generateAudio/generateImage)` - 20 edges
@@ -129,7 +132,7 @@
 - **Pluggable AI Provider Interfaces** — docs_contracts_textprovider, docs_contracts_audioprovider, docs_contracts_imageprovider, docs_design_02_providers_abstraction_layer [INFERRED 0.85]
 - **AST + Semantic Extraction Forming the Merged Graph Build** — opencode_skills_graphify_skill_ast_extraction, opencode_skills_graphify_skill_semantic_extraction, opencode_skills_graphify_references_extraction_spec_node_id_format, opencode_skills_graphify_references_extraction_spec_confidence_rubric [INFERRED 0.85]
 
-## Communities (78 total, 57 thin omitted)
+## Communities (81 total, 61 thin omitted)
 
 ### Community 0 - "Generate with AI Button"
 Cohesion: 0.11
@@ -152,8 +155,8 @@ Cohesion: 0.06
 Nodes (35): Repo Layout (src/ module organization), AnkiFrontmatter interface, FIELD_ALIASES map, Field Mapping Algorithm (3-pass deterministic), ParsedNote interface, Dynamic Field Mapping (§1.5), Provider Abstraction Layer, AI Provider Manager (+27 more)
 
 ### Community 5 - "types.ts"
-Cohesion: 0.05
-Nodes (36): ALWAYS_VISIBLE_BUTTONS, ControlAction, ControlButtonSpec, DELETE_BUTTON, AnkiConnectClient, AnkiConnectResponse, { requestUrl }, mapContentToFields() (+28 more)
+Cohesion: 0.06
+Nodes (32): AnkiConnectClient, AnkiConnectResponse, { requestUrl }, mapContentToFields(), stringifySectionValue(), extractSectionValue(), parseSections(), readAnkiFrontmatter() (+24 more)
 
 ### Community 7 - "package.json"
 Cohesion: 0.12
@@ -183,21 +186,17 @@ Nodes (6): Heading-Based Content Parsing, Sync Error Path Coverage, Idempotent S
 Cohesion: 0.50
 Nodes (5): AGENTS.md Non-Negotiables (9 rules), AudioProvider interface, ImageProvider interface, MediaResult interface, Q14: AudioOptions/ImageOptions shape undefined
 
-### Community 14 - "controlsBlock.test.ts"
-Cohesion: 0.29
-Nodes (9): renderControlsBlock(), fakeApp(), fakeCtx(), fakeEl(), renderAndGetSyncButton(), RenderedButton, { syncNote }, { TFile } (+1 more)
+### Community 14 - "controlsBlock.ts"
+Cohesion: 0.15
+Nodes (17): ALWAYS_VISIBLE_BUTTONS, ControlAction, ControlButtonSpec, DELETE_BUTTON, handleSync(), renderControlsBlock(), fakeApp(), fakeCtx() (+9 more)
 
-### Community 15 - "settingsTab.ts"
-Cohesion: 0.12
-Nodes (18): plugin, $schema, .opencode/plugins/graphify.js, AnkiBridgePlugin, handleSync(), registerControlsBlock(), AnkiBridgeSettings, DEFAULT_SETTINGS (+10 more)
+### Community 15 - "settingsTab.test.ts"
+Cohesion: 0.10
+Nodes (21): plugin, $schema, .opencode/plugins/graphify.js, AnkiBridgePlugin, registerControlsBlock(), AnkiBridgeSettings, DEFAULT_SETTINGS, loadSettings() (+13 more)
 
 ### Community 16 - "TextProvider interface"
 Cohesion: 0.67
 Nodes (3): TextProvider interface, TextResult interface, TextTask type
-
-### Community 78 - "settingsTab.test.ts"
-Cohesion: 0.06
-Nodes (11): { deckNames, modelNames }, FakeButtonComponent, fakeDiv(), FakeDropdownComponent, FakeEl, fakePlugin(), FakeSetting, FakeTextComponent (+3 more)
 
 ### Community 79 - "[1.0.0]"
 Cohesion: 0.40
@@ -206,15 +205,17 @@ Nodes (4): [1.0.0], Added, Changelog, Fixed
 ## Knowledge Gaps
 - **161 isolated node(s):** `$schema`, `.opencode/plugins/graphify.js`, `id`, `name`, `version` (+156 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **57 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **61 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `AnkiConnectClient` connect `types.ts` to `controlsBlock.test.ts`, `settingsTab.ts`?**
+- **Why does `AnkiConnectClient` connect `types.ts` to `controlsBlock.ts`, `settingsTab.test.ts`?**
   _High betweenness centrality (0.016) - this node is a cross-community bridge._
 - **Why does `Common Provider Interface (processText/generateAudio/generateImage)` connect `Common Provider Interface (processText/generateAudio/generateImage)` to `Generate with AI Button`?**
   _High betweenness centrality (0.010) - this node is a cross-community bridge._
+- **Why does `FakeSetting` connect `FakeSetting` to `settingsTab.test.ts`?**
+  _High betweenness centrality (0.009) - this node is a cross-community bridge._
 - **What connects `$schema`, `.opencode/plugins/graphify.js`, `id` to the rest of the system?**
   _161 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Generate with AI Button` be split into smaller, more focused modules?**
@@ -223,5 +224,3 @@ _Questions this graph is uniquely positioned to answer:_
   _Cohesion score 0.10541310541310542 - nodes in this community are weakly interconnected._
 - **Should `devDependencies` be split into smaller, more focused modules?**
   _Cohesion score 0.08 - nodes in this community are weakly interconnected._
-- **Should `compilerOptions` be split into smaller, more focused modules?**
-  _Cohesion score 0.09523809523809523 - nodes in this community are weakly interconnected._
