@@ -1374,7 +1374,7 @@
       "label": "stringifySectionValue()",
       "file_type": "code",
       "source_file": "src/sync/fieldMapper.ts",
-      "source_location": "L68",
+      "source_location": "L51",
       "_origin": "ast",
       "id": "src_sync_fieldmapper_stringifysectionvalue",
       "community": 5,
@@ -7701,7 +7701,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/sync/fieldMapper.ts",
-      "source_location": "L68",
+      "source_location": "L51",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_sync_fieldmapper",
@@ -7785,7 +7785,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/sync/fieldMapper.ts",
-      "source_location": "L19",
+      "source_location": "L15",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_sync_fieldmapper_mapcontenttofields",
@@ -7822,7 +7822,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/sync/fieldMapper.ts",
-      "source_location": "L69",
+      "source_location": "L52",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_sync_fieldmapper_stringifysectionvalue",
@@ -11705,5 +11705,5 @@
       "source_file": ".opencode/skills/graphify/SKILL.md"
     }
   ],
-  "built_at_commit": "841a6747d28993219fbed2c83073e1bb5a2d9106"
+  "built_at_commit": "314ae3bd06e94d684662f0ea43d9abbcf0e95d80"
 }

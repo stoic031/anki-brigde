@@ -220,7 +220,7 @@
     "semantic_hash": ""
   },
   "src/types.ts": {
-    "mtime": 1788962734.9184637,
+    "mtime": 1788884605.4094396,
     "ast_hash": "a308fad6ce6b17b72c7acb43e813cc10",
     "semantic_hash": ""
   },
@@ -290,8 +290,8 @@
     "semantic_hash": ""
   },
   "src/sync/fieldMapper.ts": {
-    "mtime": 1788962892.741942,
-    "ast_hash": "6680bb0c85e5e7aeefb1e0d148dd44a0",
+    "mtime": 1788884674.3922613,
+    "ast_hash": "ff21bc059b3f8b1d2ef4468c8e370a82",
     "semantic_hash": ""
   },
   "src/sync/ankiConnect.ts": {
@@ -300,8 +300,8 @@
     "semantic_hash": ""
   },
   "src/sync/syncEngine.ts": {
-    "mtime": 1788962897.1407466,
-    "ast_hash": "f1d4b897bbd7d5e022c1731aadbe2bfc",
+    "mtime": 1788884618.7325504,
+    "ast_hash": "8774179028e999e42c9cd6f5931fef8f",
     "semantic_hash": ""
   },
   "src/sync/ankiConnect.test.ts": {
