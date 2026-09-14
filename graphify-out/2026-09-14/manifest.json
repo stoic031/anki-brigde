@@ -25,12 +25,12 @@
     "semantic_hash": ""
   },
   "package.json": {
-    "mtime": 1788882832.3803663,
-    "ast_hash": "2f13a6a2e5d549521294b8396e80ca83",
+    "mtime": 1789353394.3866203,
+    "ast_hash": "81e7e3989885387ef63d4d1f685528ef",
     "semantic_hash": ""
   },
   "src/main.ts": {
-    "mtime": 1788882832.3806918,
+    "mtime": 1789353394.386854,
     "ast_hash": "ebd2495729ef5592fa2274b0597e94ef",
     "semantic_hash": ""
   },
@@ -220,7 +220,7 @@
     "semantic_hash": ""
   },
   "src/types.ts": {
-    "mtime": 1788962734.9184637,
+    "mtime": 1789353394.3885715,
     "ast_hash": "a308fad6ce6b17b72c7acb43e813cc10",
     "semantic_hash": ""
   },
@@ -290,7 +290,7 @@
     "semantic_hash": ""
   },
   "src/sync/fieldMapper.ts": {
-    "mtime": 1789351556.5769017,
+    "mtime": 1789353394.3881285,
     "ast_hash": "6680bb0c85e5e7aeefb1e0d148dd44a0",
     "semantic_hash": ""
   },
@@ -300,8 +300,8 @@
     "semantic_hash": ""
   },
   "src/sync/syncEngine.ts": {
-    "mtime": 1789351556.5771825,
-    "ast_hash": "f1d4b897bbd7d5e022c1731aadbe2bfc",
+    "mtime": 1789353678.6327085,
+    "ast_hash": "ef3f5abb2e1233a966bc6bed4a874d88",
     "semantic_hash": ""
   },
   "src/sync/ankiConnect.test.ts": {
@@ -310,73 +310,83 @@
     "semantic_hash": ""
   },
   "src/sync/syncEngine.test.ts": {
-    "mtime": 1788882832.3818998,
-    "ast_hash": "4e2be6c7997c3f4678f7e79d87569993",
+    "mtime": 1789353739.0083306,
+    "ast_hash": "5dc8461ad734d184a77fae74a3b1e187",
     "semantic_hash": ""
   },
   "src/note/controlsBlock.test.ts": {
-    "mtime": 1788882832.380938,
-    "ast_hash": "fb956eeb5affb240b4c04c3a3653560d",
+    "mtime": 1789353881.380358,
+    "ast_hash": "0d982d5bf1a14eeb01466d2066dc5ae8",
     "semantic_hash": ""
   },
   "src/note/controlsBlock.ts": {
-    "mtime": 1788882832.3810797,
-    "ast_hash": "1e3eb8c7f967d16db447c951434ffd7b",
+    "mtime": 1789353708.5994995,
+    "ast_hash": "948518ece7df9d8e7a54fca6a3ce62bc",
     "semantic_hash": ""
   },
   "src/settings.test.ts": {
-    "mtime": 1788882832.3812227,
+    "mtime": 1789353394.3875217,
     "ast_hash": "e80cd6c3796da33fd0f725f73d5a7bf5",
     "semantic_hash": ""
   },
   "src/settings.ts": {
-    "mtime": 1788882832.3813467,
+    "mtime": 1789353394.3876548,
     "ast_hash": "a25b1507d19a22886f856302425a0957",
     "semantic_hash": ""
   },
   "src/ui/settingsTab.test.ts": {
-    "mtime": 1788882832.3826993,
+    "mtime": 1789353394.3887758,
     "ast_hash": "bd9c692496edc918e6b9e57434e50baf",
     "semantic_hash": ""
   },
   "src/ui/settingsTab.ts": {
-    "mtime": 1788882832.3828623,
+    "mtime": 1789353394.3888834,
     "ast_hash": "4871ba609127860675775955a1a124d2",
     "semantic_hash": ""
   },
   "src/utils/constants.ts": {
-    "mtime": 1788884261.1249187,
+    "mtime": 1789353394.3892806,
     "ast_hash": "84166134a65a25f30bf400f4ef727e98",
     "semantic_hash": ""
   },
   "src/utils/validation.test.ts": {
-    "mtime": 1788882832.3833206,
+    "mtime": 1789353394.3893814,
     "ast_hash": "ef6fb564c555fd8ba911d5880d287ea7",
     "semantic_hash": ""
   },
   "src/utils/validation.ts": {
-    "mtime": 1788882832.3834288,
+    "mtime": 1789353394.3894784,
     "ast_hash": "992a767280785672ee10072e47f7c38f",
     "semantic_hash": ""
   },
   "src/ui/toast.test.ts": {
-    "mtime": 1788882832.382968,
+    "mtime": 1789353394.3889842,
     "ast_hash": "5e8f19550b452a83116b20ed1cd1c067",
     "semantic_hash": ""
   },
   "src/ui/toast.ts": {
-    "mtime": 1788882832.3830595,
+    "mtime": 1789353394.3890839,
     "ast_hash": "9ba91bda8f73753d44dd4b41e8b47409",
     "semantic_hash": ""
   },
   "CHANGELOG.md": {
-    "mtime": 1788882832.3622072,
+    "mtime": 1789353394.3720262,
     "ast_hash": "66f2be6af4d30c0659f34298aaaaac48",
     "semantic_hash": ""
   },
   "src/sync/fieldMapper.test.ts": {
-    "mtime": 1789351971.9590642,
+    "mtime": 1789353394.3878686,
     "ast_hash": "ee45366eee999469199c0d32cab02f69",
+    "semantic_hash": ""
+  },
+  "src/ui/modals/confirmDelete.test.ts": {
+    "mtime": 1789354013.6937828,
+    "ast_hash": "4f9c7f5b1168cfa2b802ef0592fa1125",
+    "semantic_hash": ""
+  },
+  "src/ui/modals/confirmDelete.ts": {
+    "mtime": 1789354003.8835177,
+    "ast_hash": "2a85f522d9030c901ced3124fc16144a",
     "semantic_hash": ""
   }
 }
