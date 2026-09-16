@@ -1,12 +1,31 @@
 import { describe, expect, it, vi } from 'vitest';
 import type { App } from 'obsidian';
+import type { AnkiBridgeSettings } from '../settings';
 
 const { MarkdownView } = vi.hoisted(() => ({
 	MarkdownView: class FakeMarkdownView {},
 }));
 vi.mock('obsidian', () => ({ MarkdownView }));
 
-import { getQuickCaptureFilename, getSelectedText } from './quickCapture';
+import {
+	getQuickCaptureFilename,
+	getSelectedText,
+	resolveQuickCaptureTarget,
+} from './quickCapture';
+
+function fakeSettings(
+	overrides: Partial<AnkiBridgeSettings> = {},
+): AnkiBridgeSettings {
+	return {
+		ankiConnectUrl: '',
+		defaultDeck: '',
+		defaultModel: '',
+		currentDeck: '',
+		currentModel: '',
+		currentFolder: '',
+		...overrides,
+	};
+}
 
 function fakeApp(view: { editor: { getSelection: () => string } } | null): App {
 	return {
@@ -45,5 +64,43 @@ describe('getQuickCaptureFilename', () => {
 
 	it('sanitizes path separators and whitespace before appending .md', () => {
 		expect(getQuickCaptureFilename('a/b c')).toBe('ab_c.md');
+	});
+});
+
+describe('resolveQuickCaptureTarget', () => {
+	it('Branch A: uses the current Deck/Model/Folder when already set', () => {
+		const settings = fakeSettings({
+			currentDeck: 'Japanese',
+			currentModel: 'Basic',
+			currentFolder: 'Vocab',
+			defaultDeck: 'Other',
+			defaultModel: 'Other model',
+		});
+
+		expect(resolveQuickCaptureTarget(settings)).toEqual({
+			deck: 'Japanese',
+			model: 'Basic',
+			folder: 'Vocab',
+			seededFromDefaults: false,
+		});
+	});
+
+	it('Branch B: falls back to Settings Tab defaults when current is unset', () => {
+		const settings = fakeSettings({
+			defaultDeck: 'Japanese',
+			defaultModel: 'Basic',
+			currentFolder: 'Vocab',
+		});
+
+		expect(resolveQuickCaptureTarget(settings)).toEqual({
+			deck: 'Japanese',
+			model: 'Basic',
+			folder: 'Vocab',
+			seededFromDefaults: true,
+		});
+	});
+
+	it('returns null when neither current nor default Deck/Model are set', () => {
+		expect(resolveQuickCaptureTarget(fakeSettings())).toBeNull();
 	});
 });

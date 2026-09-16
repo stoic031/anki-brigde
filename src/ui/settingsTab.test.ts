@@ -185,6 +185,9 @@ function fakePlugin(overrides: Partial<AnkiBridgeSettings> = {}): {
 		ankiConnectUrl: '',
 		defaultDeck: '',
 		defaultModel: '',
+		currentDeck: '',
+		currentModel: '',
+		currentFolder: '',
 		...overrides,
 	};
 	const plugin = {

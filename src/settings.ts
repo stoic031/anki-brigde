@@ -5,12 +5,18 @@ export interface AnkiBridgeSettings {
 	ankiConnectUrl: string; // '' = unset — resolves to DEFAULT_ANKI_CONNECT_URL at use time, docs/design/06-settings.md §6.1
 	defaultDeck: string; // '' = unset — docs/design/06-settings.md §6.1
 	defaultModel: string; // '' = unset — docs/design/06-settings.md §6.1
+	currentDeck: string; // '' = not yet set — Tab 1's persisted "current" value, docs/design/07-sidebar.md §7.4
+	currentModel: string; // '' = not yet set — docs/design/07-sidebar.md §7.4
+	currentFolder: string; // '' = vault root — docs/design/07-sidebar.md §7.4
 }
 
 export const DEFAULT_SETTINGS: AnkiBridgeSettings = {
 	ankiConnectUrl: '',
 	defaultDeck: '',
 	defaultModel: '',
+	currentDeck: '',
+	currentModel: '',
+	currentFolder: '',
 };
 
 export async function loadSettings(

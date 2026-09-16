@@ -59,6 +59,17 @@ Electron app with no exposed test harness — doable, but expensive. **Proposal:
 for unit tests, a manual checklist for integration, and no Playwright until there's a
 concrete reason.
 
+### 17. GitHub issue #126 text is stale relative to `07-sidebar.md` §7.3
+
+Issue #126 ("Branch A/B reusing Sidebar persistence") describes the not-yet-configured
+case as "center modal (no note-name field)". `docs/design/07-sidebar.md` §7.3
+(lines 133-165) explicitly rejects a center-screen modal ("Không còn modal 'Set up
+Anki Bridge' ở giữa màn hình") in favor of a 3-way resolve (Tab 1 current → Settings
+Tab defaults → Notice + redirect to Settings, abort). Implemented per the design doc,
+not the issue text — the issue's wording predates this decision. Update or comment on
+#126 to reconcile, or update Feature #42 / Task #146 (which #126 depends on and which
+are still unimplemented) accordingly when that work starts.
+
 ### 13. Translate `docs/design/` itself
 
 The spec is still in Vietnamese. For an open-source project that's the biggest remaining

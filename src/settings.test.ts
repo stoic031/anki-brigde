@@ -39,6 +39,9 @@ describe('loadSettings', () => {
 			ankiConnectUrl: 'http://localhost:9999',
 			defaultDeck: '',
 			defaultModel: '',
+			currentDeck: '',
+			currentModel: '',
+			currentFolder: '',
 		});
 	});
 });
@@ -50,6 +53,9 @@ describe('saveSettings', () => {
 			ankiConnectUrl: 'http://localhost:1234',
 			defaultDeck: '',
 			defaultModel: '',
+			currentDeck: '',
+			currentModel: '',
+			currentFolder: '',
 		};
 
 		await saveSettings(plugin, settings);
@@ -65,6 +71,9 @@ describe('resolveAnkiConnectUrl', () => {
 				ankiConnectUrl: '',
 				defaultDeck: '',
 				defaultModel: '',
+				currentDeck: '',
+				currentModel: '',
+				currentFolder: '',
 			}),
 		).toBe(DEFAULT_ANKI_CONNECT_URL);
 	});
@@ -75,6 +84,9 @@ describe('resolveAnkiConnectUrl', () => {
 				ankiConnectUrl: '   ',
 				defaultDeck: '',
 				defaultModel: '',
+				currentDeck: '',
+				currentModel: '',
+				currentFolder: '',
 			}),
 		).toBe(DEFAULT_ANKI_CONNECT_URL);
 	});
@@ -85,6 +97,9 @@ describe('resolveAnkiConnectUrl', () => {
 				ankiConnectUrl: '  http://localhost:9999  ',
 				defaultDeck: '',
 				defaultModel: '',
+				currentDeck: '',
+				currentModel: '',
+				currentFolder: '',
 			}),
 		).toBe('http://localhost:9999');
 	});
