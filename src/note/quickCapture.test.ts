@@ -26,6 +26,11 @@ vi.mock('../sync/parser', () => ({ writeAnkiFrontmatter }));
 const { toastError } = vi.hoisted(() => ({ toastError: vi.fn() }));
 vi.mock('../ui/toast', () => ({ toastError }));
 
+const { revealSidebarView } = vi.hoisted(() => ({
+	revealSidebarView: vi.fn().mockResolvedValue(undefined),
+}));
+vi.mock('../ui/sidebarView', () => ({ revealSidebarView }));
+
 import {
 	getQuickCaptureFilename,
 	getSelectedText,
@@ -273,6 +278,7 @@ describe('runQuickCapture', () => {
 		});
 		expect(openFile).toHaveBeenCalledWith(createdFile);
 		expect(saveSettings).not.toHaveBeenCalled();
+		expect(revealSidebarView).toHaveBeenCalledWith(plugin.app);
 	});
 
 	it('persists the seeded Deck/Model when falling back to Settings Tab defaults', async () => {
