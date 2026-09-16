@@ -46,3 +46,20 @@ export function resolveQuickCaptureTarget(
 	}
 	return null;
 }
+
+// docs/design/03-note.md §3.7 step 5 — Obsidian's own numeric-suffix convention
+// for name collisions ("word 1.md"); never overwrite, never error.
+export function getUniqueNotePath(
+	app: App,
+	folder: string,
+	filename: string,
+): string {
+	const base = filename.replace(/\.md$/, '');
+	const join = (name: string) => (folder ? `${folder}/${name}` : name);
+
+	let candidate = join(filename);
+	for (let n = 1; app.vault.getAbstractFileByPath(candidate); n++) {
+		candidate = join(`${base} ${n}.md`);
+	}
+	return candidate;
+}
