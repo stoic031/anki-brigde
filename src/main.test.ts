@@ -30,6 +30,11 @@ vi.mock('./note/quickCapture', () => ({ runQuickCapture }));
 
 vi.mock('./ui/settingsTab', () => ({ AnkiBridgeSettingTab: vi.fn() }));
 
+const { registerSidebarView } = vi.hoisted(() => ({
+	registerSidebarView: vi.fn(),
+}));
+vi.mock('./ui/sidebarView', () => ({ registerSidebarView }));
+
 import AnkiBridgePlugin from './main';
 
 describe('AnkiBridgePlugin.onload', () => {
@@ -72,5 +77,16 @@ describe('AnkiBridgePlugin.onload', () => {
 		registeredCommand.callback();
 
 		expect(runQuickCapture).toHaveBeenCalledWith(plugin);
+	});
+
+	it('registers the sidebar view', async () => {
+		const plugin = new AnkiBridgePlugin(
+			{} as App,
+			{} as PluginManifest,
+		);
+
+		await plugin.onload();
+
+		expect(registerSidebarView).toHaveBeenCalledWith(plugin);
 	});
 });
