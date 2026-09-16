@@ -7,6 +7,7 @@ import {
 	type AnkiBridgeSettings,
 } from './settings';
 import { AnkiBridgeSettingTab } from './ui/settingsTab';
+import { registerSidebarView } from './ui/sidebarView';
 
 export default class AnkiBridgePlugin extends Plugin {
 	settings!: AnkiBridgeSettings;
@@ -15,6 +16,7 @@ export default class AnkiBridgePlugin extends Plugin {
 		this.settings = await loadSettings(this);
 		this.addSettingTab(new AnkiBridgeSettingTab(this.app, this));
 		registerControlsBlock(this);
+		registerSidebarView(this);
 
 		this.addCommand({
 			id: 'create-note-from-selection',
