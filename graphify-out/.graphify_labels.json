@@ -76,7 +76,10 @@
   "74": "README.md — Obsidian Sample Plugin boilerplate",
   "75": "vitest.config.ts",
   "76": "graphify reference: GitHub clone and cross-repo merge",
-  "78": "settingsTab.test.ts",
+  "77": "FakeDropdownComponent",
+  "78": "FakeSetting",
   "79": "[1.0.0]",
+  "80": "FakeButtonComponent",
+  "81": "FakeTextComponent",
   "82": "confirmDelete.test.ts"
 }

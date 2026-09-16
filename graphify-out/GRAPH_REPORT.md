@@ -89,8 +89,11 @@
 - roadmap.md — development roadmap
 - README.md — Obsidian Sample Plugin boilerplate
 - graphify reference: GitHub clone and cross-repo merge
-- settingsTab.test.ts
+- FakeDropdownComponent
+- FakeSetting
 - [1.0.0]
+- FakeButtonComponent
+- FakeTextComponent
 - confirmDelete.test.ts
 
 ## God Nodes (most connected - your core abstractions)
@@ -99,11 +102,11 @@
 3. `compilerOptions` - 16 edges
 4. `AnkiConnectClient` - 15 edges
 5. `syncNote()` - 13 edges
-6. `Graphify Full Pipeline` - 9 edges
-7. `Generate with AI Button` - 9 edges
-8. `Tab 1 — Note (Deck/Model/Folder/Field checkboxes)` - 9 edges
-9. `scripts` - 8 edges
-10. `AnkiBridgePlugin` - 8 edges
+6. `AnkiBridgePlugin` - 9 edges
+7. `Graphify Full Pipeline` - 9 edges
+8. `Generate with AI Button` - 9 edges
+9. `Tab 1 — Note (Deck/Model/Folder/Field checkboxes)` - 9 edges
+10. `scripts` - 8 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `graphify Skill (/graphify)` --references--> `GitHub Clone & Cross-Repo Merge`  [EXTRACTED]
@@ -197,10 +200,6 @@ Nodes (19): plugin, $schema, .opencode/plugins/graphify.js, AnkiBridgePlugin, ha
 Cohesion: 0.67
 Nodes (3): TextProvider interface, TextResult interface, TextTask type
 
-### Community 78 - "settingsTab.test.ts"
-Cohesion: 0.06
-Nodes (11): { deckNames, modelNames }, FakeButtonComponent, fakeDiv(), FakeDropdownComponent, FakeEl, fakePlugin(), FakeSetting, FakeTextComponent (+3 more)
-
 ### Community 79 - "[1.0.0]"
 Cohesion: 0.40
 Nodes (4): [1.0.0], Added, Changelog, Fixed
@@ -221,6 +220,8 @@ _Questions this graph is uniquely positioned to answer:_
   _High betweenness centrality (0.016) - this node is a cross-community bridge._
 - **Why does `ConfirmDeleteModal` connect `confirmDelete.test.ts` to `controlsBlock.ts`?**
   _High betweenness centrality (0.015) - this node is a cross-community bridge._
+- **Why does `FakeSetting` connect `FakeSetting` to `settingsTab.test.ts`?**
+  _High betweenness centrality (0.009) - this node is a cross-community bridge._
 - **What connects `$schema`, `.opencode/plugins/graphify.js`, `id` to the rest of the system?**
   _164 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Generate with AI Button` be split into smaller, more focused modules?**
@@ -229,5 +230,3 @@ _Questions this graph is uniquely positioned to answer:_
   _Cohesion score 0.10541310541310542 - nodes in this community are weakly interconnected._
 - **Should `devDependencies` be split into smaller, more focused modules?**
   _Cohesion score 0.08 - nodes in this community are weakly interconnected._
-- **Should `compilerOptions` be split into smaller, more focused modules?**
-  _Cohesion score 0.09523809523809523 - nodes in this community are weakly interconnected._
