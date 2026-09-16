@@ -30,7 +30,7 @@
     "semantic_hash": ""
   },
   "src/main.ts": {
-    "mtime": 1789537965.4773185,
+    "mtime": 1789538265.128573,
     "ast_hash": "8c0a8e082446bff723546d3dbf8a622b",
     "semantic_hash": ""
   },
@@ -150,7 +150,7 @@
     "semantic_hash": ""
   },
   "docs/design-open-questions.md": {
-    "mtime": 1789538083.9037323,
+    "mtime": 1789538265.1244116,
     "ast_hash": "28103de8c9f5264a4bd9ca51b37ebc00",
     "semantic_hash": ""
   },
@@ -390,27 +390,27 @@
     "semantic_hash": ""
   },
   "src/note/contentTemplate.test.ts": {
-    "mtime": 1789537927.3709695,
-    "ast_hash": "1a21655a1e9cd20cae0c446e49ab6713",
+    "mtime": 1789538451.491362,
+    "ast_hash": "1c5413526104caee86b6bdace0d6b56d",
     "semantic_hash": ""
   },
   "src/note/contentTemplate.ts": {
-    "mtime": 1789537919.9133806,
+    "mtime": 1789538265.1288857,
     "ast_hash": "a022f391226f2d77bb3810251fc053f3",
     "semantic_hash": ""
   },
   "src/note/quickCapture.test.ts": {
-    "mtime": 1789538053.7235994,
-    "ast_hash": "a7cda2b1bac9eee8c3a6b60ce3eccefa",
+    "mtime": 1789538428.817573,
+    "ast_hash": "6af0e2dfb79d0c2cad48bb8093f7e69b",
     "semantic_hash": ""
   },
   "src/note/quickCapture.ts": {
-    "mtime": 1789537953.302049,
+    "mtime": 1789538265.1293268,
     "ast_hash": "f2646c1dba113339a23a1f87ed1f5429",
     "semantic_hash": ""
   },
   "src/main.test.ts": {
-    "mtime": 1789537991.8235104,
+    "mtime": 1789538265.1284206,
     "ast_hash": "bb99112bc370ffd9ac4678a1463a8786",
     "semantic_hash": ""
   }

@@ -47,4 +47,13 @@ describe('generateContentSkeleton', () => {
 			expect(sections.get(field.toLowerCase())).toBe('');
 		}
 	});
+
+	it('round-trips a pre-filled first field, including multi-line selected text', () => {
+		const fields = ['Word', 'Meaning'];
+		const selectedText = '薬\nくすり (medicine)';
+		const sections = parseSections(generateContentSkeleton(fields, selectedText));
+
+		expect(sections.get('word')).toBe(selectedText);
+		expect(sections.get('meaning')).toBe('');
+	});
 });
