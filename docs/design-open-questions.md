@@ -59,6 +59,26 @@ Electron app with no exposed test harness — doable, but expensive. **Proposal:
 for unit tests, a manual checklist for integration, and no Playwright until there's a
 concrete reason.
 
+### 18. Quick-capture step 8 ("auto-open Sidebar Tab 1") has no target yet
+
+`docs/design/03-note.md` §3.7 step 8 says: if the Sidebar Modal isn't open, auto-open
+it (Tab 1) after creating a note from selection. Implemented in `runQuickCapture`
+(`src/note/quickCapture.ts`) through step 7 (open the new note in the editor) and
+stopped there — the Sidebar Modal (Feature #42) doesn't exist anywhere in the codebase
+yet, so there's nothing to open. Whoever implements Feature #42's Sidebar View should
+add the auto-open call into `runQuickCapture` at that point.
+
+### 17. GitHub issue #126 text is stale relative to `07-sidebar.md` §7.3
+
+Issue #126 ("Branch A/B reusing Sidebar persistence") describes the not-yet-configured
+case as "center modal (no note-name field)". `docs/design/07-sidebar.md` §7.3
+(lines 133-165) explicitly rejects a center-screen modal ("Không còn modal 'Set up
+Anki Bridge' ở giữa màn hình") in favor of a 3-way resolve (Tab 1 current → Settings
+Tab defaults → Notice + redirect to Settings, abort). Implemented per the design doc,
+not the issue text — the issue's wording predates this decision. Update or comment on
+#126 to reconcile, or update Feature #42 / Task #146 (which #126 depends on and which
+are still unimplemented) accordingly when that work starts.
+
 ### 13. Translate `docs/design/` itself
 
 The spec is still in Vietnamese. For an open-source project that's the biggest remaining
