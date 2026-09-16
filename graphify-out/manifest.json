@@ -30,8 +30,8 @@
     "semantic_hash": ""
   },
   "src/main.ts": {
-    "mtime": 1789533093.8460264,
-    "ast_hash": "79717203375205effd561b2ce0820382",
+    "mtime": 1789533791.1850386,
+    "ast_hash": "ebd2495729ef5592fa2274b0597e94ef",
     "semantic_hash": ""
   },
   "tsconfig.json": {
@@ -399,9 +399,14 @@
     "ast_hash": "ed1e8d662a83738c1161d741fb4e7dc0",
     "semantic_hash": ""
   },
-  "src/main.test.ts": {
-    "mtime": 1789533159.590895,
-    "ast_hash": "924a890743c89dafb155ac0515225b63",
+  "src/note/quickCapture.test.ts": {
+    "mtime": 1789533807.4611127,
+    "ast_hash": "79f71fcf086d445399ce55dd153cd1c8",
+    "semantic_hash": ""
+  },
+  "src/note/quickCapture.ts": {
+    "mtime": 1789533802.4885375,
+    "ast_hash": "de3502b0b757841b057724bdc69c0d90",
     "semantic_hash": ""
   }
 }
