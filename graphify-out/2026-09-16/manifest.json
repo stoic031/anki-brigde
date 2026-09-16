@@ -20,7 +20,7 @@
     "semantic_hash": ""
   },
   "manifest.json": {
-    "mtime": 1789542452.3251832,
+    "mtime": 1789542781.9547665,
     "ast_hash": "ec0afde5758c6905eb422b0f8d84e9af",
     "semantic_hash": ""
   },
@@ -30,8 +30,8 @@
     "semantic_hash": ""
   },
   "src/main.ts": {
-    "mtime": 1789541653.2171702,
-    "ast_hash": "e83886483ca7cfbe16565c4575698fb7",
+    "mtime": 1789564296.226983,
+    "ast_hash": "de5d5e619ce2d666bea28cb2fc958c45",
     "semantic_hash": ""
   },
   "tsconfig.json": {
@@ -150,7 +150,7 @@
     "semantic_hash": ""
   },
   "docs/design-open-questions.md": {
-    "mtime": 1789542628.722425,
+    "mtime": 1789542781.9506793,
     "ast_hash": "a5ee4afc6221ffb89ff236357a633f88",
     "semantic_hash": ""
   },
@@ -385,7 +385,7 @@
     "semantic_hash": ""
   },
   "src/ui/modals/confirmDelete.ts": {
-    "mtime": 1789542462.7590964,
+    "mtime": 1789542781.9556708,
     "ast_hash": "85034b0cc7c9e30fd92e0e9f667daa52",
     "semantic_hash": ""
   },
@@ -400,47 +400,47 @@
     "semantic_hash": ""
   },
   "src/note/quickCapture.test.ts": {
-    "mtime": 1789542319.829216,
+    "mtime": 1789542781.9552932,
     "ast_hash": "203668bf557dbdb5af093dfb27553ee4",
     "semantic_hash": ""
   },
   "src/note/quickCapture.ts": {
-    "mtime": 1789542271.9867332,
+    "mtime": 1789542781.9555051,
     "ast_hash": "2db408c6c66e3257db1bbfc459f739ed",
     "semantic_hash": ""
   },
   "src/main.test.ts": {
-    "mtime": 1789541653.2169518,
-    "ast_hash": "788a6a9e74e50f1a01f0fefc3014b83d",
+    "mtime": 1789564309.104597,
+    "ast_hash": "d066f2de7550355598415c3e12b336d2",
     "semantic_hash": ""
   },
   "src/ui/sidebarView.test.ts": {
-    "mtime": 1789542308.4651544,
+    "mtime": 1789542781.9561288,
     "ast_hash": "26a108d6949cc06923f9efb1b5d7ce7c",
     "semantic_hash": ""
   },
   "src/ui/sidebarView.ts": {
-    "mtime": 1789542281.871187,
+    "mtime": 1789542781.956273,
     "ast_hash": "bd138bbc937740c4d4f80ec8acbaac63",
     "semantic_hash": ""
   },
   "src/note/createNote.test.ts": {
-    "mtime": 1789542601.1735096,
+    "mtime": 1789542781.9549718,
     "ast_hash": "77eab2ba750f642821fc63bd3187b331",
     "semantic_hash": ""
   },
   "src/note/createNote.ts": {
-    "mtime": 1789542290.149107,
+    "mtime": 1789542781.9550877,
     "ast_hash": "cc1e62756524781f5f1439a98e9b4e67",
     "semantic_hash": ""
   },
   "src/ui/modals/noteNameModal.test.ts": {
-    "mtime": 1789542530.3618174,
+    "mtime": 1789542781.955857,
     "ast_hash": "754f0115a39c051758d6c202d177c703",
     "semantic_hash": ""
   },
   "src/ui/modals/noteNameModal.ts": {
-    "mtime": 1789542514.265693,
+    "mtime": 1789542781.9559665,
     "ast_hash": "3c0f971c36a146dcdb5b4fd7425fde42",
     "semantic_hash": ""
   }

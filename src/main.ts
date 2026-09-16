@@ -8,7 +8,7 @@ import {
 	type AnkiBridgeSettings,
 } from './settings';
 import { AnkiBridgeSettingTab } from './ui/settingsTab';
-import { registerSidebarView } from './ui/sidebarView';
+import { registerSidebarView, revealSidebarView } from './ui/sidebarView';
 
 export default class AnkiBridgePlugin extends Plugin {
 	settings!: AnkiBridgeSettings;
@@ -29,6 +29,12 @@ export default class AnkiBridgePlugin extends Plugin {
 			id: 'create-note',
 			name: 'Create new note',
 			callback: () => void runCreateNote(this),
+		});
+
+		this.addCommand({
+			id: 'open-deck-model-selector',
+			name: 'Open Deck & Model Selector',
+			callback: () => void revealSidebarView(this.app),
 		});
 	}
 

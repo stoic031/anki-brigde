@@ -35,10 +35,11 @@ vi.mock('./note/createNote', () => ({ runCreateNote }));
 
 vi.mock('./ui/settingsTab', () => ({ AnkiBridgeSettingTab: vi.fn() }));
 
-const { registerSidebarView } = vi.hoisted(() => ({
+const { registerSidebarView, revealSidebarView } = vi.hoisted(() => ({
 	registerSidebarView: vi.fn(),
+	revealSidebarView: vi.fn().mockResolvedValue(undefined),
 }));
-vi.mock('./ui/sidebarView', () => ({ registerSidebarView }));
+vi.mock('./ui/sidebarView', () => ({ registerSidebarView, revealSidebarView }));
 
 import AnkiBridgePlugin from './main';
 
@@ -119,6 +120,43 @@ describe('AnkiBridgePlugin.onload', () => {
 		registeredCommand.callback();
 
 		expect(runCreateNote).toHaveBeenCalledWith(plugin);
+	});
+
+	it('registers the open-deck-model-selector command with no default hotkey', async () => {
+		const plugin = new AnkiBridgePlugin(
+			{} as App,
+			{} as PluginManifest,
+		);
+
+		await plugin.onload();
+
+		expect(addCommandSpy).toHaveBeenCalledWith(
+			expect.objectContaining({
+				id: 'open-deck-model-selector',
+				name: 'Open Deck & Model Selector',
+			}),
+		);
+		const registeredCommand = addCommandSpy.mock.calls[2]?.[0] as Record<
+			string,
+			unknown
+		>;
+		expect(registeredCommand.hotkeys).toBeUndefined();
+	});
+
+	it("delegates the open-deck-model-selector command's callback to revealSidebarView", async () => {
+		const plugin = new AnkiBridgePlugin(
+			{} as App,
+			{} as PluginManifest,
+		);
+
+		await plugin.onload();
+
+		const registeredCommand = addCommandSpy.mock.calls[2]?.[0] as {
+			callback: () => void;
+		};
+		registeredCommand.callback();
+
+		expect(revealSidebarView).toHaveBeenCalledWith(plugin.app);
 	});
 
 	it('registers the sidebar view', async () => {
