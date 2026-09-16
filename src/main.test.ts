@@ -28,6 +28,11 @@ const { runQuickCapture } = vi.hoisted(() => ({
 }));
 vi.mock('./note/quickCapture', () => ({ runQuickCapture }));
 
+const { runCreateNote } = vi.hoisted(() => ({
+	runCreateNote: vi.fn().mockResolvedValue(undefined),
+}));
+vi.mock('./note/createNote', () => ({ runCreateNote }));
+
 vi.mock('./ui/settingsTab', () => ({ AnkiBridgeSettingTab: vi.fn() }));
 
 const { registerSidebarView } = vi.hoisted(() => ({
@@ -77,6 +82,43 @@ describe('AnkiBridgePlugin.onload', () => {
 		registeredCommand.callback();
 
 		expect(runQuickCapture).toHaveBeenCalledWith(plugin);
+	});
+
+	it('registers the create-note command with no default hotkey', async () => {
+		const plugin = new AnkiBridgePlugin(
+			{} as App,
+			{} as PluginManifest,
+		);
+
+		await plugin.onload();
+
+		expect(addCommandSpy).toHaveBeenCalledWith(
+			expect.objectContaining({
+				id: 'create-note',
+				name: 'Create new note',
+			}),
+		);
+		const registeredCommand = addCommandSpy.mock.calls[1]?.[0] as Record<
+			string,
+			unknown
+		>;
+		expect(registeredCommand.hotkeys).toBeUndefined();
+	});
+
+	it("delegates the create-note command's callback to runCreateNote", async () => {
+		const plugin = new AnkiBridgePlugin(
+			{} as App,
+			{} as PluginManifest,
+		);
+
+		await plugin.onload();
+
+		const registeredCommand = addCommandSpy.mock.calls[1]?.[0] as {
+			callback: () => void;
+		};
+		registeredCommand.callback();
+
+		expect(runCreateNote).toHaveBeenCalledWith(plugin);
 	});
 
 	it('registers the sidebar view', async () => {
