@@ -6,7 +6,7 @@ const { MarkdownView } = vi.hoisted(() => ({
 }));
 vi.mock('obsidian', () => ({ MarkdownView }));
 
-import { getSelectedText } from './quickCapture';
+import { getQuickCaptureFilename, getSelectedText } from './quickCapture';
 
 function fakeApp(view: { editor: { getSelection: () => string } } | null): App {
 	return {
@@ -31,5 +31,19 @@ describe('getSelectedText', () => {
 		const app = fakeApp(null);
 
 		expect(getSelectedText(app)).toBeNull();
+	});
+});
+
+describe('getQuickCaptureFilename', () => {
+	it('appends .md to the sanitized selected text', () => {
+		expect(getQuickCaptureFilename('薬')).toBe('薬.md');
+	});
+
+	it('falls back to note.md when the selection is empty', () => {
+		expect(getQuickCaptureFilename('')).toBe('note.md');
+	});
+
+	it('sanitizes path separators and whitespace before appending .md', () => {
+		expect(getQuickCaptureFilename('a/b c')).toBe('ab_c.md');
 	});
 });
