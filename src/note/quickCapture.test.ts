@@ -10,6 +10,7 @@ vi.mock('obsidian', () => ({ MarkdownView }));
 import {
 	getQuickCaptureFilename,
 	getSelectedText,
+	getUniqueNotePath,
 	resolveQuickCaptureTarget,
 } from './quickCapture';
 
@@ -30,6 +31,16 @@ function fakeSettings(
 function fakeApp(view: { editor: { getSelection: () => string } } | null): App {
 	return {
 		workspace: { getActiveViewOfType: vi.fn().mockReturnValue(view) },
+	} as unknown as App;
+}
+
+function fakeVaultApp(existingPaths: string[]): App {
+	return {
+		vault: {
+			getAbstractFileByPath: vi.fn(
+				(path: string) => existingPaths.includes(path) || null,
+			),
+		},
 	} as unknown as App;
 }
 
@@ -102,5 +113,31 @@ describe('resolveQuickCaptureTarget', () => {
 
 	it('returns null when neither current nor default Deck/Model are set', () => {
 		expect(resolveQuickCaptureTarget(fakeSettings())).toBeNull();
+	});
+});
+
+describe('getUniqueNotePath', () => {
+	it('returns the original path when there is no collision', () => {
+		const app = fakeVaultApp([]);
+
+		expect(getUniqueNotePath(app, 'Vocab', 'word.md')).toBe('Vocab/word.md');
+	});
+
+	it('appends a numeric suffix on a single collision', () => {
+		const app = fakeVaultApp(['Vocab/word.md']);
+
+		expect(getUniqueNotePath(app, 'Vocab', 'word.md')).toBe('Vocab/word 1.md');
+	});
+
+	it('increments the suffix past multiple collisions', () => {
+		const app = fakeVaultApp(['Vocab/word.md', 'Vocab/word 1.md']);
+
+		expect(getUniqueNotePath(app, 'Vocab', 'word.md')).toBe('Vocab/word 2.md');
+	});
+
+	it('has no folder prefix when the folder is the vault root', () => {
+		const app = fakeVaultApp([]);
+
+		expect(getUniqueNotePath(app, '', 'word.md')).toBe('word.md');
 	});
 });
