@@ -30,7 +30,7 @@
     "semantic_hash": ""
   },
   "src/main.ts": {
-    "mtime": 1789533791.1850386,
+    "mtime": 1789353394.386854,
     "ast_hash": "ebd2495729ef5592fa2274b0597e94ef",
     "semantic_hash": ""
   },
@@ -320,7 +320,7 @@
     "semantic_hash": ""
   },
   "src/note/controlsBlock.ts": {
-    "mtime": 1789533085.001698,
+    "mtime": 1789354997.289097,
     "ast_hash": "ead2620f5df58edc7723ca56fffa7aac",
     "semantic_hash": ""
   },
@@ -345,7 +345,7 @@
     "semantic_hash": ""
   },
   "src/utils/constants.ts": {
-    "mtime": 1789533085.0018435,
+    "mtime": 1789354989.8714662,
     "ast_hash": "8774b21f16aab9967dee71c765a6c13a",
     "semantic_hash": ""
   },
@@ -390,23 +390,13 @@
     "semantic_hash": ""
   },
   "src/note/contentTemplate.test.ts": {
-    "mtime": 1789533085.0011744,
+    "mtime": 1789354963.4024513,
     "ast_hash": "809f46cf547d88c2ef08f1945fefd893",
     "semantic_hash": ""
   },
   "src/note/contentTemplate.ts": {
-    "mtime": 1789533085.0013852,
+    "mtime": 1789355001.8663847,
     "ast_hash": "ed1e8d662a83738c1161d741fb4e7dc0",
-    "semantic_hash": ""
-  },
-  "src/note/quickCapture.test.ts": {
-    "mtime": 1789533807.4611127,
-    "ast_hash": "79f71fcf086d445399ce55dd153cd1c8",
-    "semantic_hash": ""
-  },
-  "src/note/quickCapture.ts": {
-    "mtime": 1789533802.4885375,
-    "ast_hash": "de3502b0b757841b057724bdc69c0d90",
     "semantic_hash": ""
   }
 }
