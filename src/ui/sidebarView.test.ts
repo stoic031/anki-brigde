@@ -96,12 +96,14 @@ vi.mock('obsidian', () => ({
 	},
 }));
 
-const { deckNamesMock, AnkiConnectClient } = vi.hoisted(() => {
-	const deckNamesMock = vi.fn();
+const { deckNamesMock, modelNamesMock, AnkiConnectClient } = vi.hoisted(() => {
+	const deckNamesMock = vi.fn().mockResolvedValue([]);
+	const modelNamesMock = vi.fn().mockResolvedValue([]);
 	class AnkiConnectClient {
 		deckNames = deckNamesMock;
+		modelNames = modelNamesMock;
 	}
-	return { deckNamesMock, AnkiConnectClient };
+	return { deckNamesMock, modelNamesMock, AnkiConnectClient };
 });
 vi.mock('../sync/ankiConnect', () => ({ AnkiConnectClient }));
 
@@ -234,6 +236,76 @@ describe('SidebarView', () => {
 
 		expect(toastError).toHaveBeenCalledWith(
 			'❌ Failed to load decks. Please check Anki connection.',
+		);
+	});
+
+	it('renders the Model dropdown on open', async () => {
+		const { plugin } = fakePlugin();
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+
+		await view.onOpen();
+
+		expect(settings[1]?.name).toBe('Model');
+	});
+
+	it('populates the Model dropdown and pre-selects the saved current model', async () => {
+		modelNamesMock.mockResolvedValue(['Basic', 'Cloze']);
+		const { plugin } = fakePlugin({ currentModel: 'Cloze' });
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+
+		await view.onOpen();
+
+		const dropdown = settings[1]?.dropdownComponents[0];
+		expect(dropdown?.options).toEqual({ Basic: 'Basic', Cloze: 'Cloze' });
+		expect(dropdown?.value).toBe('Cloze');
+	});
+
+	it('does not pre-select a saved model that no longer exists', async () => {
+		modelNamesMock.mockResolvedValue(['Basic']);
+		const { plugin } = fakePlugin({ currentModel: 'Deleted model' });
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+
+		await view.onOpen();
+
+		expect(settings[1]?.dropdownComponents[0]?.value).toBe('');
+	});
+
+	it('persists the selected model to settings.currentModel', async () => {
+		modelNamesMock.mockResolvedValue(['Basic']);
+		const { plugin, saveSettings } = fakePlugin();
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+
+		await view.onOpen();
+		await settings[1]?.dropdownComponents[0]?.triggerChange('Basic');
+
+		expect(plugin.settings.currentModel).toBe('Basic');
+		expect(saveSettings).toHaveBeenCalled();
+	});
+
+	it('re-fetches and repopulates models when Refresh is clicked', async () => {
+		modelNamesMock.mockResolvedValueOnce(['Basic']);
+		const { plugin } = fakePlugin();
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+
+		await view.onOpen();
+		modelNamesMock.mockResolvedValueOnce(['Basic', 'Cloze']);
+		await settings[1]?.buttonComponents[0]?.triggerClick();
+
+		expect(settings[1]?.dropdownComponents[0]?.options).toEqual({
+			Basic: 'Basic',
+			Cloze: 'Cloze',
+		});
+	});
+
+	it('shows an error toast when loading models fails, without throwing', async () => {
+		modelNamesMock.mockRejectedValue(new Error('boom'));
+		const { plugin } = fakePlugin();
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+
+		await expect(view.onOpen()).resolves.toBeUndefined();
+
+		expect(toastError).toHaveBeenCalledWith(
+			'❌ Failed to load models. Please check Anki connection.',
 		);
 	});
 });

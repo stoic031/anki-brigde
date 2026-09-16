@@ -156,8 +156,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "opencode_opencode",
-      "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "opencode.json"
     },
     {
@@ -167,8 +167,8 @@
       "source_location": "L2",
       "_origin": "ast",
       "id": "opencode_opencode_schema",
-      "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "$schema"
     },
     {
@@ -178,8 +178,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "opencode_opencode_plugin",
-      "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "plugin"
     },
     {
@@ -189,8 +189,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "ref_opencode_plugins_graphify_js",
-      "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": ".opencode/plugins/graphify.js"
     },
     {
@@ -981,8 +981,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_note_controlsblock_test",
-      "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community": 5,
+      "community_name": "controlsBlock.ts",
       "norm_label": "controlsblock.test.ts"
     },
     {
@@ -992,8 +992,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "src_note_controlsblock_test_tfile",
-      "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community": 5,
+      "community_name": "controlsBlock.ts",
       "norm_label": "{ tfile }"
     },
     {
@@ -1003,8 +1003,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_note_controlsblock_test_syncnote_deletenote",
-      "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community": 5,
+      "community_name": "controlsBlock.ts",
       "norm_label": "{ syncnote, deletenote }"
     },
     {
@@ -1014,8 +1014,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_note_controlsblock_test_toastsuccess_toasterror",
-      "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community": 5,
+      "community_name": "controlsBlock.ts",
       "norm_label": "{ toastsuccess, toasterror }"
     },
     {
@@ -1025,8 +1025,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "src_note_controlsblock_test_confirmdeleteopen_confirmdeletecapture",
-      "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community": 5,
+      "community_name": "controlsBlock.ts",
       "norm_label": "{ confirmdeleteopen, confirmdeletecapture }"
     },
     {
@@ -1036,8 +1036,8 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "src_note_controlsblock_test_constructor",
-      "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community": 5,
+      "community_name": "controlsBlock.ts",
       "norm_label": "constructor()"
     },
     {
@@ -1047,8 +1047,8 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "src_note_controlsblock_test_fakeapp",
-      "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community": 5,
+      "community_name": "controlsBlock.ts",
       "norm_label": "fakeapp()"
     },
     {
@@ -1058,8 +1058,8 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "src_note_controlsblock_test_renderedbutton",
-      "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community": 5,
+      "community_name": "controlsBlock.ts",
       "norm_label": "renderedbutton"
     },
     {
@@ -1069,8 +1069,8 @@
       "source_location": "L71",
       "_origin": "ast",
       "id": "src_note_controlsblock_test_fakeel",
-      "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community": 5,
+      "community_name": "controlsBlock.ts",
       "norm_label": "fakeel()"
     },
     {
@@ -1080,8 +1080,8 @@
       "source_location": "L113",
       "_origin": "ast",
       "id": "src_note_controlsblock_test_fakectx",
-      "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community": 5,
+      "community_name": "controlsBlock.ts",
       "norm_label": "fakectx()"
     },
     {
@@ -1091,8 +1091,8 @@
       "source_location": "L257",
       "_origin": "ast",
       "id": "src_note_controlsblock_test_renderandgetsyncbutton",
-      "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community": 5,
+      "community_name": "controlsBlock.ts",
       "norm_label": "renderandgetsyncbutton()"
     },
     {
@@ -1102,8 +1102,8 @@
       "source_location": "L366",
       "_origin": "ast",
       "id": "src_note_controlsblock_test_renderandgetdeletebutton",
-      "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community": 5,
+      "community_name": "controlsBlock.ts",
       "norm_label": "renderandgetdeletebutton()"
     },
     {
@@ -1113,8 +1113,8 @@
       "source_location": "L375",
       "_origin": "ast",
       "id": "src_note_controlsblock_test_confirmdelete",
-      "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community": 5,
+      "community_name": "controlsBlock.ts",
       "norm_label": "confirmdelete()"
     },
     {
@@ -1179,8 +1179,8 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "src_note_controlsblock_registercontrolsblock",
-      "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community": 5,
+      "community_name": "controlsBlock.ts",
       "norm_label": "registercontrolsblock()"
     },
     {
@@ -1190,8 +1190,8 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "src_note_controlsblock_rendercontrolsblock",
-      "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community": 5,
+      "community_name": "controlsBlock.ts",
       "norm_label": "rendercontrolsblock()"
     },
     {
@@ -1234,8 +1234,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_note_createnote_test",
-      "community": 77,
-      "community_name": "createNote.test.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "createnote.test.ts"
     },
     {
@@ -1245,8 +1245,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "src_note_createnote_test_notice",
-      "community": 77,
-      "community_name": "createNote.test.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "{ notice }"
     },
     {
@@ -1256,8 +1256,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "src_note_createnote_test_modelfieldnamesmock_ankiconnectclient",
-      "community": 77,
-      "community_name": "createNote.test.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "{ modelfieldnamesmock, ankiconnectclient }"
     },
     {
@@ -1267,8 +1267,8 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "src_note_createnote_test_writeankifrontmatter",
-      "community": 77,
-      "community_name": "createNote.test.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "{ writeankifrontmatter }"
     },
     {
@@ -1278,8 +1278,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "src_note_createnote_test_toasterror",
-      "community": 77,
-      "community_name": "createNote.test.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "{ toasterror }"
     },
     {
@@ -1289,8 +1289,8 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "src_note_createnote_test_revealsidebarview",
-      "community": 77,
-      "community_name": "createNote.test.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "{ revealsidebarview }"
     },
     {
@@ -1300,8 +1300,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_note_createnote_test_resolvequickcapturetarget_getuniquenotepath_openpluginsettings",
-      "community": 77,
-      "community_name": "createNote.test.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "{ resolvequickcapturetarget, getuniquenotepath, openpluginsettings }"
     },
     {
@@ -1311,8 +1311,8 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "src_note_createnote_test_notenamemodal_submitnotename_resetcapturedsubmit",
-      "community": 77,
-      "community_name": "createNote.test.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "{ notenamemodal, submitnotename, resetcapturedsubmit }"
     },
     {
@@ -1322,8 +1322,8 @@
       "source_location": "L77",
       "_origin": "ast",
       "id": "src_note_createnote_test_fakesettings",
-      "community": 77,
-      "community_name": "createNote.test.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "fakesettings()"
     },
     {
@@ -1333,8 +1333,8 @@
       "source_location": "L91",
       "_origin": "ast",
       "id": "src_note_createnote_test_fakeplugin",
-      "community": 77,
-      "community_name": "createNote.test.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "fakeplugin()"
     },
     {
@@ -1751,8 +1751,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_sync_ankiconnect",
-      "community": 18,
-      "community_name": "quickCapture.ts",
+      "community": 5,
+      "community_name": "controlsBlock.ts",
       "norm_label": "ankiconnect.ts"
     },
     {
@@ -1762,8 +1762,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectresponse",
-      "community": 18,
-      "community_name": "quickCapture.ts",
+      "community": 5,
+      "community_name": "controlsBlock.ts",
       "norm_label": "ankiconnectresponse"
     },
     {
@@ -1872,8 +1872,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_sync_fieldmapper_test",
-      "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community": 14,
+      "community_name": "types.ts",
       "norm_label": "fieldmapper.test.ts"
     },
     {
@@ -1883,8 +1883,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "src_sync_fieldmapper_test_sections",
-      "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community": 14,
+      "community_name": "types.ts",
       "norm_label": "sections()"
     },
     {
@@ -1894,8 +1894,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_sync_fieldmapper",
-      "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community": 14,
+      "community_name": "types.ts",
       "norm_label": "fieldmapper.ts"
     },
     {
@@ -1905,8 +1905,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "src_sync_fieldmapper_mapcontenttofields",
-      "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community": 14,
+      "community_name": "types.ts",
       "norm_label": "mapcontenttofields()"
     },
     {
@@ -1916,8 +1916,8 @@
       "source_location": "L68",
       "_origin": "ast",
       "id": "src_sync_fieldmapper_stringifysectionvalue",
-      "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community": 14,
+      "community_name": "types.ts",
       "norm_label": "stringifysectionvalue()"
     },
     {
@@ -1993,8 +1993,8 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "src_sync_parser_writeankifrontmatter",
-      "community": 18,
-      "community_name": "quickCapture.ts",
+      "community": 5,
+      "community_name": "controlsBlock.ts",
       "norm_label": "writeankifrontmatter()"
     },
     {
@@ -2147,8 +2147,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_types",
-      "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community": 14,
+      "community_name": "types.ts",
       "norm_label": "types.ts"
     },
     {
@@ -2169,8 +2169,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "src_types_sectionvalue",
-      "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community": 14,
+      "community_name": "types.ts",
       "norm_label": "sectionvalue"
     },
     {
@@ -2180,8 +2180,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "src_types_parsednote",
-      "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community": 14,
+      "community_name": "types.ts",
       "norm_label": "parsednote"
     },
     {
@@ -2191,8 +2191,8 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "src_types_fieldmappingresult",
-      "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community": 14,
+      "community_name": "types.ts",
       "norm_label": "fieldmappingresult"
     },
     {
@@ -2202,8 +2202,8 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "src_types_textresult",
-      "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community": 14,
+      "community_name": "types.ts",
       "norm_label": "textresult"
     },
     {
@@ -2213,8 +2213,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_types_mediaresult",
-      "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community": 14,
+      "community_name": "types.ts",
       "norm_label": "mediaresult"
     },
     {
@@ -2224,8 +2224,8 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "src_types_textprovider",
-      "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community": 14,
+      "community_name": "types.ts",
       "norm_label": "textprovider"
     },
     {
@@ -2235,8 +2235,8 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "src_types_textprovider_processtext",
-      "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community": 14,
+      "community_name": "types.ts",
       "norm_label": ".processtext()"
     },
     {
@@ -2246,8 +2246,8 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "src_types_audioprovider",
-      "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community": 14,
+      "community_name": "types.ts",
       "norm_label": "audioprovider"
     },
     {
@@ -2257,8 +2257,8 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "src_types_audioprovider_generateaudio",
-      "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community": 14,
+      "community_name": "types.ts",
       "norm_label": ".generateaudio()"
     },
     {
@@ -2268,8 +2268,8 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "src_types_imageprovider",
-      "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community": 14,
+      "community_name": "types.ts",
       "norm_label": "imageprovider"
     },
     {
@@ -2279,8 +2279,8 @@
       "source_location": "L55",
       "_origin": "ast",
       "id": "src_types_imageprovider_generateimage",
-      "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community": 14,
+      "community_name": "types.ts",
       "norm_label": ".generateimage()"
     },
     {
@@ -2290,8 +2290,8 @@
       "source_location": "L58",
       "_origin": "ast",
       "id": "src_types_texttask",
-      "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community": 14,
+      "community_name": "types.ts",
       "norm_label": "texttask"
     },
     {
@@ -2301,8 +2301,8 @@
       "source_location": "L60",
       "_origin": "ast",
       "id": "src_types_audiooptions",
-      "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community": 14,
+      "community_name": "types.ts",
       "norm_label": "audiooptions"
     },
     {
@@ -2312,8 +2312,8 @@
       "source_location": "L66",
       "_origin": "ast",
       "id": "src_types_imageoptions",
-      "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community": 14,
+      "community_name": "types.ts",
       "norm_label": "imageoptions"
     },
     {
@@ -2345,8 +2345,8 @@
       "source_location": "L82",
       "_origin": "ast",
       "id": "src_types_providererror",
-      "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community": 14,
+      "community_name": "types.ts",
       "norm_label": "providererror"
     },
     {
@@ -2356,8 +2356,8 @@
       "source_location": "L83",
       "_origin": "ast",
       "id": "src_types_providererror_constructor",
-      "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community": 14,
+      "community_name": "types.ts",
       "norm_label": ".constructor()"
     },
     {
@@ -3247,8 +3247,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_ui_settingstab",
-      "community": 18,
-      "community_name": "quickCapture.ts",
+      "community": 15,
+      "community_name": "settingsTab.test.ts",
       "norm_label": "settingstab.ts"
     },
     {
@@ -3258,8 +3258,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "src_ui_settingstab_ankibridgesettingtab",
-      "community": 18,
-      "community_name": "quickCapture.ts",
+      "community": 15,
+      "community_name": "settingsTab.test.ts",
       "norm_label": "ankibridgesettingtab"
     },
     {
@@ -3269,8 +3269,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "src_ui_settingstab_ankibridgesettingtab_constructor",
-      "community": 18,
-      "community_name": "quickCapture.ts",
+      "community": 15,
+      "community_name": "settingsTab.test.ts",
       "norm_label": ".constructor()"
     },
     {
@@ -3280,8 +3280,8 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "src_ui_settingstab_ankibridgesettingtab_display",
-      "community": 18,
-      "community_name": "quickCapture.ts",
+      "community": 15,
+      "community_name": "settingsTab.test.ts",
       "norm_label": ".display()"
     },
     {
@@ -3291,8 +3291,8 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "src_ui_settingstab_renderconnectionsection",
-      "community": 18,
-      "community_name": "quickCapture.ts",
+      "community": 15,
+      "community_name": "settingsTab.test.ts",
       "norm_label": "renderconnectionsection()"
     },
     {
@@ -3302,8 +3302,8 @@
       "source_location": "L92",
       "_origin": "ast",
       "id": "src_ui_settingstab_handleconnect",
-      "community": 18,
-      "community_name": "quickCapture.ts",
+      "community": 15,
+      "community_name": "settingsTab.test.ts",
       "norm_label": "handleconnect()"
     },
     {
@@ -3313,8 +3313,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test",
-      "community": 7,
-      "community_name": "sidebarView.test.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "sidebarview.test.ts"
     },
     {
@@ -3324,8 +3324,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_fakedropdowncomponent",
-      "community": 7,
-      "community_name": "sidebarView.test.ts",
+      "community": 77,
+      "community_name": "FakeDropdownComponent",
       "norm_label": "fakedropdowncomponent"
     },
     {
@@ -3335,8 +3335,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_fakedropdowncomponent_constructor",
-      "community": 7,
-      "community_name": "sidebarView.test.ts",
+      "community": 77,
+      "community_name": "FakeDropdownComponent",
       "norm_label": ".constructor()"
     },
     {
@@ -3346,8 +3346,8 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_fakedropdowncomponent_addoption",
-      "community": 7,
-      "community_name": "sidebarView.test.ts",
+      "community": 77,
+      "community_name": "FakeDropdownComponent",
       "norm_label": ".addoption()"
     },
     {
@@ -3357,8 +3357,8 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_fakedropdowncomponent_setvalue",
-      "community": 7,
-      "community_name": "sidebarView.test.ts",
+      "community": 77,
+      "community_name": "FakeDropdownComponent",
       "norm_label": ".setvalue()"
     },
     {
@@ -3368,8 +3368,8 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_fakedropdowncomponent_onchange",
-      "community": 7,
-      "community_name": "sidebarView.test.ts",
+      "community": 77,
+      "community_name": "FakeDropdownComponent",
       "norm_label": ".onchange()"
     },
     {
@@ -3379,8 +3379,8 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_fakedropdowncomponent_triggerchange",
-      "community": 7,
-      "community_name": "sidebarView.test.ts",
+      "community": 77,
+      "community_name": "FakeDropdownComponent",
       "norm_label": ".triggerchange()"
     },
     {
@@ -3390,8 +3390,8 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_fakebuttoncomponent",
-      "community": 7,
-      "community_name": "sidebarView.test.ts",
+      "community": 81,
+      "community_name": "FakeButtonComponent",
       "norm_label": "fakebuttoncomponent"
     },
     {
@@ -3401,8 +3401,8 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_fakebuttoncomponent_setbuttontext",
-      "community": 7,
-      "community_name": "sidebarView.test.ts",
+      "community": 81,
+      "community_name": "FakeButtonComponent",
       "norm_label": ".setbuttontext()"
     },
     {
@@ -3412,8 +3412,8 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_fakebuttoncomponent_onclick",
-      "community": 7,
-      "community_name": "sidebarView.test.ts",
+      "community": 81,
+      "community_name": "FakeButtonComponent",
       "norm_label": ".onclick()"
     },
     {
@@ -3423,8 +3423,8 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_fakebuttoncomponent_triggerclick",
-      "community": 7,
-      "community_name": "sidebarView.test.ts",
+      "community": 81,
+      "community_name": "FakeButtonComponent",
       "norm_label": ".triggerclick()"
     },
     {
@@ -3434,8 +3434,8 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_fakesetting",
-      "community": 7,
-      "community_name": "sidebarView.test.ts",
+      "community": 80,
+      "community_name": "FakeSetting",
       "norm_label": "fakesetting"
     },
     {
@@ -3445,8 +3445,8 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_fakesetting_constructor",
-      "community": 7,
-      "community_name": "sidebarView.test.ts",
+      "community": 80,
+      "community_name": "FakeSetting",
       "norm_label": ".constructor()"
     },
     {
@@ -3456,8 +3456,8 @@
       "source_location": "L60",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_fakesetting_setname",
-      "community": 7,
-      "community_name": "sidebarView.test.ts",
+      "community": 80,
+      "community_name": "FakeSetting",
       "norm_label": ".setname()"
     },
     {
@@ -3467,8 +3467,8 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_fakesetting_adddropdown",
-      "community": 7,
-      "community_name": "sidebarView.test.ts",
+      "community": 80,
+      "community_name": "FakeSetting",
       "norm_label": ".adddropdown()"
     },
     {
@@ -3478,8 +3478,8 @@
       "source_location": "L70",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_fakesetting_addbutton",
-      "community": 7,
-      "community_name": "sidebarView.test.ts",
+      "community": 80,
+      "community_name": "FakeSetting",
       "norm_label": ".addbutton()"
     },
     {
@@ -3489,8 +3489,8 @@
       "source_location": "L78",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_itemview_contentelempty_contentelcreateel_settings",
-      "community": 7,
-      "community_name": "sidebarView.test.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "{ itemview, contentelempty, contentelcreateel, settings }"
     },
     {
@@ -3500,52 +3500,52 @@
       "source_location": "L91",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_constructor",
-      "community": 7,
-      "community_name": "sidebarView.test.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "constructor()"
     },
     {
-      "label": "{ deckNamesMock, AnkiConnectClient }",
+      "label": "{ deckNamesMock, modelNamesMock, AnkiConnectClient }",
       "file_type": "code",
       "source_file": "src/ui/sidebarView.test.ts",
       "source_location": "L99",
       "_origin": "ast",
-      "id": "src_ui_sidebarview_test_decknamesmock_ankiconnectclient",
-      "community": 7,
-      "community_name": "sidebarView.test.ts",
-      "norm_label": "{ decknamesmock, ankiconnectclient }"
+      "id": "src_ui_sidebarview_test_decknamesmock_modelnamesmock_ankiconnectclient",
+      "community": 18,
+      "community_name": "quickCapture.ts",
+      "norm_label": "{ decknamesmock, modelnamesmock, ankiconnectclient }"
     },
     {
       "label": "{ toastError }",
       "file_type": "code",
       "source_file": "src/ui/sidebarView.test.ts",
-      "source_location": "L108",
+      "source_location": "L110",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_toasterror",
-      "community": 7,
-      "community_name": "sidebarView.test.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "{ toasterror }"
     },
     {
       "label": "fakeSettings()",
       "file_type": "code",
       "source_file": "src/ui/sidebarView.test.ts",
-      "source_location": "L123",
+      "source_location": "L125",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_fakesettings",
-      "community": 7,
-      "community_name": "sidebarView.test.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "fakesettings()"
     },
     {
       "label": "fakePlugin()",
       "file_type": "code",
       "source_file": "src/ui/sidebarView.test.ts",
-      "source_location": "L137",
+      "source_location": "L139",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_fakeplugin",
-      "community": 7,
-      "community_name": "sidebarView.test.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "fakeplugin()"
     },
     {
@@ -3567,91 +3567,113 @@
       "_origin": "ast",
       "id": "src_ui_sidebarview_sidebarview",
       "community": 7,
-      "community_name": "sidebarView.test.ts",
+      "community_name": "SidebarView",
       "norm_label": "sidebarview"
     },
     {
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L20",
+      "source_location": "L21",
       "_origin": "ast",
       "id": "src_ui_sidebarview_sidebarview_constructor",
       "community": 7,
-      "community_name": "sidebarView.test.ts",
+      "community_name": "SidebarView",
       "norm_label": ".constructor()"
     },
     {
       "label": ".getViewType()",
       "file_type": "code",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L27",
+      "source_location": "L28",
       "_origin": "ast",
       "id": "src_ui_sidebarview_sidebarview_getviewtype",
       "community": 7,
-      "community_name": "sidebarView.test.ts",
+      "community_name": "SidebarView",
       "norm_label": ".getviewtype()"
     },
     {
       "label": ".getDisplayText()",
       "file_type": "code",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L31",
+      "source_location": "L32",
       "_origin": "ast",
       "id": "src_ui_sidebarview_sidebarview_getdisplaytext",
       "community": 7,
-      "community_name": "sidebarView.test.ts",
+      "community_name": "SidebarView",
       "norm_label": ".getdisplaytext()"
     },
     {
       "label": ".getIcon()",
       "file_type": "code",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L35",
+      "source_location": "L36",
       "_origin": "ast",
       "id": "src_ui_sidebarview_sidebarview_geticon",
       "community": 7,
-      "community_name": "sidebarView.test.ts",
+      "community_name": "SidebarView",
       "norm_label": ".geticon()"
     },
     {
       "label": ".onOpen()",
       "file_type": "code",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L39",
+      "source_location": "L40",
       "_origin": "ast",
       "id": "src_ui_sidebarview_sidebarview_onopen",
       "community": 7,
-      "community_name": "sidebarView.test.ts",
+      "community_name": "SidebarView",
       "norm_label": ".onopen()"
     },
     {
       "label": ".renderDeckDropdown()",
       "file_type": "code",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L47",
+      "source_location": "L50",
       "_origin": "ast",
       "id": "src_ui_sidebarview_sidebarview_renderdeckdropdown",
       "community": 7,
-      "community_name": "sidebarView.test.ts",
+      "community_name": "SidebarView",
       "norm_label": ".renderdeckdropdown()"
     },
     {
       "label": ".refreshDecks()",
       "file_type": "code",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L64",
+      "source_location": "L67",
       "_origin": "ast",
       "id": "src_ui_sidebarview_sidebarview_refreshdecks",
       "community": 7,
-      "community_name": "sidebarView.test.ts",
+      "community_name": "SidebarView",
       "norm_label": ".refreshdecks()"
+    },
+    {
+      "label": ".renderModelDropdown()",
+      "file_type": "code",
+      "source_file": "src/ui/sidebarView.ts",
+      "source_location": "L88",
+      "_origin": "ast",
+      "id": "src_ui_sidebarview_sidebarview_rendermodeldropdown",
+      "community": 7,
+      "community_name": "SidebarView",
+      "norm_label": ".rendermodeldropdown()"
+    },
+    {
+      "label": ".refreshModels()",
+      "file_type": "code",
+      "source_file": "src/ui/sidebarView.ts",
+      "source_location": "L105",
+      "_origin": "ast",
+      "id": "src_ui_sidebarview_sidebarview_refreshmodels",
+      "community": 7,
+      "community_name": "SidebarView",
+      "norm_label": ".refreshmodels()"
     },
     {
       "label": "registerSidebarView()",
       "file_type": "code",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L85",
+      "source_location": "L126",
       "_origin": "ast",
       "id": "src_ui_sidebarview_registersidebarview",
       "community": 18,
@@ -3662,7 +3684,7 @@
       "label": "revealSidebarView()",
       "file_type": "code",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L94",
+      "source_location": "L135",
       "_origin": "ast",
       "id": "src_ui_sidebarview_revealsidebarview",
       "community": 18,
@@ -3676,8 +3698,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_ui_toast_test",
-      "community": 18,
-      "community_name": "quickCapture.ts",
+      "community": 5,
+      "community_name": "controlsBlock.ts",
       "norm_label": "toast.test.ts"
     },
     {
@@ -3687,8 +3709,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "src_ui_toast_test_notice",
-      "community": 18,
-      "community_name": "quickCapture.ts",
+      "community": 5,
+      "community_name": "controlsBlock.ts",
       "norm_label": "{ notice }"
     },
     {
@@ -3698,8 +3720,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_ui_toast",
-      "community": 18,
-      "community_name": "quickCapture.ts",
+      "community": 5,
+      "community_name": "controlsBlock.ts",
       "norm_label": "toast.ts"
     },
     {
@@ -3709,8 +3731,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "src_ui_toast_toastsuccess",
-      "community": 18,
-      "community_name": "quickCapture.ts",
+      "community": 5,
+      "community_name": "controlsBlock.ts",
       "norm_label": "toastsuccess()"
     },
     {
@@ -3720,8 +3742,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "src_ui_toast_toasterror",
-      "community": 18,
-      "community_name": "quickCapture.ts",
+      "community": 5,
+      "community_name": "controlsBlock.ts",
       "norm_label": "toasterror()"
     },
     {
@@ -3731,8 +3753,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_utils_constants",
-      "community": 18,
-      "community_name": "quickCapture.ts",
+      "community": 14,
+      "community_name": "types.ts",
       "norm_label": "constants.ts"
     },
     {
@@ -3742,8 +3764,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "src_utils_constants_field_aliases",
-      "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community": 14,
+      "community_name": "types.ts",
       "norm_label": "field_aliases"
     },
     {
@@ -3753,8 +3775,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_utils_validation_test",
-      "community": 18,
-      "community_name": "quickCapture.ts",
+      "community": 15,
+      "community_name": "settingsTab.test.ts",
       "norm_label": "validation.test.ts"
     },
     {
@@ -3764,8 +3786,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_utils_validation",
-      "community": 18,
-      "community_name": "quickCapture.ts",
+      "community": 15,
+      "community_name": "settingsTab.test.ts",
       "norm_label": "validation.ts"
     },
     {
@@ -3775,8 +3797,8 @@
       "source_location": "L2",
       "_origin": "ast",
       "id": "src_utils_validation_isvalidurl",
-      "community": 18,
-      "community_name": "quickCapture.ts",
+      "community": 15,
+      "community_name": "settingsTab.test.ts",
       "norm_label": "isvalidurl()"
     },
     {
@@ -8136,7 +8158,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L86",
+      "source_location": "L127",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_registersidebarview",
@@ -8147,7 +8169,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L20",
+      "source_location": "L21",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_constructor",
@@ -8280,10 +8302,22 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L54",
+      "source_location": "L57",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_renderdeckdropdown",
+      "target": "src_main_ankibridgeplugin_savesettings"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/ui/sidebarView.ts",
+      "source_location": "L95",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_sidebarview_sidebarview_rendermodeldropdown",
       "target": "src_main_ankibridgeplugin_savesettings"
     },
     {
@@ -10540,10 +10574,22 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L68",
+      "source_location": "L71",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_refreshdecks",
+      "target": "src_settings_resolveankiconnecturl"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/ui/sidebarView.ts",
+      "source_location": "L109",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_sidebarview_sidebarview_refreshmodels",
       "target": "src_settings_resolveankiconnecturl"
     },
     {
@@ -10970,7 +11016,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L70",
+      "source_location": "L73",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_refreshdecks",
@@ -10986,6 +11032,18 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_handleconnect",
+      "target": "src_sync_ankiconnect_ankiconnectclient_modelnames"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/ui/sidebarView.ts",
+      "source_location": "L111",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_sidebarview_sidebarview_refreshmodels",
       "target": "src_sync_ankiconnect_ankiconnectclient_modelnames"
     },
     {
@@ -13143,7 +13201,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.test.ts",
-      "source_location": "L111",
+      "source_location": "L113",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_test",
@@ -13155,7 +13213,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.test.ts",
-      "source_location": "L111",
+      "source_location": "L113",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_test",
@@ -13167,7 +13225,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.test.ts",
-      "source_location": "L111",
+      "source_location": "L113",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_test",
@@ -13179,7 +13237,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.test.ts",
-      "source_location": "L111",
+      "source_location": "L113",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_test",
@@ -13205,7 +13263,7 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_test",
-      "target": "src_ui_sidebarview_test_decknamesmock_ankiconnectclient",
+      "target": "src_ui_sidebarview_test_decknamesmock_modelnamesmock_ankiconnectclient",
       "confidence_score": 1.0
     },
     {
@@ -13234,7 +13292,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.test.ts",
-      "source_location": "L137",
+      "source_location": "L139",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_test",
@@ -13256,7 +13314,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.test.ts",
-      "source_location": "L123",
+      "source_location": "L125",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_test",
@@ -13278,7 +13336,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.test.ts",
-      "source_location": "L108",
+      "source_location": "L110",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_test",
@@ -13422,7 +13480,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.test.ts",
-      "source_location": "L144",
+      "source_location": "L146",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_test_fakeplugin",
@@ -13433,7 +13491,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L85",
+      "source_location": "L126",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview",
@@ -13444,7 +13502,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L94",
+      "source_location": "L135",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview",
@@ -13490,7 +13548,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L20",
+      "source_location": "L21",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview",
@@ -13501,7 +13559,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L31",
+      "source_location": "L32",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview",
@@ -13512,7 +13570,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L35",
+      "source_location": "L36",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview",
@@ -13523,7 +13581,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L27",
+      "source_location": "L28",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview",
@@ -13534,7 +13592,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L39",
+      "source_location": "L40",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview",
@@ -13545,7 +13603,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L64",
+      "source_location": "L67",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview",
@@ -13556,11 +13614,57 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L47",
+      "source_location": "L105",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_sidebarview_sidebarview",
+      "target": "src_ui_sidebarview_sidebarview_refreshmodels",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/sidebarView.ts",
+      "source_location": "L50",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview",
       "target": "src_ui_sidebarview_sidebarview_renderdeckdropdown",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/sidebarView.ts",
+      "source_location": "L88",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_sidebarview_sidebarview",
+      "target": "src_ui_sidebarview_sidebarview_rendermodeldropdown",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/sidebarView.ts",
+      "source_location": "L44",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_sidebarview_sidebarview_onopen",
+      "target": "src_ui_sidebarview_sidebarview_refreshdecks",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/sidebarView.ts",
+      "source_location": "L46",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_sidebarview_sidebarview_onopen",
+      "target": "src_ui_sidebarview_sidebarview_refreshmodels",
       "confidence_score": 1.0
     },
     {
@@ -13572,18 +13676,6 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_onopen",
-      "target": "src_ui_sidebarview_sidebarview_refreshdecks",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L42",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_ui_sidebarview_sidebarview_onopen",
       "target": "src_ui_sidebarview_sidebarview_renderdeckdropdown",
       "confidence_score": 1.0
     },
@@ -13592,7 +13684,19 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L60",
+      "source_location": "L45",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_sidebarview_sidebarview_onopen",
+      "target": "src_ui_sidebarview_sidebarview_rendermodeldropdown",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/sidebarView.ts",
+      "source_location": "L63",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_renderdeckdropdown",
@@ -13605,10 +13709,34 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L80",
+      "source_location": "L83",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_refreshdecks",
+      "target": "src_ui_toast_toasterror"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/sidebarView.ts",
+      "source_location": "L101",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_sidebarview_sidebarview_rendermodeldropdown",
+      "target": "src_ui_sidebarview_sidebarview_refreshmodels",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/ui/sidebarView.ts",
+      "source_location": "L121",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_sidebarview_sidebarview_refreshmodels",
       "target": "src_ui_toast_toasterror"
     },
     {
@@ -16123,5 +16251,5 @@
       "source_file": ".opencode/skills/graphify/SKILL.md"
     }
   ],
-  "built_at_commit": "c606795dee07eb8e172c4d09c0dc1cdb4905384e"
+  "built_at_commit": "5e6bf87f360f98add598fdb5575e3e81ed2b3c55"
 }
