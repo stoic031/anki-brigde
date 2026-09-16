@@ -4,8 +4,8 @@
   "2": "devDependencies",
   "3": "compilerOptions",
   "4": "Field Mapping Algorithm (3-pass deterministic)",
-  "5": "syncEngine.ts",
-  "6": "SidebarView",
+  "5": "types.ts",
+  "6": "noteNameModal.test.ts",
   "7": "package.json",
   "8": "Graphify Full Pipeline",
   "9": "docs/contracts.md",
@@ -76,7 +76,8 @@
   "74": "README.md — Obsidian Sample Plugin boilerplate",
   "75": "vitest.config.ts",
   "76": "graphify reference: GitHub clone and cross-repo merge",
-  "77": "types.ts",
+  "77": "createNote.test.ts",
+  "78": "main.test.ts",
   "79": "[1.0.0]",
   "82": "confirmDelete.test.ts"
 }
