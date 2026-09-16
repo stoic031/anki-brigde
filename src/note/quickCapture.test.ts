@@ -184,6 +184,42 @@ describe('resolveQuickCaptureTarget', () => {
 	it('returns null when neither current nor default Deck/Model are set', () => {
 		expect(resolveQuickCaptureTarget(fakeSettings())).toBeNull();
 	});
+
+	it('falls through to Branch B when only currentDeck is set (currentModel missing)', () => {
+		const settings = fakeSettings({
+			currentDeck: 'Japanese',
+			defaultDeck: 'Default deck',
+			defaultModel: 'Default model',
+		});
+
+		expect(resolveQuickCaptureTarget(settings)).toEqual({
+			deck: 'Default deck',
+			model: 'Default model',
+			folder: '',
+			seededFromDefaults: true,
+		});
+	});
+
+	it('falls through to Branch B when only currentModel is set (currentDeck missing)', () => {
+		const settings = fakeSettings({
+			currentModel: 'Basic',
+			defaultDeck: 'Default deck',
+			defaultModel: 'Default model',
+		});
+
+		expect(resolveQuickCaptureTarget(settings)).toEqual({
+			deck: 'Default deck',
+			model: 'Default model',
+			folder: '',
+			seededFromDefaults: true,
+		});
+	});
+
+	it('returns null when current is partial and no defaults are set either', () => {
+		expect(
+			resolveQuickCaptureTarget(fakeSettings({ currentDeck: 'Japanese' })),
+		).toBeNull();
+	});
 });
 
 describe('getUniqueNotePath', () => {
