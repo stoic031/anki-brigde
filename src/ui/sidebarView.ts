@@ -16,6 +16,7 @@ export const VIEW_TYPE_SIDEBAR = 'anki-bridge-sidebar';
 // (ribbon icon / commands) is handled by sibling tasks #134-#136.
 export class SidebarView extends ItemView {
 	private deckDropdown?: DropdownComponent;
+	private modelDropdown?: DropdownComponent;
 
 	constructor(
 		leaf: WorkspaceLeaf,
@@ -41,6 +42,8 @@ export class SidebarView extends ItemView {
 		this.contentEl.createEl('h4', { text: 'Anki Bridge' });
 		this.renderDeckDropdown();
 		await this.refreshDecks();
+		this.renderModelDropdown();
+		await this.refreshModels();
 	}
 
 	// docs/design/07-sidebar.md §7.2.1 — Deck dropdown + 🔄 Refresh.
@@ -78,6 +81,44 @@ export class SidebarView extends ItemView {
 			}
 		} catch {
 			toastError('❌ Failed to load decks. Please check Anki connection.');
+		}
+	}
+
+	// docs/design/07-sidebar.md §7.2.1 — Model dropdown + 🔄 Refresh.
+	private renderModelDropdown(): void {
+		new Setting(this.contentEl)
+			.setName('Model')
+			.addDropdown((dropdown) => {
+				this.modelDropdown = dropdown;
+				dropdown.onChange(async (value) => {
+					this.plugin.settings.currentModel = value;
+					await this.plugin.saveSettings();
+				});
+			})
+			.addButton((btn) =>
+				btn
+					.setButtonText('🔄 Refresh')
+					.onClick(() => void this.refreshModels()),
+			);
+	}
+
+	private async refreshModels(): Promise<void> {
+		if (!this.modelDropdown) return;
+		try {
+			const client = new AnkiConnectClient(
+				resolveAnkiConnectUrl(this.plugin.settings),
+			);
+			const modelNames = await client.modelNames();
+
+			this.modelDropdown.selectEl.empty();
+			for (const name of modelNames) this.modelDropdown.addOption(name, name);
+
+			const current = this.plugin.settings.currentModel;
+			if (current && modelNames.includes(current)) {
+				this.modelDropdown.setValue(current);
+			}
+		} catch {
+			toastError('❌ Failed to load models. Please check Anki connection.');
 		}
 	}
 }
