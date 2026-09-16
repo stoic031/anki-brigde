@@ -365,8 +365,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "package",
-      "community": 7,
-      "community_name": "package.json",
+      "community": 2,
+      "community_name": "devDependencies",
       "norm_label": "package.json"
     },
     {
@@ -376,8 +376,8 @@
       "source_location": "L2",
       "_origin": "ast",
       "id": "package_name",
-      "community": 7,
-      "community_name": "package.json",
+      "community": 2,
+      "community_name": "devDependencies",
       "norm_label": "name"
     },
     {
@@ -387,8 +387,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "package_version",
-      "community": 7,
-      "community_name": "package.json",
+      "community": 2,
+      "community_name": "devDependencies",
       "norm_label": "version"
     },
     {
@@ -398,8 +398,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "package_description",
-      "community": 7,
-      "community_name": "package.json",
+      "community": 2,
+      "community_name": "devDependencies",
       "norm_label": "description"
     },
     {
@@ -409,8 +409,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "package_main",
-      "community": 7,
-      "community_name": "package.json",
+      "community": 2,
+      "community_name": "devDependencies",
       "norm_label": "main"
     },
     {
@@ -420,8 +420,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "package_type",
-      "community": 7,
-      "community_name": "package.json",
+      "community": 2,
+      "community_name": "devDependencies",
       "norm_label": "type"
     },
     {
@@ -431,8 +431,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "package_scripts",
-      "community": 7,
-      "community_name": "package.json",
+      "community": 2,
+      "community_name": "devDependencies",
       "norm_label": "scripts"
     },
     {
@@ -442,8 +442,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "package_scripts_dev",
-      "community": 7,
-      "community_name": "package.json",
+      "community": 2,
+      "community_name": "devDependencies",
       "norm_label": "dev"
     },
     {
@@ -453,8 +453,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "package_scripts_build",
-      "community": 7,
-      "community_name": "package.json",
+      "community": 2,
+      "community_name": "devDependencies",
       "norm_label": "build"
     },
     {
@@ -464,8 +464,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "package_scripts_version",
-      "community": 7,
-      "community_name": "package.json",
+      "community": 2,
+      "community_name": "devDependencies",
       "norm_label": "version"
     },
     {
@@ -475,8 +475,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "package_scripts_lint",
-      "community": 7,
-      "community_name": "package.json",
+      "community": 2,
+      "community_name": "devDependencies",
       "norm_label": "lint"
     },
     {
@@ -486,8 +486,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "package_scripts_type_check",
-      "community": 7,
-      "community_name": "package.json",
+      "community": 2,
+      "community_name": "devDependencies",
       "norm_label": "type-check"
     },
     {
@@ -497,8 +497,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "package_scripts_test_unit",
-      "community": 7,
-      "community_name": "package.json",
+      "community": 2,
+      "community_name": "devDependencies",
       "norm_label": "test:unit"
     },
     {
@@ -508,8 +508,8 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "package_scripts_format_write",
-      "community": 7,
-      "community_name": "package.json",
+      "community": 2,
+      "community_name": "devDependencies",
       "norm_label": "format:write"
     },
     {
@@ -519,8 +519,8 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "package_keywords",
-      "community": 7,
-      "community_name": "package.json",
+      "community": 2,
+      "community_name": "devDependencies",
       "norm_label": "keywords"
     },
     {
@@ -530,8 +530,8 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "package_license",
-      "community": 7,
-      "community_name": "package.json",
+      "community": 2,
+      "community_name": "devDependencies",
       "norm_label": "license"
     },
     {
@@ -816,8 +816,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_main_test",
-      "community": 78,
-      "community_name": "main.test.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "main.test.ts"
     },
     {
@@ -827,8 +827,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "src_main_test_pluginbase_addcommandspy",
-      "community": 78,
-      "community_name": "main.test.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "{ pluginbase, addcommandspy }"
     },
     {
@@ -838,8 +838,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_main_test_loadsettings_savesettings",
-      "community": 78,
-      "community_name": "main.test.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "{ loadsettings, savesettings }"
     },
     {
@@ -849,8 +849,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "src_main_test_registercontrolsblock",
-      "community": 78,
-      "community_name": "main.test.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "{ registercontrolsblock }"
     },
     {
@@ -860,8 +860,8 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "src_main_test_runquickcapture",
-      "community": 78,
-      "community_name": "main.test.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "{ runquickcapture }"
     },
     {
@@ -871,20 +871,20 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "src_main_test_runcreatenote",
-      "community": 78,
-      "community_name": "main.test.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "{ runcreatenote }"
     },
     {
-      "label": "{ registerSidebarView }",
+      "label": "{ registerSidebarView, revealSidebarView }",
       "file_type": "code",
       "source_file": "src/main.test.ts",
       "source_location": "L38",
       "_origin": "ast",
-      "id": "src_main_test_registersidebarview",
-      "community": 78,
-      "community_name": "main.test.ts",
-      "norm_label": "{ registersidebarview }"
+      "id": "src_main_test_registersidebarview_revealsidebarview",
+      "community": 18,
+      "community_name": "quickCapture.ts",
+      "norm_label": "{ registersidebarview, revealsidebarview }"
     },
     {
       "label": "main.ts",
@@ -923,7 +923,7 @@
       "label": ".saveSettings()",
       "file_type": "code",
       "source_file": "src/main.ts",
-      "source_location": "L35",
+      "source_location": "L41",
       "_origin": "ast",
       "id": "src_main_ankibridgeplugin_savesettings",
       "community": 18,
@@ -934,7 +934,7 @@
       "label": ".onunload()",
       "file_type": "code",
       "source_file": "src/main.ts",
-      "source_location": "L39",
+      "source_location": "L45",
       "_origin": "ast",
       "id": "src_main_ankibridgeplugin_onunload",
       "community": 18,
@@ -948,8 +948,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_note_contenttemplate_test",
-      "community": 5,
-      "community_name": "types.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "contenttemplate.test.ts"
     },
     {
@@ -2367,8 +2367,8 @@
       "source_location": "L91",
       "_origin": "ast",
       "id": "src_types_syncerror",
-      "community": 5,
-      "community_name": "types.ts",
+      "community": 14,
+      "community_name": "controlsBlock.ts",
       "norm_label": "syncerror"
     },
     {
@@ -2378,8 +2378,8 @@
       "source_location": "L92",
       "_origin": "ast",
       "id": "src_types_syncerror_constructor",
-      "community": 5,
-      "community_name": "types.ts",
+      "community": 14,
+      "community_name": "controlsBlock.ts",
       "norm_label": ".constructor()"
     },
     {
@@ -7424,7 +7424,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/main.test.ts",
-      "source_location": "L43",
+      "source_location": "L44",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_main_test",
@@ -7436,7 +7436,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/main.test.ts",
-      "source_location": "L43",
+      "source_location": "L44",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_main_test",
@@ -7484,7 +7484,7 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_main_test",
-      "target": "src_main_test_registersidebarview",
+      "target": "src_main_test_registersidebarview_revealsidebarview",
       "confidence_score": 1.0
     },
     {
@@ -7689,6 +7689,18 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/main.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_main",
+      "target": "src_ui_sidebarview_revealsidebarview",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -7739,7 +7751,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/main.ts",
-      "source_location": "L39",
+      "source_location": "L45",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_main_ankibridgeplugin",
@@ -7750,7 +7762,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/main.ts",
-      "source_location": "L35",
+      "source_location": "L41",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_main_ankibridgeplugin",
@@ -7912,6 +7924,18 @@
       "_origin": "ast",
       "source": "src_main_ankibridgeplugin_onload",
       "target": "src_ui_sidebarview_registersidebarview"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/main.ts",
+      "source_location": "L37",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_main_ankibridgeplugin_onload",
+      "target": "src_ui_sidebarview_revealsidebarview"
     },
     {
       "relation": "calls",
@@ -15353,5 +15377,5 @@
       "source_file": ".opencode/skills/graphify/SKILL.md"
     }
   ],
-  "built_at_commit": "708c225a0a86a9e8b8450f8c9b52d9301ad8ffa1"
+  "built_at_commit": "b45deba3fd98a7d0c48ab4eaac2d5c79778f43bb"
 }
