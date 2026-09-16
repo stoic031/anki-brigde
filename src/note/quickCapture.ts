@@ -1,6 +1,11 @@
-import { App, MarkdownView } from 'obsidian';
+import { App, MarkdownView, Notice } from 'obsidian';
 import { sanitizeForFilename } from './mediaNaming';
-import type { AnkiBridgeSettings } from '../settings';
+import { generateContentSkeleton } from './contentTemplate';
+import { resolveAnkiConnectUrl, type AnkiBridgeSettings } from '../settings';
+import { AnkiConnectClient } from '../sync/ankiConnect';
+import { writeAnkiFrontmatter } from '../sync/parser';
+import { toastError } from '../ui/toast';
+import type AnkiBridgePlugin from '../main';
 
 // docs/design/03-note.md §3.7 — selection source is the active markdown note only.
 export function getSelectedText(app: App): string | null {
@@ -62,4 +67,61 @@ export function getUniqueNotePath(
 		candidate = join(`${base} ${n}.md`);
 	}
 	return candidate;
+}
+
+interface AppWithSettingTab {
+	setting: { open: () => void; openTabById: (id: string) => void };
+}
+
+// Undocumented but community-standard way to open Settings to a specific plugin tab;
+// `App` has no typed `setting` property in obsidian.d.ts.
+function openPluginSettings(app: App, pluginId: string): void {
+	const withSettings = app as unknown as App & AppWithSettingTab;
+	withSettings.setting.open();
+	withSettings.setting.openTabById(pluginId);
+}
+
+// docs/design/03-note.md §3.7 steps 1-7 (step 8, auto-open Sidebar Tab 1, is skipped —
+// Feature #42's Sidebar Modal doesn't exist yet; see docs/design-open-questions.md #18).
+export async function runQuickCapture(plugin: AnkiBridgePlugin): Promise<void> {
+	const selectedText = getSelectedText(plugin.app);
+	if (selectedText === null) {
+		toastError('❌ No active markdown note to capture from.');
+		return;
+	}
+
+	const target = resolveQuickCaptureTarget(plugin.settings);
+	if (!target) {
+		new Notice(
+			'Please configure Deck, Model, and Save location in Settings first',
+		);
+		openPluginSettings(plugin.app, plugin.manifest.id);
+		return;
+	}
+
+	if (target.seededFromDefaults) {
+		plugin.settings.currentDeck = target.deck;
+		plugin.settings.currentModel = target.model;
+		await plugin.saveSettings();
+	}
+
+	try {
+		const client = new AnkiConnectClient(
+			resolveAnkiConnectUrl(plugin.settings),
+		);
+		const fields = await client.modelFieldNames(target.model);
+
+		const filename = getQuickCaptureFilename(selectedText);
+		const path = getUniqueNotePath(plugin.app, target.folder, filename);
+		const content = generateContentSkeleton(fields, selectedText);
+
+		const file = await plugin.app.vault.create(path, content);
+		await writeAnkiFrontmatter(plugin.app, file, {
+			anki_deck: target.deck,
+			anki_model: target.model,
+		});
+		await plugin.app.workspace.getLeaf(false).openFile(file);
+	} catch {
+		toastError('❌ Failed to create note. Please check Anki connection.');
+	}
 }

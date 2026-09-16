@@ -1,18 +1,42 @@
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { App } from 'obsidian';
 import type { AnkiBridgeSettings } from '../settings';
+import type AnkiBridgePlugin from '../main';
 
-const { MarkdownView } = vi.hoisted(() => ({
+const { MarkdownView, Notice } = vi.hoisted(() => ({
 	MarkdownView: class FakeMarkdownView {},
+	Notice: vi.fn(),
 }));
-vi.mock('obsidian', () => ({ MarkdownView }));
+vi.mock('obsidian', () => ({ MarkdownView, Notice }));
+
+const { modelFieldNamesMock, AnkiConnectClient } = vi.hoisted(() => {
+	const modelFieldNamesMock = vi.fn();
+	class AnkiConnectClient {
+		modelFieldNames = modelFieldNamesMock;
+	}
+	return { modelFieldNamesMock, AnkiConnectClient };
+});
+vi.mock('../sync/ankiConnect', () => ({ AnkiConnectClient }));
+
+const { writeAnkiFrontmatter } = vi.hoisted(() => ({
+	writeAnkiFrontmatter: vi.fn().mockResolvedValue(undefined),
+}));
+vi.mock('../sync/parser', () => ({ writeAnkiFrontmatter }));
+
+const { toastError } = vi.hoisted(() => ({ toastError: vi.fn() }));
+vi.mock('../ui/toast', () => ({ toastError }));
 
 import {
 	getQuickCaptureFilename,
 	getSelectedText,
 	getUniqueNotePath,
 	resolveQuickCaptureTarget,
+	runQuickCapture,
 } from './quickCapture';
+
+afterEach(() => {
+	vi.clearAllMocks();
+});
 
 function fakeSettings(
 	overrides: Partial<AnkiBridgeSettings> = {},
@@ -42,6 +66,52 @@ function fakeVaultApp(existingPaths: string[]): App {
 			),
 		},
 	} as unknown as App;
+}
+
+function fakePlugin(
+	options: {
+		view?: { editor: { getSelection: () => string } } | null;
+		existingPaths?: string[];
+		settings?: Partial<AnkiBridgeSettings>;
+	} = {},
+) {
+	const { view = null, existingPaths = [], settings: overrides = {} } = options;
+	const settings = fakeSettings(overrides);
+	const saveSettings = vi.fn().mockResolvedValue(undefined);
+	const createdFile = { path: 'created' };
+	const vaultCreate = vi.fn().mockResolvedValue(createdFile);
+	const openFile = vi.fn().mockResolvedValue(undefined);
+	const settingOpen = vi.fn();
+	const openTabById = vi.fn();
+
+	const plugin = {
+		app: {
+			workspace: {
+				getActiveViewOfType: vi.fn().mockReturnValue(view),
+				getLeaf: vi.fn().mockReturnValue({ openFile }),
+			},
+			vault: {
+				getAbstractFileByPath: vi.fn(
+					(path: string) => existingPaths.includes(path) || null,
+				),
+				create: vaultCreate,
+			},
+			setting: { open: settingOpen, openTabById },
+		},
+		settings,
+		saveSettings,
+		manifest: { id: 'anki-bridge' },
+	} as unknown as AnkiBridgePlugin;
+
+	return {
+		plugin,
+		saveSettings,
+		vaultCreate,
+		openFile,
+		settingOpen,
+		openTabById,
+		createdFile,
+	};
 }
 
 describe('getSelectedText', () => {
@@ -139,5 +209,88 @@ describe('getUniqueNotePath', () => {
 		const app = fakeVaultApp([]);
 
 		expect(getUniqueNotePath(app, '', 'word.md')).toBe('word.md');
+	});
+});
+
+describe('runQuickCapture', () => {
+	it('creates the note with the skeleton, prefilled first field, and frontmatter, then opens it', async () => {
+		modelFieldNamesMock.mockResolvedValue(['Word', 'Meaning']);
+		const { plugin, saveSettings, vaultCreate, openFile, createdFile } =
+			fakePlugin({
+				view: { editor: { getSelection: () => '薬' } },
+				settings: {
+					currentDeck: 'Japanese',
+					currentModel: 'Basic',
+					currentFolder: 'Vocab',
+				},
+			});
+
+		await runQuickCapture(plugin);
+
+		expect(vaultCreate).toHaveBeenCalledWith(
+			'Vocab/薬.md',
+			'```anki-controls\n```\n\n## Word\n\n薬\n\n## Meaning\n',
+		);
+		expect(writeAnkiFrontmatter).toHaveBeenCalledWith(plugin.app, createdFile, {
+			anki_deck: 'Japanese',
+			anki_model: 'Basic',
+		});
+		expect(openFile).toHaveBeenCalledWith(createdFile);
+		expect(saveSettings).not.toHaveBeenCalled();
+	});
+
+	it('persists the seeded Deck/Model when falling back to Settings Tab defaults', async () => {
+		modelFieldNamesMock.mockResolvedValue(['Word']);
+		const { plugin, saveSettings } = fakePlugin({
+			view: { editor: { getSelection: () => '薬' } },
+			settings: { defaultDeck: 'Japanese', defaultModel: 'Basic' },
+		});
+
+		await runQuickCapture(plugin);
+
+		expect(saveSettings).toHaveBeenCalled();
+		expect(plugin.settings.currentDeck).toBe('Japanese');
+		expect(plugin.settings.currentModel).toBe('Basic');
+	});
+
+	it('shows an error toast and does nothing else when there is no active markdown note', async () => {
+		const { plugin, vaultCreate } = fakePlugin({ view: null });
+
+		await runQuickCapture(plugin);
+
+		expect(toastError).toHaveBeenCalledWith(
+			'❌ No active markdown note to capture from.',
+		);
+		expect(vaultCreate).not.toHaveBeenCalled();
+	});
+
+	it('shows a Notice and opens plugin settings when neither current nor default Deck/Model are set', async () => {
+		const { plugin, settingOpen, openTabById, vaultCreate } = fakePlugin({
+			view: { editor: { getSelection: () => '薬' } },
+		});
+
+		await runQuickCapture(plugin);
+
+		expect(Notice).toHaveBeenCalledWith(
+			'Please configure Deck, Model, and Save location in Settings first',
+		);
+		expect(settingOpen).toHaveBeenCalled();
+		expect(openTabById).toHaveBeenCalledWith('anki-bridge');
+		expect(vaultCreate).not.toHaveBeenCalled();
+	});
+
+	it('shows a generic error toast when the AnkiConnect call fails', async () => {
+		modelFieldNamesMock.mockRejectedValue(new Error('boom'));
+		const { plugin, vaultCreate } = fakePlugin({
+			view: { editor: { getSelection: () => '薬' } },
+			settings: { currentDeck: 'Japanese', currentModel: 'Basic' },
+		});
+
+		await runQuickCapture(plugin);
+
+		expect(toastError).toHaveBeenCalledWith(
+			'❌ Failed to create note. Please check Anki connection.',
+		);
+		expect(vaultCreate).not.toHaveBeenCalled();
 	});
 });

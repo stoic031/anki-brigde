@@ -59,6 +59,15 @@ Electron app with no exposed test harness — doable, but expensive. **Proposal:
 for unit tests, a manual checklist for integration, and no Playwright until there's a
 concrete reason.
 
+### 18. Quick-capture step 8 ("auto-open Sidebar Tab 1") has no target yet
+
+`docs/design/03-note.md` §3.7 step 8 says: if the Sidebar Modal isn't open, auto-open
+it (Tab 1) after creating a note from selection. Implemented in `runQuickCapture`
+(`src/note/quickCapture.ts`) through step 7 (open the new note in the editor) and
+stopped there — the Sidebar Modal (Feature #42) doesn't exist anywhere in the codebase
+yet, so there's nothing to open. Whoever implements Feature #42's Sidebar View should
+add the auto-open call into `runQuickCapture` at that point.
+
 ### 17. GitHub issue #126 text is stale relative to `07-sidebar.md` §7.3
 
 Issue #126 ("Branch A/B reusing Sidebar persistence") describes the not-yet-configured

@@ -23,6 +23,11 @@ const { registerControlsBlock } = vi.hoisted(() => ({
 }));
 vi.mock('./note/controlsBlock', () => ({ registerControlsBlock }));
 
+const { runQuickCapture } = vi.hoisted(() => ({
+	runQuickCapture: vi.fn().mockResolvedValue(undefined),
+}));
+vi.mock('./note/quickCapture', () => ({ runQuickCapture }));
+
 vi.mock('./ui/settingsTab', () => ({ AnkiBridgeSettingTab: vi.fn() }));
 
 import AnkiBridgePlugin from './main';
@@ -51,5 +56,21 @@ describe('AnkiBridgePlugin.onload', () => {
 			unknown
 		>;
 		expect(registeredCommand.hotkeys).toBeUndefined();
+	});
+
+	it("delegates the command's callback to runQuickCapture", async () => {
+		const plugin = new AnkiBridgePlugin(
+			{} as App,
+			{} as PluginManifest,
+		);
+
+		await plugin.onload();
+
+		const registeredCommand = addCommandSpy.mock.calls[0]?.[0] as {
+			callback: () => void;
+		};
+		registeredCommand.callback();
+
+		expect(runQuickCapture).toHaveBeenCalledWith(plugin);
 	});
 });

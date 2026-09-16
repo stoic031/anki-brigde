@@ -28,6 +28,16 @@ describe('generateContentSkeleton', () => {
 		expect(generateContentSkeleton([])).toBe('```anki-controls\n```\n');
 	});
 
+	it('pre-fills only the first field section when firstFieldContent is given', () => {
+		expect(generateContentSkeleton(['Word', 'Meaning'], '薬')).toBe(
+			'```anki-controls\n```\n\n## Word\n\n薬\n\n## Meaning\n',
+		);
+	});
+
+	it('ignores firstFieldContent when there are no fields', () => {
+		expect(generateContentSkeleton([], '薬')).toBe('```anki-controls\n```\n');
+	});
+
 	it('round-trips through parseSections: every field becomes its own empty section', () => {
 		const fields = ['Word', 'Meaning', 'Furigana'];
 		const sections = parseSections(generateContentSkeleton(fields));

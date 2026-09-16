@@ -1,5 +1,6 @@
 import { Plugin } from 'obsidian';
 import { registerControlsBlock } from './note/controlsBlock';
+import { runQuickCapture } from './note/quickCapture';
 import {
 	loadSettings,
 	saveSettings,
@@ -18,8 +19,7 @@ export default class AnkiBridgePlugin extends Plugin {
 		this.addCommand({
 			id: 'create-note-from-selection',
 			name: 'Create note from selection',
-			// Reads selection / resolves Deck-Model-Folder / creates note: #124-#129, see docs/design/03-note.md §3.7
-			callback: () => {},
+			callback: () => void runQuickCapture(this),
 		});
 	}
 
