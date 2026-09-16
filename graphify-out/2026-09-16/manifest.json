@@ -150,7 +150,7 @@
     "semantic_hash": ""
   },
   "docs/design-open-questions.md": {
-    "mtime": 1789537004.4736934,
+    "mtime": 1789537170.6148643,
     "ast_hash": "5b524dddeeb6225252f08ac4cefe87d3",
     "semantic_hash": ""
   },
@@ -325,17 +325,17 @@
     "semantic_hash": ""
   },
   "src/settings.test.ts": {
-    "mtime": 1789536920.9724576,
+    "mtime": 1789537170.6196816,
     "ast_hash": "6fee6126a36bb4c736732b6be6eec47b",
     "semantic_hash": ""
   },
   "src/settings.ts": {
-    "mtime": 1789536890.3705046,
+    "mtime": 1789537170.6198459,
     "ast_hash": "3be209cdf644babbaa67688a08f41436",
     "semantic_hash": ""
   },
   "src/ui/settingsTab.test.ts": {
-    "mtime": 1789536938.4393039,
+    "mtime": 1789537170.6200686,
     "ast_hash": "b686de537085a10f9c89758229c47a19",
     "semantic_hash": ""
   },
@@ -400,13 +400,13 @@
     "semantic_hash": ""
   },
   "src/note/quickCapture.test.ts": {
-    "mtime": 1789536972.6530302,
-    "ast_hash": "e178d6d3b13c14c3563d8e1d939054ea",
+    "mtime": 1789537404.5867655,
+    "ast_hash": "e87212cb2a17fb24a68d950309fb768e",
     "semantic_hash": ""
   },
   "src/note/quickCapture.ts": {
-    "mtime": 1789536957.5348904,
-    "ast_hash": "dc0d54a9ba32a55993d96865bef8bd9f",
+    "mtime": 1789537384.1539578,
+    "ast_hash": "87a42af66814efde6f719ff223c4809b",
     "semantic_hash": ""
   },
   "src/main.test.ts": {
