@@ -5,6 +5,7 @@ import { resolveAnkiConnectUrl, type AnkiBridgeSettings } from '../settings';
 import { AnkiConnectClient } from '../sync/ankiConnect';
 import { writeAnkiFrontmatter } from '../sync/parser';
 import { toastError } from '../ui/toast';
+import { revealSidebarView } from '../ui/sidebarView';
 import type AnkiBridgePlugin from '../main';
 
 // docs/design/03-note.md §3.7 — selection source is the active markdown note only.
@@ -75,14 +76,13 @@ interface AppWithSettingTab {
 
 // Undocumented but community-standard way to open Settings to a specific plugin tab;
 // `App` has no typed `setting` property in obsidian.d.ts.
-function openPluginSettings(app: App, pluginId: string): void {
+export function openPluginSettings(app: App, pluginId: string): void {
 	const withSettings = app as unknown as App & AppWithSettingTab;
 	withSettings.setting.open();
 	withSettings.setting.openTabById(pluginId);
 }
 
-// docs/design/03-note.md §3.7 steps 1-7 (step 8, auto-open Sidebar Tab 1, is skipped —
-// Feature #42's Sidebar Modal doesn't exist yet; see docs/design-open-questions.md #18).
+// docs/design/03-note.md §3.7 steps 1-8.
 export async function runQuickCapture(plugin: AnkiBridgePlugin): Promise<void> {
 	const selectedText = getSelectedText(plugin.app);
 	if (selectedText === null) {
@@ -121,6 +121,7 @@ export async function runQuickCapture(plugin: AnkiBridgePlugin): Promise<void> {
 			anki_model: target.model,
 		});
 		await plugin.app.workspace.getLeaf(false).openFile(file);
+		await revealSidebarView(plugin.app);
 	} catch {
 		toastError('❌ Failed to create note. Please check Anki connection.');
 	}

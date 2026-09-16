@@ -59,25 +59,30 @@ Electron app with no exposed test harness — doable, but expensive. **Proposal:
 for unit tests, a manual checklist for integration, and no Playwright until there's a
 concrete reason.
 
-### 18. Quick-capture step 8 ("auto-open Sidebar Tab 1") has no target yet
+### 17. GitHub issue text repeatedly contradicts `07-sidebar.md` §7.3's "no center modal" decision
 
-`docs/design/03-note.md` §3.7 step 8 says: if the Sidebar Modal isn't open, auto-open
-it (Tab 1) after creating a note from selection. Implemented in `runQuickCapture`
-(`src/note/quickCapture.ts`) through step 7 (open the new note in the editor) and
-stopped there — the Sidebar Modal (Feature #42) doesn't exist anywhere in the codebase
-yet, so there's nothing to open. Whoever implements Feature #42's Sidebar View should
-add the auto-open call into `runQuickCapture` at that point.
+`docs/design/07-sidebar.md` §7.3 (lines 133-165) explicitly rejects a center-screen
+"Set up Anki Bridge" modal ("Không còn modal 'Set up Anki Bridge' ở giữa màn hình") in
+favor of a 3-way resolve (Tab 1 current → Settings Tab defaults → Notice + redirect to
+Settings, abort). This has now been contradicted by GitHub issue text **twice**:
 
-### 17. GitHub issue #126 text is stale relative to `07-sidebar.md` §7.3
+- #126 ("Branch A/B reusing Sidebar persistence") described the unconfigured case as
+  "center modal (no note-name field)".
+- #142-#144 (Feature #42, "Create New Note action") went further: #143 was titled
+  "Branch B: center 'Set up Anki Bridge' modal" with its own planned file
+  (`src/ui/modals/setupModal.ts`), and #144 was "Branch B submit → save as Tab 1
+  config → continue into Branch A".
 
-Issue #126 ("Branch A/B reusing Sidebar persistence") describes the not-yet-configured
-case as "center modal (no note-name field)". `docs/design/07-sidebar.md` §7.3
-(lines 133-165) explicitly rejects a center-screen modal ("Không còn modal 'Set up
-Anki Bridge' ở giữa màn hình") in favor of a 3-way resolve (Tab 1 current → Settings
-Tab defaults → Notice + redirect to Settings, abort). Implemented per the design doc,
-not the issue text — the issue's wording predates this decision. Update or comment on
-#126 to reconcile, or update Feature #42 / Task #146 (which #126 depends on and which
-are still unimplemented) accordingly when that work starts.
+Both times, implemented per the design doc, not the issue text (#126: quick capture,
+`runQuickCapture`; #142-144: `runCreateNote` — #143/#144 closed as superseded rather
+than building the modal). Given this is now a repeated pattern rather than a one-off
+typo, worth someone checking whether an *older* draft of the design (the one issues
+#142-144 were seemingly written against) should actually win instead, and updating
+`07-sidebar.md` §7.3 to match — rather than a third task hitting this same fork.
+
+`runQuickCapture`'s step 8 ("auto-open Sidebar Tab 1") — previously logged here as
+blocked — is now implemented too, via `revealSidebarView` (`src/ui/sidebarView.ts`,
+added in #142), reused by both `runQuickCapture` and `runCreateNote`.
 
 ### 13. Translate `docs/design/` itself
 

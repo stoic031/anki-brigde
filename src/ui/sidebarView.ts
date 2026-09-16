@@ -1,4 +1,4 @@
-import { ItemView, Plugin, WorkspaceLeaf } from 'obsidian';
+import { App, ItemView, Plugin, WorkspaceLeaf } from 'obsidian';
 
 export const VIEW_TYPE_SIDEBAR = 'anki-bridge-sidebar';
 
@@ -28,4 +28,18 @@ export function registerSidebarView(plugin: Plugin): void {
 		VIEW_TYPE_SIDEBAR,
 		(leaf: WorkspaceLeaf) => new SidebarView(leaf),
 	);
+}
+
+// docs/design/07-sidebar.md §7.3 step [7] / §3.7 step 8 — reveal the sidebar if it's
+// not already open, reusing the existing leaf instead of creating a duplicate.
+export async function revealSidebarView(app: App): Promise<void> {
+	const [existing] = app.workspace.getLeavesOfType(VIEW_TYPE_SIDEBAR);
+	if (existing) {
+		await app.workspace.revealLeaf(existing);
+		return;
+	}
+	const leaf = app.workspace.getRightLeaf(false);
+	if (!leaf) return;
+	await leaf.setViewState({ type: VIEW_TYPE_SIDEBAR, active: true });
+	await app.workspace.revealLeaf(leaf);
 }

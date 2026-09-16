@@ -21,7 +21,7 @@ export class ConfirmDeleteModal extends Modal {
 				btn
 					.setButtonText('Delete')
 					// setDestructive() needs Obsidian 1.13.0+; manifest.json's minAppVersion is
-					// 1.4.4, so this uses the deprecated-but-supported setWarning() instead.
+					// 1.7.2, so this uses the deprecated-but-supported setWarning() instead.
 					.setWarning()
 					.onClick(() => {
 						this.close();
