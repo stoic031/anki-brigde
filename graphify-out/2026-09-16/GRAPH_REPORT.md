@@ -1,16 +1,16 @@
 # Graph Report - anki-bridge  (2026-09-16)
 
 ## Corpus Check
-- 86 files · ~49,590 words
+- 86 files · ~49,698 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 542 nodes · 759 edges · 80 communities (24 shown, 56 thin omitted)
+- 542 nodes · 761 edges · 78 communities (22 shown, 56 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 15 edges (avg confidence: 0.86)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `708c225a`
+- Built from commit: `b45deba3`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -22,7 +22,6 @@
 - Field Mapping Algorithm (3-pass deterministic)
 - types.ts
 - noteNameModal.test.ts
-- package.json
 - Graphify Full Pipeline
 - docs/contracts.md
 - manifest.json
@@ -89,7 +88,6 @@
 - roadmap.md — development roadmap
 - README.md — Obsidian Sample Plugin boilerplate
 - graphify reference: GitHub clone and cross-repo merge
-- main.test.ts
 - [1.0.0]
 - confirmDelete.test.ts
 
@@ -131,7 +129,7 @@
 - **Pluggable AI Provider Interfaces** — docs_contracts_textprovider, docs_contracts_audioprovider, docs_contracts_imageprovider, docs_design_02_providers_abstraction_layer [INFERRED 0.85]
 - **AST + Semantic Extraction Forming the Merged Graph Build** — opencode_skills_graphify_skill_ast_extraction, opencode_skills_graphify_skill_semantic_extraction, opencode_skills_graphify_references_extraction_spec_node_id_format, opencode_skills_graphify_references_extraction_spec_confidence_rubric [INFERRED 0.85]
 
-## Communities (80 total, 56 thin omitted)
+## Communities (78 total, 56 thin omitted)
 
 ### Community 0 - "Common Provider Interface (processText/generateAudio/generateImage)"
 Cohesion: 0.05
@@ -142,8 +140,8 @@ Cohesion: 0.11
 Nodes (27): GitHub Clone & Cross-Repo Merge, Post-Commit Auto-Rebuild Hook, AGENTS.md graphify Integration Rules, /graphify add <url>, --watch (auto-rebuild watcher), Token reduction benchmark, FalkorDB export (--falkordb/--falkordb-push), MCP stdio server (--mcp) (+19 more)
 
 ### Community 2 - "devDependencies"
-Cohesion: 0.08
-Nodes (25): esbuild, eslint, @eslint/js, eslint-plugin-obsidianmd, globals, jiti, obsidian, devDependencies (+17 more)
+Cohesion: 0.05
+Nodes (40): esbuild, eslint, @eslint/js, eslint-plugin-obsidianmd, globals, jiti, obsidian, description (+32 more)
 
 ### Community 3 - "compilerOptions"
 Cohesion: 0.10
@@ -155,15 +153,11 @@ Nodes (7): Repo Layout (src/ module organization), AnkiFrontmatter interface, FI
 
 ### Community 5 - "types.ts"
 Cohesion: 0.06
-Nodes (33): AnkiConnectClient, AnkiConnectResponse, { requestUrl }, mapContentToFields(), stringifySectionValue(), extractSectionValue(), parseSections(), readAnkiFrontmatter() (+25 more)
+Nodes (32): AnkiConnectClient, AnkiConnectResponse, { requestUrl }, mapContentToFields(), stringifySectionValue(), extractSectionValue(), parseSections(), readAnkiFrontmatter() (+24 more)
 
 ### Community 6 - "noteNameModal.test.ts"
 Cohesion: 0.09
 Nodes (6): NoteNameModal, FakeButtonComponent, FakeSetting, FakeTextComponent, openModal(), { settings, modalState }
-
-### Community 7 - "package.json"
-Cohesion: 0.12
-Nodes (15): description, keywords, license, main, name, scripts, build, dev (+7 more)
 
 ### Community 8 - "Graphify Full Pipeline"
 Cohesion: 0.15
@@ -190,8 +184,8 @@ Cohesion: 0.50
 Nodes (5): AGENTS.md Non-Negotiables (9 rules), AudioProvider interface, ImageProvider interface, MediaResult interface, Q14: AudioOptions/ImageOptions shape undefined
 
 ### Community 14 - "controlsBlock.ts"
-Cohesion: 0.10
-Nodes (26): ALWAYS_VISIBLE_BUTTONS, ControlAction, ControlButtonSpec, DELETE_BUTTON, handleDeleteClick(), handleSync(), performDelete(), registerControlsBlock() (+18 more)
+Cohesion: 0.09
+Nodes (27): ALWAYS_VISIBLE_BUTTONS, ControlAction, ControlButtonSpec, DELETE_BUTTON, handleDeleteClick(), handleSync(), performDelete(), registerControlsBlock() (+19 more)
 
 ### Community 15 - "settingsTab.test.ts"
 Cohesion: 0.06
@@ -202,12 +196,8 @@ Cohesion: 0.67
 Nodes (3): TextProvider interface, TextResult interface, TextTask type
 
 ### Community 18 - "quickCapture.ts"
-Cohesion: 0.07
-Nodes (40): plugin, $schema, .opencode/plugins/graphify.js, AnkiBridgePlugin, generateContentSkeleton(), runCreateNote(), fakePlugin(), fakeSettings() (+32 more)
-
-### Community 78 - "main.test.ts"
-Cohesion: 0.29
-Nodes (6): { loadSettings, saveSettings }, { PluginBase, addCommandSpy }, { registerControlsBlock }, { registerSidebarView }, { runCreateNote }, { runQuickCapture }
+Cohesion: 0.06
+Nodes (46): plugin, $schema, .opencode/plugins/graphify.js, AnkiBridgePlugin, { loadSettings, saveSettings }, { PluginBase, addCommandSpy }, { registerControlsBlock }, { registerSidebarView, revealSidebarView } (+38 more)
 
 ### Community 79 - "[1.0.0]"
 Cohesion: 0.40
@@ -238,4 +228,4 @@ _Questions this graph is uniquely positioned to answer:_
 - **Should `graphify Skill (/graphify)` be split into smaller, more focused modules?**
   _Cohesion score 0.10541310541310542 - nodes in this community are weakly interconnected._
 - **Should `devDependencies` be split into smaller, more focused modules?**
-  _Cohesion score 0.08 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.04878048780487805 - nodes in this community are weakly interconnected._

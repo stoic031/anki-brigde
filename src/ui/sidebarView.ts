@@ -1,10 +1,29 @@
-import { App, ItemView, Plugin, WorkspaceLeaf } from 'obsidian';
+import {
+	App,
+	DropdownComponent,
+	ItemView,
+	Setting,
+	WorkspaceLeaf,
+} from 'obsidian';
+import type AnkiBridgePlugin from '../main';
+import { AnkiConnectClient } from '../sync/ankiConnect';
+import { resolveAnkiConnectUrl } from '../settings';
+import { toastError } from './toast';
 
 export const VIEW_TYPE_SIDEBAR = 'anki-bridge-sidebar';
 
 // docs/design/07-sidebar.md §7.1 — registered unconditionally on load; opening it
 // (ribbon icon / commands) is handled by sibling tasks #134-#136.
 export class SidebarView extends ItemView {
+	private deckDropdown?: DropdownComponent;
+
+	constructor(
+		leaf: WorkspaceLeaf,
+		private plugin: AnkiBridgePlugin,
+	) {
+		super(leaf);
+	}
+
 	getViewType(): string {
 		return VIEW_TYPE_SIDEBAR;
 	}
@@ -20,13 +39,53 @@ export class SidebarView extends ItemView {
 	async onOpen(): Promise<void> {
 		this.contentEl.empty();
 		this.contentEl.createEl('h4', { text: 'Anki Bridge' });
+		this.renderDeckDropdown();
+		await this.refreshDecks();
+	}
+
+	// docs/design/07-sidebar.md §7.2.1 — Deck dropdown + 🔄 Refresh.
+	private renderDeckDropdown(): void {
+		new Setting(this.contentEl)
+			.setName('Deck')
+			.addDropdown((dropdown) => {
+				this.deckDropdown = dropdown;
+				dropdown.onChange(async (value) => {
+					this.plugin.settings.currentDeck = value;
+					await this.plugin.saveSettings();
+				});
+			})
+			.addButton((btn) =>
+				btn
+					.setButtonText('🔄 Refresh')
+					.onClick(() => void this.refreshDecks()),
+			);
+	}
+
+	private async refreshDecks(): Promise<void> {
+		if (!this.deckDropdown) return;
+		try {
+			const client = new AnkiConnectClient(
+				resolveAnkiConnectUrl(this.plugin.settings),
+			);
+			const deckNames = await client.deckNames();
+
+			this.deckDropdown.selectEl.empty();
+			for (const name of deckNames) this.deckDropdown.addOption(name, name);
+
+			const current = this.plugin.settings.currentDeck;
+			if (current && deckNames.includes(current)) {
+				this.deckDropdown.setValue(current);
+			}
+		} catch {
+			toastError('❌ Failed to load decks. Please check Anki connection.');
+		}
 	}
 }
 
-export function registerSidebarView(plugin: Plugin): void {
+export function registerSidebarView(plugin: AnkiBridgePlugin): void {
 	plugin.registerView(
 		VIEW_TYPE_SIDEBAR,
-		(leaf: WorkspaceLeaf) => new SidebarView(leaf),
+		(leaf: WorkspaceLeaf) => new SidebarView(leaf, plugin),
 	);
 }
 
