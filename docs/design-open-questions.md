@@ -22,6 +22,21 @@ naming one provider in roadmap.md's Milestone 3 bullet (DALL-E 3 pairs naturally
 the OpenAI text provider already in M3, same API key), or explicitly moving Add Image
 to a later milestone and dropping "image" from M3's deliverable line.
 
+### 18. Tab 2/Tab 3 field-mapping persistence blocked on unbuilt Features #40/#41
+
+Task #147 ("Persist field-mapping config per Deck+Model pair") covers Tab 1 checkboxes,
+Tab 2 (Audio) rows, and Tab 3 (Image) row. Tab 1's share is done (`generateWithAiFields`
+in `settings.ts`, task #140). Tab 2/Tab 3 have no UI, no types, nothing to persist yet:
+Features #40 ("6.3-Tab 2 — Audio") and #41 ("6.4-Tab 3 — Image") are open with **zero**
+sub-tasks and aren't attached to any milestone — even though Milestone 2's own
+description lists Tab 2/3 scaffolding as a deliverable. Same blocker applies to task
+#149 ("Reload Tab 2/3 UI when Tab 1's Deck/Model changes"): nothing to reload.
+
+Resolve by either breaking #40/#41 into tasks and attaching them to Milestone 2 (matching
+the milestone's stated deliverable), or explicitly moving them to a later milestone and
+updating Milestone 2's description to drop the Tab 2/3 scaffolding line. Until then, don't
+invent a settings shape for Tab 2/3 rows ahead of the UI that would define it.
+
 ---
 
 ## 🟢 Worth doing, not blocking
