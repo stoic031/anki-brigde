@@ -36,10 +36,15 @@ class FakeDropdownComponent {
 
 class FakeButtonComponent {
 	text = '';
+	disabled = false;
 	private clickCb: (() => unknown) | null = null;
 
 	setButtonText(t: string) {
 		this.text = t;
+		return this;
+	}
+	setDisabled(d: boolean) {
+		this.disabled = d;
 		return this;
 	}
 	onClick(cb: () => unknown) {
@@ -71,6 +76,7 @@ class FakeToggleComponent {
 
 class FakeSetting {
 	name = '';
+	desc = '';
 	dropdownComponents: FakeDropdownComponent[] = [];
 	buttonComponents: FakeButtonComponent[] = [];
 	toggleComponents: FakeToggleComponent[] = [];
@@ -78,6 +84,10 @@ class FakeSetting {
 	constructor(public containerEl: unknown) {}
 	setName(n: string) {
 		this.name = n;
+		return this;
+	}
+	setDesc(d: string) {
+		this.desc = d;
 		return this;
 	}
 	addDropdown(cb: (d: FakeDropdownComponent) => unknown) {
@@ -143,20 +153,24 @@ const {
 	deckNamesMock,
 	modelNamesMock,
 	modelFieldNamesMock,
+	versionMock,
 	AnkiConnectClient,
 } = vi.hoisted(() => {
 	const deckNamesMock = vi.fn().mockResolvedValue([]);
 	const modelNamesMock = vi.fn().mockResolvedValue([]);
 	const modelFieldNamesMock = vi.fn().mockResolvedValue([]);
+	const versionMock = vi.fn().mockResolvedValue(6);
 	class AnkiConnectClient {
 		deckNames = deckNamesMock;
 		modelNames = modelNamesMock;
 		modelFieldNames = modelFieldNamesMock;
+		version = versionMock;
 	}
 	return {
 		deckNamesMock,
 		modelNamesMock,
 		modelFieldNamesMock,
+		versionMock,
 		AnkiConnectClient,
 	};
 });
@@ -322,7 +336,7 @@ describe('SidebarView', () => {
 	});
 
 	it('shows an error toast when loading decks fails, without throwing', async () => {
-		deckNamesMock.mockRejectedValue(new Error('boom'));
+		deckNamesMock.mockRejectedValueOnce(new Error('boom'));
 		const { plugin } = fakePlugin();
 		const view = new SidebarView({} as WorkspaceLeaf, plugin);
 
@@ -392,7 +406,7 @@ describe('SidebarView', () => {
 	});
 
 	it('shows an error toast when loading models fails, without throwing', async () => {
-		modelNamesMock.mockRejectedValue(new Error('boom'));
+		modelNamesMock.mockRejectedValueOnce(new Error('boom'));
 		const { plugin } = fakePlugin();
 		const view = new SidebarView({} as WorkspaceLeaf, plugin);
 
@@ -521,7 +535,7 @@ describe('SidebarView', () => {
 		await view.onOpen();
 
 		expect(modelFieldNamesMock).not.toHaveBeenCalled();
-		expect(settings).toHaveLength(3);
+		expect(settings).toHaveLength(4); // Deck, Model, Folder, Connection status
 		expect(fieldsContainerEl.empty).toHaveBeenCalled();
 	});
 
@@ -648,7 +662,7 @@ describe('SidebarView', () => {
 	});
 
 	it('shows an error toast when loading fields fails, without throwing', async () => {
-		modelFieldNamesMock.mockRejectedValue(new Error('boom'));
+		modelFieldNamesMock.mockRejectedValueOnce(new Error('boom'));
 		const { plugin } = fakePlugin({
 			currentDeck: 'Japanese',
 			currentModel: 'Basic',
@@ -660,6 +674,92 @@ describe('SidebarView', () => {
 		expect(toastError).toHaveBeenCalledWith(
 			'❌ Failed to load fields. Please check Anki connection.',
 		);
+	});
+
+	it('renders the connection status with the resolved AnkiConnect URL and a Test connection button', async () => {
+		const { plugin } = fakePlugin({ ankiConnectUrl: 'http://localhost:9999' });
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+
+		await view.onOpen();
+
+		const statusSetting = settings[settings.length - 1];
+		expect(statusSetting?.desc).toBe('AnkiConnect: http://localhost:9999');
+		expect(statusSetting?.buttonComponents[0]?.text).toBe('Test connection');
+	});
+
+	it('uses the default AnkiConnect URL in the description when the setting is blank', async () => {
+		const { plugin } = fakePlugin({ ankiConnectUrl: '' });
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+
+		await view.onOpen();
+
+		const statusSetting = settings[settings.length - 1];
+		expect(statusSetting?.desc).toBe('AnkiConnect: http://localhost:8765');
+	});
+
+	it('shows Connected after a successful auto-test on open', async () => {
+		versionMock.mockResolvedValue(6);
+		const { plugin } = fakePlugin();
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+
+		await view.onOpen();
+
+		const statusSetting = settings[settings.length - 1];
+		expect(statusSetting?.name).toBe('Status: ✅ Connected');
+	});
+
+	it('shows a failure message after a failed auto-test on open, without a toast', async () => {
+		versionMock.mockRejectedValueOnce(new Error('boom'));
+		const { plugin } = fakePlugin();
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+
+		await view.onOpen();
+
+		const statusSetting = settings[settings.length - 1];
+		expect(statusSetting?.name).toBe(
+			'Status: ❌ Cannot connect to Anki. Please check URL and AnkiConnect.',
+		);
+		expect(toastError).not.toHaveBeenCalled();
+	});
+
+	it('re-tests and updates the status when Test connection is clicked', async () => {
+		versionMock.mockResolvedValueOnce(6);
+		const { plugin } = fakePlugin();
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+		await view.onOpen();
+
+		const statusSetting = settings[settings.length - 1];
+		expect(statusSetting?.name).toBe('Status: ✅ Connected');
+
+		versionMock.mockRejectedValueOnce(new Error('boom'));
+		await statusSetting?.buttonComponents[0]?.triggerClick();
+
+		expect(statusSetting?.name).toBe(
+			'Status: ❌ Cannot connect to Anki. Please check URL and AnkiConnect.',
+		);
+	});
+
+	it('disables the Test connection button while a re-test is in-flight, and re-enables it after', async () => {
+		versionMock.mockResolvedValueOnce(6);
+		const { plugin } = fakePlugin();
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+		await view.onOpen();
+
+		const statusSetting = settings[settings.length - 1];
+		let resolveVersion!: (v: number) => void;
+		versionMock.mockReturnValueOnce(
+			new Promise<number>((resolve) => {
+				resolveVersion = resolve;
+			}),
+		);
+
+		const clickPromise = statusSetting?.buttonComponents[0]?.triggerClick();
+		expect(statusSetting?.buttonComponents[0]?.disabled).toBe(true);
+
+		resolveVersion(6);
+		await clickPromise;
+
+		expect(statusSetting?.buttonComponents[0]?.disabled).toBe(false);
 	});
 });
 

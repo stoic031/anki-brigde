@@ -295,8 +295,8 @@
     "semantic_hash": ""
   },
   "src/sync/ankiConnect.ts": {
-    "mtime": 1789633187.6464553,
-    "ast_hash": "3994912b1e4901f1d8b57203ac47f949",
+    "mtime": 1789635397.921453,
+    "ast_hash": "ee79b4afeaeceb002f98ed715a7c478e",
     "semantic_hash": ""
   },
   "src/sync/syncEngine.ts": {
@@ -305,8 +305,8 @@
     "semantic_hash": ""
   },
   "src/sync/ankiConnect.test.ts": {
-    "mtime": 1789633187.6462061,
-    "ast_hash": "5f806c71a2a5b9f470a2e71af71d2a1b",
+    "mtime": 1789635406.9242682,
+    "ast_hash": "e06e6713f784ec6f61146e019e1c04c7",
     "semantic_hash": ""
   },
   "src/sync/syncEngine.test.ts": {
@@ -325,17 +325,17 @@
     "semantic_hash": ""
   },
   "src/settings.test.ts": {
-    "mtime": 1789633328.970099,
+    "mtime": 1789633621.5582757,
     "ast_hash": "ea404e95ce24257657515ada36568ba0",
     "semantic_hash": ""
   },
   "src/settings.ts": {
-    "mtime": 1789632939.011057,
+    "mtime": 1789633621.5585692,
     "ast_hash": "6fa016dc5cd5eb8ffd3f249ee63e4034",
     "semantic_hash": ""
   },
   "src/ui/settingsTab.test.ts": {
-    "mtime": 1789633333.577852,
+    "mtime": 1789633621.558897,
     "ast_hash": "4a4b51da1ce09cd6af849914acdc9811",
     "semantic_hash": ""
   },
@@ -400,7 +400,7 @@
     "semantic_hash": ""
   },
   "src/note/quickCapture.test.ts": {
-    "mtime": 1789633284.9980044,
+    "mtime": 1789633621.5580974,
     "ast_hash": "9417b90e61051fa5e247ab8d4e535ed6",
     "semantic_hash": ""
   },
@@ -415,17 +415,17 @@
     "semantic_hash": ""
   },
   "src/ui/sidebarView.test.ts": {
-    "mtime": 1789633089.8359551,
-    "ast_hash": "c6d635235033e15d53593d9b188e2d1b",
+    "mtime": 1789635591.675778,
+    "ast_hash": "f2dd31aee98e43aa85a88c2f05a2e2c3",
     "semantic_hash": ""
   },
   "src/ui/sidebarView.ts": {
-    "mtime": 1789633089.8521454,
-    "ast_hash": "61c6d2826246921ce8cd7cd7f55d048f",
+    "mtime": 1789635423.3298943,
+    "ast_hash": "89bad73fbcdbab7a95206e4a34eb83ca",
     "semantic_hash": ""
   },
   "src/note/createNote.test.ts": {
-    "mtime": 1789633281.6167033,
+    "mtime": 1789633621.5578058,
     "ast_hash": "53d137a7eef683d6afcd028e2a17dba2",
     "semantic_hash": ""
   },

@@ -89,4 +89,8 @@ export class AnkiConnectClient {
 	async modelFieldNames(modelName: string): Promise<string[]> {
 		return this.invoke<string[]>('modelFieldNames', { modelName });
 	}
+
+	async version(): Promise<number> {
+		return this.invoke<number>('version');
+	}
 }
