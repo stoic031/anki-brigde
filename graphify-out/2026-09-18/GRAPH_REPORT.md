@@ -1,16 +1,16 @@
 # Graph Report - anki-bridge  (2026-09-18)
 
 ## Corpus Check
-- 86 files · ~53,408 words
+- 86 files · ~53,662 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 586 nodes · 858 edges · 81 communities (25 shown, 56 thin omitted)
+- 586 nodes · 859 edges · 81 communities (24 shown, 57 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 15 edges (avg confidence: 0.86)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `b1f1ec06`
+- Built from commit: `b4e873eb`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -132,7 +132,7 @@
 - **Pluggable AI Provider Interfaces** — docs_contracts_textprovider, docs_contracts_audioprovider, docs_contracts_imageprovider, docs_design_02_providers_abstraction_layer [INFERRED 0.85]
 - **AST + Semantic Extraction Forming the Merged Graph Build** — opencode_skills_graphify_skill_ast_extraction, opencode_skills_graphify_skill_semantic_extraction, opencode_skills_graphify_references_extraction_spec_node_id_format, opencode_skills_graphify_references_extraction_spec_confidence_rubric [INFERRED 0.85]
 
-## Communities (81 total, 56 thin omitted)
+## Communities (81 total, 57 thin omitted)
 
 ### Community 0 - "Common Provider Interface (processText/generateAudio/generateImage)"
 Cohesion: 0.05
@@ -161,10 +161,6 @@ Nodes (32): AnkiConnectClient, { requestUrl }, mapContentToFields(), stringifySe
 ### Community 6 - "noteNameModal.test.ts"
 Cohesion: 0.09
 Nodes (6): NoteNameModal, FakeButtonComponent, FakeSetting, FakeTextComponent, openModal(), { settings, modalState }
-
-### Community 7 - "SidebarView"
-Cohesion: 0.25
-Nodes (3): fieldConfigKey(), resolveAnkiConnectUrl(), SidebarView
 
 ### Community 8 - "Graphify Full Pipeline"
 Cohesion: 0.15
@@ -204,7 +200,7 @@ Nodes (3): TextProvider interface, TextResult interface, TextTask type
 
 ### Community 18 - "quickCapture.ts"
 Cohesion: 0.08
-Nodes (38): plugin, $schema, .opencode/plugins/graphify.js, AnkiBridgePlugin, generateContentSkeleton(), runCreateNote(), fakePlugin(), fakeSettings() (+30 more)
+Nodes (39): plugin, $schema, .opencode/plugins/graphify.js, AnkiBridgePlugin, generateContentSkeleton(), runCreateNote(), fakePlugin(), fakeSettings() (+31 more)
 
 ### Community 77 - "sidebarView.test.ts"
 Cohesion: 0.07
@@ -231,7 +227,7 @@ Nodes (5): ConfirmDeleteModal, FakeButtonComponent, FakeSetting, openModal(), { 
 ## Knowledge Gaps
 - **189 isolated node(s):** `$schema`, `.opencode/plugins/graphify.js`, `id`, `name`, `version` (+184 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **56 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **57 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
