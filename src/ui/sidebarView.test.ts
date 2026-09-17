@@ -380,6 +380,26 @@ describe('SidebarView', () => {
 		});
 	});
 
+	it('also reloads the Generate-with-AI fields when Deck Refresh is clicked, so a reconnect recovers them', async () => {
+		deckNamesMock.mockResolvedValue(['Japanese']);
+		modelFieldNamesMock.mockResolvedValueOnce(['Meaning']);
+		const { plugin } = fakePlugin({
+			currentDeck: 'Japanese',
+			currentModel: 'Basic',
+		});
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+		await view.onOpen();
+
+		modelFieldNamesMock.mockResolvedValueOnce(['Meaning', 'Furigana']);
+		await settings[0]?.buttonComponents[0]?.triggerClick();
+
+		expect(modelFieldNamesMock).toHaveBeenCalledTimes(2);
+		expect(settings.slice(-2).map((s) => s.name)).toEqual([
+			'Meaning',
+			'Furigana',
+		]);
+	});
+
 	it('shows an error toast when loading decks fails, without throwing', async () => {
 		deckNamesMock.mockRejectedValueOnce(new Error('boom'));
 		const { plugin } = fakePlugin();
@@ -448,6 +468,26 @@ describe('SidebarView', () => {
 			Basic: 'Basic',
 			Cloze: 'Cloze',
 		});
+	});
+
+	it('also reloads the Generate-with-AI fields when Model Refresh is clicked, so a reconnect recovers them', async () => {
+		modelNamesMock.mockResolvedValue(['Basic']);
+		modelFieldNamesMock.mockResolvedValueOnce(['Meaning']);
+		const { plugin } = fakePlugin({
+			currentDeck: 'Japanese',
+			currentModel: 'Basic',
+		});
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+		await view.onOpen();
+
+		modelFieldNamesMock.mockResolvedValueOnce(['Front', 'Back']);
+		await settings[1]?.buttonComponents[0]?.triggerClick();
+
+		expect(modelFieldNamesMock).toHaveBeenCalledTimes(2);
+		expect(settings.slice(-2).map((s) => s.name)).toEqual([
+			'Front',
+			'Back',
+		]);
 	});
 
 	it('shows an error toast when loading models fails, without throwing', async () => {
@@ -805,6 +845,69 @@ describe('SidebarView', () => {
 		await clickPromise;
 
 		expect(statusSetting?.buttonComponents[0]?.disabled).toBe(false);
+	});
+
+	it('reloads decks, models, and fields after a successful manual Test connection click', async () => {
+		deckNamesMock.mockResolvedValueOnce([]);
+		modelNamesMock.mockResolvedValueOnce([]);
+		versionMock.mockRejectedValueOnce(new Error('Anki not running yet'));
+		const { plugin } = fakePlugin({
+			currentDeck: 'Japanese',
+			currentModel: 'Basic',
+		});
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+		await view.onOpen();
+
+		deckNamesMock.mockClear();
+		modelNamesMock.mockClear();
+		modelFieldNamesMock.mockClear();
+		deckNamesMock.mockResolvedValueOnce(['Japanese']);
+		modelNamesMock.mockResolvedValueOnce(['Basic']);
+		modelFieldNamesMock.mockResolvedValueOnce(['Meaning']);
+		versionMock.mockResolvedValueOnce(6);
+
+		const statusSetting = settings[settings.length - 1];
+		await statusSetting?.buttonComponents[0]?.triggerClick();
+
+		expect(deckNamesMock).toHaveBeenCalledTimes(1);
+		expect(modelNamesMock).toHaveBeenCalledTimes(1);
+		expect(modelFieldNamesMock).toHaveBeenCalledTimes(1);
+	});
+
+	it('does not reload decks, models, or fields after a failed manual Test connection click', async () => {
+		const { plugin } = fakePlugin({
+			currentDeck: 'Japanese',
+			currentModel: 'Basic',
+		});
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+		await view.onOpen();
+
+		deckNamesMock.mockClear();
+		modelNamesMock.mockClear();
+		modelFieldNamesMock.mockClear();
+		versionMock.mockRejectedValueOnce(new Error('boom'));
+
+		const statusSetting = settings[settings.length - 1];
+		await statusSetting?.buttonComponents[0]?.triggerClick();
+
+		expect(deckNamesMock).not.toHaveBeenCalled();
+		expect(modelNamesMock).not.toHaveBeenCalled();
+		expect(modelFieldNamesMock).not.toHaveBeenCalled();
+	});
+
+	it('does not reload decks, models, or fields during the automatic check on open', async () => {
+		versionMock.mockResolvedValueOnce(6);
+		const { plugin } = fakePlugin({
+			currentDeck: 'Japanese',
+			currentModel: 'Basic',
+		});
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+
+		await view.onOpen();
+
+		expect(deckNamesMock).toHaveBeenCalledTimes(1);
+		expect(modelNamesMock).toHaveBeenCalledTimes(1);
+		expect(modelFieldNamesMock).toHaveBeenCalledTimes(1);
 	});
 });
 
