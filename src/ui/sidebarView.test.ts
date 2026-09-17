@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { App, WorkspaceLeaf } from 'obsidian';
-import type { AnkiBridgeSettings } from '../settings';
+import { fieldConfigKey, type AnkiBridgeSettings } from '../settings';
 import type AnkiBridgePlugin from '../main';
 
 class FakeDropdownComponent {
@@ -51,10 +51,29 @@ class FakeButtonComponent {
 	}
 }
 
+class FakeToggleComponent {
+	value = false;
+	private changeCb: ((v: boolean) => unknown) | null = null;
+
+	setValue(v: boolean) {
+		this.value = v;
+		return this;
+	}
+	onChange(cb: (v: boolean) => unknown) {
+		this.changeCb = cb;
+		return this;
+	}
+	async triggerChange(v: boolean) {
+		this.value = v;
+		await this.changeCb?.(v);
+	}
+}
+
 class FakeSetting {
 	name = '';
 	dropdownComponents: FakeDropdownComponent[] = [];
 	buttonComponents: FakeButtonComponent[] = [];
+	toggleComponents: FakeToggleComponent[] = [];
 
 	constructor(public containerEl: unknown) {}
 	setName(n: string) {
@@ -73,17 +92,41 @@ class FakeSetting {
 		this.buttonComponents.push(button);
 		return this;
 	}
+	addToggle(cb: (t: FakeToggleComponent) => unknown) {
+		const toggle = new FakeToggleComponent();
+		cb(toggle);
+		this.toggleComponents.push(toggle);
+		return this;
+	}
 }
 
-const { ItemView, contentElEmpty, contentElCreateEl, settings } = vi.hoisted(() => {
+const {
+	ItemView,
+	contentElEmpty,
+	contentElCreateEl,
+	fieldsContainerEl,
+	settings,
+} = vi.hoisted(() => {
 	const contentElEmpty = vi.fn();
 	const contentElCreateEl = vi.fn();
+	const fieldsContainerEl = { empty: vi.fn(), createEl: vi.fn() };
+	const contentElCreateDiv = vi.fn().mockReturnValue(fieldsContainerEl);
 	const settings: FakeSetting[] = [];
 	class ItemView {
-		contentEl = { empty: contentElEmpty, createEl: contentElCreateEl };
+		contentEl = {
+			empty: contentElEmpty,
+			createEl: contentElCreateEl,
+			createDiv: contentElCreateDiv,
+		};
 		constructor(public leaf: unknown) {}
 	}
-	return { ItemView, contentElEmpty, contentElCreateEl, settings };
+	return {
+		ItemView,
+		contentElEmpty,
+		contentElCreateEl,
+		fieldsContainerEl,
+		settings,
+	};
 });
 vi.mock('obsidian', () => ({
 	ItemView,
@@ -96,14 +139,26 @@ vi.mock('obsidian', () => ({
 	},
 }));
 
-const { deckNamesMock, modelNamesMock, AnkiConnectClient } = vi.hoisted(() => {
+const {
+	deckNamesMock,
+	modelNamesMock,
+	modelFieldNamesMock,
+	AnkiConnectClient,
+} = vi.hoisted(() => {
 	const deckNamesMock = vi.fn().mockResolvedValue([]);
 	const modelNamesMock = vi.fn().mockResolvedValue([]);
+	const modelFieldNamesMock = vi.fn().mockResolvedValue([]);
 	class AnkiConnectClient {
 		deckNames = deckNamesMock;
 		modelNames = modelNamesMock;
+		modelFieldNames = modelFieldNamesMock;
 	}
-	return { deckNamesMock, modelNamesMock, AnkiConnectClient };
+	return {
+		deckNamesMock,
+		modelNamesMock,
+		modelFieldNamesMock,
+		AnkiConnectClient,
+	};
 });
 vi.mock('../sync/ankiConnect', () => ({ AnkiConnectClient }));
 
@@ -132,6 +187,7 @@ function fakeSettings(
 		currentDeck: '',
 		currentModel: '',
 		currentFolder: '',
+		generateWithAiFields: {},
 		...overrides,
 	};
 }
@@ -160,7 +216,9 @@ function fakeApp(
 			getActiveFile: vi
 				.fn()
 				.mockReturnValue(
-					activeFileParent === null ? null : { parent: activeFileParent },
+					activeFileParent === null
+						? null
+						: { parent: activeFileParent },
 				),
 		},
 	} as unknown as App;
@@ -219,7 +277,10 @@ describe('SidebarView', () => {
 		await view.onOpen();
 
 		const dropdown = settings[0]?.dropdownComponents[0];
-		expect(dropdown?.options).toEqual({ Japanese: 'Japanese', Spanish: 'Spanish' });
+		expect(dropdown?.options).toEqual({
+			Japanese: 'Japanese',
+			Spanish: 'Spanish',
+		});
 		expect(dropdown?.value).toBe('Spanish');
 	});
 
@@ -355,7 +416,13 @@ describe('SidebarView', () => {
 	it('populates the Folder dropdown with vault root plus vault folders', async () => {
 		const { plugin } = fakePlugin(
 			{},
-			{ folders: [fakeFolder(''), fakeFolder('Japanese'), fakeFolder('Spanish')] },
+			{
+				folders: [
+					fakeFolder(''),
+					fakeFolder('Japanese'),
+					fakeFolder('Spanish'),
+				],
+			},
 		);
 		const view = new SidebarView({} as WorkspaceLeaf, plugin);
 
@@ -400,7 +467,10 @@ describe('SidebarView', () => {
 	it('falls back to vault root when currentFolder is unset and there is no active file', async () => {
 		const { plugin } = fakePlugin(
 			{ currentFolder: '' },
-			{ folders: [fakeFolder(''), fakeFolder('Japanese')], activeFileParent: null },
+			{
+				folders: [fakeFolder(''), fakeFolder('Japanese')],
+				activeFileParent: null,
+			},
 		);
 		const view = new SidebarView({} as WorkspaceLeaf, plugin);
 
@@ -439,6 +509,157 @@ describe('SidebarView', () => {
 
 		expect(plugin.settings.currentFolder).toBe('Japanese');
 		expect(saveSettings).toHaveBeenCalled();
+	});
+
+	it('does not render field checkboxes until Deck and Model are both selected', async () => {
+		const { plugin } = fakePlugin({
+			currentDeck: 'Japanese',
+			currentModel: '',
+		});
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+
+		await view.onOpen();
+
+		expect(modelFieldNamesMock).not.toHaveBeenCalled();
+		expect(settings).toHaveLength(3);
+		expect(fieldsContainerEl.empty).toHaveBeenCalled();
+	});
+
+	it('renders a toggle per model field once Deck and Model are selected', async () => {
+		modelFieldNamesMock.mockResolvedValue(['Meaning', 'Furigana']);
+		const { plugin } = fakePlugin({
+			currentDeck: 'Japanese',
+			currentModel: 'Basic',
+		});
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+
+		await view.onOpen();
+
+		expect(modelFieldNamesMock).toHaveBeenCalledWith('Basic');
+		expect(fieldsContainerEl.createEl).toHaveBeenCalledWith('p', {
+			text: 'Fields to generate with AI:',
+		});
+		expect(settings[3]?.name).toBe('Meaning');
+		expect(settings[4]?.name).toBe('Furigana');
+	});
+
+	it('pre-ticks fields previously selected for that Deck+Model pair', async () => {
+		modelFieldNamesMock.mockResolvedValue(['Meaning', 'Furigana']);
+		const key = fieldConfigKey('Japanese', 'Basic');
+		const { plugin } = fakePlugin({
+			currentDeck: 'Japanese',
+			currentModel: 'Basic',
+			generateWithAiFields: { [key]: ['Furigana'] },
+		});
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+
+		await view.onOpen();
+
+		expect(settings[3]?.toggleComponents[0]?.value).toBe(false);
+		expect(settings[4]?.toggleComponents[0]?.value).toBe(true);
+	});
+
+	it('does not leak ticked fields from a different Deck+Model pair', async () => {
+		modelFieldNamesMock.mockResolvedValue(['Meaning']);
+		const otherKey = fieldConfigKey('Spanish', 'Cloze');
+		const { plugin } = fakePlugin({
+			currentDeck: 'Japanese',
+			currentModel: 'Basic',
+			generateWithAiFields: { [otherKey]: ['Meaning'] },
+		});
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+
+		await view.onOpen();
+
+		expect(settings[3]?.toggleComponents[0]?.value).toBe(false);
+	});
+
+	it('persists a ticked field to generateWithAiFields for the current Deck+Model pair', async () => {
+		modelFieldNamesMock.mockResolvedValue(['Meaning', 'Furigana']);
+		const { plugin, saveSettings } = fakePlugin({
+			currentDeck: 'Japanese',
+			currentModel: 'Basic',
+		});
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+
+		await view.onOpen();
+		saveSettings.mockClear();
+		await settings[3]?.toggleComponents[0]?.triggerChange(true);
+
+		const key = fieldConfigKey('Japanese', 'Basic');
+		expect(plugin.settings.generateWithAiFields[key]).toEqual(['Meaning']);
+		expect(saveSettings).toHaveBeenCalled();
+	});
+
+	it('removes a field from generateWithAiFields when unticked', async () => {
+		modelFieldNamesMock.mockResolvedValue(['Meaning', 'Furigana']);
+		const key = fieldConfigKey('Japanese', 'Basic');
+		const { plugin } = fakePlugin({
+			currentDeck: 'Japanese',
+			currentModel: 'Basic',
+			generateWithAiFields: { [key]: ['Meaning', 'Furigana'] },
+		});
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+
+		await view.onOpen();
+		await settings[3]?.toggleComponents[0]?.triggerChange(false);
+
+		expect(plugin.settings.generateWithAiFields[key]).toEqual(['Furigana']);
+	});
+
+	it('re-fetches and re-renders field checkboxes when the Deck dropdown changes', async () => {
+		modelFieldNamesMock.mockResolvedValueOnce(['Meaning']);
+		const { plugin } = fakePlugin({
+			currentDeck: 'Japanese',
+			currentModel: 'Basic',
+		});
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+		await view.onOpen();
+
+		modelFieldNamesMock.mockResolvedValueOnce(['Meaning', 'Furigana']);
+		await settings[0]?.dropdownComponents[0]?.triggerChange('Spanish');
+
+		expect(plugin.settings.currentDeck).toBe('Spanish');
+		expect(modelFieldNamesMock).toHaveBeenCalledTimes(2);
+		expect(settings.slice(-2).map((s) => s.name)).toEqual([
+			'Meaning',
+			'Furigana',
+		]);
+	});
+
+	it('re-fetches and re-renders field checkboxes when the Model dropdown changes', async () => {
+		modelFieldNamesMock.mockResolvedValueOnce(['Meaning']);
+		const { plugin } = fakePlugin({
+			currentDeck: 'Japanese',
+			currentModel: 'Basic',
+		});
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+		await view.onOpen();
+
+		modelFieldNamesMock.mockResolvedValueOnce(['Front', 'Back']);
+		await settings[1]?.dropdownComponents[0]?.triggerChange('Cloze');
+
+		expect(plugin.settings.currentModel).toBe('Cloze');
+		expect(modelFieldNamesMock).toHaveBeenCalledTimes(2);
+		expect(settings.slice(-2).map((s) => s.name)).toEqual([
+			'Front',
+			'Back',
+		]);
+	});
+
+	it('shows an error toast when loading fields fails, without throwing', async () => {
+		modelFieldNamesMock.mockRejectedValue(new Error('boom'));
+		const { plugin } = fakePlugin({
+			currentDeck: 'Japanese',
+			currentModel: 'Basic',
+		});
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+
+		await expect(view.onOpen()).resolves.toBeUndefined();
+
+		expect(toastError).toHaveBeenCalledWith(
+			'❌ Failed to load fields. Please check Anki connection.',
+		);
 	});
 });
 

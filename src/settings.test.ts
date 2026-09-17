@@ -42,6 +42,7 @@ describe('loadSettings', () => {
 			currentDeck: '',
 			currentModel: '',
 			currentFolder: '',
+			generateWithAiFields: {},
 		});
 	});
 });
@@ -56,6 +57,7 @@ describe('saveSettings', () => {
 			currentDeck: '',
 			currentModel: '',
 			currentFolder: '',
+			generateWithAiFields: {},
 		};
 
 		await saveSettings(plugin, settings);
@@ -74,6 +76,7 @@ describe('resolveAnkiConnectUrl', () => {
 				currentDeck: '',
 				currentModel: '',
 				currentFolder: '',
+				generateWithAiFields: {},
 			}),
 		).toBe(DEFAULT_ANKI_CONNECT_URL);
 	});
@@ -87,6 +90,7 @@ describe('resolveAnkiConnectUrl', () => {
 				currentDeck: '',
 				currentModel: '',
 				currentFolder: '',
+				generateWithAiFields: {},
 			}),
 		).toBe(DEFAULT_ANKI_CONNECT_URL);
 	});
@@ -100,6 +104,7 @@ describe('resolveAnkiConnectUrl', () => {
 				currentDeck: '',
 				currentModel: '',
 				currentFolder: '',
+				generateWithAiFields: {},
 			}),
 		).toBe('http://localhost:9999');
 	});

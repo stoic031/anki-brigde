@@ -188,6 +188,7 @@ function fakePlugin(overrides: Partial<AnkiBridgeSettings> = {}): {
 		currentDeck: '',
 		currentModel: '',
 		currentFolder: '',
+		generateWithAiFields: {},
 		...overrides,
 	};
 	const plugin = {
