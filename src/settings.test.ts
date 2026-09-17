@@ -151,3 +151,68 @@ describe('fieldConfigKey', () => {
 		);
 	});
 });
+
+// Unlike fakePlugin() above, this actually pipes through JSON.stringify/parse — matching
+// Obsidian's real on-disk loadData/saveData — so these tests exercise real serialization
+// instead of a no-op mock passing the same object reference back.
+function fakeDiskPlugin(): { plugin: Plugin } {
+	let disk: string | undefined;
+	const plugin = {
+		loadData: vi.fn().mockImplementation(() => {
+			return Promise.resolve(disk === undefined ? null : JSON.parse(disk));
+		}),
+		saveData: vi.fn().mockImplementation((data: unknown) => {
+			disk = JSON.stringify(data);
+			return Promise.resolve();
+		}),
+	} as unknown as Plugin;
+	return { plugin };
+}
+
+describe('persistence round-trip', () => {
+	it('round-trips a full settings snapshot with multiple Deck+Model field-mapping pairs through save then load', async () => {
+		const pairA = fieldConfigKey('Japanese::N2', 'Basic');
+		const pairB = fieldConfigKey('Spanish', 'Cloze');
+		const settings: AnkiBridgeSettings = {
+			ankiConnectUrl: 'http://localhost:9999',
+			defaultDeck: 'Japanese::N2',
+			defaultModel: 'Basic',
+			defaultFolder: 'Anki Notes',
+			currentDeck: 'Spanish',
+			currentModel: 'Cloze',
+			currentFolder: 'Vocab',
+			generateWithAiFields: {
+				[pairA]: ['Meaning', 'Furigana'],
+				[pairB]: ['Meaning'],
+			},
+		};
+		const { plugin } = fakeDiskPlugin();
+
+		await saveSettings(plugin, settings);
+		const loaded = await loadSettings(plugin);
+
+		expect(loaded).toEqual(settings);
+		expect(loaded.generateWithAiFields[pairA]).toEqual(['Meaning', 'Furigana']);
+		expect(loaded.generateWithAiFields[pairB]).toEqual(['Meaning']);
+	});
+
+	it('preserves an explicitly empty field list separately from a pair that was never configured', async () => {
+		const configuredEmpty = fieldConfigKey('Japanese', 'Basic');
+		const settings: AnkiBridgeSettings = {
+			...DEFAULT_SETTINGS,
+			generateWithAiFields: { [configuredEmpty]: [] },
+		};
+		const { plugin } = fakeDiskPlugin();
+
+		await saveSettings(plugin, settings);
+		const loaded = await loadSettings(plugin);
+
+		// Explicitly configured (all fields unticked) — key present, empty array.
+		expect(loaded.generateWithAiFields[configuredEmpty]).toEqual([]);
+		expect(configuredEmpty in loaded.generateWithAiFields).toBe(true);
+		// Never configured at all for this pair — key absent, not merely an empty array.
+		const neverConfigured = fieldConfigKey('Spanish', 'Cloze');
+		expect(loaded.generateWithAiFields[neverConfigured]).toBeUndefined();
+		expect(neverConfigured in loaded.generateWithAiFields).toBe(false);
+	});
+});

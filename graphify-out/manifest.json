@@ -325,8 +325,8 @@
     "semantic_hash": ""
   },
   "src/settings.test.ts": {
-    "mtime": 1789666765.78553,
-    "ast_hash": "2a3b6d403887a51393daaebfe6e7ec58",
+    "mtime": 1789667500.891418,
+    "ast_hash": "35d9f4668a616c1881a21083cf9c3b3c",
     "semantic_hash": ""
   },
   "src/settings.ts": {
@@ -445,12 +445,12 @@
     "semantic_hash": ""
   },
   "src/note/aiPreCheck.test.ts": {
-    "mtime": 1789667017.0200498,
+    "mtime": 1789667225.7205095,
     "ast_hash": "8bc1045666071b59147430ad7f93e7e2",
     "semantic_hash": ""
   },
   "src/note/aiPreCheck.ts": {
-    "mtime": 1789667003.4205194,
+    "mtime": 1789667225.7206829,
     "ast_hash": "37c00afe6824789e42a0ff0d1d3a7a2a",
     "semantic_hash": ""
   }
