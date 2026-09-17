@@ -5,6 +5,7 @@ import type AnkiBridgePlugin from '../main';
 
 class FakeDropdownComponent {
 	options: Record<string, string> = {};
+	optionOrder: string[] = [];
 	value = '';
 	selectEl: { empty: () => void };
 	private changeCb: ((v: string) => unknown) | null = null;
@@ -13,11 +14,13 @@ class FakeDropdownComponent {
 		this.selectEl = {
 			empty: () => {
 				this.options = {};
+				this.optionOrder = [];
 			},
 		};
 	}
 	addOption(value: string, display: string) {
 		this.options[value] = display;
+		this.optionOrder.push(value);
 		return this;
 	}
 	setValue(v: string) {
@@ -234,11 +237,21 @@ function fakeSettings(
 
 interface FakeFolder {
 	path: string;
+	name: string;
+	parent: FakeFolder | null;
 	isRoot: () => boolean;
 }
 
-function fakeFolder(path: string): FakeFolder {
-	return { path, isRoot: () => path === '' };
+// parent defaults to null (= vault root), matching how flat, non-nested test folders
+// behave today: buildFolderTreeEntries() groups by `folder.parent?.path ?? ''`, and
+// root's path is '' either way. Pass an explicit parent to build nested fixtures.
+function fakeFolder(path: string, parent: FakeFolder | null = null): FakeFolder {
+	return {
+		path,
+		name: path === '' ? '' : (path.split('/').pop() ?? path),
+		parent,
+		isRoot: () => path === '',
+	};
 }
 
 function fakeApp(
@@ -248,7 +261,7 @@ function fakeApp(
 		activeFile?: object | null;
 		frontmatter?: Record<string, unknown> | null;
 	} = {},
-): App {
+): { app: App; getAllFolders: ReturnType<typeof vi.fn> } {
 	const {
 		folders = [fakeFolder('')],
 		activeFileParent = null,
@@ -261,10 +274,9 @@ function fakeApp(
 			: activeFileParent === null
 				? null
 				: { parent: activeFileParent };
-	return {
-		vault: {
-			getAllFolders: vi.fn().mockReturnValue(folders),
-		},
+	const getAllFolders = vi.fn().mockReturnValue(folders);
+	const app = {
+		vault: { getAllFolders },
 		workspace: {
 			getActiveFile: vi.fn().mockReturnValue(resolvedActiveFile),
 		},
@@ -274,6 +286,7 @@ function fakeApp(
 				.mockReturnValue(frontmatter ? { frontmatter } : null),
 		},
 	} as unknown as App;
+	return { app, getAllFolders };
 }
 
 function fakeTFile(overrides: Record<string, unknown> = {}): TFile {
@@ -289,15 +302,24 @@ function fakePlugin(
 ): {
 	plugin: AnkiBridgePlugin;
 	saveSettings: ReturnType<typeof vi.fn>;
+	getAllFolders: ReturnType<typeof vi.fn>;
 } {
 	const saveSettings = vi.fn().mockResolvedValue(undefined);
+	const { app, getAllFolders } = fakeApp(appOptions);
 	const plugin = {
-		app: fakeApp(appOptions),
+		app,
 		settings: fakeSettings(overrides),
 		saveSettings,
 	} as unknown as AnkiBridgePlugin;
-	return { plugin, saveSettings };
+	return { plugin, saveSettings, getAllFolders };
 }
+
+// Setting row order in Tab 1: Connection Status (0), Deck (1), Model (2), Folder (3),
+// Fields (4+, only once Deck+Model are both set).
+const STATUS_IDX = 0;
+const DECK_IDX = 1;
+const MODEL_IDX = 2;
+const FOLDER_IDX = 3;
 
 describe('SidebarView', () => {
 	it('reports its view type', () => {
@@ -315,8 +337,7 @@ describe('SidebarView', () => {
 		expect(view.getIcon()).toBeTruthy();
 	});
 
-	it('renders a placeholder and the Deck dropdown on open without throwing', async () => {
-		deckNamesMock.mockResolvedValue([]);
+	it('renders the Connection Status row first, before Deck/Model/Folder, without throwing', async () => {
 		const { plugin } = fakePlugin();
 		const view = new SidebarView({} as WorkspaceLeaf, plugin);
 
@@ -325,7 +346,10 @@ describe('SidebarView', () => {
 		expect(contentElCreateEl).toHaveBeenCalledWith('h4', {
 			text: 'Anki Bridge',
 		});
-		expect(settings[0]?.name).toBe('Deck');
+		expect(settings[STATUS_IDX]?.name).toContain('Status:');
+		expect(settings[DECK_IDX]?.name).toBe('Deck');
+		expect(settings[MODEL_IDX]?.name).toBe('Model');
+		expect(settings[FOLDER_IDX]?.name).toBe('Save notes to');
 	});
 
 	it('populates the Deck dropdown and pre-selects the saved current deck', async () => {
@@ -335,7 +359,7 @@ describe('SidebarView', () => {
 
 		await view.onOpen();
 
-		const dropdown = settings[0]?.dropdownComponents[0];
+		const dropdown = settings[DECK_IDX]?.dropdownComponents[0];
 		expect(dropdown?.options).toEqual({
 			Japanese: 'Japanese',
 			Spanish: 'Spanish',
@@ -350,7 +374,7 @@ describe('SidebarView', () => {
 
 		await view.onOpen();
 
-		expect(settings[0]?.dropdownComponents[0]?.value).toBe('');
+		expect(settings[DECK_IDX]?.dropdownComponents[0]?.value).toBe('');
 	});
 
 	it('persists the selected deck to settings.currentDeck', async () => {
@@ -359,45 +383,19 @@ describe('SidebarView', () => {
 		const view = new SidebarView({} as WorkspaceLeaf, plugin);
 
 		await view.onOpen();
-		await settings[0]?.dropdownComponents[0]?.triggerChange('Japanese');
+		await settings[DECK_IDX]?.dropdownComponents[0]?.triggerChange('Japanese');
 
 		expect(plugin.settings.currentDeck).toBe('Japanese');
 		expect(saveSettings).toHaveBeenCalled();
 	});
 
-	it('re-fetches and repopulates when Refresh is clicked', async () => {
-		deckNamesMock.mockResolvedValueOnce(['Japanese']);
+	it('has no Refresh button of its own on the Deck row', async () => {
 		const { plugin } = fakePlugin();
 		const view = new SidebarView({} as WorkspaceLeaf, plugin);
 
 		await view.onOpen();
-		deckNamesMock.mockResolvedValueOnce(['Japanese', 'Spanish']);
-		await settings[0]?.buttonComponents[0]?.triggerClick();
 
-		expect(settings[0]?.dropdownComponents[0]?.options).toEqual({
-			Japanese: 'Japanese',
-			Spanish: 'Spanish',
-		});
-	});
-
-	it('also reloads the Generate-with-AI fields when Deck Refresh is clicked, so a reconnect recovers them', async () => {
-		deckNamesMock.mockResolvedValue(['Japanese']);
-		modelFieldNamesMock.mockResolvedValueOnce(['Meaning']);
-		const { plugin } = fakePlugin({
-			currentDeck: 'Japanese',
-			currentModel: 'Basic',
-		});
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-		await view.onOpen();
-
-		modelFieldNamesMock.mockResolvedValueOnce(['Meaning', 'Furigana']);
-		await settings[0]?.buttonComponents[0]?.triggerClick();
-
-		expect(modelFieldNamesMock).toHaveBeenCalledTimes(2);
-		expect(settings.slice(-2).map((s) => s.name)).toEqual([
-			'Meaning',
-			'Furigana',
-		]);
+		expect(settings[DECK_IDX]?.buttonComponents).toHaveLength(0);
 	});
 
 	it('shows an error toast when loading decks fails, without throwing', async () => {
@@ -412,15 +410,6 @@ describe('SidebarView', () => {
 		);
 	});
 
-	it('renders the Model dropdown on open', async () => {
-		const { plugin } = fakePlugin();
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-
-		await view.onOpen();
-
-		expect(settings[1]?.name).toBe('Model');
-	});
-
 	it('populates the Model dropdown and pre-selects the saved current model', async () => {
 		modelNamesMock.mockResolvedValue(['Basic', 'Cloze']);
 		const { plugin } = fakePlugin({ currentModel: 'Cloze' });
@@ -428,7 +417,7 @@ describe('SidebarView', () => {
 
 		await view.onOpen();
 
-		const dropdown = settings[1]?.dropdownComponents[0];
+		const dropdown = settings[MODEL_IDX]?.dropdownComponents[0];
 		expect(dropdown?.options).toEqual({ Basic: 'Basic', Cloze: 'Cloze' });
 		expect(dropdown?.value).toBe('Cloze');
 	});
@@ -440,7 +429,7 @@ describe('SidebarView', () => {
 
 		await view.onOpen();
 
-		expect(settings[1]?.dropdownComponents[0]?.value).toBe('');
+		expect(settings[MODEL_IDX]?.dropdownComponents[0]?.value).toBe('');
 	});
 
 	it('persists the selected model to settings.currentModel', async () => {
@@ -449,45 +438,19 @@ describe('SidebarView', () => {
 		const view = new SidebarView({} as WorkspaceLeaf, plugin);
 
 		await view.onOpen();
-		await settings[1]?.dropdownComponents[0]?.triggerChange('Basic');
+		await settings[MODEL_IDX]?.dropdownComponents[0]?.triggerChange('Basic');
 
 		expect(plugin.settings.currentModel).toBe('Basic');
 		expect(saveSettings).toHaveBeenCalled();
 	});
 
-	it('re-fetches and repopulates models when Refresh is clicked', async () => {
-		modelNamesMock.mockResolvedValueOnce(['Basic']);
+	it('has no Refresh button of its own on the Model row', async () => {
 		const { plugin } = fakePlugin();
 		const view = new SidebarView({} as WorkspaceLeaf, plugin);
 
 		await view.onOpen();
-		modelNamesMock.mockResolvedValueOnce(['Basic', 'Cloze']);
-		await settings[1]?.buttonComponents[0]?.triggerClick();
 
-		expect(settings[1]?.dropdownComponents[0]?.options).toEqual({
-			Basic: 'Basic',
-			Cloze: 'Cloze',
-		});
-	});
-
-	it('also reloads the Generate-with-AI fields when Model Refresh is clicked, so a reconnect recovers them', async () => {
-		modelNamesMock.mockResolvedValue(['Basic']);
-		modelFieldNamesMock.mockResolvedValueOnce(['Meaning']);
-		const { plugin } = fakePlugin({
-			currentDeck: 'Japanese',
-			currentModel: 'Basic',
-		});
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-		await view.onOpen();
-
-		modelFieldNamesMock.mockResolvedValueOnce(['Front', 'Back']);
-		await settings[1]?.buttonComponents[0]?.triggerClick();
-
-		expect(modelFieldNamesMock).toHaveBeenCalledTimes(2);
-		expect(settings.slice(-2).map((s) => s.name)).toEqual([
-			'Front',
-			'Back',
-		]);
+		expect(settings[MODEL_IDX]?.buttonComponents).toHaveLength(0);
 	});
 
 	it('shows an error toast when loading models fails, without throwing', async () => {
@@ -502,17 +465,17 @@ describe('SidebarView', () => {
 		);
 	});
 
-	it('renders the Folder dropdown on open, with no Refresh button', async () => {
+	it('renders the Folder dropdown on open, with no Refresh button of its own', async () => {
 		const { plugin } = fakePlugin();
 		const view = new SidebarView({} as WorkspaceLeaf, plugin);
 
 		await view.onOpen();
 
-		expect(settings[2]?.name).toBe('Save notes to');
-		expect(settings[2]?.buttonComponents).toHaveLength(0);
+		expect(settings[FOLDER_IDX]?.name).toBe('Save notes to');
+		expect(settings[FOLDER_IDX]?.buttonComponents).toHaveLength(0);
 	});
 
-	it('populates the Folder dropdown with vault root plus vault folders', async () => {
+	it('populates the Folder dropdown with vault root plus top-level vault folders', async () => {
 		const { plugin } = fakePlugin(
 			{},
 			{
@@ -527,7 +490,7 @@ describe('SidebarView', () => {
 
 		await view.onOpen();
 
-		expect(settings[2]?.dropdownComponents[0]?.options).toEqual({
+		expect(settings[FOLDER_IDX]?.dropdownComponents[0]?.options).toEqual({
 			'': '/ (vault root)',
 			Japanese: 'Japanese',
 			Spanish: 'Spanish',
@@ -543,7 +506,7 @@ describe('SidebarView', () => {
 
 		await view.onOpen();
 
-		expect(settings[2]?.dropdownComponents[0]?.value).toBe('Japanese');
+		expect(settings[FOLDER_IDX]?.dropdownComponents[0]?.value).toBe('Japanese');
 	});
 
 	it('falls back to the active file folder when currentFolder is unset, and persists it', async () => {
@@ -558,7 +521,7 @@ describe('SidebarView', () => {
 
 		await view.onOpen();
 
-		expect(settings[2]?.dropdownComponents[0]?.value).toBe('Japanese');
+		expect(settings[FOLDER_IDX]?.dropdownComponents[0]?.value).toBe('Japanese');
 		expect(plugin.settings.currentFolder).toBe('Japanese');
 		expect(saveSettings).toHaveBeenCalled();
 	});
@@ -575,7 +538,7 @@ describe('SidebarView', () => {
 
 		await view.onOpen();
 
-		expect(settings[2]?.dropdownComponents[0]?.value).toBe('');
+		expect(settings[FOLDER_IDX]?.dropdownComponents[0]?.value).toBe('');
 		expect(plugin.settings.currentFolder).toBe('');
 	});
 
@@ -591,7 +554,7 @@ describe('SidebarView', () => {
 
 		await view.onOpen();
 
-		expect(settings[2]?.dropdownComponents[0]?.value).toBe('Spanish');
+		expect(settings[FOLDER_IDX]?.dropdownComponents[0]?.value).toBe('Spanish');
 		expect(plugin.settings.currentFolder).toBe('Spanish');
 	});
 
@@ -604,10 +567,93 @@ describe('SidebarView', () => {
 
 		await view.onOpen();
 		saveSettings.mockClear();
-		await settings[2]?.dropdownComponents[0]?.triggerChange('Japanese');
+		await settings[FOLDER_IDX]?.dropdownComponents[0]?.triggerChange('Japanese');
 
 		expect(plugin.settings.currentFolder).toBe('Japanese');
 		expect(saveSettings).toHaveBeenCalled();
+	});
+
+	describe('nested folder display', () => {
+		const INDENT = '  ';
+
+		it('indents nested folders by depth and shows only each folder’s own name', async () => {
+			const japanese = fakeFolder('Japanese');
+			const n2 = fakeFolder('Japanese/N2', japanese);
+			const vocab = fakeFolder('Japanese/N2/Vocab', n2);
+			const { plugin } = fakePlugin(
+				{},
+				{ folders: [fakeFolder(''), japanese, n2, vocab] },
+			);
+			const view = new SidebarView({} as WorkspaceLeaf, plugin);
+
+			await view.onOpen();
+
+			const dropdown = settings[FOLDER_IDX]?.dropdownComponents[0];
+			expect(dropdown?.options).toEqual({
+				'': '/ (vault root)',
+				'Japanese': 'Japanese',
+				'Japanese/N2': `${INDENT}N2`,
+				'Japanese/N2/Vocab': `${INDENT}${INDENT}Vocab`,
+			});
+		});
+
+		it('walks the tree depth-first: each folder immediately followed by its own children', async () => {
+			const japanese = fakeFolder('Japanese');
+			const n2 = fakeFolder('Japanese/N2', japanese);
+			const vocab = fakeFolder('Japanese/N2/Vocab', n2);
+			const korean = fakeFolder('Korean');
+			const { plugin } = fakePlugin(
+				{},
+				// Deliberately out of order as returned from the vault.
+				{ folders: [fakeFolder(''), korean, vocab, japanese, n2] },
+			);
+			const view = new SidebarView({} as WorkspaceLeaf, plugin);
+
+			await view.onOpen();
+
+			expect(
+				settings[FOLDER_IDX]?.dropdownComponents[0]?.optionOrder,
+			).toEqual(['', 'Japanese', 'Japanese/N2', 'Japanese/N2/Vocab', 'Korean']);
+		});
+
+		it('sorts sibling folders by their own name, not full path', async () => {
+			const japanese = fakeFolder('Japanese');
+			const zebra = fakeFolder('Japanese/Zebra', japanese);
+			const apple = fakeFolder('Japanese/Apple', japanese);
+			const { plugin } = fakePlugin(
+				{},
+				{ folders: [fakeFolder(''), japanese, zebra, apple] },
+			);
+			const view = new SidebarView({} as WorkspaceLeaf, plugin);
+
+			await view.onOpen();
+
+			expect(
+				settings[FOLDER_IDX]?.dropdownComponents[0]?.optionOrder,
+			).toEqual(['', 'Japanese', 'Japanese/Apple', 'Japanese/Zebra']);
+		});
+
+		it('does not let a sibling folder wedge between a parent and its own child (path-string sort bug)', async () => {
+			// "Japanese Advanced" (space, 0x20) sorts before "Japanese/N2" (slash,
+			// 0x2F) under plain path-string comparison, even though Japanese/N2 is a
+			// child of the unrelated "Japanese" folder. Grouping by actual
+			// TFolder.parent (not path strings) must keep Japanese/N2 directly under
+			// Japanese regardless of what other top-level folders exist.
+			const japanese = fakeFolder('Japanese');
+			const japaneseAdvanced = fakeFolder('Japanese Advanced');
+			const n2 = fakeFolder('Japanese/N2', japanese);
+			const { plugin } = fakePlugin(
+				{},
+				{ folders: [fakeFolder(''), japaneseAdvanced, japanese, n2] },
+			);
+			const view = new SidebarView({} as WorkspaceLeaf, plugin);
+
+			await view.onOpen();
+
+			expect(
+				settings[FOLDER_IDX]?.dropdownComponents[0]?.optionOrder,
+			).toEqual(['', 'Japanese', 'Japanese/N2', 'Japanese Advanced']);
+		});
 	});
 
 	it('does not render field checkboxes until Deck and Model are both selected', async () => {
@@ -620,7 +666,7 @@ describe('SidebarView', () => {
 		await view.onOpen();
 
 		expect(modelFieldNamesMock).not.toHaveBeenCalled();
-		expect(settings).toHaveLength(4); // Deck, Model, Folder, Connection status
+		expect(settings).toHaveLength(4); // Connection status, Deck, Model, Folder
 		expect(fieldsContainerEl.empty).toHaveBeenCalled();
 	});
 
@@ -638,8 +684,8 @@ describe('SidebarView', () => {
 		expect(fieldsContainerEl.createEl).toHaveBeenCalledWith('p', {
 			text: 'Fields to generate with AI:',
 		});
-		expect(settings[3]?.name).toBe('Meaning');
-		expect(settings[4]?.name).toBe('Furigana');
+		expect(settings[4]?.name).toBe('Meaning');
+		expect(settings[5]?.name).toBe('Furigana');
 	});
 
 	it('pre-ticks fields previously selected for that Deck+Model pair', async () => {
@@ -654,8 +700,8 @@ describe('SidebarView', () => {
 
 		await view.onOpen();
 
-		expect(settings[3]?.toggleComponents[0]?.value).toBe(false);
-		expect(settings[4]?.toggleComponents[0]?.value).toBe(true);
+		expect(settings[4]?.toggleComponents[0]?.value).toBe(false);
+		expect(settings[5]?.toggleComponents[0]?.value).toBe(true);
 	});
 
 	it('does not leak ticked fields from a different Deck+Model pair', async () => {
@@ -670,7 +716,7 @@ describe('SidebarView', () => {
 
 		await view.onOpen();
 
-		expect(settings[3]?.toggleComponents[0]?.value).toBe(false);
+		expect(settings[4]?.toggleComponents[0]?.value).toBe(false);
 	});
 
 	it('persists a ticked field to generateWithAiFields for the current Deck+Model pair', async () => {
@@ -683,7 +729,7 @@ describe('SidebarView', () => {
 
 		await view.onOpen();
 		saveSettings.mockClear();
-		await settings[3]?.toggleComponents[0]?.triggerChange(true);
+		await settings[4]?.toggleComponents[0]?.triggerChange(true);
 
 		const key = fieldConfigKey('Japanese', 'Basic');
 		expect(plugin.settings.generateWithAiFields[key]).toEqual(['Meaning']);
@@ -701,7 +747,7 @@ describe('SidebarView', () => {
 		const view = new SidebarView({} as WorkspaceLeaf, plugin);
 
 		await view.onOpen();
-		await settings[3]?.toggleComponents[0]?.triggerChange(false);
+		await settings[4]?.toggleComponents[0]?.triggerChange(false);
 
 		expect(plugin.settings.generateWithAiFields[key]).toEqual(['Furigana']);
 	});
@@ -716,7 +762,7 @@ describe('SidebarView', () => {
 		await view.onOpen();
 
 		modelFieldNamesMock.mockResolvedValueOnce(['Meaning', 'Furigana']);
-		await settings[0]?.dropdownComponents[0]?.triggerChange('Spanish');
+		await settings[DECK_IDX]?.dropdownComponents[0]?.triggerChange('Spanish');
 
 		expect(plugin.settings.currentDeck).toBe('Spanish');
 		expect(modelFieldNamesMock).toHaveBeenCalledTimes(2);
@@ -736,7 +782,7 @@ describe('SidebarView', () => {
 		await view.onOpen();
 
 		modelFieldNamesMock.mockResolvedValueOnce(['Front', 'Back']);
-		await settings[1]?.dropdownComponents[0]?.triggerChange('Cloze');
+		await settings[MODEL_IDX]?.dropdownComponents[0]?.triggerChange('Cloze');
 
 		expect(plugin.settings.currentModel).toBe('Cloze');
 		expect(modelFieldNamesMock).toHaveBeenCalledTimes(2);
@@ -761,15 +807,15 @@ describe('SidebarView', () => {
 		);
 	});
 
-	it('renders the connection status with the resolved AnkiConnect URL and a Test connection button', async () => {
+	it('renders the connection status with the resolved AnkiConnect URL and an icon-only 🔄 button', async () => {
 		const { plugin } = fakePlugin({ ankiConnectUrl: 'http://localhost:9999' });
 		const view = new SidebarView({} as WorkspaceLeaf, plugin);
 
 		await view.onOpen();
 
-		const statusSetting = settings[settings.length - 1];
+		const statusSetting = settings[STATUS_IDX];
 		expect(statusSetting?.desc).toBe('AnkiConnect: http://localhost:9999');
-		expect(statusSetting?.buttonComponents[0]?.text).toBe('Test connection');
+		expect(statusSetting?.buttonComponents[0]?.text).toBe('🔄');
 	});
 
 	it('uses the default AnkiConnect URL in the description when the setting is blank', async () => {
@@ -778,7 +824,7 @@ describe('SidebarView', () => {
 
 		await view.onOpen();
 
-		const statusSetting = settings[settings.length - 1];
+		const statusSetting = settings[STATUS_IDX];
 		expect(statusSetting?.desc).toBe('AnkiConnect: http://localhost:8765');
 	});
 
@@ -789,7 +835,7 @@ describe('SidebarView', () => {
 
 		await view.onOpen();
 
-		const statusSetting = settings[settings.length - 1];
+		const statusSetting = settings[STATUS_IDX];
 		expect(statusSetting?.name).toBe('Status: ✅ Connected');
 	});
 
@@ -800,20 +846,20 @@ describe('SidebarView', () => {
 
 		await view.onOpen();
 
-		const statusSetting = settings[settings.length - 1];
+		const statusSetting = settings[STATUS_IDX];
 		expect(statusSetting?.name).toBe(
 			'Status: ❌ Cannot connect to Anki. Please check URL and AnkiConnect.',
 		);
 		expect(toastError).not.toHaveBeenCalled();
 	});
 
-	it('re-tests and updates the status when Test connection is clicked', async () => {
+	it('re-tests and updates the status when 🔄 is clicked', async () => {
 		versionMock.mockResolvedValueOnce(6);
 		const { plugin } = fakePlugin();
 		const view = new SidebarView({} as WorkspaceLeaf, plugin);
 		await view.onOpen();
 
-		const statusSetting = settings[settings.length - 1];
+		const statusSetting = settings[STATUS_IDX];
 		expect(statusSetting?.name).toBe('Status: ✅ Connected');
 
 		versionMock.mockRejectedValueOnce(new Error('boom'));
@@ -824,13 +870,13 @@ describe('SidebarView', () => {
 		);
 	});
 
-	it('disables the Test connection button while a re-test is in-flight, and re-enables it after', async () => {
+	it('disables 🔄 while a click is in-flight, and re-enables it after', async () => {
 		versionMock.mockResolvedValueOnce(6);
 		const { plugin } = fakePlugin();
 		const view = new SidebarView({} as WorkspaceLeaf, plugin);
 		await view.onOpen();
 
-		const statusSetting = settings[settings.length - 1];
+		const statusSetting = settings[STATUS_IDX];
 		let resolveVersion!: (v: number) => void;
 		versionMock.mockReturnValueOnce(
 			new Promise<number>((resolve) => {
@@ -847,11 +893,9 @@ describe('SidebarView', () => {
 		expect(statusSetting?.buttonComponents[0]?.disabled).toBe(false);
 	});
 
-	it('reloads decks, models, and fields after a successful manual Test connection click', async () => {
-		deckNamesMock.mockResolvedValueOnce([]);
-		modelNamesMock.mockResolvedValueOnce([]);
+	it('reloads decks, models, fields, and folders after a successful 🔄 click', async () => {
 		versionMock.mockRejectedValueOnce(new Error('Anki not running yet'));
-		const { plugin } = fakePlugin({
+		const { plugin, getAllFolders: getAllFoldersMock } = fakePlugin({
 			currentDeck: 'Japanese',
 			currentModel: 'Basic',
 		});
@@ -861,21 +905,20 @@ describe('SidebarView', () => {
 		deckNamesMock.mockClear();
 		modelNamesMock.mockClear();
 		modelFieldNamesMock.mockClear();
-		deckNamesMock.mockResolvedValueOnce(['Japanese']);
-		modelNamesMock.mockResolvedValueOnce(['Basic']);
-		modelFieldNamesMock.mockResolvedValueOnce(['Meaning']);
+		getAllFoldersMock.mockClear();
 		versionMock.mockResolvedValueOnce(6);
 
-		const statusSetting = settings[settings.length - 1];
+		const statusSetting = settings[STATUS_IDX];
 		await statusSetting?.buttonComponents[0]?.triggerClick();
 
 		expect(deckNamesMock).toHaveBeenCalledTimes(1);
 		expect(modelNamesMock).toHaveBeenCalledTimes(1);
 		expect(modelFieldNamesMock).toHaveBeenCalledTimes(1);
+		expect(getAllFoldersMock).toHaveBeenCalledTimes(1);
 	});
 
-	it('does not reload decks, models, or fields after a failed manual Test connection click', async () => {
-		const { plugin } = fakePlugin({
+	it('still reloads folders (but not decks/models/fields) after a failed 🔄 click', async () => {
+		const { plugin, getAllFolders: getAllFoldersMock } = fakePlugin({
 			currentDeck: 'Japanese',
 			currentModel: 'Basic',
 		});
@@ -885,19 +928,21 @@ describe('SidebarView', () => {
 		deckNamesMock.mockClear();
 		modelNamesMock.mockClear();
 		modelFieldNamesMock.mockClear();
+		getAllFoldersMock.mockClear();
 		versionMock.mockRejectedValueOnce(new Error('boom'));
 
-		const statusSetting = settings[settings.length - 1];
+		const statusSetting = settings[STATUS_IDX];
 		await statusSetting?.buttonComponents[0]?.triggerClick();
 
 		expect(deckNamesMock).not.toHaveBeenCalled();
 		expect(modelNamesMock).not.toHaveBeenCalled();
 		expect(modelFieldNamesMock).not.toHaveBeenCalled();
+		expect(getAllFoldersMock).toHaveBeenCalledTimes(1);
 	});
 
-	it('does not reload decks, models, or fields during the automatic check on open', async () => {
+	it('does not cascade into decks/models/fields/folders a second time during the automatic check on open', async () => {
 		versionMock.mockResolvedValueOnce(6);
-		const { plugin } = fakePlugin({
+		const { plugin, getAllFolders: getAllFoldersMock } = fakePlugin({
 			currentDeck: 'Japanese',
 			currentModel: 'Basic',
 		});
@@ -908,6 +953,7 @@ describe('SidebarView', () => {
 		expect(deckNamesMock).toHaveBeenCalledTimes(1);
 		expect(modelNamesMock).toHaveBeenCalledTimes(1);
 		expect(modelFieldNamesMock).toHaveBeenCalledTimes(1);
+		expect(getAllFoldersMock).toHaveBeenCalledTimes(1);
 	});
 });
 
@@ -923,7 +969,7 @@ describe('Deck/Model change warning', () => {
 		await view.onOpen();
 		saveSettings.mockClear();
 
-		await settings[0]?.dropdownComponents[0]?.triggerChange('Spanish');
+		await settings[DECK_IDX]?.dropdownComponents[0]?.triggerChange('Spanish');
 
 		expect(deckModelWarningOpen).toHaveBeenCalledTimes(1);
 		expect(plugin.settings.currentDeck).toBe('Japanese');
@@ -941,7 +987,7 @@ describe('Deck/Model change warning', () => {
 		await view.onOpen();
 		saveSettings.mockClear();
 
-		await settings[1]?.dropdownComponents[0]?.triggerChange('Cloze');
+		await settings[MODEL_IDX]?.dropdownComponents[0]?.triggerChange('Cloze');
 
 		expect(deckModelWarningOpen).toHaveBeenCalledTimes(1);
 		expect(plugin.settings.currentModel).toBe('Basic');
@@ -957,7 +1003,7 @@ describe('Deck/Model change warning', () => {
 		);
 		const view = new SidebarView({} as WorkspaceLeaf, plugin);
 		await view.onOpen();
-		await settings[0]?.dropdownComponents[0]?.triggerChange('Spanish');
+		await settings[DECK_IDX]?.dropdownComponents[0]?.triggerChange('Spanish');
 
 		deckModelWarningCapture.onUpdate?.();
 		await Promise.resolve();
@@ -976,11 +1022,11 @@ describe('Deck/Model change warning', () => {
 		const view = new SidebarView({} as WorkspaceLeaf, plugin);
 		await view.onOpen();
 		saveSettings.mockClear();
-		await settings[0]?.dropdownComponents[0]?.triggerChange('Spanish');
+		await settings[DECK_IDX]?.dropdownComponents[0]?.triggerChange('Spanish');
 
 		deckModelWarningCapture.onKeepOld?.();
 
-		expect(settings[0]?.dropdownComponents[0]?.value).toBe('Japanese');
+		expect(settings[DECK_IDX]?.dropdownComponents[0]?.value).toBe('Japanese');
 		expect(plugin.settings.currentDeck).toBe('Japanese');
 		expect(saveSettings).not.toHaveBeenCalled();
 	});
@@ -995,7 +1041,7 @@ describe('Deck/Model change warning', () => {
 		const view = new SidebarView({} as WorkspaceLeaf, plugin);
 		await view.onOpen();
 
-		await settings[0]?.dropdownComponents[0]?.triggerChange('Spanish');
+		await settings[DECK_IDX]?.dropdownComponents[0]?.triggerChange('Spanish');
 
 		expect(deckModelWarningOpen).not.toHaveBeenCalled();
 		expect(plugin.settings.currentDeck).toBe('Spanish');
@@ -1008,7 +1054,7 @@ describe('Deck/Model change warning', () => {
 		const view = new SidebarView({} as WorkspaceLeaf, plugin);
 		await view.onOpen();
 
-		await settings[0]?.dropdownComponents[0]?.triggerChange('Spanish');
+		await settings[DECK_IDX]?.dropdownComponents[0]?.triggerChange('Spanish');
 
 		expect(deckModelWarningOpen).not.toHaveBeenCalled();
 		expect(plugin.settings.currentDeck).toBe('Spanish');

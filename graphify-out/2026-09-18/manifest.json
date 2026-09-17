@@ -415,13 +415,13 @@
     "semantic_hash": ""
   },
   "src/ui/sidebarView.test.ts": {
-    "mtime": 1789668508.4023795,
-    "ast_hash": "0db7d2805c65414693116a402f43d036",
+    "mtime": 1789670045.633904,
+    "ast_hash": "00a20b3273d68be87f394c5fbcf7eeb1",
     "semantic_hash": ""
   },
   "src/ui/sidebarView.ts": {
-    "mtime": 1789668470.04161,
-    "ast_hash": "5a790e40c7471b1e15f9ee8840659c0c",
+    "mtime": 1789670045.6342075,
+    "ast_hash": "00738b803b14e8858d59f9725e95577f",
     "semantic_hash": ""
   },
   "src/note/createNote.test.ts": {
@@ -455,12 +455,12 @@
     "semantic_hash": ""
   },
   "src/ui/modals/deckModelChangeWarning.test.ts": {
-    "mtime": 1789668316.1138942,
+    "mtime": 1789670039.7994664,
     "ast_hash": "2dd0a1a00024bd0d9ff273aa103b803e",
     "semantic_hash": ""
   },
   "src/ui/modals/deckModelChangeWarning.ts": {
-    "mtime": 1789668304.9752681,
+    "mtime": 1789670039.7995539,
     "ast_hash": "53201614eef0b2914c672bd5680314dc",
     "semantic_hash": ""
   }
