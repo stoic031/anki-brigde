@@ -147,6 +147,7 @@ vi.mock('obsidian', () => ({
 			return s;
 		}
 	},
+	TFile: class FakeTFile {},
 }));
 
 const {
@@ -179,6 +180,28 @@ vi.mock('../sync/ankiConnect', () => ({ AnkiConnectClient }));
 const { toastError } = vi.hoisted(() => ({ toastError: vi.fn() }));
 vi.mock('./toast', () => ({ toastError }));
 
+const { deckModelWarningOpen, deckModelWarningCapture } = vi.hoisted(() => ({
+	deckModelWarningOpen: vi.fn(),
+	deckModelWarningCapture: {
+		onKeepOld: undefined as (() => void) | undefined,
+		onUpdate: undefined as (() => void) | undefined,
+	},
+}));
+vi.mock('./modals/deckModelChangeWarning', () => ({
+	DeckModelChangeWarningModal: class {
+		constructor(
+			_app: unknown,
+			onKeepOld: () => void,
+			onUpdate: () => void,
+		) {
+			deckModelWarningCapture.onKeepOld = onKeepOld;
+			deckModelWarningCapture.onUpdate = onUpdate;
+		}
+		open = deckModelWarningOpen;
+	},
+}));
+
+import { TFile } from 'obsidian';
 import {
 	SidebarView,
 	VIEW_TYPE_SIDEBAR,
@@ -189,6 +212,8 @@ import {
 afterEach(() => {
 	vi.clearAllMocks();
 	settings.length = 0;
+	deckModelWarningCapture.onKeepOld = undefined;
+	deckModelWarningCapture.onUpdate = undefined;
 });
 
 function fakeSettings(
@@ -220,23 +245,42 @@ function fakeApp(
 	options: {
 		folders?: FakeFolder[];
 		activeFileParent?: FakeFolder | null;
+		activeFile?: object | null;
+		frontmatter?: Record<string, unknown> | null;
 	} = {},
 ): App {
-	const { folders = [fakeFolder('')], activeFileParent = null } = options;
+	const {
+		folders = [fakeFolder('')],
+		activeFileParent = null,
+		activeFile,
+		frontmatter = null,
+	} = options;
+	const resolvedActiveFile =
+		activeFile !== undefined
+			? activeFile
+			: activeFileParent === null
+				? null
+				: { parent: activeFileParent };
 	return {
 		vault: {
 			getAllFolders: vi.fn().mockReturnValue(folders),
 		},
 		workspace: {
-			getActiveFile: vi
+			getActiveFile: vi.fn().mockReturnValue(resolvedActiveFile),
+		},
+		metadataCache: {
+			getFileCache: vi
 				.fn()
-				.mockReturnValue(
-					activeFileParent === null
-						? null
-						: { parent: activeFileParent },
-				),
+				.mockReturnValue(frontmatter ? { frontmatter } : null),
 		},
 	} as unknown as App;
+}
+
+function fakeTFile(overrides: Record<string, unknown> = {}): TFile {
+	return Object.assign(
+		Object.create(TFile.prototype) as TFile,
+		overrides,
+	);
 }
 
 function fakePlugin(
@@ -761,6 +805,111 @@ describe('SidebarView', () => {
 		await clickPromise;
 
 		expect(statusSetting?.buttonComponents[0]?.disabled).toBe(false);
+	});
+});
+
+describe('Deck/Model change warning', () => {
+	it('opens the warning modal instead of applying, when the Deck dropdown changes on a synced note', async () => {
+		deckNamesMock.mockResolvedValue(['Japanese', 'Spanish']);
+		const activeFile = fakeTFile();
+		const { plugin, saveSettings } = fakePlugin(
+			{ currentDeck: 'Japanese' },
+			{ activeFile, frontmatter: { anki_note_id: 123 } },
+		);
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+		await view.onOpen();
+		saveSettings.mockClear();
+
+		await settings[0]?.dropdownComponents[0]?.triggerChange('Spanish');
+
+		expect(deckModelWarningOpen).toHaveBeenCalledTimes(1);
+		expect(plugin.settings.currentDeck).toBe('Japanese');
+		expect(saveSettings).not.toHaveBeenCalled();
+	});
+
+	it('opens the warning modal instead of applying, when the Model dropdown changes on a synced note', async () => {
+		modelNamesMock.mockResolvedValue(['Basic', 'Cloze']);
+		const activeFile = fakeTFile();
+		const { plugin, saveSettings } = fakePlugin(
+			{ currentModel: 'Basic' },
+			{ activeFile, frontmatter: { anki_note_id: 123 } },
+		);
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+		await view.onOpen();
+		saveSettings.mockClear();
+
+		await settings[1]?.dropdownComponents[0]?.triggerChange('Cloze');
+
+		expect(deckModelWarningOpen).toHaveBeenCalledTimes(1);
+		expect(plugin.settings.currentModel).toBe('Basic');
+		expect(saveSettings).not.toHaveBeenCalled();
+	});
+
+	it('applies the change when the modal calls onUpdate', async () => {
+		deckNamesMock.mockResolvedValue(['Japanese', 'Spanish']);
+		const activeFile = fakeTFile();
+		const { plugin, saveSettings } = fakePlugin(
+			{ currentDeck: 'Japanese' },
+			{ activeFile, frontmatter: { anki_note_id: 123 } },
+		);
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+		await view.onOpen();
+		await settings[0]?.dropdownComponents[0]?.triggerChange('Spanish');
+
+		deckModelWarningCapture.onUpdate?.();
+		await Promise.resolve();
+
+		expect(plugin.settings.currentDeck).toBe('Spanish');
+		expect(saveSettings).toHaveBeenCalled();
+	});
+
+	it('reverts the dropdown to the prior value when the modal calls onKeepOld', async () => {
+		deckNamesMock.mockResolvedValue(['Japanese', 'Spanish']);
+		const activeFile = fakeTFile();
+		const { plugin, saveSettings } = fakePlugin(
+			{ currentDeck: 'Japanese' },
+			{ activeFile, frontmatter: { anki_note_id: 123 } },
+		);
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+		await view.onOpen();
+		saveSettings.mockClear();
+		await settings[0]?.dropdownComponents[0]?.triggerChange('Spanish');
+
+		deckModelWarningCapture.onKeepOld?.();
+
+		expect(settings[0]?.dropdownComponents[0]?.value).toBe('Japanese');
+		expect(plugin.settings.currentDeck).toBe('Japanese');
+		expect(saveSettings).not.toHaveBeenCalled();
+	});
+
+	it('applies the change directly, without a modal, when the active file has no anki_note_id', async () => {
+		deckNamesMock.mockResolvedValue(['Japanese', 'Spanish']);
+		const activeFile = fakeTFile();
+		const { plugin, saveSettings } = fakePlugin(
+			{ currentDeck: 'Japanese' },
+			{ activeFile, frontmatter: { anki_deck: 'Japanese' } },
+		);
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+		await view.onOpen();
+
+		await settings[0]?.dropdownComponents[0]?.triggerChange('Spanish');
+
+		expect(deckModelWarningOpen).not.toHaveBeenCalled();
+		expect(plugin.settings.currentDeck).toBe('Spanish');
+		expect(saveSettings).toHaveBeenCalled();
+	});
+
+	it('applies the change directly, without a modal, when there is no active file', async () => {
+		deckNamesMock.mockResolvedValue(['Japanese', 'Spanish']);
+		const { plugin, saveSettings } = fakePlugin({ currentDeck: 'Japanese' });
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+		await view.onOpen();
+
+		await settings[0]?.dropdownComponents[0]?.triggerChange('Spanish');
+
+		expect(deckModelWarningOpen).not.toHaveBeenCalled();
+		expect(plugin.settings.currentDeck).toBe('Spanish');
+		expect(saveSettings).toHaveBeenCalled();
 	});
 });
 

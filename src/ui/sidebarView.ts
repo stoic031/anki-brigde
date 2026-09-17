@@ -4,12 +4,15 @@ import {
 	DropdownComponent,
 	ItemView,
 	Setting,
+	TFile,
 	WorkspaceLeaf,
 } from 'obsidian';
 import type AnkiBridgePlugin from '../main';
 import { AnkiConnectClient } from '../sync/ankiConnect';
+import { readAnkiFrontmatter } from '../sync/parser';
 import { fieldConfigKey, resolveAnkiConnectUrl } from '../settings';
 import { toastError } from './toast';
+import { DeckModelChangeWarningModal } from './modals/deckModelChangeWarning';
 
 export const VIEW_TYPE_SIDEBAR = 'anki-bridge-sidebar';
 
@@ -66,9 +69,7 @@ export class SidebarView extends ItemView {
 			.addDropdown((dropdown) => {
 				this.deckDropdown = dropdown;
 				dropdown.onChange(async (value) => {
-					this.plugin.settings.currentDeck = value;
-					await this.plugin.saveSettings();
-					await this.renderFieldCheckboxes();
+					await this.handleSelectionChange('currentDeck', value, dropdown);
 				});
 			})
 			.addButton((btn) =>
@@ -108,9 +109,7 @@ export class SidebarView extends ItemView {
 			.addDropdown((dropdown) => {
 				this.modelDropdown = dropdown;
 				dropdown.onChange(async (value) => {
-					this.plugin.settings.currentModel = value;
-					await this.plugin.saveSettings();
-					await this.renderFieldCheckboxes();
+					await this.handleSelectionChange('currentModel', value, dropdown);
 				});
 			})
 			.addButton((btn) =>
@@ -141,6 +140,44 @@ export class SidebarView extends ItemView {
 				'❌ Failed to load models. Please check Anki connection.',
 			);
 		}
+	}
+
+	// docs/design/scenarios.md Scenario 4 / docs/design/07-sidebar.md §7.3 — changing
+	// Deck/Model while the active note already has anki_note_id needs a warning modal
+	// instead of applying immediately; unsynced (or no active note) applies right away.
+	private async handleSelectionChange(
+		key: 'currentDeck' | 'currentModel',
+		value: string,
+		dropdown: DropdownComponent,
+	): Promise<void> {
+		const activeFile = this.plugin.app.workspace.getActiveFile();
+		const isSynced =
+			activeFile instanceof TFile &&
+			readAnkiFrontmatter(this.plugin.app, activeFile)?.anki_note_id !== undefined;
+
+		if (!isSynced) {
+			await this.applySelectionChange(key, value);
+			return;
+		}
+
+		new DeckModelChangeWarningModal(
+			this.plugin.app,
+			// Keep old: settings[key] is still the pre-change value here, so this just
+			// puts the visible dropdown back where it was.
+			() => {
+				dropdown.setValue(this.plugin.settings[key]);
+			},
+			() => void this.applySelectionChange(key, value),
+		).open();
+	}
+
+	private async applySelectionChange(
+		key: 'currentDeck' | 'currentModel',
+		value: string,
+	): Promise<void> {
+		this.plugin.settings[key] = value;
+		await this.plugin.saveSettings();
+		await this.renderFieldCheckboxes();
 	}
 
 	// docs/design/07-sidebar.md §7.2.1 — Folder select. Populated from the vault, not
