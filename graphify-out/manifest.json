@@ -145,12 +145,12 @@
     "semantic_hash": ""
   },
   "docs/contracts.md": {
-    "mtime": 1789665854.9007514,
+    "mtime": 1789667801.5086145,
     "ast_hash": "0052fd133aca9a4b23a68392dd28d54d",
     "semantic_hash": ""
   },
   "docs/design-open-questions.md": {
-    "mtime": 1789666765.7814853,
+    "mtime": 1789667801.5091188,
     "ast_hash": "8d628aeaa38ff0bbe46dee45b0942935",
     "semantic_hash": ""
   },
@@ -325,22 +325,22 @@
     "semantic_hash": ""
   },
   "src/settings.test.ts": {
-    "mtime": 1789666765.78553,
+    "mtime": 1789667801.5152137,
     "ast_hash": "2a3b6d403887a51393daaebfe6e7ec58",
     "semantic_hash": ""
   },
   "src/settings.ts": {
-    "mtime": 1789665854.906005,
+    "mtime": 1789667801.5153706,
     "ast_hash": "037f51927c0141f54592058cf021d584",
     "semantic_hash": ""
   },
   "src/ui/settingsTab.test.ts": {
-    "mtime": 1789665854.9061987,
+    "mtime": 1789667801.5157285,
     "ast_hash": "63a973e44ce85ceb07df6df05daf8f72",
     "semantic_hash": ""
   },
   "src/ui/settingsTab.ts": {
-    "mtime": 1789665854.9064455,
+    "mtime": 1789667801.515991,
     "ast_hash": "7d4c650682b93b3767bec57e28301949",
     "semantic_hash": ""
   },
@@ -400,12 +400,12 @@
     "semantic_hash": ""
   },
   "src/note/quickCapture.test.ts": {
-    "mtime": 1789665854.9053981,
+    "mtime": 1789667801.5147178,
     "ast_hash": "dde5fac6b13c82f6059a643bde0f65a7",
     "semantic_hash": ""
   },
   "src/note/quickCapture.ts": {
-    "mtime": 1789665854.9056597,
+    "mtime": 1789667801.5150464,
     "ast_hash": "28cf74e05678868bcb4363bdc9f07ff6",
     "semantic_hash": ""
   },
@@ -415,22 +415,22 @@
     "semantic_hash": ""
   },
   "src/ui/sidebarView.test.ts": {
-    "mtime": 1789665854.90664,
-    "ast_hash": "e5ca729a12e0ee077cf0d5d0ce3d826e",
+    "mtime": 1789669355.4295208,
+    "ast_hash": "49d08dc796a25efbbd14d1a5b2d5204d",
     "semantic_hash": ""
   },
   "src/ui/sidebarView.ts": {
-    "mtime": 1789664560.4486098,
-    "ast_hash": "89bad73fbcdbab7a95206e4a34eb83ca",
+    "mtime": 1789669547.9752786,
+    "ast_hash": "5787e7df8184304546f46bf5eda0bc7e",
     "semantic_hash": ""
   },
   "src/note/createNote.test.ts": {
-    "mtime": 1789665854.9048676,
+    "mtime": 1789667801.5142145,
     "ast_hash": "de50fd24f0fcf0a5a833f3e83c043d6f",
     "semantic_hash": ""
   },
   "src/note/createNote.ts": {
-    "mtime": 1789665854.9052074,
+    "mtime": 1789667801.5144517,
     "ast_hash": "75fec58f4e78f2cfbaf993a61ec96222",
     "semantic_hash": ""
   },
@@ -445,12 +445,12 @@
     "semantic_hash": ""
   },
   "src/note/aiPreCheck.test.ts": {
-    "mtime": 1789667017.0200498,
+    "mtime": 1789667801.513582,
     "ast_hash": "8bc1045666071b59147430ad7f93e7e2",
     "semantic_hash": ""
   },
   "src/note/aiPreCheck.ts": {
-    "mtime": 1789667003.4205194,
+    "mtime": 1789667801.5138118,
     "ast_hash": "37c00afe6824789e42a0ff0d1d3a7a2a",
     "semantic_hash": ""
   }

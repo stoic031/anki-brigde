@@ -74,8 +74,17 @@ export class SidebarView extends ItemView {
 			.addButton((btn) =>
 				btn
 					.setButtonText('🔄 Refresh')
-					.onClick(() => void this.refreshDecks()),
+					.onClick(() => this.handleDeckRefreshClick()),
 			);
+	}
+
+	// Also re-renders the field checkboxes: if AnkiConnect was unreachable when the
+	// sidebar first opened, this is the recovery path back to a working state, since
+	// refreshDecks() alone only repopulates the dropdown (setValue() doesn't fire
+	// onChange, so nothing else would pick the reconnect up).
+	private async handleDeckRefreshClick(): Promise<void> {
+		await this.refreshDecks();
+		await this.renderFieldCheckboxes();
 	}
 
 	private async refreshDecks(): Promise<void> {
@@ -116,8 +125,14 @@ export class SidebarView extends ItemView {
 			.addButton((btn) =>
 				btn
 					.setButtonText('🔄 Refresh')
-					.onClick(() => void this.refreshModels()),
+					.onClick(() => this.handleModelRefreshClick()),
 			);
+	}
+
+	// See handleDeckRefreshClick() above — same reconnect-recovery reasoning.
+	private async handleModelRefreshClick(): Promise<void> {
+		await this.refreshModels();
+		await this.renderFieldCheckboxes();
 	}
 
 	private async refreshModels(): Promise<void> {
@@ -271,11 +286,27 @@ export class SidebarView extends ItemView {
 			.setDesc(`AnkiConnect: ${resolveAnkiConnectUrl(this.plugin.settings)}`)
 			.addButton((btn) => {
 				this.testConnectionButton = btn;
-				btn.setButtonText('Test connection').onClick(() => void this.testConnection());
+				btn
+					.setButtonText('Test connection')
+					.onClick(() => this.handleTestConnectionClick());
 			});
 	}
 
-	private async testConnection(): Promise<void> {
+	// Manual click only (not onOpen()'s automatic check below) — on success, also
+	// reloads decks/models/fields, since a "connection error" is the symptom most
+	// likely to send the user here after starting Anki, and this is the one action
+	// that recovers everything in one shot. See handleDeckRefreshClick() above for
+	// why nothing else would pick the reconnect up on its own.
+	private async handleTestConnectionClick(): Promise<void> {
+		const connected = await this.testConnection();
+		if (connected) {
+			await this.refreshDecks();
+			await this.refreshModels();
+			await this.renderFieldCheckboxes();
+		}
+	}
+
+	private async testConnection(): Promise<boolean> {
 		this.testConnectionButton?.setDisabled(true);
 		this.connectionStatusSetting?.setName('Status: ⏳ Checking...');
 		try {
@@ -284,10 +315,12 @@ export class SidebarView extends ItemView {
 			);
 			await client.version();
 			this.connectionStatusSetting?.setName('Status: ✅ Connected');
+			return true;
 		} catch {
 			this.connectionStatusSetting?.setName(
 				'Status: ❌ Cannot connect to Anki. Please check URL and AnkiConnect.',
 			);
+			return false;
 		} finally {
 			this.testConnectionButton?.setDisabled(false);
 		}

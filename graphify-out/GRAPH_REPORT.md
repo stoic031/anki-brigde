@@ -1,16 +1,16 @@
 # Graph Report - anki-bridge  (2026-09-18)
 
 ## Corpus Check
-- 88 files · ~54,212 words
+- 88 files · ~54,644 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 592 nodes · 872 edges · 85 communities (27 shown, 58 thin omitted)
+- 595 nodes · 883 edges · 82 communities (25 shown, 57 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 15 edges (avg confidence: 0.86)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `fae2c098`
+- Built from commit: `16f4de7d`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -20,7 +20,7 @@
 - devDependencies
 - compilerOptions
 - Field Mapping Algorithm (3-pass deterministic)
-- types.ts
+- controlsBlock.ts
 - noteNameModal.test.ts
 - SidebarView
 - Graphify Full Pipeline
@@ -90,19 +90,16 @@
 - README.md — Obsidian Sample Plugin boilerplate
 - graphify reference: GitHub clone and cross-repo merge
 - sidebarView.test.ts
-- main.ts
+- settings.ts
 - [1.0.0]
-- syncEngine.ts
-- syncEngine.test.ts
+- main.test.ts
 - confirmDelete.test.ts
-- controlsBlock.ts
-- AnkiConnectClient
 
 ## God Nodes (most connected - your core abstractions)
-1. `Common Provider Interface (processText/generateAudio/generateImage)` - 20 edges
-2. `AnkiConnectClient` - 19 edges
-3. `AnkiBridgePlugin` - 17 edges
-4. `SidebarView` - 17 edges
+1. `SidebarView` - 20 edges
+2. `Common Provider Interface (processText/generateAudio/generateImage)` - 20 edges
+3. `AnkiConnectClient` - 19 edges
+4. `AnkiBridgePlugin` - 17 edges
 5. `graphify Skill (/graphify)` - 17 edges
 6. `runQuickCapture()` - 16 edges
 7. `compilerOptions` - 16 edges
@@ -111,6 +108,8 @@
 10. `resolveAnkiConnectUrl()` - 14 edges
 
 ## Surprising Connections (you probably didn't know these)
+- `registerControlsBlock()` --references--> `plugin`  [EXTRACTED]
+  src/note/controlsBlock.ts → .opencode/opencode.json
 - `graphify Skill (/graphify)` --references--> `GitHub Clone & Cross-Repo Merge`  [EXTRACTED]
   .opencode/skills/graphify/SKILL.md → .claude/skills/graphify/references/github-and-merge.md
 - `graphify Skill (/graphify)` --references--> `Post-Commit Auto-Rebuild Hook`  [EXTRACTED]
@@ -119,8 +118,6 @@
   AGENTS.md → docs/contracts.md
 - `Q12: Playwright-for-Obsidian proposal (use Vitest instead)` --references--> `Definition of Done (lint + type-check + test:unit)`  [INFERRED]
   docs/design-open-questions.md → AGENTS.md
-- `Q10: Milestone 1 acceptance criteria checklist` --conceptually_related_to--> `Scenario 1: Create Note via Icon/Command`  [INFERRED]
-  docs/design-open-questions.md → docs/design/scenarios.md
 
 ## Import Cycles
 - None detected.
@@ -136,7 +133,7 @@
 - **Pluggable AI Provider Interfaces** — docs_contracts_textprovider, docs_contracts_audioprovider, docs_contracts_imageprovider, docs_design_02_providers_abstraction_layer [INFERRED 0.85]
 - **AST + Semantic Extraction Forming the Merged Graph Build** — opencode_skills_graphify_skill_ast_extraction, opencode_skills_graphify_skill_semantic_extraction, opencode_skills_graphify_references_extraction_spec_node_id_format, opencode_skills_graphify_references_extraction_spec_confidence_rubric [INFERRED 0.85]
 
-## Communities (85 total, 58 thin omitted)
+## Communities (82 total, 57 thin omitted)
 
 ### Community 0 - "Common Provider Interface (processText/generateAudio/generateImage)"
 Cohesion: 0.05
@@ -158,9 +155,9 @@ Nodes (20): DOM, ES2021, src/**/*.ts, compilerOptions, allowSyntheticDefaultImpo
 Cohesion: 0.33
 Nodes (7): Repo Layout (src/ module organization), AnkiFrontmatter interface, FIELD_ALIASES map, Field Mapping Algorithm (3-pass deterministic), ParsedNote interface, Dynamic Field Mapping (§1.5), Q10: Milestone 1 acceptance criteria checklist
 
-### Community 5 - "types.ts"
-Cohesion: 0.11
-Nodes (15): mapContentToFields(), stringifySectionValue(), AudioOptions, AudioProvider, FieldMappingResult, ImageOptions, ImageProvider, MediaResult (+7 more)
+### Community 5 - "controlsBlock.ts"
+Cohesion: 0.05
+Nodes (38): ALWAYS_VISIBLE_BUTTONS, ControlAction, ControlButtonSpec, DELETE_BUTTON, handleDeleteClick(), performDelete(), AnkiConnectClient, { requestUrl } (+30 more)
 
 ### Community 6 - "noteNameModal.test.ts"
 Cohesion: 0.09
@@ -203,8 +200,8 @@ Cohesion: 0.67
 Nodes (3): TextProvider interface, TextResult interface, TextTask type
 
 ### Community 18 - "quickCapture.ts"
-Cohesion: 0.15
-Nodes (21): generateContentSkeleton(), runCreateNote(), sanitizeForFilename(), AppWithSettingTab, getQuickCaptureFilename(), getSelectedText(), getUniqueNotePath(), openPluginSettings() (+13 more)
+Cohesion: 0.10
+Nodes (33): AnkiBridgePlugin, generateContentSkeleton(), handleSync(), registerControlsBlock(), runCreateNote(), sanitizeForFilename(), AppWithSettingTab, getQuickCaptureFilename() (+25 more)
 
 ### Community 77 - "sidebarView.test.ts"
 Cohesion: 0.07
@@ -216,43 +213,35 @@ Nodes (11): {
 	AnkiConnectClient,
 }, fakeApp(), FakeButtonComponent, FakeDropdownComponent, FakeFolder, fakePlugin(), FakeSetting, fakeSettings() (+3 more)
 
-### Community 78 - "main.ts"
-Cohesion: 0.07
-Nodes (33): plugin, $schema, .opencode/plugins/graphify.js, AnkiBridgePlugin, { loadSettings, saveSettings }, { PluginBase, addCommandSpy }, { registerControlsBlock }, { registerSidebarView, revealSidebarView } (+25 more)
+### Community 78 - "settings.ts"
+Cohesion: 0.11
+Nodes (20): plugin, $schema, .opencode/plugins/graphify.js, AiButtonAction, AiPreCheckResult, runAiPreCheck(), fakePlugin(), fakeSettings() (+12 more)
 
 ### Community 79 - "[1.0.0]"
 Cohesion: 0.40
 Nodes (4): [1.0.0], Added, Changelog, Fixed
 
-### Community 80 - "syncEngine.ts"
-Cohesion: 0.26
-Nodes (11): extractSectionValue(), parseSections(), readAnkiFrontmatter(), file, writeAnkiFrontmatter(), createNote(), deleteNote(), isNoteNotFound() (+3 more)
-
-### Community 81 - "syncEngine.test.ts"
-Cohesion: 0.14
-Nodes (5): { requestUrl }, FIELDS, file, AnkiConnectError, SyncError
+### Community 80 - "main.test.ts"
+Cohesion: 0.29
+Nodes (6): { loadSettings, saveSettings }, { PluginBase, addCommandSpy }, { registerControlsBlock }, { registerSidebarView, revealSidebarView }, { runCreateNote }, { runQuickCapture }
 
 ### Community 82 - "confirmDelete.test.ts"
 Cohesion: 0.12
 Nodes (5): ConfirmDeleteModal, FakeButtonComponent, FakeSetting, openModal(), { settings, modalState }
 
-### Community 83 - "controlsBlock.ts"
-Cohesion: 0.24
-Nodes (9): ALWAYS_VISIBLE_BUTTONS, ControlAction, ControlButtonSpec, DELETE_BUTTON, handleDeleteClick(), handleSync(), performDelete(), { Notice } (+1 more)
-
 ## Knowledge Gaps
 - **191 isolated node(s):** `$schema`, `.opencode/plugins/graphify.js`, `id`, `name`, `version` (+186 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **58 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **57 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `AnkiConnectClient` connect `AnkiConnectClient` to `controlsBlock.test.ts`, `main.ts`, `syncEngine.ts`, `syncEngine.test.ts`, `quickCapture.ts`, `controlsBlock.ts`?**
+- **Why does `AnkiConnectClient` connect `controlsBlock.ts` to `quickCapture.ts`, `controlsBlock.test.ts`?**
   _High betweenness centrality (0.025) - this node is a cross-community bridge._
 - **Why does `NoteNameModal` connect `noteNameModal.test.ts` to `quickCapture.ts`?**
   _High betweenness centrality (0.021) - this node is a cross-community bridge._
-- **Why does `AnkiBridgePlugin` connect `main.ts` to `quickCapture.ts`, `settingsTab.test.ts`, `sidebarView.test.ts`, `SidebarView`?**
+- **Why does `AnkiBridgePlugin` connect `quickCapture.ts` to `SidebarView`, `sidebarView.test.ts`, `settings.ts`, `settingsTab.test.ts`, `main.test.ts`?**
   _High betweenness centrality (0.021) - this node is a cross-community bridge._
 - **What connects `$schema`, `.opencode/plugins/graphify.js`, `id` to the rest of the system?**
   _191 weakly-connected nodes found - possible documentation gaps or missing edges._
