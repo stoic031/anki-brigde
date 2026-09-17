@@ -31,6 +31,7 @@ export async function runCreateNote(plugin: AnkiBridgePlugin): Promise<void> {
 	if (target.seededFromDefaults) {
 		plugin.settings.currentDeck = target.deck;
 		plugin.settings.currentModel = target.model;
+		plugin.settings.currentFolder = target.folder;
 		await plugin.saveSettings();
 	}
 

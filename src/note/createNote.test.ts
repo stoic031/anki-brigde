@@ -81,6 +81,7 @@ function fakeSettings(
 		ankiConnectUrl: '',
 		defaultDeck: '',
 		defaultModel: '',
+		defaultFolder: '',
 		currentDeck: '',
 		currentModel: '',
 		currentFolder: '',
@@ -148,14 +149,14 @@ describe('runCreateNote', () => {
 		expect(saveSettings).not.toHaveBeenCalled();
 	});
 
-	it('persists the seeded Deck/Model when the target came from Settings Tab defaults', async () => {
+	it('persists the seeded Deck/Model/Folder when the target came from Settings Tab defaults', async () => {
 		resolveQuickCaptureTarget.mockReturnValue({
 			deck: 'Japanese',
 			model: 'Basic',
-			folder: '',
+			folder: 'Vocab',
 			seededFromDefaults: true,
 		});
-		getUniqueNotePath.mockReturnValue('word.md');
+		getUniqueNotePath.mockReturnValue('Vocab/word.md');
 		modelFieldNamesMock.mockResolvedValue(['Word']);
 		const { plugin, saveSettings } = fakePlugin();
 
@@ -166,6 +167,7 @@ describe('runCreateNote', () => {
 		expect(saveSettings).toHaveBeenCalled();
 		expect(plugin.settings.currentDeck).toBe('Japanese');
 		expect(plugin.settings.currentModel).toBe('Basic');
+		expect(plugin.settings.currentFolder).toBe('Vocab');
 	});
 
 	it('shows a Notice and opens plugin settings when neither current nor default Deck/Model are set', async () => {

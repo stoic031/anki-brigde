@@ -176,7 +176,15 @@ import { renderConnectionSection } from './settingsTab';
 
 // Returns the spy as a plain local (not read back off `plugin`) so assertions like
 // `expect(saveSettings).toHaveBeenCalled()` don't trip @typescript-eslint/unbound-method.
-function fakePlugin(overrides: Partial<AnkiBridgeSettings> = {}): {
+interface FakeFolder {
+	path: string;
+	isRoot: () => boolean;
+}
+
+function fakePlugin(
+	overrides: Partial<AnkiBridgeSettings> = {},
+	folderPaths: string[] = [],
+): {
 	plugin: AnkiBridgePlugin;
 	saveSettings: ReturnType<typeof vi.fn>;
 } {
@@ -185,15 +193,25 @@ function fakePlugin(overrides: Partial<AnkiBridgeSettings> = {}): {
 		ankiConnectUrl: '',
 		defaultDeck: '',
 		defaultModel: '',
+		defaultFolder: '',
 		currentDeck: '',
 		currentModel: '',
 		currentFolder: '',
 		generateWithAiFields: {},
 		...overrides,
 	};
+	const folders: FakeFolder[] = [
+		{ path: '', isRoot: () => true },
+		...folderPaths.map((path) => ({ path, isRoot: () => false })),
+	];
 	const plugin = {
 		settings,
 		saveSettings,
+		app: {
+			vault: {
+				getAllFolders: () => folders,
+			},
+		},
 	} as unknown as AnkiBridgePlugin;
 	return { plugin, saveSettings };
 }
@@ -401,6 +419,48 @@ describe('renderConnectionSection — Connect button', () => {
 		await modelDropdown.triggerChange('Cloze');
 
 		expect(plugin.settings.defaultModel).toBe('Cloze');
+		expect(saveSettings).toHaveBeenCalledTimes(1);
+	});
+});
+
+describe('renderConnectionSection — Save notes to folder', () => {
+	it('renders immediately with the vault root option, no Connect needed', () => {
+		const { plugin } = fakePlugin({}, ['Vocab', 'Anki Notes']);
+
+		renderConnectionSection(fakeDiv() as unknown as HTMLElement, plugin);
+
+		const folderSetting = settings[3];
+		expect(folderSetting?.name).toBe('Save notes to');
+		expect(folderSetting?.dropdownComponents[0]?.options).toEqual({
+			'': '/ (vault root)',
+			'Anki Notes': 'Anki Notes',
+			Vocab: 'Vocab',
+		});
+	});
+
+	it('pre-selects a saved defaultFolder if it still exists', () => {
+		const { plugin } = fakePlugin({ defaultFolder: 'Vocab' }, ['Vocab']);
+
+		renderConnectionSection(fakeDiv() as unknown as HTMLElement, plugin);
+
+		expect(settings[3]?.dropdownComponents[0]?.value).toBe('Vocab');
+	});
+
+	it('leaves the saved defaultFolder unselected if it no longer exists', () => {
+		const { plugin } = fakePlugin({ defaultFolder: 'Deleted' }, ['Vocab']);
+
+		renderConnectionSection(fakeDiv() as unknown as HTMLElement, plugin);
+
+		expect(settings[3]?.dropdownComponents[0]?.value).toBe('');
+	});
+
+	it('persists the selection when the user picks a folder', async () => {
+		const { plugin, saveSettings } = fakePlugin({}, ['Vocab']);
+
+		renderConnectionSection(fakeDiv() as unknown as HTMLElement, plugin);
+		await settings[3]?.dropdownComponents[0]?.triggerChange('Vocab');
+
+		expect(plugin.settings.defaultFolder).toBe('Vocab');
 		expect(saveSettings).toHaveBeenCalledTimes(1);
 	});
 });
