@@ -7,7 +7,7 @@ import {
 } from 'obsidian';
 import type AnkiBridgePlugin from '../main';
 import { AnkiConnectClient } from '../sync/ankiConnect';
-import { resolveAnkiConnectUrl } from '../settings';
+import { fieldConfigKey, resolveAnkiConnectUrl } from '../settings';
 import { toastError } from './toast';
 
 export const VIEW_TYPE_SIDEBAR = 'anki-bridge-sidebar';
@@ -18,6 +18,7 @@ export class SidebarView extends ItemView {
 	private deckDropdown?: DropdownComponent;
 	private modelDropdown?: DropdownComponent;
 	private folderDropdown?: DropdownComponent;
+	private fieldsContainerEl?: HTMLElement;
 
 	constructor(
 		leaf: WorkspaceLeaf,
@@ -47,6 +48,10 @@ export class SidebarView extends ItemView {
 		await this.refreshModels();
 		this.renderFolderDropdown();
 		await this.populateFolderDropdown();
+		this.fieldsContainerEl = this.contentEl.createDiv({
+			cls: 'anki-bridge-sidebar__field-checkboxes',
+		});
+		await this.renderFieldCheckboxes();
 	}
 
 	// docs/design/07-sidebar.md §7.2.1 — Deck dropdown + 🔄 Refresh.
@@ -58,6 +63,7 @@ export class SidebarView extends ItemView {
 				dropdown.onChange(async (value) => {
 					this.plugin.settings.currentDeck = value;
 					await this.plugin.saveSettings();
+					await this.renderFieldCheckboxes();
 				});
 			})
 			.addButton((btn) =>
@@ -76,14 +82,17 @@ export class SidebarView extends ItemView {
 			const deckNames = await client.deckNames();
 
 			this.deckDropdown.selectEl.empty();
-			for (const name of deckNames) this.deckDropdown.addOption(name, name);
+			for (const name of deckNames)
+				this.deckDropdown.addOption(name, name);
 
 			const current = this.plugin.settings.currentDeck;
 			if (current && deckNames.includes(current)) {
 				this.deckDropdown.setValue(current);
 			}
 		} catch {
-			toastError('❌ Failed to load decks. Please check Anki connection.');
+			toastError(
+				'❌ Failed to load decks. Please check Anki connection.',
+			);
 		}
 	}
 
@@ -96,6 +105,7 @@ export class SidebarView extends ItemView {
 				dropdown.onChange(async (value) => {
 					this.plugin.settings.currentModel = value;
 					await this.plugin.saveSettings();
+					await this.renderFieldCheckboxes();
 				});
 			})
 			.addButton((btn) =>
@@ -114,14 +124,17 @@ export class SidebarView extends ItemView {
 			const modelNames = await client.modelNames();
 
 			this.modelDropdown.selectEl.empty();
-			for (const name of modelNames) this.modelDropdown.addOption(name, name);
+			for (const name of modelNames)
+				this.modelDropdown.addOption(name, name);
 
 			const current = this.plugin.settings.currentModel;
 			if (current && modelNames.includes(current)) {
 				this.modelDropdown.setValue(current);
 			}
 		} catch {
-			toastError('❌ Failed to load models. Please check Anki connection.');
+			toastError(
+				'❌ Failed to load models. Please check Anki connection.',
+			);
 		}
 	}
 
@@ -161,7 +174,9 @@ export class SidebarView extends ItemView {
 		const current = this.plugin.settings.currentFolder;
 		const currentExists =
 			current !== '' &&
-			folders.some((folder) => !folder.isRoot() && folder.path === current);
+			folders.some(
+				(folder) => !folder.isRoot() && folder.path === current,
+			);
 		if (currentExists) {
 			this.folderDropdown.setValue(current);
 			return;
@@ -178,6 +193,65 @@ export class SidebarView extends ItemView {
 			!activeParent || activeParent.isRoot() ? '' : activeParent.path;
 		this.folderDropdown.setValue(fallback);
 		this.plugin.settings.currentFolder = fallback;
+		await this.plugin.saveSettings();
+	}
+
+	// docs/design/07-sidebar.md §7.2.1 — Field checkboxes, only shown once Deck + Model
+	// are both selected. Re-invoked from the Deck/Model onChange handlers above (rather
+	// than a Refresh button) since the field list and the saved ticks both depend on
+	// which Deck+Model pair is currently selected.
+	private async renderFieldCheckboxes(): Promise<void> {
+		if (!this.fieldsContainerEl) return;
+		this.fieldsContainerEl.empty();
+
+		const { currentDeck: deck, currentModel: model } = this.plugin.settings;
+		if (!deck || !model) return;
+
+		let fields: string[];
+		try {
+			const client = new AnkiConnectClient(
+				resolveAnkiConnectUrl(this.plugin.settings),
+			);
+			fields = await client.modelFieldNames(model);
+		} catch {
+			toastError(
+				'❌ Failed to load fields. Please check Anki connection.',
+			);
+			return;
+		}
+
+		this.fieldsContainerEl.createEl('p', {
+			text: 'Fields to generate with AI:',
+		});
+
+		const key = fieldConfigKey(deck, model);
+		const selected = new Set(
+			this.plugin.settings.generateWithAiFields[key],
+		);
+
+		for (const field of fields) {
+			new Setting(this.fieldsContainerEl)
+				.setName(field)
+				.addToggle((toggle) => {
+					toggle.setValue(selected.has(field));
+					toggle.onChange(async (value) => {
+						await this.setFieldSelected(deck, model, field, value);
+					});
+				});
+		}
+	}
+
+	private async setFieldSelected(
+		deck: string,
+		model: string,
+		field: string,
+		selected: boolean,
+	): Promise<void> {
+		const key = fieldConfigKey(deck, model);
+		const current = new Set(this.plugin.settings.generateWithAiFields[key]);
+		if (selected) current.add(field);
+		else current.delete(field);
+		this.plugin.settings.generateWithAiFields[key] = [...current];
 		await this.plugin.saveSettings();
 	}
 }
