@@ -58,6 +58,10 @@ Save notes to: [/ (vault root) ▼]
 - Vai trò giống Deck/Model Dropdown: Folder mặc định dùng để tạo note mới khi Tab 1 chưa
   có giá trị "hiện tại" nào
 - Lưu vào settings
+- Folder lồng nhau hiển thị dạng cây — cùng cơ chế với Folder select ở Sidebar Modal
+  (`07-sidebar.md` §7.2.1): mỗi dòng chỉ hiện tên riêng của folder, thụt lề theo độ sâu,
+  nhóm folder con ngay dưới folder cha. Hai nơi dùng chung 1 hàm dựng cây
+  (`src/utils/folderTree.ts`) để không bị lệch nhau.
 
 ## 6.2. AI Provider Settings
 

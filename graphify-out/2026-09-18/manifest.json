@@ -180,8 +180,8 @@
     "semantic_hash": ""
   },
   "docs/design/07-sidebar.md": {
-    "mtime": 1789633187.5377603,
-    "ast_hash": "f8b87d463890cb60bc639da0040c60af",
+    "mtime": 1789671424.6059113,
+    "ast_hash": "79045536af67aecc7ec3a050a0ace6cd",
     "semantic_hash": ""
   },
   "docs/design/README.md": {
@@ -415,13 +415,13 @@
     "semantic_hash": ""
   },
   "src/ui/sidebarView.test.ts": {
-    "mtime": 1789670045.633904,
-    "ast_hash": "00a20b3273d68be87f394c5fbcf7eeb1",
+    "mtime": 1789671659.1315744,
+    "ast_hash": "650fccd4ae3a0cc46d53454e03182dfd",
     "semantic_hash": ""
   },
   "src/ui/sidebarView.ts": {
-    "mtime": 1789670045.6342075,
-    "ast_hash": "00738b803b14e8858d59f9725e95577f",
+    "mtime": 1789671393.93576,
+    "ast_hash": "6d31c14e14054a76e6ec02bdc5995b03",
     "semantic_hash": ""
   },
   "src/note/createNote.test.ts": {

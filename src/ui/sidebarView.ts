@@ -5,13 +5,13 @@ import {
 	ItemView,
 	Setting,
 	TFile,
-	TFolder,
 	WorkspaceLeaf,
 } from 'obsidian';
 import type AnkiBridgePlugin from '../main';
 import { AnkiConnectClient } from '../sync/ankiConnect';
 import { readAnkiFrontmatter } from '../sync/parser';
 import { fieldConfigKey, resolveAnkiConnectUrl } from '../settings';
+import { buildFolderTreeEntries } from '../utils/folderTree';
 import { toastError } from './toast';
 import { DeckModelChangeWarningModal } from './modals/deckModelChangeWarning';
 
@@ -23,6 +23,13 @@ export class SidebarView extends ItemView {
 	private deckDropdown?: DropdownComponent;
 	private modelDropdown?: DropdownComponent;
 	private folderDropdown?: DropdownComponent;
+	// Set once the user actually picks a value from the Folder dropdown — distinguishes
+	// an explicit "vault root" choice from '' just meaning "never customized," so a
+	// later 🔄 click (which re-runs populateFolderDropdown()) doesn't silently revert
+	// it back to the active note's folder. Deliberately not persisted: on a fresh
+	// SidebarView instance (e.g. after reopening the view), '' still means "unset" and
+	// re-derives from the active note, same as before this fix.
+	private folderExplicitlySelected = false;
 	private fieldsContainerEl?: HTMLElement;
 	private connectionStatusSetting?: Setting;
 	private refreshButton?: ButtonComponent;
@@ -183,6 +190,7 @@ export class SidebarView extends ItemView {
 			.addDropdown((dropdown) => {
 				this.folderDropdown = dropdown;
 				dropdown.onChange(async (value) => {
+					this.folderExplicitlySelected = true;
 					this.plugin.settings.currentFolder = value;
 					await this.plugin.saveSettings();
 				});
@@ -199,7 +207,7 @@ export class SidebarView extends ItemView {
 			.filter((folder) => !folder.isRoot());
 		const entries = [
 			{ value: '', label: '/ (vault root)' },
-			...this.buildFolderTreeEntries(folders),
+			...buildFolderTreeEntries(folders),
 		];
 
 		this.folderDropdown.selectEl.empty();
@@ -210,59 +218,32 @@ export class SidebarView extends ItemView {
 		const current = this.plugin.settings.currentFolder;
 		const currentExists =
 			current !== '' && folders.some((folder) => folder.path === current);
-		if (currentExists) {
+		// '' (vault root) only counts as a real, kept selection once the user has
+		// explicitly chosen it via the dropdown — otherwise it's indistinguishable from
+		// "never customized," and re-deriving from the active note's folder below is the
+		// more useful default. Without folderExplicitlySelected, every 🔄 click (which
+		// re-runs this) would silently stomp an explicit "root" choice back to whatever
+		// folder the active note happens to be in.
+		if (currentExists || (current === '' && this.folderExplicitlySelected)) {
 			this.folderDropdown.setValue(current);
 			return;
 		}
 
 		// No saved folder yet, or the saved folder was deleted — default to the active
 		// note's folder (vault root if none). '' means both "vault root" and "unset"
-		// for this setting (see settings.ts), so picking root from the dropdown is
-		// indistinguishable from never having customized it: the next time the sidebar
-		// opens, it will re-derive from whichever note is active then rather than
-		// staying pinned to root. Accepted tradeoff, not a bug to "fix" here.
+		// for this setting (see settings.ts) until folderExplicitlySelected is set, so
+		// picking root from the dropdown for the first time is indistinguishable from
+		// never having customized it: the next time the sidebar opens (a fresh
+		// SidebarView instance, folderExplicitlySelected reset), it will re-derive from
+		// whichever note is active then rather than staying pinned to root. Accepted
+		// tradeoff, not a bug to "fix" here — see folderExplicitlySelected's own comment
+		// for why a 🔄 click *within* the same session no longer has this problem.
 		const activeParent = this.plugin.app.workspace.getActiveFile()?.parent;
 		const fallback =
 			!activeParent || activeParent.isRoot() ? '' : activeParent.path;
 		this.folderDropdown.setValue(fallback);
 		this.plugin.settings.currentFolder = fallback;
 		await this.plugin.saveSettings();
-	}
-
-	// Groups folders by their actual TFolder.parent (not by comparing path strings) and
-	// walks the tree depth-first, so a sibling folder can never get visually wedged
-	// between a parent and its own child — e.g. "Japanese Advanced" (space, 0x20) sorts
-	// before "Japanese/N2" (slash, 0x2F) in plain path-string comparison even though
-	// Japanese/N2 is a child of the unrelated "Japanese" folder. Labels show only each
-	// folder's own name, indented per depth, so deep hierarchies stay readable; value is
-	// still the full path.
-	private buildFolderTreeEntries(
-		folders: TFolder[],
-	): { value: string; label: string }[] {
-		const byParent = new Map<string, TFolder[]>();
-		for (const folder of folders) {
-			const parentPath = folder.parent?.path ?? '';
-			const siblings = byParent.get(parentPath) ?? [];
-			siblings.push(folder);
-			byParent.set(parentPath, siblings);
-		}
-		for (const siblings of byParent.values()) {
-			siblings.sort((a, b) => a.name.localeCompare(b.name));
-		}
-
-		const INDENT = '  '; // non-breaking — plain spaces collapse in <option> text
-		const entries: { value: string; label: string }[] = [];
-		const walk = (parentPath: string, depth: number) => {
-			for (const folder of byParent.get(parentPath) ?? []) {
-				entries.push({
-					value: folder.path,
-					label: INDENT.repeat(depth) + folder.name,
-				});
-				walk(folder.path, depth + 1);
-			}
-		};
-		walk('', 0);
-		return entries;
 	}
 
 	// docs/design/07-sidebar.md §7.2.1 — Field checkboxes, only shown once Deck + Model

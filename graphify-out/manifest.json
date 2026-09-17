@@ -175,13 +175,13 @@
     "semantic_hash": ""
   },
   "docs/design/06-settings.md": {
-    "mtime": 1786267729.4961514,
-    "ast_hash": "14f6edd5c3e14ecd9c1ca711c05c2c5e",
+    "mtime": 1789672704.5331123,
+    "ast_hash": "3078b522b8212e0624ddc7d0e17e34fb",
     "semantic_hash": ""
   },
   "docs/design/07-sidebar.md": {
-    "mtime": 1789671424.6059113,
-    "ast_hash": "79045536af67aecc7ec3a050a0ace6cd",
+    "mtime": 1789672715.2227094,
+    "ast_hash": "528e7ef02dc5111c19b920b54008fb11",
     "semantic_hash": ""
   },
   "docs/design/README.md": {
@@ -335,13 +335,13 @@
     "semantic_hash": ""
   },
   "src/ui/settingsTab.test.ts": {
-    "mtime": 1789667801.5157285,
-    "ast_hash": "63a973e44ce85ceb07df6df05daf8f72",
+    "mtime": 1789672607.9817295,
+    "ast_hash": "b570bc57bab9f71beff8593743fa6985",
     "semantic_hash": ""
   },
   "src/ui/settingsTab.ts": {
-    "mtime": 1789667801.515991,
-    "ast_hash": "7d4c650682b93b3767bec57e28301949",
+    "mtime": 1789672526.4638991,
+    "ast_hash": "5dc1600a097b8b5bf5ffea37a05111cc",
     "semantic_hash": ""
   },
   "src/utils/constants.ts": {
@@ -415,13 +415,13 @@
     "semantic_hash": ""
   },
   "src/ui/sidebarView.test.ts": {
-    "mtime": 1789671659.1315744,
-    "ast_hash": "650fccd4ae3a0cc46d53454e03182dfd",
+    "mtime": 1789672679.9271686,
+    "ast_hash": "bf8993e2dd2509fd9629860d9a5b7103",
     "semantic_hash": ""
   },
   "src/ui/sidebarView.ts": {
-    "mtime": 1789671393.93576,
-    "ast_hash": "6d31c14e14054a76e6ec02bdc5995b03",
+    "mtime": 1789672507.155787,
+    "ast_hash": "36988b905c74b979d13cacbed5fe1e24",
     "semantic_hash": ""
   },
   "src/note/createNote.test.ts": {
@@ -462,6 +462,16 @@
   "src/ui/modals/deckModelChangeWarning.ts": {
     "mtime": 1789670039.7995539,
     "ast_hash": "53201614eef0b2914c672bd5680314dc",
+    "semantic_hash": ""
+  },
+  "src/utils/folderTree.test.ts": {
+    "mtime": 1789672422.4724422,
+    "ast_hash": "e1894211f9d448ac848aa9d8ec999149",
+    "semantic_hash": ""
+  },
+  "src/utils/folderTree.ts": {
+    "mtime": 1789672395.8625867,
+    "ast_hash": "63ab26f20efeae72e86510ff912066e9",
     "semantic_hash": ""
   }
 }

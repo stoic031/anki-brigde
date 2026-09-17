@@ -261,7 +261,11 @@ function fakeApp(
 		activeFile?: object | null;
 		frontmatter?: Record<string, unknown> | null;
 	} = {},
-): { app: App; getAllFolders: ReturnType<typeof vi.fn> } {
+): {
+	app: App;
+	getAllFolders: ReturnType<typeof vi.fn>;
+	getActiveFile: ReturnType<typeof vi.fn>;
+} {
 	const {
 		folders = [fakeFolder('')],
 		activeFileParent = null,
@@ -275,18 +279,17 @@ function fakeApp(
 				? null
 				: { parent: activeFileParent };
 	const getAllFolders = vi.fn().mockReturnValue(folders);
+	const getActiveFile = vi.fn().mockReturnValue(resolvedActiveFile);
 	const app = {
 		vault: { getAllFolders },
-		workspace: {
-			getActiveFile: vi.fn().mockReturnValue(resolvedActiveFile),
-		},
+		workspace: { getActiveFile },
 		metadataCache: {
 			getFileCache: vi
 				.fn()
 				.mockReturnValue(frontmatter ? { frontmatter } : null),
 		},
 	} as unknown as App;
-	return { app, getAllFolders };
+	return { app, getAllFolders, getActiveFile };
 }
 
 function fakeTFile(overrides: Record<string, unknown> = {}): TFile {
@@ -303,15 +306,16 @@ function fakePlugin(
 	plugin: AnkiBridgePlugin;
 	saveSettings: ReturnType<typeof vi.fn>;
 	getAllFolders: ReturnType<typeof vi.fn>;
+	getActiveFile: ReturnType<typeof vi.fn>;
 } {
 	const saveSettings = vi.fn().mockResolvedValue(undefined);
-	const { app, getAllFolders } = fakeApp(appOptions);
+	const { app, getAllFolders, getActiveFile } = fakeApp(appOptions);
 	const plugin = {
 		app,
 		settings: fakeSettings(overrides),
 		saveSettings,
 	} as unknown as AnkiBridgePlugin;
-	return { plugin, saveSettings, getAllFolders };
+	return { plugin, saveSettings, getAllFolders, getActiveFile };
 }
 
 // Setting row order in Tab 1: Connection Status (0), Deck (1), Model (2), Folder (3),
@@ -571,6 +575,52 @@ describe('SidebarView', () => {
 
 		expect(plugin.settings.currentFolder).toBe('Japanese');
 		expect(saveSettings).toHaveBeenCalled();
+	});
+
+	it('keeps an explicitly-selected vault root across a 🔄-triggered refresh', async () => {
+		const { plugin } = fakePlugin(
+			{},
+			{
+				folders: [fakeFolder(''), fakeFolder('Japanese')],
+				// Would be the fallback pick if the fix below weren't in place.
+				activeFileParent: fakeFolder('Japanese'),
+			},
+		);
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+		await view.onOpen();
+
+		await settings[FOLDER_IDX]?.dropdownComponents[0]?.triggerChange('');
+		expect(plugin.settings.currentFolder).toBe('');
+
+		versionMock.mockResolvedValueOnce(6);
+		await settings[STATUS_IDX]?.buttonComponents[0]?.triggerClick();
+
+		expect(settings[FOLDER_IDX]?.dropdownComponents[0]?.value).toBe('');
+		expect(plugin.settings.currentFolder).toBe('');
+	});
+
+	it('still re-derives from the active note’s folder on refresh when the folder was never explicitly chosen', async () => {
+		const { plugin, getActiveFile } = fakePlugin(
+			{ currentFolder: '' },
+			{
+				folders: [fakeFolder(''), fakeFolder('Japanese'), fakeFolder('Spanish')],
+				activeFileParent: null,
+			},
+		);
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+		await view.onOpen();
+
+		// No active file yet, and never explicitly picked anything — stays at root.
+		expect(plugin.settings.currentFolder).toBe('');
+
+		// A note becomes active before the next refresh — still never explicitly
+		// chosen, so the (unchanged) fallback behavior should pick it up.
+		getActiveFile.mockReturnValue({ parent: fakeFolder('Spanish') });
+		versionMock.mockResolvedValueOnce(6);
+		await settings[STATUS_IDX]?.buttonComponents[0]?.triggerClick();
+
+		expect(settings[FOLDER_IDX]?.dropdownComponents[0]?.value).toBe('Spanish');
+		expect(plugin.settings.currentFolder).toBe('Spanish');
 	});
 
 	describe('nested folder display', () => {

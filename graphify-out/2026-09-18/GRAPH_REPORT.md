@@ -1,16 +1,16 @@
 # Graph Report - anki-bridge  (2026-09-18)
 
 ## Corpus Check
-- 90 files · ~55,825 words
+- 90 files · ~56,559 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 618 nodes · 913 edges · 86 communities (30 shown, 56 thin omitted)
+- 617 nodes · 908 edges · 87 communities (30 shown, 57 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 15 edges (avg confidence: 0.86)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `a904bda5`
+- Built from commit: `a7fc6adc`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -98,9 +98,10 @@
 - Generate with AI Button
 - Scenario 1: Create Note via Icon/Command
 - Sidebar Modal (Right Sidebar View Panel)
+- settingsTab.ts
 
 ## God Nodes (most connected - your core abstractions)
-1. `SidebarView` - 22 edges
+1. `SidebarView` - 21 edges
 2. `Common Provider Interface (processText/generateAudio/generateImage)` - 20 edges
 3. `AnkiConnectClient` - 19 edges
 4. `AnkiBridgePlugin` - 17 edges
@@ -137,7 +138,7 @@
 - **Pluggable AI Provider Interfaces** — docs_contracts_textprovider, docs_contracts_audioprovider, docs_contracts_imageprovider, docs_design_02_providers_abstraction_layer [INFERRED 0.85]
 - **AST + Semantic Extraction Forming the Merged Graph Build** — opencode_skills_graphify_skill_ast_extraction, opencode_skills_graphify_skill_semantic_extraction, opencode_skills_graphify_references_extraction_spec_node_id_format, opencode_skills_graphify_references_extraction_spec_confidence_rubric [INFERRED 0.85]
 
-## Communities (86 total, 56 thin omitted)
+## Communities (87 total, 57 thin omitted)
 
 ### Community 0 - "Create Note From Selection (Hotkey / Quick Capture)"
 Cohesion: 0.20
@@ -160,16 +161,12 @@ Cohesion: 0.33
 Nodes (7): Repo Layout (src/ module organization), AnkiFrontmatter interface, FIELD_ALIASES map, Field Mapping Algorithm (3-pass deterministic), ParsedNote interface, Dynamic Field Mapping (§1.5), Q10: Milestone 1 acceptance criteria checklist
 
 ### Community 5 - "controlsBlock.ts"
-Cohesion: 0.06
-Nodes (40): ALWAYS_VISIBLE_BUTTONS, ControlAction, ControlButtonSpec, DELETE_BUTTON, handleDeleteClick(), handleSync(), performDelete(), renderControlsBlock() (+32 more)
+Cohesion: 0.05
+Nodes (37): ALWAYS_VISIBLE_BUTTONS, ControlAction, ControlButtonSpec, DELETE_BUTTON, AnkiConnectClient, AnkiConnectResponse, { requestUrl }, mapContentToFields() (+29 more)
 
 ### Community 6 - "noteNameModal.test.ts"
 Cohesion: 0.09
 Nodes (6): NoteNameModal, FakeButtonComponent, FakeSetting, FakeTextComponent, openModal(), { settings, modalState }
-
-### Community 7 - "SidebarView"
-Cohesion: 0.10
-Nodes (8): resolveAnkiConnectUrl(), AnkiConnectClient, AnkiBridgeSettingTab, handleConnect(), renderConnectionSection(), renderDefaultFolderDropdown(), SidebarView, isValidUrl()
 
 ### Community 8 - "Graphify Full Pipeline"
 Cohesion: 0.15
@@ -196,8 +193,8 @@ Cohesion: 0.50
 Nodes (5): AGENTS.md Non-Negotiables (9 rules), AudioProvider interface, ImageProvider interface, MediaResult interface, Q14: AudioOptions/ImageOptions shape undefined
 
 ### Community 14 - "controlsBlock.test.ts"
-Cohesion: 0.23
-Nodes (10): { confirmDeleteOpen, confirmDeleteCapture }, fakeApp(), fakeCtx(), fakeEl(), renderAndGetDeleteButton(), renderAndGetSyncButton(), RenderedButton, { syncNote, deleteNote } (+2 more)
+Cohesion: 0.21
+Nodes (12): handleDeleteClick(), renderControlsBlock(), { confirmDeleteOpen, confirmDeleteCapture }, fakeApp(), fakeCtx(), fakeEl(), renderAndGetDeleteButton(), renderAndGetSyncButton() (+4 more)
 
 ### Community 15 - "settingsTab.test.ts"
 Cohesion: 0.06
@@ -222,8 +219,8 @@ Nodes (12): { deckModelWarningOpen, deckModelWarningCapture }, {
 }, fakeApp(), FakeButtonComponent, FakeDropdownComponent, FakeFolder, fakePlugin(), FakeSetting (+4 more)
 
 ### Community 78 - "quickCapture.ts"
-Cohesion: 0.07
-Nodes (45): plugin, $schema, .opencode/plugins/graphify.js, AnkiBridgePlugin, AiButtonAction, AiPreCheckResult, runAiPreCheck(), generateContentSkeleton() (+37 more)
+Cohesion: 0.08
+Nodes (43): plugin, $schema, .opencode/plugins/graphify.js, AnkiBridgePlugin, AiButtonAction, AiPreCheckResult, runAiPreCheck(), generateContentSkeleton() (+35 more)
 
 ### Community 79 - "[1.0.0]"
 Cohesion: 0.40
@@ -253,17 +250,21 @@ Nodes (8): Branch A — Deck/Model Already Configured, Branch B — First-Time S
 Cohesion: 0.29
 Nodes (7): AI Provider Manager, AI Buttons Never Write To Anki Directly (Sync-only) Principle, anki-controls Markdown Code Block, Sync Button, Command: "Anki: Open Deck & Model Selector", Sidebar Modal (Right Sidebar View Panel), Design Doc Architecture Overview
 
+### Community 86 - "settingsTab.ts"
+Cohesion: 0.22
+Nodes (10): handleSync(), performDelete(), AnkiBridgeSettingTab, handleConnect(), renderConnectionSection(), renderDefaultFolderDropdown(), { Notice }, toastError() (+2 more)
+
 ## Knowledge Gaps
 - **193 isolated node(s):** `$schema`, `.opencode/plugins/graphify.js`, `id`, `name`, `version` (+188 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **56 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **57 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `AnkiConnectClient` connect `SidebarView` to `quickCapture.ts`, `controlsBlock.ts`, `controlsBlock.test.ts`?**
+- **Why does `AnkiConnectClient` connect `controlsBlock.ts` to `quickCapture.ts`, `controlsBlock.test.ts`, `settingsTab.ts`?**
   _High betweenness centrality (0.026) - this node is a cross-community bridge._
-- **Why does `AnkiBridgePlugin` connect `quickCapture.ts` to `main.test.ts`, `settingsTab.test.ts`, `sidebarView.test.ts`, `SidebarView`?**
+- **Why does `AnkiBridgePlugin` connect `quickCapture.ts` to `SidebarView`, `sidebarView.test.ts`, `settingsTab.test.ts`, `main.test.ts`, `settingsTab.ts`?**
   _High betweenness centrality (0.022) - this node is a cross-community bridge._
 - **Why does `NoteNameModal` connect `noteNameModal.test.ts` to `quickCapture.ts`?**
   _High betweenness centrality (0.021) - this node is a cross-community bridge._

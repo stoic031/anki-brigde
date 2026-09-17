@@ -94,6 +94,11 @@ Save notes to: [/ (vault root) ▼]
   giống, VD "Japanese Advanced" so với "Japanese/N2").
 - Refresh qua nút 🔄 ở Connection Status (không có nút Refresh riêng), nên tạo folder
   mới trong Obsidian rồi bấm 🔄 sẽ thấy folder đó ngay trong dropdown.
+- Nếu user đã chọn tường minh `/ (vault root)`, giá trị này **không** bị bấm 🔄 ghi đè
+  lại thành folder của note đang active — chỉ khi nào Folder thật sự chưa từng được
+  chọn (hoặc folder đã chọn trước đó bị xoá) thì mới tự suy ra lại từ note đang active.
+  Lựa chọn tường minh chỉ tồn tại trong phiên Sidebar hiện tại; đóng rồi mở lại Sidebar
+  (tạo lại view mới) thì hành vi suy ra mặc định ở dòng trên vẫn áp dụng như cũ.
 
 **Field checkboxes (Generate with AI):**
 
