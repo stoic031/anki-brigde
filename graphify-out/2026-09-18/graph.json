@@ -156,8 +156,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "opencode_opencode",
-      "community": 78,
-      "community_name": "main.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "opencode.json"
     },
     {
@@ -167,8 +167,8 @@
       "source_location": "L2",
       "_origin": "ast",
       "id": "opencode_opencode_schema",
-      "community": 78,
-      "community_name": "main.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "$schema"
     },
     {
@@ -178,8 +178,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "opencode_opencode_plugin",
-      "community": 78,
-      "community_name": "main.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "plugin"
     },
     {
@@ -189,8 +189,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "ref_opencode_plugins_graphify_js",
-      "community": 78,
-      "community_name": "main.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": ".opencode/plugins/graphify.js"
     },
     {
@@ -817,7 +817,7 @@
       "_origin": "ast",
       "id": "src_main_test",
       "community": 78,
-      "community_name": "main.ts",
+      "community_name": "main.test.ts",
       "norm_label": "main.test.ts"
     },
     {
@@ -828,7 +828,7 @@
       "_origin": "ast",
       "id": "src_main_test_pluginbase_addcommandspy",
       "community": 78,
-      "community_name": "main.ts",
+      "community_name": "main.test.ts",
       "norm_label": "{ pluginbase, addcommandspy }"
     },
     {
@@ -839,7 +839,7 @@
       "_origin": "ast",
       "id": "src_main_test_loadsettings_savesettings",
       "community": 78,
-      "community_name": "main.ts",
+      "community_name": "main.test.ts",
       "norm_label": "{ loadsettings, savesettings }"
     },
     {
@@ -850,7 +850,7 @@
       "_origin": "ast",
       "id": "src_main_test_registercontrolsblock",
       "community": 78,
-      "community_name": "main.ts",
+      "community_name": "main.test.ts",
       "norm_label": "{ registercontrolsblock }"
     },
     {
@@ -861,7 +861,7 @@
       "_origin": "ast",
       "id": "src_main_test_runquickcapture",
       "community": 78,
-      "community_name": "main.ts",
+      "community_name": "main.test.ts",
       "norm_label": "{ runquickcapture }"
     },
     {
@@ -872,7 +872,7 @@
       "_origin": "ast",
       "id": "src_main_test_runcreatenote",
       "community": 78,
-      "community_name": "main.ts",
+      "community_name": "main.test.ts",
       "norm_label": "{ runcreatenote }"
     },
     {
@@ -883,7 +883,7 @@
       "_origin": "ast",
       "id": "src_main_test_registersidebarview_revealsidebarview",
       "community": 78,
-      "community_name": "main.ts",
+      "community_name": "main.test.ts",
       "norm_label": "{ registersidebarview, revealsidebarview }"
     },
     {
@@ -893,8 +893,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_main",
-      "community": 78,
-      "community_name": "main.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "main.ts"
     },
     {
@@ -904,8 +904,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "src_main_ankibridgeplugin",
-      "community": 78,
-      "community_name": "main.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "ankibridgeplugin"
     },
     {
@@ -915,8 +915,8 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_main_ankibridgeplugin_onload",
-      "community": 78,
-      "community_name": "main.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": ".onload()"
     },
     {
@@ -937,75 +937,9 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "src_main_ankibridgeplugin_onunload",
-      "community": 78,
-      "community_name": "main.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": ".onunload()"
-    },
-    {
-      "label": "aiPreCheck.test.ts",
-      "file_type": "code",
-      "source_file": "src/note/aiPreCheck.test.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "src_note_aiprecheck_test",
-      "community": 78,
-      "community_name": "main.ts",
-      "norm_label": "aiprecheck.test.ts"
-    },
-    {
-      "label": "fakeSettings()",
-      "file_type": "code",
-      "source_file": "src/note/aiPreCheck.test.ts",
-      "source_location": "L5",
-      "_origin": "ast",
-      "id": "src_note_aiprecheck_test_fakesettings",
-      "community": 78,
-      "community_name": "main.ts",
-      "norm_label": "fakesettings()"
-    },
-    {
-      "label": "aiPreCheck.ts",
-      "file_type": "code",
-      "source_file": "src/note/aiPreCheck.ts",
-      "source_location": "L1",
-      "_origin": "ast",
-      "id": "src_note_aiprecheck",
-      "community": 78,
-      "community_name": "main.ts",
-      "norm_label": "aiprecheck.ts"
-    },
-    {
-      "label": "AiButtonAction",
-      "file_type": "code",
-      "source_file": "src/note/aiPreCheck.ts",
-      "source_location": "L3",
-      "_origin": "ast",
-      "id": "src_note_aiprecheck_aibuttonaction",
-      "community": 78,
-      "community_name": "main.ts",
-      "norm_label": "aibuttonaction"
-    },
-    {
-      "label": "AiPreCheckResult",
-      "file_type": "code",
-      "source_file": "src/note/aiPreCheck.ts",
-      "source_location": "L5",
-      "_origin": "ast",
-      "id": "src_note_aiprecheck_aiprecheckresult",
-      "community": 78,
-      "community_name": "main.ts",
-      "norm_label": "aiprecheckresult"
-    },
-    {
-      "label": "runAiPreCheck()",
-      "file_type": "code",
-      "source_file": "src/note/aiPreCheck.ts",
-      "source_location": "L12",
-      "_origin": "ast",
-      "id": "src_note_aiprecheck_runaiprecheck",
-      "community": 78,
-      "community_name": "main.ts",
-      "norm_label": "runaiprecheck()"
     },
     {
       "label": "contentTemplate.test.ts",
@@ -1014,8 +948,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_note_contenttemplate_test",
-      "community": 80,
-      "community_name": "syncEngine.ts",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "contenttemplate.test.ts"
     },
     {
@@ -1048,7 +982,7 @@
       "_origin": "ast",
       "id": "src_note_controlsblock_test",
       "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community_name": "controlsBlock.ts",
       "norm_label": "controlsblock.test.ts"
     },
     {
@@ -1059,7 +993,7 @@
       "_origin": "ast",
       "id": "src_note_controlsblock_test_tfile",
       "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community_name": "controlsBlock.ts",
       "norm_label": "{ tfile }"
     },
     {
@@ -1070,7 +1004,7 @@
       "_origin": "ast",
       "id": "src_note_controlsblock_test_syncnote_deletenote",
       "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community_name": "controlsBlock.ts",
       "norm_label": "{ syncnote, deletenote }"
     },
     {
@@ -1081,7 +1015,7 @@
       "_origin": "ast",
       "id": "src_note_controlsblock_test_toastsuccess_toasterror",
       "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community_name": "controlsBlock.ts",
       "norm_label": "{ toastsuccess, toasterror }"
     },
     {
@@ -1092,7 +1026,7 @@
       "_origin": "ast",
       "id": "src_note_controlsblock_test_confirmdeleteopen_confirmdeletecapture",
       "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community_name": "controlsBlock.ts",
       "norm_label": "{ confirmdeleteopen, confirmdeletecapture }"
     },
     {
@@ -1103,7 +1037,7 @@
       "_origin": "ast",
       "id": "src_note_controlsblock_test_constructor",
       "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community_name": "controlsBlock.ts",
       "norm_label": "constructor()"
     },
     {
@@ -1114,7 +1048,7 @@
       "_origin": "ast",
       "id": "src_note_controlsblock_test_fakeapp",
       "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community_name": "controlsBlock.ts",
       "norm_label": "fakeapp()"
     },
     {
@@ -1125,7 +1059,7 @@
       "_origin": "ast",
       "id": "src_note_controlsblock_test_renderedbutton",
       "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community_name": "controlsBlock.ts",
       "norm_label": "renderedbutton"
     },
     {
@@ -1136,7 +1070,7 @@
       "_origin": "ast",
       "id": "src_note_controlsblock_test_fakeel",
       "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community_name": "controlsBlock.ts",
       "norm_label": "fakeel()"
     },
     {
@@ -1147,7 +1081,7 @@
       "_origin": "ast",
       "id": "src_note_controlsblock_test_fakectx",
       "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community_name": "controlsBlock.ts",
       "norm_label": "fakectx()"
     },
     {
@@ -1158,7 +1092,7 @@
       "_origin": "ast",
       "id": "src_note_controlsblock_test_renderandgetsyncbutton",
       "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community_name": "controlsBlock.ts",
       "norm_label": "renderandgetsyncbutton()"
     },
     {
@@ -1169,7 +1103,7 @@
       "_origin": "ast",
       "id": "src_note_controlsblock_test_renderandgetdeletebutton",
       "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community_name": "controlsBlock.ts",
       "norm_label": "renderandgetdeletebutton()"
     },
     {
@@ -1180,7 +1114,7 @@
       "_origin": "ast",
       "id": "src_note_controlsblock_test_confirmdelete",
       "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community_name": "controlsBlock.ts",
       "norm_label": "confirmdelete()"
     },
     {
@@ -1190,7 +1124,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_note_controlsblock",
-      "community": 83,
+      "community": 14,
       "community_name": "controlsBlock.ts",
       "norm_label": "controlsblock.ts"
     },
@@ -1201,7 +1135,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_note_controlsblock_controlaction",
-      "community": 83,
+      "community": 14,
       "community_name": "controlsBlock.ts",
       "norm_label": "controlaction"
     },
@@ -1212,7 +1146,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "src_note_controlsblock_controlbuttonspec",
-      "community": 83,
+      "community": 14,
       "community_name": "controlsBlock.ts",
       "norm_label": "controlbuttonspec"
     },
@@ -1223,7 +1157,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "src_note_controlsblock_always_visible_buttons",
-      "community": 83,
+      "community": 14,
       "community_name": "controlsBlock.ts",
       "norm_label": "always_visible_buttons"
     },
@@ -1234,7 +1168,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "src_note_controlsblock_delete_button",
-      "community": 83,
+      "community": 14,
       "community_name": "controlsBlock.ts",
       "norm_label": "delete_button"
     },
@@ -1245,8 +1179,8 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "src_note_controlsblock_registercontrolsblock",
-      "community": 78,
-      "community_name": "main.ts",
+      "community": 14,
+      "community_name": "controlsBlock.ts",
       "norm_label": "registercontrolsblock()"
     },
     {
@@ -1257,7 +1191,7 @@
       "_origin": "ast",
       "id": "src_note_controlsblock_rendercontrolsblock",
       "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community_name": "controlsBlock.ts",
       "norm_label": "rendercontrolsblock()"
     },
     {
@@ -1267,7 +1201,7 @@
       "source_location": "L85",
       "_origin": "ast",
       "id": "src_note_controlsblock_handlesync",
-      "community": 83,
+      "community": 14,
       "community_name": "controlsBlock.ts",
       "norm_label": "handlesync()"
     },
@@ -1278,7 +1212,7 @@
       "source_location": "L123",
       "_origin": "ast",
       "id": "src_note_controlsblock_handledeleteclick",
-      "community": 83,
+      "community": 14,
       "community_name": "controlsBlock.ts",
       "norm_label": "handledeleteclick()"
     },
@@ -1289,7 +1223,7 @@
       "source_location": "L132",
       "_origin": "ast",
       "id": "src_note_controlsblock_performdelete",
-      "community": 83,
+      "community": 14,
       "community_name": "controlsBlock.ts",
       "norm_label": "performdelete()"
     },
@@ -1300,8 +1234,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_note_createnote_test",
-      "community": 78,
-      "community_name": "main.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "createnote.test.ts"
     },
     {
@@ -1311,8 +1245,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "src_note_createnote_test_notice",
-      "community": 78,
-      "community_name": "main.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "{ notice }"
     },
     {
@@ -1322,8 +1256,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "src_note_createnote_test_modelfieldnamesmock_ankiconnectclient",
-      "community": 78,
-      "community_name": "main.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "{ modelfieldnamesmock, ankiconnectclient }"
     },
     {
@@ -1333,8 +1267,8 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "src_note_createnote_test_writeankifrontmatter",
-      "community": 78,
-      "community_name": "main.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "{ writeankifrontmatter }"
     },
     {
@@ -1344,8 +1278,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "src_note_createnote_test_toasterror",
-      "community": 78,
-      "community_name": "main.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "{ toasterror }"
     },
     {
@@ -1355,8 +1289,8 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "src_note_createnote_test_revealsidebarview",
-      "community": 78,
-      "community_name": "main.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "{ revealsidebarview }"
     },
     {
@@ -1366,8 +1300,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_note_createnote_test_resolvequickcapturetarget_getuniquenotepath_openpluginsettings",
-      "community": 78,
-      "community_name": "main.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "{ resolvequickcapturetarget, getuniquenotepath, openpluginsettings }"
     },
     {
@@ -1377,8 +1311,8 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "src_note_createnote_test_notenamemodal_submitnotename_resetcapturedsubmit",
-      "community": 78,
-      "community_name": "main.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "{ notenamemodal, submitnotename, resetcapturedsubmit }"
     },
     {
@@ -1388,8 +1322,8 @@
       "source_location": "L77",
       "_origin": "ast",
       "id": "src_note_createnote_test_fakesettings",
-      "community": 78,
-      "community_name": "main.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "fakesettings()"
     },
     {
@@ -1399,8 +1333,8 @@
       "source_location": "L93",
       "_origin": "ast",
       "id": "src_note_createnote_test_fakeplugin",
-      "community": 78,
-      "community_name": "main.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "fakeplugin()"
     },
     {
@@ -1674,8 +1608,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_settings_test",
-      "community": 78,
-      "community_name": "main.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "settings.test.ts"
     },
     {
@@ -1685,8 +1619,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_settings_test_fakeplugin",
-      "community": 78,
-      "community_name": "main.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "fakeplugin()"
     },
     {
@@ -1696,8 +1630,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_settings",
-      "community": 78,
-      "community_name": "main.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "settings.ts"
     },
     {
@@ -1707,8 +1641,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "src_settings_ankibridgesettings",
-      "community": 78,
-      "community_name": "main.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "ankibridgesettings"
     },
     {
@@ -1718,8 +1652,8 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "src_settings_default_settings",
-      "community": 78,
-      "community_name": "main.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "default_settings"
     },
     {
@@ -1729,8 +1663,8 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "src_settings_loadsettings",
-      "community": 78,
-      "community_name": "main.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "loadsettings()"
     },
     {
@@ -1740,8 +1674,8 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "src_settings_savesettings",
-      "community": 78,
-      "community_name": "main.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "savesettings()"
     },
     {
@@ -1762,8 +1696,8 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "src_settings_fieldconfigkey",
-      "community": 78,
-      "community_name": "main.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "fieldconfigkey()"
     },
     {
@@ -1773,8 +1707,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_sync_ankiconnect_test",
-      "community": 81,
-      "community_name": "syncEngine.test.ts",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "ankiconnect.test.ts"
     },
     {
@@ -1784,8 +1718,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "src_sync_ankiconnect_test_requesturl",
-      "community": 81,
-      "community_name": "syncEngine.test.ts",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "{ requesturl }"
     },
     {
@@ -1795,8 +1729,8 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "src_sync_ankiconnect_test_jsonresponse",
-      "community": 81,
-      "community_name": "syncEngine.test.ts",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "jsonresponse()"
     },
     {
@@ -1806,8 +1740,8 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "src_sync_ankiconnect_test_sentbody",
-      "community": 81,
-      "community_name": "syncEngine.test.ts",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "sentbody()"
     },
     {
@@ -1817,8 +1751,8 @@
       "source_location": "L89",
       "_origin": "ast",
       "id": "src_sync_ankiconnect_test_client",
-      "community": 81,
-      "community_name": "syncEngine.test.ts",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "client()"
     },
     {
@@ -1850,8 +1784,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectclient",
-      "community": 84,
-      "community_name": "AnkiConnectClient",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "ankiconnectclient"
     },
     {
@@ -1861,8 +1795,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectclient_constructor",
-      "community": 84,
-      "community_name": "AnkiConnectClient",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": ".constructor()"
     },
     {
@@ -1872,8 +1806,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectclient_invoke",
-      "community": 84,
-      "community_name": "AnkiConnectClient",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": ".invoke()"
     },
     {
@@ -1883,8 +1817,8 @@
       "source_location": "L57",
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectclient_addnote",
-      "community": 84,
-      "community_name": "AnkiConnectClient",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": ".addnote()"
     },
     {
@@ -1894,8 +1828,8 @@
       "source_location": "L73",
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectclient_updatenotefields",
-      "community": 84,
-      "community_name": "AnkiConnectClient",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": ".updatenotefields()"
     },
     {
@@ -1905,8 +1839,8 @@
       "source_location": "L77",
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectclient_deletenotes",
-      "community": 84,
-      "community_name": "AnkiConnectClient",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": ".deletenotes()"
     },
     {
@@ -1916,8 +1850,8 @@
       "source_location": "L81",
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectclient_decknames",
-      "community": 84,
-      "community_name": "AnkiConnectClient",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": ".decknames()"
     },
     {
@@ -1927,8 +1861,8 @@
       "source_location": "L85",
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectclient_modelnames",
-      "community": 84,
-      "community_name": "AnkiConnectClient",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": ".modelnames()"
     },
     {
@@ -1938,8 +1872,8 @@
       "source_location": "L89",
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectclient_modelfieldnames",
-      "community": 84,
-      "community_name": "AnkiConnectClient",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": ".modelfieldnames()"
     },
     {
@@ -1949,8 +1883,8 @@
       "source_location": "L93",
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectclient_version",
-      "community": 84,
-      "community_name": "AnkiConnectClient",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": ".version()"
     },
     {
@@ -2015,8 +1949,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_sync_parser_test",
-      "community": 80,
-      "community_name": "syncEngine.ts",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "parser.test.ts"
     },
     {
@@ -2026,8 +1960,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "src_sync_parser_test_fakereaderapp",
-      "community": 80,
-      "community_name": "syncEngine.ts",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "fakereaderapp()"
     },
     {
@@ -2037,8 +1971,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "src_sync_parser_test_fakewriterapp",
-      "community": 80,
-      "community_name": "syncEngine.ts",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "fakewriterapp()"
     },
     {
@@ -2048,8 +1982,8 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "src_sync_parser_test_file",
-      "community": 80,
-      "community_name": "syncEngine.ts",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "file"
     },
     {
@@ -2059,8 +1993,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_sync_parser",
-      "community": 80,
-      "community_name": "syncEngine.ts",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "parser.ts"
     },
     {
@@ -2070,8 +2004,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "src_sync_parser_readankifrontmatter",
-      "community": 80,
-      "community_name": "syncEngine.ts",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "readankifrontmatter()"
     },
     {
@@ -2081,8 +2015,8 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "src_sync_parser_writeankifrontmatter",
-      "community": 80,
-      "community_name": "syncEngine.ts",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "writeankifrontmatter()"
     },
     {
@@ -2092,8 +2026,8 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "src_sync_parser_parsesections",
-      "community": 80,
-      "community_name": "syncEngine.ts",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "parsesections()"
     },
     {
@@ -2103,8 +2037,8 @@
       "source_location": "L65",
       "_origin": "ast",
       "id": "src_sync_parser_extractsectionvalue",
-      "community": 80,
-      "community_name": "syncEngine.ts",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "extractsectionvalue()"
     },
     {
@@ -2114,8 +2048,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_sync_syncengine_test",
-      "community": 81,
-      "community_name": "syncEngine.test.ts",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "syncengine.test.ts"
     },
     {
@@ -2125,8 +2059,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "src_sync_syncengine_test_fields",
-      "community": 81,
-      "community_name": "syncEngine.test.ts",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "fields"
     },
     {
@@ -2136,8 +2070,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "src_sync_syncengine_test_fakeapp",
-      "community": 81,
-      "community_name": "syncEngine.test.ts",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "fakeapp()"
     },
     {
@@ -2147,8 +2081,8 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "src_sync_syncengine_test_fakeclient",
-      "community": 81,
-      "community_name": "syncEngine.test.ts",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "fakeclient()"
     },
     {
@@ -2158,8 +2092,8 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "src_sync_syncengine_test_file",
-      "community": 81,
-      "community_name": "syncEngine.test.ts",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "file"
     },
     {
@@ -2169,8 +2103,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_sync_syncengine",
-      "community": 80,
-      "community_name": "syncEngine.ts",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "syncengine.ts"
     },
     {
@@ -2180,8 +2114,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "src_sync_syncengine_syncnote",
-      "community": 80,
-      "community_name": "syncEngine.ts",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "syncnote()"
     },
     {
@@ -2191,8 +2125,8 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "src_sync_syncengine_deletenote",
-      "community": 80,
-      "community_name": "syncEngine.ts",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "deletenote()"
     },
     {
@@ -2202,8 +2136,8 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "src_sync_syncengine_isnotenotfound",
-      "community": 80,
-      "community_name": "syncEngine.ts",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "isnotenotfound()"
     },
     {
@@ -2213,8 +2147,8 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "src_sync_syncengine_tosyncerror",
-      "community": 80,
-      "community_name": "syncEngine.ts",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "tosyncerror()"
     },
     {
@@ -2224,8 +2158,8 @@
       "source_location": "L82",
       "_origin": "ast",
       "id": "src_sync_syncengine_createnote",
-      "community": 80,
-      "community_name": "syncEngine.ts",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "createnote()"
     },
     {
@@ -2246,8 +2180,8 @@
       "source_location": "L2",
       "_origin": "ast",
       "id": "src_types_ankifrontmatter",
-      "community": 80,
-      "community_name": "syncEngine.ts",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "ankifrontmatter"
     },
     {
@@ -2411,8 +2345,8 @@
       "source_location": "L73",
       "_origin": "ast",
       "id": "src_types_ankiconnecterror",
-      "community": 81,
-      "community_name": "syncEngine.test.ts",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "ankiconnecterror"
     },
     {
@@ -2422,8 +2356,8 @@
       "source_location": "L74",
       "_origin": "ast",
       "id": "src_types_ankiconnecterror_constructor",
-      "community": 81,
-      "community_name": "syncEngine.test.ts",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": ".constructor()"
     },
     {
@@ -2455,8 +2389,8 @@
       "source_location": "L91",
       "_origin": "ast",
       "id": "src_types_syncerror",
-      "community": 81,
-      "community_name": "syncEngine.test.ts",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "syncerror"
     },
     {
@@ -2466,8 +2400,8 @@
       "source_location": "L92",
       "_origin": "ast",
       "id": "src_types_syncerror_constructor",
-      "community": 81,
-      "community_name": "syncEngine.test.ts",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": ".constructor()"
     },
     {
@@ -3346,8 +3280,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_ui_settingstab",
-      "community": 78,
-      "community_name": "main.ts",
+      "community": 14,
+      "community_name": "controlsBlock.ts",
       "norm_label": "settingstab.ts"
     },
     {
@@ -3357,8 +3291,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "src_ui_settingstab_ankibridgesettingtab",
-      "community": 78,
-      "community_name": "main.ts",
+      "community": 14,
+      "community_name": "controlsBlock.ts",
       "norm_label": "ankibridgesettingtab"
     },
     {
@@ -3368,8 +3302,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "src_ui_settingstab_ankibridgesettingtab_constructor",
-      "community": 78,
-      "community_name": "main.ts",
+      "community": 14,
+      "community_name": "controlsBlock.ts",
       "norm_label": ".constructor()"
     },
     {
@@ -3379,8 +3313,8 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "src_ui_settingstab_ankibridgesettingtab_display",
-      "community": 78,
-      "community_name": "main.ts",
+      "community": 14,
+      "community_name": "controlsBlock.ts",
       "norm_label": ".display()"
     },
     {
@@ -3390,8 +3324,8 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "src_ui_settingstab_renderconnectionsection",
-      "community": 78,
-      "community_name": "main.ts",
+      "community": 14,
+      "community_name": "controlsBlock.ts",
       "norm_label": "renderconnectionsection()"
     },
     {
@@ -3401,8 +3335,8 @@
       "source_location": "L97",
       "_origin": "ast",
       "id": "src_ui_settingstab_renderdefaultfolderdropdown",
-      "community": 78,
-      "community_name": "main.ts",
+      "community": 14,
+      "community_name": "controlsBlock.ts",
       "norm_label": "renderdefaultfolderdropdown()"
     },
     {
@@ -3412,8 +3346,8 @@
       "source_location": "L129",
       "_origin": "ast",
       "id": "src_ui_settingstab_handleconnect",
-      "community": 84,
-      "community_name": "AnkiConnectClient",
+      "community": 14,
+      "community_name": "controlsBlock.ts",
       "norm_label": "handleconnect()"
     },
     {
@@ -3951,8 +3885,8 @@
       "source_location": "L297",
       "_origin": "ast",
       "id": "src_ui_sidebarview_registersidebarview",
-      "community": 78,
-      "community_name": "main.ts",
+      "community": 18,
+      "community_name": "quickCapture.ts",
       "norm_label": "registersidebarview()"
     },
     {
@@ -3973,7 +3907,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_ui_toast_test",
-      "community": 83,
+      "community": 14,
       "community_name": "controlsBlock.ts",
       "norm_label": "toast.test.ts"
     },
@@ -3984,7 +3918,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "src_ui_toast_test_notice",
-      "community": 83,
+      "community": 14,
       "community_name": "controlsBlock.ts",
       "norm_label": "{ notice }"
     },
@@ -3995,8 +3929,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_ui_toast",
-      "community": 18,
-      "community_name": "quickCapture.ts",
+      "community": 14,
+      "community_name": "controlsBlock.ts",
       "norm_label": "toast.ts"
     },
     {
@@ -4006,7 +3940,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "src_ui_toast_toastsuccess",
-      "community": 83,
+      "community": 14,
       "community_name": "controlsBlock.ts",
       "norm_label": "toastsuccess()"
     },
@@ -4017,8 +3951,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "src_ui_toast_toasterror",
-      "community": 18,
-      "community_name": "quickCapture.ts",
+      "community": 14,
+      "community_name": "controlsBlock.ts",
       "norm_label": "toasterror()"
     },
     {
@@ -4028,8 +3962,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_utils_constants",
-      "community": 78,
-      "community_name": "main.ts",
+      "community": 5,
+      "community_name": "types.ts",
       "norm_label": "constants.ts"
     },
     {
@@ -4050,8 +3984,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_utils_validation_test",
-      "community": 78,
-      "community_name": "main.ts",
+      "community": 14,
+      "community_name": "controlsBlock.ts",
       "norm_label": "validation.test.ts"
     },
     {
@@ -4061,8 +3995,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_utils_validation",
-      "community": 78,
-      "community_name": "main.ts",
+      "community": 14,
+      "community_name": "controlsBlock.ts",
       "norm_label": "validation.ts"
     },
     {
@@ -4072,8 +4006,8 @@
       "source_location": "L2",
       "_origin": "ast",
       "id": "src_utils_validation_isvalidurl",
-      "community": 78,
-      "community_name": "main.ts",
+      "community": 14,
+      "community_name": "controlsBlock.ts",
       "norm_label": "isvalidurl()"
     },
     {
@@ -8642,158 +8576,6 @@
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_setfieldselected",
       "target": "src_main_ankibridgeplugin_savesettings"
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/note/aiPreCheck.test.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_note_aiprecheck_test",
-      "target": "src_note_aiprecheck",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/note/aiPreCheck.test.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_note_aiprecheck_test",
-      "target": "src_note_aiprecheck_runaiprecheck",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/note/aiPreCheck.test.ts",
-      "source_location": "L5",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_note_aiprecheck_test",
-      "target": "src_note_aiprecheck_test_fakesettings",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/note/aiPreCheck.test.ts",
-      "source_location": "L2",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_note_aiprecheck_test",
-      "target": "src_settings",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/note/aiPreCheck.test.ts",
-      "source_location": "L2",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_note_aiprecheck_test",
-      "target": "src_settings_ankibridgesettings",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/note/aiPreCheck.test.ts",
-      "source_location": "L2",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_note_aiprecheck_test",
-      "target": "src_settings_fieldconfigkey",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/note/aiPreCheck.ts",
-      "source_location": "L3",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_note_aiprecheck",
-      "target": "src_note_aiprecheck_aibuttonaction",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/note/aiPreCheck.ts",
-      "source_location": "L5",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_note_aiprecheck",
-      "target": "src_note_aiprecheck_aiprecheckresult",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "src/note/aiPreCheck.ts",
-      "source_location": "L12",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_note_aiprecheck",
-      "target": "src_note_aiprecheck_runaiprecheck",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/note/aiPreCheck.ts",
-      "source_location": "L1",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_note_aiprecheck",
-      "target": "src_settings",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/note/aiPreCheck.ts",
-      "source_location": "L1",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_note_aiprecheck",
-      "target": "src_settings_ankibridgesettings",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "src/note/aiPreCheck.ts",
-      "source_location": "L1",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_note_aiprecheck",
-      "target": "src_settings_fieldconfigkey",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/note/aiPreCheck.ts",
-      "source_location": "L20",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_note_aiprecheck_runaiprecheck",
-      "target": "src_settings_fieldconfigkey"
     },
     {
       "relation": "imports_from",
@@ -17211,5 +16993,5 @@
       "source_file": ".opencode/skills/graphify/SKILL.md"
     }
   ],
-  "built_at_commit": "fae2c09837ec260478d8c4dd4a8e6e2f69114e86"
+  "built_at_commit": "b4e873eb36fb93931717b8d43905a66170bd2b39"
 }
