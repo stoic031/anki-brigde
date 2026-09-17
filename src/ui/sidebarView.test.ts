@@ -136,13 +136,46 @@ function fakeSettings(
 	};
 }
 
-function fakePlugin(overrides: Partial<AnkiBridgeSettings> = {}): {
+interface FakeFolder {
+	path: string;
+	isRoot: () => boolean;
+}
+
+function fakeFolder(path: string): FakeFolder {
+	return { path, isRoot: () => path === '' };
+}
+
+function fakeApp(
+	options: {
+		folders?: FakeFolder[];
+		activeFileParent?: FakeFolder | null;
+	} = {},
+): App {
+	const { folders = [fakeFolder('')], activeFileParent = null } = options;
+	return {
+		vault: {
+			getAllFolders: vi.fn().mockReturnValue(folders),
+		},
+		workspace: {
+			getActiveFile: vi
+				.fn()
+				.mockReturnValue(
+					activeFileParent === null ? null : { parent: activeFileParent },
+				),
+		},
+	} as unknown as App;
+}
+
+function fakePlugin(
+	overrides: Partial<AnkiBridgeSettings> = {},
+	appOptions: Parameters<typeof fakeApp>[0] = {},
+): {
 	plugin: AnkiBridgePlugin;
 	saveSettings: ReturnType<typeof vi.fn>;
 } {
 	const saveSettings = vi.fn().mockResolvedValue(undefined);
 	const plugin = {
-		app: {} as App,
+		app: fakeApp(appOptions),
 		settings: fakeSettings(overrides),
 		saveSettings,
 	} as unknown as AnkiBridgePlugin;
@@ -307,6 +340,105 @@ describe('SidebarView', () => {
 		expect(toastError).toHaveBeenCalledWith(
 			'❌ Failed to load models. Please check Anki connection.',
 		);
+	});
+
+	it('renders the Folder dropdown on open, with no Refresh button', async () => {
+		const { plugin } = fakePlugin();
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+
+		await view.onOpen();
+
+		expect(settings[2]?.name).toBe('Save notes to');
+		expect(settings[2]?.buttonComponents).toHaveLength(0);
+	});
+
+	it('populates the Folder dropdown with vault root plus vault folders', async () => {
+		const { plugin } = fakePlugin(
+			{},
+			{ folders: [fakeFolder(''), fakeFolder('Japanese'), fakeFolder('Spanish')] },
+		);
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+
+		await view.onOpen();
+
+		expect(settings[2]?.dropdownComponents[0]?.options).toEqual({
+			'': '/ (vault root)',
+			Japanese: 'Japanese',
+			Spanish: 'Spanish',
+		});
+	});
+
+	it('pre-selects the saved currentFolder when it still exists', async () => {
+		const { plugin } = fakePlugin(
+			{ currentFolder: 'Japanese' },
+			{ folders: [fakeFolder(''), fakeFolder('Japanese')] },
+		);
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+
+		await view.onOpen();
+
+		expect(settings[2]?.dropdownComponents[0]?.value).toBe('Japanese');
+	});
+
+	it('falls back to the active file folder when currentFolder is unset, and persists it', async () => {
+		const { plugin, saveSettings } = fakePlugin(
+			{ currentFolder: '' },
+			{
+				folders: [fakeFolder(''), fakeFolder('Japanese')],
+				activeFileParent: fakeFolder('Japanese'),
+			},
+		);
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+
+		await view.onOpen();
+
+		expect(settings[2]?.dropdownComponents[0]?.value).toBe('Japanese');
+		expect(plugin.settings.currentFolder).toBe('Japanese');
+		expect(saveSettings).toHaveBeenCalled();
+	});
+
+	it('falls back to vault root when currentFolder is unset and there is no active file', async () => {
+		const { plugin } = fakePlugin(
+			{ currentFolder: '' },
+			{ folders: [fakeFolder(''), fakeFolder('Japanese')], activeFileParent: null },
+		);
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+
+		await view.onOpen();
+
+		expect(settings[2]?.dropdownComponents[0]?.value).toBe('');
+		expect(plugin.settings.currentFolder).toBe('');
+	});
+
+	it('falls back to the active file folder when the saved currentFolder no longer exists', async () => {
+		const { plugin } = fakePlugin(
+			{ currentFolder: 'Deleted folder' },
+			{
+				folders: [fakeFolder(''), fakeFolder('Spanish')],
+				activeFileParent: fakeFolder('Spanish'),
+			},
+		);
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+
+		await view.onOpen();
+
+		expect(settings[2]?.dropdownComponents[0]?.value).toBe('Spanish');
+		expect(plugin.settings.currentFolder).toBe('Spanish');
+	});
+
+	it('persists the selected folder to settings.currentFolder onChange', async () => {
+		const { plugin, saveSettings } = fakePlugin(
+			{},
+			{ folders: [fakeFolder(''), fakeFolder('Japanese')] },
+		);
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+
+		await view.onOpen();
+		saveSettings.mockClear();
+		await settings[2]?.dropdownComponents[0]?.triggerChange('Japanese');
+
+		expect(plugin.settings.currentFolder).toBe('Japanese');
+		expect(saveSettings).toHaveBeenCalled();
 	});
 });
 
