@@ -53,6 +53,7 @@ function fakeSettings(
 		currentDeck: '',
 		currentModel: '',
 		currentFolder: '',
+		generateWithAiFields: {},
 		...overrides,
 	};
 }
