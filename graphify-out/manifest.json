@@ -150,7 +150,7 @@
     "semantic_hash": ""
   },
   "docs/design-open-questions.md": {
-    "mtime": 1789666320.974139,
+    "mtime": 1789666765.7814853,
     "ast_hash": "8d628aeaa38ff0bbe46dee45b0942935",
     "semantic_hash": ""
   },
@@ -325,7 +325,7 @@
     "semantic_hash": ""
   },
   "src/settings.test.ts": {
-    "mtime": 1789666314.8802965,
+    "mtime": 1789666765.78553,
     "ast_hash": "2a3b6d403887a51393daaebfe6e7ec58",
     "semantic_hash": ""
   },
@@ -442,6 +442,16 @@
   "src/ui/modals/noteNameModal.ts": {
     "mtime": 1789633187.6497083,
     "ast_hash": "3c0f971c36a146dcdb5b4fd7425fde42",
+    "semantic_hash": ""
+  },
+  "src/note/aiPreCheck.test.ts": {
+    "mtime": 1789667017.0200498,
+    "ast_hash": "8bc1045666071b59147430ad7f93e7e2",
+    "semantic_hash": ""
+  },
+  "src/note/aiPreCheck.ts": {
+    "mtime": 1789667003.4205194,
+    "ast_hash": "37c00afe6824789e42a0ff0d1d3a7a2a",
     "semantic_hash": ""
   }
 }
