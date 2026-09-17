@@ -415,13 +415,13 @@
     "semantic_hash": ""
   },
   "src/ui/sidebarView.test.ts": {
-    "mtime": 1789629882.4875586,
-    "ast_hash": "8d209d43e181a340c396d4dda1d1ebd2",
+    "mtime": 1789568233.4022696,
+    "ast_hash": "a81480b0c382dd531d1c9519db9ded51",
     "semantic_hash": ""
   },
   "src/ui/sidebarView.ts": {
-    "mtime": 1789629846.5091064,
-    "ast_hash": "a26ca7d12f69d5b452a18cc9ecfc6370",
+    "mtime": 1789568188.4212606,
+    "ast_hash": "55e4737172a89fc3bfe630380706368d",
     "semantic_hash": ""
   },
   "src/note/createNote.test.ts": {
