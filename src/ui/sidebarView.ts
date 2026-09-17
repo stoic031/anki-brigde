@@ -1,5 +1,6 @@
 import {
 	App,
+	ButtonComponent,
 	DropdownComponent,
 	ItemView,
 	Setting,
@@ -19,6 +20,8 @@ export class SidebarView extends ItemView {
 	private modelDropdown?: DropdownComponent;
 	private folderDropdown?: DropdownComponent;
 	private fieldsContainerEl?: HTMLElement;
+	private connectionStatusSetting?: Setting;
+	private testConnectionButton?: ButtonComponent;
 
 	constructor(
 		leaf: WorkspaceLeaf,
@@ -52,6 +55,8 @@ export class SidebarView extends ItemView {
 			cls: 'anki-bridge-sidebar__field-checkboxes',
 		});
 		await this.renderFieldCheckboxes();
+		this.renderConnectionStatus();
+		await this.testConnection();
 	}
 
 	// docs/design/07-sidebar.md §7.2.1 — Deck dropdown + 🔄 Refresh.
@@ -253,6 +258,39 @@ export class SidebarView extends ItemView {
 		else current.delete(field);
 		this.plugin.settings.generateWithAiFields[key] = [...current];
 		await this.plugin.saveSettings();
+	}
+
+	// docs/design/07-sidebar.md §7.2.1 — Connection Status + Test Connection. Uses
+	// AnkiConnect's `version` action (lightweight, built for exactly this) rather than
+	// deckNames/modelNames. Unlike the other Tab 1 controls, failure is shown inline in
+	// the persistent status line rather than via toastError — a toast on top of an
+	// always-visible status indicator would be redundant.
+	private renderConnectionStatus(): void {
+		this.connectionStatusSetting = new Setting(this.contentEl)
+			.setName('Status: ⏳ Checking...')
+			.setDesc(`AnkiConnect: ${resolveAnkiConnectUrl(this.plugin.settings)}`)
+			.addButton((btn) => {
+				this.testConnectionButton = btn;
+				btn.setButtonText('Test connection').onClick(() => void this.testConnection());
+			});
+	}
+
+	private async testConnection(): Promise<void> {
+		this.testConnectionButton?.setDisabled(true);
+		this.connectionStatusSetting?.setName('Status: ⏳ Checking...');
+		try {
+			const client = new AnkiConnectClient(
+				resolveAnkiConnectUrl(this.plugin.settings),
+			);
+			await client.version();
+			this.connectionStatusSetting?.setName('Status: ✅ Connected');
+		} catch {
+			this.connectionStatusSetting?.setName(
+				'Status: ❌ Cannot connect to Anki. Please check URL and AnkiConnect.',
+			);
+		} finally {
+			this.testConnectionButton?.setDisabled(false);
+		}
 	}
 }
 

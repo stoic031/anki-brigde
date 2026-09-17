@@ -159,4 +159,14 @@ describe('AnkiConnectClient action methods', () => {
 			params: { modelName: 'Basic' },
 		});
 	});
+
+	it('version resolves the returned API version number', async () => {
+		requestUrl.mockResolvedValue(jsonResponse({ result: 6, error: null }));
+		await expect(client().version()).resolves.toBe(6);
+		expect(sentBody()).toEqual({
+			action: 'version',
+			version: 6,
+			params: {},
+		});
+	});
 });
