@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import type { Plugin } from 'obsidian';
 import {
 	DEFAULT_SETTINGS,
+	fieldConfigKey,
 	loadSettings,
 	resolveAnkiConnectUrl,
 	saveSettings,
@@ -121,5 +122,32 @@ describe('resolveAnkiConnectUrl', () => {
 				generateWithAiFields: {},
 			}),
 		).toBe('http://localhost:9999');
+	});
+});
+
+describe('fieldConfigKey', () => {
+	it('produces the same key for the same deck+model', () => {
+		expect(fieldConfigKey('Japanese', 'Basic')).toBe(
+			fieldConfigKey('Japanese', 'Basic'),
+		);
+	});
+
+	it('produces different keys for different decks', () => {
+		expect(fieldConfigKey('Japanese', 'Basic')).not.toBe(
+			fieldConfigKey('Spanish', 'Basic'),
+		);
+	});
+
+	it('produces different keys for different models', () => {
+		expect(fieldConfigKey('Japanese', 'Basic')).not.toBe(
+			fieldConfigKey('Japanese', 'Cloze'),
+		);
+	});
+
+	it('does not collide when a "::" subdeck separator could make a naive join ambiguous', () => {
+		// A plain `${deck}::${model}` join would make these two pairs indistinguishable.
+		expect(fieldConfigKey('Japanese::N2', 'Basic')).not.toBe(
+			fieldConfigKey('Japanese', 'N2::Basic'),
+		);
 	});
 });
