@@ -46,7 +46,7 @@ export function resolveQuickCaptureTarget(
 		return {
 			deck: settings.defaultDeck,
 			model: settings.defaultModel,
-			folder: settings.currentFolder,
+			folder: settings.defaultFolder,
 			seededFromDefaults: true,
 		};
 	}
@@ -102,6 +102,7 @@ export async function runQuickCapture(plugin: AnkiBridgePlugin): Promise<void> {
 	if (target.seededFromDefaults) {
 		plugin.settings.currentDeck = target.deck;
 		plugin.settings.currentModel = target.model;
+		plugin.settings.currentFolder = target.folder;
 		await plugin.saveSettings();
 	}
 

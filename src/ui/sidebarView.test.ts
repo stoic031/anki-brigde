@@ -198,6 +198,7 @@ function fakeSettings(
 		ankiConnectUrl: '',
 		defaultDeck: '',
 		defaultModel: '',
+		defaultFolder: '',
 		currentDeck: '',
 		currentModel: '',
 		currentFolder: '',

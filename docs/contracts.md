@@ -220,3 +220,28 @@ class ProviderError extends Error {
 
 Every user-visible error states **what broke** and **what to do next**. An empty
 `catch {}` is never acceptable.
+
+## 7. Settings (`src/settings.ts`)
+
+```ts
+interface AnkiBridgeSettings {
+ ankiConnectUrl: string; // '' = unset, resolves to DEFAULT_ANKI_CONNECT_URL at use time
+ defaultDeck: string; // '' = unset — Settings Tab fallback default, docs/design/06-settings.md §6.1
+ defaultModel: string; // '' = unset — same role as defaultDeck
+ defaultFolder: string; // '' = vault root/unset — same role as defaultDeck
+ currentDeck: string; // '' = not yet set — Sidebar Tab 1's persisted "current" value, docs/design/07-sidebar.md §7.4
+ currentModel: string; // '' = not yet set
+ currentFolder: string; // '' = vault root
+ generateWithAiFields: Record<string, string[]>; // Tab 1 field checkboxes, keyed by fieldConfigKey(deck, model)
+}
+```
+
+`default*` fields are the Settings Tab's global fallback, used only to seed `current*`
+the first time Tab 1 (or the hotkey/Branch A note-creation flow) resolves a target with
+no `current*` value yet — see `resolveQuickCaptureTarget` in `src/note/quickCapture.ts`.
+Once seeded, `current*` is independent: changing a `default*` value afterward does not
+retroactively overwrite `current*`.
+
+`fieldConfigKey(deck, model)` encodes the pair as `JSON.stringify([deck, model])` rather
+than a delimited string, because deck names routinely contain `::` (Anki's subdeck
+separator) and a plain join risks two different pairs colliding on the same key.

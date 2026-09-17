@@ -50,6 +50,7 @@ function fakeSettings(
 		ankiConnectUrl: '',
 		defaultDeck: '',
 		defaultModel: '',
+		defaultFolder: '',
 		currentDeck: '',
 		currentModel: '',
 		currentFolder: '',
@@ -176,7 +177,8 @@ describe('resolveQuickCaptureTarget', () => {
 		const settings = fakeSettings({
 			defaultDeck: 'Japanese',
 			defaultModel: 'Basic',
-			currentFolder: 'Vocab',
+			defaultFolder: 'Vocab',
+			currentFolder: 'Stale',
 		});
 
 		expect(resolveQuickCaptureTarget(settings)).toEqual({
@@ -294,11 +296,15 @@ describe('runQuickCapture', () => {
 		expect(revealSidebarView).toHaveBeenCalledWith(plugin.app);
 	});
 
-	it('persists the seeded Deck/Model when falling back to Settings Tab defaults', async () => {
+	it('persists the seeded Deck/Model/Folder when falling back to Settings Tab defaults', async () => {
 		modelFieldNamesMock.mockResolvedValue(['Word']);
 		const { plugin, saveSettings } = fakePlugin({
 			view: { editor: { getSelection: () => '薬' } },
-			settings: { defaultDeck: 'Japanese', defaultModel: 'Basic' },
+			settings: {
+				defaultDeck: 'Japanese',
+				defaultModel: 'Basic',
+				defaultFolder: 'Vocab',
+			},
 		});
 
 		await runQuickCapture(plugin);
@@ -306,6 +312,7 @@ describe('runQuickCapture', () => {
 		expect(saveSettings).toHaveBeenCalled();
 		expect(plugin.settings.currentDeck).toBe('Japanese');
 		expect(plugin.settings.currentModel).toBe('Basic');
+		expect(plugin.settings.currentFolder).toBe('Vocab');
 	});
 
 	it('shows an error toast and does nothing else when there is no active markdown note', async () => {

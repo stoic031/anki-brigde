@@ -87,6 +87,43 @@ export function renderConnectionSection(
 				await plugin.saveSettings();
 			});
 		});
+
+	renderDefaultFolderDropdown(containerEl, plugin);
+}
+
+// docs/design/06-settings.md §6.1 — "Save notes to" default. Unlike Deck/Model, this
+// doesn't depend on AnkiConnect, so it's populated immediately and always visible
+// (no Connect gating, no Refresh button) — mirrors sidebarView.ts's folder dropdown.
+function renderDefaultFolderDropdown(
+	containerEl: HTMLElement,
+	plugin: AnkiBridgePlugin,
+): void {
+	new Setting(containerEl).setName('Save notes to').addDropdown((dropdown) => {
+		const folders = plugin.app.vault.getAllFolders(true);
+		const entries = [
+			{ value: '', label: '/ (vault root)' },
+			...folders
+				.filter((folder) => !folder.isRoot())
+				.map((folder) => ({ value: folder.path, label: folder.path }))
+				.sort((a, b) => a.value.localeCompare(b.value)),
+		];
+		for (const { value, label } of entries) {
+			dropdown.addOption(value, label);
+		}
+
+		const current = plugin.settings.defaultFolder;
+		const currentExists =
+			current !== '' &&
+			folders.some((folder) => !folder.isRoot() && folder.path === current);
+		if (currentExists) {
+			dropdown.setValue(current);
+		}
+
+		dropdown.onChange(async (value) => {
+			plugin.settings.defaultFolder = value;
+			await plugin.saveSettings();
+		});
+	});
 }
 
 async function handleConnect(

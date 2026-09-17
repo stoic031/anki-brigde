@@ -39,10 +39,20 @@ describe('loadSettings', () => {
 			ankiConnectUrl: 'http://localhost:9999',
 			defaultDeck: '',
 			defaultModel: '',
+			defaultFolder: '',
 			currentDeck: '',
 			currentModel: '',
 			currentFolder: '',
 			generateWithAiFields: {},
+		});
+	});
+
+	it('preserves a saved defaultFolder', async () => {
+		const { plugin } = fakePlugin({ defaultFolder: 'Anki Notes' });
+
+		await expect(loadSettings(plugin)).resolves.toEqual({
+			...DEFAULT_SETTINGS,
+			defaultFolder: 'Anki Notes',
 		});
 	});
 });
@@ -54,6 +64,7 @@ describe('saveSettings', () => {
 			ankiConnectUrl: 'http://localhost:1234',
 			defaultDeck: '',
 			defaultModel: '',
+			defaultFolder: '',
 			currentDeck: '',
 			currentModel: '',
 			currentFolder: '',
@@ -73,6 +84,7 @@ describe('resolveAnkiConnectUrl', () => {
 				ankiConnectUrl: '',
 				defaultDeck: '',
 				defaultModel: '',
+				defaultFolder: '',
 				currentDeck: '',
 				currentModel: '',
 				currentFolder: '',
@@ -87,6 +99,7 @@ describe('resolveAnkiConnectUrl', () => {
 				ankiConnectUrl: '   ',
 				defaultDeck: '',
 				defaultModel: '',
+				defaultFolder: '',
 				currentDeck: '',
 				currentModel: '',
 				currentFolder: '',
@@ -101,6 +114,7 @@ describe('resolveAnkiConnectUrl', () => {
 				ankiConnectUrl: '  http://localhost:9999  ',
 				defaultDeck: '',
 				defaultModel: '',
+				defaultFolder: '',
 				currentDeck: '',
 				currentModel: '',
 				currentFolder: '',
