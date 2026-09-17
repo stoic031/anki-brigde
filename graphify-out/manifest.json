@@ -295,7 +295,7 @@
     "semantic_hash": ""
   },
   "src/sync/ankiConnect.ts": {
-    "mtime": 1789635397.921453,
+    "mtime": 1789664560.447979,
     "ast_hash": "ee79b4afeaeceb002f98ed715a7c478e",
     "semantic_hash": ""
   },
@@ -305,7 +305,7 @@
     "semantic_hash": ""
   },
   "src/sync/ankiConnect.test.ts": {
-    "mtime": 1789635406.9242682,
+    "mtime": 1789664560.4478235,
     "ast_hash": "e06e6713f784ec6f61146e019e1c04c7",
     "semantic_hash": ""
   },
@@ -325,17 +325,17 @@
     "semantic_hash": ""
   },
   "src/settings.test.ts": {
-    "mtime": 1789633621.5582757,
+    "mtime": 1789664560.4473822,
     "ast_hash": "ea404e95ce24257657515ada36568ba0",
     "semantic_hash": ""
   },
   "src/settings.ts": {
-    "mtime": 1789633621.5585692,
+    "mtime": 1789664560.447554,
     "ast_hash": "6fa016dc5cd5eb8ffd3f249ee63e4034",
     "semantic_hash": ""
   },
   "src/ui/settingsTab.test.ts": {
-    "mtime": 1789633621.558897,
+    "mtime": 1789664560.448216,
     "ast_hash": "4a4b51da1ce09cd6af849914acdc9811",
     "semantic_hash": ""
   },
@@ -400,8 +400,8 @@
     "semantic_hash": ""
   },
   "src/note/quickCapture.test.ts": {
-    "mtime": 1789633621.5580974,
-    "ast_hash": "9417b90e61051fa5e247ab8d4e535ed6",
+    "mtime": 1789664809.9762945,
+    "ast_hash": "7708b54fee803e4fdc7e3aad57290613",
     "semantic_hash": ""
   },
   "src/note/quickCapture.ts": {
@@ -415,17 +415,17 @@
     "semantic_hash": ""
   },
   "src/ui/sidebarView.test.ts": {
-    "mtime": 1789635591.675778,
+    "mtime": 1789664560.4484131,
     "ast_hash": "f2dd31aee98e43aa85a88c2f05a2e2c3",
     "semantic_hash": ""
   },
   "src/ui/sidebarView.ts": {
-    "mtime": 1789635423.3298943,
+    "mtime": 1789664560.4486098,
     "ast_hash": "89bad73fbcdbab7a95206e4a34eb83ca",
     "semantic_hash": ""
   },
   "src/note/createNote.test.ts": {
-    "mtime": 1789633621.5578058,
+    "mtime": 1789664560.4467373,
     "ast_hash": "53d137a7eef683d6afcd028e2a17dba2",
     "semantic_hash": ""
   },

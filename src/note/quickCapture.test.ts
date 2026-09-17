@@ -226,6 +226,18 @@ describe('resolveQuickCaptureTarget', () => {
 			resolveQuickCaptureTarget(fakeSettings({ currentDeck: 'Japanese' })),
 		).toBeNull();
 	});
+
+	it('returns null when current is unset and only defaultDeck is set (defaultModel missing)', () => {
+		expect(
+			resolveQuickCaptureTarget(fakeSettings({ defaultDeck: 'Japanese' })),
+		).toBeNull();
+	});
+
+	it('returns null when current is unset and only defaultModel is set (defaultDeck missing)', () => {
+		expect(
+			resolveQuickCaptureTarget(fakeSettings({ defaultModel: 'Basic' })),
+		).toBeNull();
+	});
 });
 
 describe('getUniqueNotePath', () => {
