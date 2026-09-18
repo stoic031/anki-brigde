@@ -37,13 +37,35 @@ chỉ cần mở ra để xem/sửa).
 
 ### 7.2.1. Tab 1 — Note
 
+Thứ tự hiển thị: **Connection Status** (đầu tiên) → Deck → Model → Folder → Field
+checkboxes.
+
+**Connection Status:**
+
+```
+Status: ✅ Connected                              [🔄]
+AnkiConnect: http://localhost:8765
+```
+
+- Hiển thị trạng thái kết nối. Nút **🔄** (chỉ icon, không có chữ) là điểm refresh
+  **duy nhất** của cả Tab 1 — không còn nút Refresh riêng ở Deck/Model, và không còn
+  nút "Test Connection" tách biệt. Bấm 🔄 sẽ:
+  1. Kiểm tra lại kết nối AnkiConnect (cập nhật dòng Status).
+  2. Reload danh sách Folder (mục dưới) — luôn chạy, vì không gọi AnkiConnect nên
+     không phụ thuộc kết quả bước 1. Đây cũng là cách duy nhất để một folder vừa tạo
+     trong Obsidian xuất hiện trong dropdown mà không cần đóng/mở lại Sidebar.
+  3. Nếu bước 1 kết nối thành công → reload Deck, Model, và Field checkboxes. Nếu
+     Anki vẫn chưa kết nối được, bỏ qua bước này (tránh báo lỗi lặp lại 3 lần cho
+     cùng một nguyên nhân).
+
 **Deck Dropdown:**
 
 ```
 Select Deck: [Japanese::N2 ▼]
 ```
 
-- Populate từ API `deckNames`. Nút "🔄 Refresh" bên cạnh để reload danh sách.
+- Populate từ API `deckNames`. Không có nút Refresh riêng — dùng nút 🔄 ở Connection
+  Status.
 
 **Model Dropdown:**
 
@@ -51,17 +73,32 @@ Select Deck: [Japanese::N2 ▼]
 Select Model: [Basic (and reversed card) ▼]
 ```
 
-- Populate từ API `modelNames`. Nút "🔄 Refresh" bên cạnh.
+- Populate từ API `modelNames`. Không có nút Refresh riêng — dùng nút 🔄 ở Connection
+  Status.
 
 **Folder select (lưu note mới):**
 
 ```
 Save notes to: [/ (vault root) ▼]
+        Japanese
+          N2
+            Vocab
 ```
 
 - Mặc định = folder của note đang active tại thời điểm mở modal; nếu không có note
   nào đang active (VD mở Obsidian lần đầu) → mặc định vault root (`/`).
 - User đổi giá trị này sẽ áp dụng cho lần tạo note tiếp theo qua §7.3.
+- Folder lồng nhau hiển thị dạng cây: mỗi dòng chỉ hiện **tên riêng** của folder (không
+  lặp lại full path), thụt lề theo độ sâu, nhóm folder con ngay dưới folder cha —
+  không sắp theo kiểu so sánh chuỗi full path (dễ sai thứ tự khi có folder tên gần
+  giống, VD "Japanese Advanced" so với "Japanese/N2").
+- Refresh qua nút 🔄 ở Connection Status (không có nút Refresh riêng), nên tạo folder
+  mới trong Obsidian rồi bấm 🔄 sẽ thấy folder đó ngay trong dropdown.
+- Nếu user đã chọn tường minh `/ (vault root)`, giá trị này **không** bị bấm 🔄 ghi đè
+  lại thành folder của note đang active — chỉ khi nào Folder thật sự chưa từng được
+  chọn (hoặc folder đã chọn trước đó bị xoá) thì mới tự suy ra lại từ note đang active.
+  Lựa chọn tường minh chỉ tồn tại trong phiên Sidebar hiện tại; đóng rồi mở lại Sidebar
+  (tạo lại view mới) thì hành vi suy ra mặc định ở dòng trên vẫn áp dụng như cũ.
 
 **Field checkboxes (Generate with AI):**
 
@@ -76,15 +113,6 @@ Fields to generate with AI:
 - Đây là field mà nút "🤖 Generate with AI" trong note-controls sẽ nhắm tới — xem
   [`03-note.md`](03-note.md) §3.2. Không tick field nào → nút Generate with AI coi như
   chưa cấu hình (xem §7.4 và 03-note.md §3.2).
-
-**Connection Status:**
-
-```
-Status: ✅ Connected
-AnkiConnect: http://localhost:8765
-```
-
-- Hiển thị trạng thái kết nối. Nút "Test Connection" để kiểm tra lại.
 
 ### 7.2.2. Tab 2 — Audio
 
