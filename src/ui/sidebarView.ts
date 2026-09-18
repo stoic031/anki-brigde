@@ -158,6 +158,9 @@ export class SidebarView extends ItemView {
 
 		if (!(activeFile instanceof TFile) || !isSynced) {
 			await this.applySelectionChange(key, value);
+			if (activeFile instanceof TFile) {
+				await this.writeDeckModelFrontmatterField(activeFile, key, value, false);
+			}
 			return;
 		}
 
@@ -190,11 +193,25 @@ export class SidebarView extends ItemView {
 		value: string,
 	): Promise<void> {
 		await this.applySelectionChange(key, value);
+		await this.writeDeckModelFrontmatterField(activeFile, key, value, true);
+	}
+
+	// Shared by applyDeckModelUpdate (synced "Update" path, clears anki_note_id to
+	// force a new Anki note on next sync) and the unsynced path in
+	// handleSelectionChange (docs/design/scenarios.md Scenario 4's final paragraph /
+	// 07-sidebar.md §7.3 step [7] — unsynced notes overwrite frontmatter directly,
+	// with no anki_note_id to clear).
+	private async writeDeckModelFrontmatterField(
+		activeFile: TFile,
+		key: 'currentDeck' | 'currentModel',
+		value: string,
+		clearNoteId: boolean,
+	): Promise<void> {
 		const fieldUpdate: Partial<AnkiFrontmatter> =
 			key === 'currentDeck' ? { anki_deck: value } : { anki_model: value };
 		await writeAnkiFrontmatter(this.plugin.app, activeFile, {
 			...fieldUpdate,
-			anki_note_id: undefined,
+			...(clearNoteId ? { anki_note_id: undefined } : {}),
 		});
 	}
 

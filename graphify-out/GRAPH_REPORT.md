@@ -1,16 +1,16 @@
 # Graph Report - anki-bridge  (2026-09-18)
 
 ## Corpus Check
-- 92 files · ~58,219 words
+- 92 files · ~58,376 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 625 nodes · 927 edges · 81 communities (25 shown, 56 thin omitted)
+- 626 nodes · 930 edges · 81 communities (25 shown, 56 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 15 edges (avg confidence: 0.86)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `a20194ff`
+- Built from commit: `321b9e59`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -95,7 +95,7 @@
 - controlsBlock.ts
 
 ## God Nodes (most connected - your core abstractions)
-1. `SidebarView` - 21 edges
+1. `SidebarView` - 22 edges
 2. `Common Provider Interface (processText/generateAudio/generateImage)` - 20 edges
 3. `AnkiConnectClient` - 19 edges
 4. `AnkiBridgePlugin` - 17 edges
@@ -156,7 +156,7 @@ Nodes (7): Repo Layout (src/ module organization), AnkiFrontmatter interface, FI
 
 ### Community 5 - "types.ts"
 Cohesion: 0.06
-Nodes (32): AnkiConnectResponse, { requestUrl }, mapContentToFields(), stringifySectionValue(), extractSectionValue(), parseSections(), readAnkiFrontmatter(), file (+24 more)
+Nodes (31): { requestUrl }, mapContentToFields(), stringifySectionValue(), extractSectionValue(), parseSections(), readAnkiFrontmatter(), file, writeAnkiFrontmatter() (+23 more)
 
 ### Community 6 - "noteNameModal.test.ts"
 Cohesion: 0.09
@@ -214,7 +214,7 @@ Nodes (13): { deckModelWarningOpen, deckModelWarningCapture }, {
 
 ### Community 78 - "quickCapture.ts"
 Cohesion: 0.06
-Nodes (47): plugin, $schema, .opencode/plugins/graphify.js, AnkiBridgePlugin, { loadSettings, saveSettings }, { PluginBase, addCommandSpy }, { registerControlsBlock }, { registerSidebarView, revealSidebarView } (+39 more)
+Nodes (48): plugin, $schema, .opencode/plugins/graphify.js, AnkiBridgePlugin, { loadSettings, saveSettings }, { PluginBase, addCommandSpy }, { registerControlsBlock }, { registerSidebarView, revealSidebarView } (+40 more)
 
 ### Community 79 - "[1.0.0]"
 Cohesion: 0.40
@@ -237,7 +237,7 @@ Nodes (22): ALWAYS_VISIBLE_BUTTONS, ControlAction, ControlButtonSpec, DELETE_BUT
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `AnkiConnectClient` connect `SidebarView` to `quickCapture.ts`, `types.ts`, `controlsBlock.ts`?**
-  _High betweenness centrality (0.025) - this node is a cross-community bridge._
+  _High betweenness centrality (0.024) - this node is a cross-community bridge._
 - **Why does `AnkiBridgePlugin` connect `quickCapture.ts` to `settingsTab.test.ts`, `sidebarView.test.ts`, `SidebarView`?**
   _High betweenness centrality (0.023) - this node is a cross-community bridge._
 - **Why does `NoteNameModal` connect `noteNameModal.test.ts` to `quickCapture.ts`?**
