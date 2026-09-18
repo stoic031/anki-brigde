@@ -415,12 +415,12 @@
     "semantic_hash": ""
   },
   "src/ui/sidebarView.test.ts": {
-    "mtime": 1789724231.3727384,
-    "ast_hash": "e3e760eb0a2aa04fdd2306f50f8b495c",
+    "mtime": 1789724754.5721736,
+    "ast_hash": "1ea099d787c81959101bb9e5d96fc5f1",
     "semantic_hash": ""
   },
   "src/ui/sidebarView.ts": {
-    "mtime": 1789724211.6638582,
+    "mtime": 1789724602.2348163,
     "ast_hash": "feb8e24bdd5506a0343f70f16f2bead9",
     "semantic_hash": ""
   },

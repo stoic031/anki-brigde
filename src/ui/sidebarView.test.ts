@@ -1100,6 +1100,24 @@ describe('Deck/Model change warning', () => {
 		expect(saveSettings).toHaveBeenCalled();
 	});
 
+	it('applies the change when the modal calls onUpdate for the Model dropdown', async () => {
+		modelNamesMock.mockResolvedValue(['Basic', 'Cloze']);
+		const activeFile = fakeTFile();
+		const { plugin, saveSettings } = fakePlugin(
+			{ currentModel: 'Basic' },
+			{ activeFile, frontmatter: { anki_note_id: 123 } },
+		);
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+		await view.onOpen();
+		await settings[MODEL_IDX]?.dropdownComponents[0]?.triggerChange('Cloze');
+
+		deckModelWarningCapture.onUpdate?.();
+		await Promise.resolve();
+
+		expect(plugin.settings.currentModel).toBe('Cloze');
+		expect(saveSettings).toHaveBeenCalled();
+	});
+
 	it('overwrites anki_deck and clears anki_note_id on the active note when onUpdate fires for the Deck dropdown', async () => {
 		deckNamesMock.mockResolvedValue(['Japanese', 'Spanish']);
 		const activeFile = fakeTFile();
@@ -1173,6 +1191,41 @@ describe('Deck/Model change warning', () => {
 		expect(processFrontMatter).not.toHaveBeenCalled();
 	});
 
+	it('reverts the Model dropdown to the prior value when the modal calls onKeepOld', async () => {
+		modelNamesMock.mockResolvedValue(['Basic', 'Cloze']);
+		const activeFile = fakeTFile();
+		const { plugin, saveSettings } = fakePlugin(
+			{ currentModel: 'Basic' },
+			{ activeFile, frontmatter: { anki_note_id: 123 } },
+		);
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+		await view.onOpen();
+		saveSettings.mockClear();
+		await settings[MODEL_IDX]?.dropdownComponents[0]?.triggerChange('Cloze');
+
+		deckModelWarningCapture.onKeepOld?.();
+
+		expect(settings[MODEL_IDX]?.dropdownComponents[0]?.value).toBe('Basic');
+		expect(plugin.settings.currentModel).toBe('Basic');
+		expect(saveSettings).not.toHaveBeenCalled();
+	});
+
+	it('does not touch the active note frontmatter when the modal calls onKeepOld for the Model dropdown', async () => {
+		modelNamesMock.mockResolvedValue(['Basic', 'Cloze']);
+		const activeFile = fakeTFile();
+		const { plugin, processFrontMatter } = fakePlugin(
+			{ currentModel: 'Basic' },
+			{ activeFile, frontmatter: { anki_model: 'Basic', anki_note_id: 123 } },
+		);
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+		await view.onOpen();
+		await settings[MODEL_IDX]?.dropdownComponents[0]?.triggerChange('Cloze');
+
+		deckModelWarningCapture.onKeepOld?.();
+
+		expect(processFrontMatter).not.toHaveBeenCalled();
+	});
+
 	it('applies the change directly, without a modal, when the active file has no anki_note_id', async () => {
 		deckNamesMock.mockResolvedValue(['Japanese', 'Spanish']);
 		const activeFile = fakeTFile();
@@ -1222,6 +1275,22 @@ describe('Deck/Model change warning', () => {
 
 		expect(deckModelWarningOpen).not.toHaveBeenCalled();
 		expect(plugin.settings.currentDeck).toBe('Spanish');
+		expect(saveSettings).toHaveBeenCalled();
+		expect(processFrontMatter).not.toHaveBeenCalled();
+	});
+
+	it('applies the change directly, without a modal, when there is no active file (Model dropdown)', async () => {
+		modelNamesMock.mockResolvedValue(['Basic', 'Cloze']);
+		const { plugin, saveSettings, processFrontMatter } = fakePlugin({
+			currentModel: 'Basic',
+		});
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+		await view.onOpen();
+
+		await settings[MODEL_IDX]?.dropdownComponents[0]?.triggerChange('Cloze');
+
+		expect(deckModelWarningOpen).not.toHaveBeenCalled();
+		expect(plugin.settings.currentModel).toBe('Cloze');
 		expect(saveSettings).toHaveBeenCalled();
 		expect(processFrontMatter).not.toHaveBeenCalled();
 	});
