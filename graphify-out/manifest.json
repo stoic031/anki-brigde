@@ -175,12 +175,12 @@
     "semantic_hash": ""
   },
   "docs/design/06-settings.md": {
-    "mtime": 1789672704.5331123,
+    "mtime": 1789723187.3559592,
     "ast_hash": "3078b522b8212e0624ddc7d0e17e34fb",
     "semantic_hash": ""
   },
   "docs/design/07-sidebar.md": {
-    "mtime": 1789672715.2227094,
+    "mtime": 1789723187.356169,
     "ast_hash": "528e7ef02dc5111c19b920b54008fb11",
     "semantic_hash": ""
   },
@@ -335,12 +335,12 @@
     "semantic_hash": ""
   },
   "src/ui/settingsTab.test.ts": {
-    "mtime": 1789721740.7341774,
+    "mtime": 1789723187.360856,
     "ast_hash": "aa93733a2a6ab72320968afcef02efde",
     "semantic_hash": ""
   },
   "src/ui/settingsTab.ts": {
-    "mtime": 1789672526.4638991,
+    "mtime": 1789723187.3610623,
     "ast_hash": "5dc1600a097b8b5bf5ffea37a05111cc",
     "semantic_hash": ""
   },
@@ -415,13 +415,13 @@
     "semantic_hash": ""
   },
   "src/ui/sidebarView.test.ts": {
-    "mtime": 1789721761.8867414,
-    "ast_hash": "eb459ed5a32f7bf660c5f30d17e42dde",
+    "mtime": 1789723454.1476085,
+    "ast_hash": "ebc21caf3da0bd5c3c5f5c3466abb7b1",
     "semantic_hash": ""
   },
   "src/ui/sidebarView.ts": {
-    "mtime": 1789672507.155787,
-    "ast_hash": "36988b905c74b979d13cacbed5fe1e24",
+    "mtime": 1789723317.414896,
+    "ast_hash": "c2a8d09b0191ef3bf85bc7193e1514e3",
     "semantic_hash": ""
   },
   "src/note/createNote.test.ts": {
@@ -465,12 +465,12 @@
     "semantic_hash": ""
   },
   "src/utils/folderTree.test.ts": {
-    "mtime": 1789721722.6452782,
+    "mtime": 1789723187.3616269,
     "ast_hash": "28a8628f7a13e86b124faa6d5203d766",
     "semantic_hash": ""
   },
   "src/utils/folderTree.ts": {
-    "mtime": 1789721710.048689,
+    "mtime": 1789723187.3618052,
     "ast_hash": "3b6b4a4df4f5670c9a5feded43d6adae",
     "semantic_hash": ""
   }
