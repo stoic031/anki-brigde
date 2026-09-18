@@ -1176,7 +1176,7 @@ describe('Deck/Model change warning', () => {
 	it('applies the change directly, without a modal, when the active file has no anki_note_id', async () => {
 		deckNamesMock.mockResolvedValue(['Japanese', 'Spanish']);
 		const activeFile = fakeTFile();
-		const { plugin, saveSettings } = fakePlugin(
+		const { plugin, saveSettings, frontmatter } = fakePlugin(
 			{ currentDeck: 'Japanese' },
 			{ activeFile, frontmatter: { anki_deck: 'Japanese' } },
 		);
@@ -1188,11 +1188,33 @@ describe('Deck/Model change warning', () => {
 		expect(deckModelWarningOpen).not.toHaveBeenCalled();
 		expect(plugin.settings.currentDeck).toBe('Spanish');
 		expect(saveSettings).toHaveBeenCalled();
+		expect(frontmatter.anki_deck).toBe('Spanish');
+		expect(frontmatter.anki_note_id).toBeUndefined();
+	});
+
+	it('overwrites anki_model directly, without a modal, when the Model dropdown changes on a note with no anki_note_id', async () => {
+		modelNamesMock.mockResolvedValue(['Basic', 'Cloze']);
+		const activeFile = fakeTFile();
+		const { plugin, frontmatter } = fakePlugin(
+			{ currentModel: 'Basic' },
+			{ activeFile, frontmatter: { anki_model: 'Basic' } },
+		);
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+		await view.onOpen();
+
+		await settings[MODEL_IDX]?.dropdownComponents[0]?.triggerChange('Cloze');
+
+		expect(deckModelWarningOpen).not.toHaveBeenCalled();
+		expect(plugin.settings.currentModel).toBe('Cloze');
+		expect(frontmatter.anki_model).toBe('Cloze');
+		expect(frontmatter.anki_note_id).toBeUndefined();
 	});
 
 	it('applies the change directly, without a modal, when there is no active file', async () => {
 		deckNamesMock.mockResolvedValue(['Japanese', 'Spanish']);
-		const { plugin, saveSettings } = fakePlugin({ currentDeck: 'Japanese' });
+		const { plugin, saveSettings, processFrontMatter } = fakePlugin({
+			currentDeck: 'Japanese',
+		});
 		const view = new SidebarView({} as WorkspaceLeaf, plugin);
 		await view.onOpen();
 
@@ -1201,6 +1223,7 @@ describe('Deck/Model change warning', () => {
 		expect(deckModelWarningOpen).not.toHaveBeenCalled();
 		expect(plugin.settings.currentDeck).toBe('Spanish');
 		expect(saveSettings).toHaveBeenCalled();
+		expect(processFrontMatter).not.toHaveBeenCalled();
 	});
 });
 
