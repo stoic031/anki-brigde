@@ -273,6 +273,8 @@ function fakeApp(
 	app: App;
 	getAllFolders: ReturnType<typeof vi.fn>;
 	getActiveFile: ReturnType<typeof vi.fn>;
+	processFrontMatter: ReturnType<typeof vi.fn>;
+	frontmatter: Record<string, unknown>;
 } {
 	const {
 		folders = [fakeRoot],
@@ -288,6 +290,17 @@ function fakeApp(
 				: { parent: activeFileParent };
 	const getAllFolders = vi.fn().mockReturnValue(folders);
 	const getActiveFile = vi.fn().mockReturnValue(resolvedActiveFile);
+	const liveFrontmatter: Record<string, unknown> = { ...frontmatter };
+	// Returned as a plain local (not read back off `app`) so assertions like
+	// `expect(processFrontMatter).not.toHaveBeenCalled()` don't trip
+	// @typescript-eslint/unbound-method.
+	const processFrontMatter = vi
+		.fn()
+		.mockImplementation(
+			async (_file: unknown, fn: (fm: Record<string, unknown>) => void) => {
+				fn(liveFrontmatter);
+			},
+		);
 	const app = {
 		vault: { getAllFolders },
 		workspace: { getActiveFile },
@@ -296,8 +309,15 @@ function fakeApp(
 				.fn()
 				.mockReturnValue(frontmatter ? { frontmatter } : null),
 		},
+		fileManager: { processFrontMatter },
 	} as unknown as App;
-	return { app, getAllFolders, getActiveFile };
+	return {
+		app,
+		getAllFolders,
+		getActiveFile,
+		processFrontMatter,
+		frontmatter: liveFrontmatter,
+	};
 }
 
 function fakeTFile(overrides: Record<string, unknown> = {}): TFile {
@@ -315,15 +335,25 @@ function fakePlugin(
 	saveSettings: ReturnType<typeof vi.fn>;
 	getAllFolders: ReturnType<typeof vi.fn>;
 	getActiveFile: ReturnType<typeof vi.fn>;
+	processFrontMatter: ReturnType<typeof vi.fn>;
+	frontmatter: Record<string, unknown>;
 } {
 	const saveSettings = vi.fn().mockResolvedValue(undefined);
-	const { app, getAllFolders, getActiveFile } = fakeApp(appOptions);
+	const { app, getAllFolders, getActiveFile, processFrontMatter, frontmatter } =
+		fakeApp(appOptions);
 	const plugin = {
 		app,
 		settings: fakeSettings(overrides),
 		saveSettings,
 	} as unknown as AnkiBridgePlugin;
-	return { plugin, saveSettings, getAllFolders, getActiveFile };
+	return {
+		plugin,
+		saveSettings,
+		getAllFolders,
+		getActiveFile,
+		processFrontMatter,
+		frontmatter,
+	};
 }
 
 // Setting row order in Tab 1: Connection Status (0), Deck (1), Model (2), Folder (3),
@@ -1070,6 +1100,44 @@ describe('Deck/Model change warning', () => {
 		expect(saveSettings).toHaveBeenCalled();
 	});
 
+	it('overwrites anki_deck and clears anki_note_id on the active note when onUpdate fires for the Deck dropdown', async () => {
+		deckNamesMock.mockResolvedValue(['Japanese', 'Spanish']);
+		const activeFile = fakeTFile();
+		const { plugin, frontmatter } = fakePlugin(
+			{ currentDeck: 'Japanese' },
+			{ activeFile, frontmatter: { anki_deck: 'Japanese', anki_note_id: 123 } },
+		);
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+		await view.onOpen();
+		await settings[DECK_IDX]?.dropdownComponents[0]?.triggerChange('Spanish');
+
+		deckModelWarningCapture.onUpdate?.();
+
+		await vi.waitFor(() => {
+			expect(frontmatter.anki_deck).toBe('Spanish');
+		});
+		expect(frontmatter.anki_note_id).toBeUndefined();
+	});
+
+	it('overwrites anki_model and clears anki_note_id on the active note when onUpdate fires for the Model dropdown', async () => {
+		modelNamesMock.mockResolvedValue(['Basic', 'Cloze']);
+		const activeFile = fakeTFile();
+		const { plugin, frontmatter } = fakePlugin(
+			{ currentModel: 'Basic' },
+			{ activeFile, frontmatter: { anki_model: 'Basic', anki_note_id: 123 } },
+		);
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+		await view.onOpen();
+		await settings[MODEL_IDX]?.dropdownComponents[0]?.triggerChange('Cloze');
+
+		deckModelWarningCapture.onUpdate?.();
+
+		await vi.waitFor(() => {
+			expect(frontmatter.anki_model).toBe('Cloze');
+		});
+		expect(frontmatter.anki_note_id).toBeUndefined();
+	});
+
 	it('reverts the dropdown to the prior value when the modal calls onKeepOld', async () => {
 		deckNamesMock.mockResolvedValue(['Japanese', 'Spanish']);
 		const activeFile = fakeTFile();
@@ -1087,6 +1155,22 @@ describe('Deck/Model change warning', () => {
 		expect(settings[DECK_IDX]?.dropdownComponents[0]?.value).toBe('Japanese');
 		expect(plugin.settings.currentDeck).toBe('Japanese');
 		expect(saveSettings).not.toHaveBeenCalled();
+	});
+
+	it('does not touch the active note frontmatter when the modal calls onKeepOld', async () => {
+		deckNamesMock.mockResolvedValue(['Japanese', 'Spanish']);
+		const activeFile = fakeTFile();
+		const { plugin, processFrontMatter } = fakePlugin(
+			{ currentDeck: 'Japanese' },
+			{ activeFile, frontmatter: { anki_deck: 'Japanese', anki_note_id: 123 } },
+		);
+		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+		await view.onOpen();
+		await settings[DECK_IDX]?.dropdownComponents[0]?.triggerChange('Spanish');
+
+		deckModelWarningCapture.onKeepOld?.();
+
+		expect(processFrontMatter).not.toHaveBeenCalled();
 	});
 
 	it('applies the change directly, without a modal, when the active file has no anki_note_id', async () => {

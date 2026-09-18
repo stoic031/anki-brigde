@@ -816,8 +816,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_main_test",
-      "community": 78,
-      "community_name": "quickCapture.ts",
+      "community": 14,
+      "community_name": "main.test.ts",
       "norm_label": "main.test.ts"
     },
     {
@@ -827,8 +827,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "src_main_test_pluginbase_addcommandspy",
-      "community": 78,
-      "community_name": "quickCapture.ts",
+      "community": 14,
+      "community_name": "main.test.ts",
       "norm_label": "{ pluginbase, addcommandspy }"
     },
     {
@@ -838,8 +838,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_main_test_loadsettings_savesettings",
-      "community": 78,
-      "community_name": "quickCapture.ts",
+      "community": 14,
+      "community_name": "main.test.ts",
       "norm_label": "{ loadsettings, savesettings }"
     },
     {
@@ -849,8 +849,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "src_main_test_registercontrolsblock",
-      "community": 78,
-      "community_name": "quickCapture.ts",
+      "community": 14,
+      "community_name": "main.test.ts",
       "norm_label": "{ registercontrolsblock }"
     },
     {
@@ -860,8 +860,8 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "src_main_test_runquickcapture",
-      "community": 78,
-      "community_name": "quickCapture.ts",
+      "community": 14,
+      "community_name": "main.test.ts",
       "norm_label": "{ runquickcapture }"
     },
     {
@@ -871,8 +871,8 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "src_main_test_runcreatenote",
-      "community": 78,
-      "community_name": "quickCapture.ts",
+      "community": 14,
+      "community_name": "main.test.ts",
       "norm_label": "{ runcreatenote }"
     },
     {
@@ -882,8 +882,8 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "src_main_test_registersidebarview_revealsidebarview",
-      "community": 78,
-      "community_name": "quickCapture.ts",
+      "community": 14,
+      "community_name": "main.test.ts",
       "norm_label": "{ registersidebarview, revealsidebarview }"
     },
     {
@@ -1245,8 +1245,8 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "src_note_controlsblock_registercontrolsblock",
-      "community": 86,
-      "community_name": "controlsBlock.ts",
+      "community": 78,
+      "community_name": "quickCapture.ts",
       "norm_label": "registercontrolsblock()"
     },
     {
@@ -1751,8 +1751,8 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "src_settings_resolveankiconnecturl",
-      "community": 7,
-      "community_name": "SidebarView",
+      "community": 78,
+      "community_name": "quickCapture.ts",
       "norm_label": "resolveankiconnecturl()"
     },
     {
@@ -3527,10 +3527,21 @@
       "norm_label": "fakefolder"
     },
     {
+      "label": "fakeRoot",
+      "file_type": "code",
+      "source_file": "src/ui/settingsTab.test.ts",
+      "source_location": "L191",
+      "_origin": "ast",
+      "id": "src_ui_settingstab_test_fakeroot",
+      "community": 15,
+      "community_name": "settingsTab.test.ts",
+      "norm_label": "fakeroot"
+    },
+    {
       "label": "fakePlugin()",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L201",
+      "source_location": "L209",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_fakeplugin",
       "community": 15,
@@ -3541,7 +3552,7 @@
       "label": "renderAndConnect()",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L299",
+      "source_location": "L307",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_renderandconnect",
       "community": 15,
@@ -3956,10 +3967,21 @@
       "norm_label": "fakefolder"
     },
     {
+      "label": "fakeRoot",
+      "file_type": "code",
+      "source_file": "src/ui/sidebarView.test.ts",
+      "source_location": "L247",
+      "_origin": "ast",
+      "id": "src_ui_sidebarview_test_fakeroot",
+      "community": 77,
+      "community_name": "sidebarView.test.ts",
+      "norm_label": "fakeroot"
+    },
+    {
       "label": "fakeApp()",
       "file_type": "code",
       "source_file": "src/ui/sidebarView.test.ts",
-      "source_location": "L257",
+      "source_location": "L265",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_fakeapp",
       "community": 77,
@@ -3970,7 +3992,7 @@
       "label": "fakeTFile()",
       "file_type": "code",
       "source_file": "src/ui/sidebarView.test.ts",
-      "source_location": "L295",
+      "source_location": "L303",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_faketfile",
       "community": 77,
@@ -3981,7 +4003,7 @@
       "label": "fakePlugin()",
       "file_type": "code",
       "source_file": "src/ui/sidebarView.test.ts",
-      "source_location": "L302",
+      "source_location": "L310",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_fakeplugin",
       "community": 77,
@@ -4328,6 +4350,17 @@
       "community": 86,
       "community_name": "controlsBlock.ts",
       "norm_label": "fakefolder"
+    },
+    {
+      "label": "fakeRoot",
+      "file_type": "code",
+      "source_file": "src/utils/folderTree.test.ts",
+      "source_location": "L13",
+      "_origin": "ast",
+      "id": "src_utils_foldertree_test_fakeroot",
+      "community": 86,
+      "community_name": "controlsBlock.ts",
+      "norm_label": "fakeroot"
     },
     {
       "label": "folderTree.ts",
@@ -13876,7 +13909,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L192",
+      "source_location": "L200",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test",
@@ -13887,11 +13920,22 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L201",
+      "source_location": "L209",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test",
       "target": "src_ui_settingstab_test_fakeplugin",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/settingsTab.test.ts",
+      "source_location": "L191",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_settingstab_test",
+      "target": "src_ui_settingstab_test_fakeroot",
       "confidence_score": 1.0
     },
     {
@@ -13931,7 +13975,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L299",
+      "source_location": "L307",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test",
@@ -14208,7 +14252,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L304",
+      "source_location": "L312",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test_renderandconnect",
@@ -14220,7 +14264,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L300",
+      "source_location": "L308",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test_renderandconnect",
@@ -14233,7 +14277,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L304",
+      "source_location": "L312",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test_renderandconnect",
@@ -14570,7 +14614,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.test.ts",
-      "source_location": "L257",
+      "source_location": "L265",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_test",
@@ -14603,7 +14647,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.test.ts",
-      "source_location": "L248",
+      "source_location": "L256",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_test",
@@ -14614,11 +14658,22 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.test.ts",
-      "source_location": "L302",
+      "source_location": "L310",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_test",
       "target": "src_ui_sidebarview_test_fakeplugin",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/sidebarView.test.ts",
+      "source_location": "L247",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_sidebarview_test",
+      "target": "src_ui_sidebarview_test_fakeroot",
       "confidence_score": 1.0
     },
     {
@@ -14647,7 +14702,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.test.ts",
-      "source_location": "L295",
+      "source_location": "L303",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_test",
@@ -14890,7 +14945,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.test.ts",
-      "source_location": "L315",
+      "source_location": "L323",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_test_fakeplugin",
@@ -14902,7 +14957,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.test.ts",
-      "source_location": "L312",
+      "source_location": "L320",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_test_fakeplugin",
@@ -15584,11 +15639,22 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/utils/folderTree.test.ts",
-      "source_location": "L10",
+      "source_location": "L20",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_utils_foldertree_test",
       "target": "src_utils_foldertree_test_fakefolder",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/utils/folderTree.test.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_utils_foldertree_test",
+      "target": "src_utils_foldertree_test_fakeroot",
       "confidence_score": 1.0
     },
     {
@@ -18045,5 +18111,5 @@
       "source_file": ".opencode/skills/graphify/SKILL.md"
     }
   ],
-  "built_at_commit": "f5bf0e15f973fa673f98911961eea7b428339b03"
+  "built_at_commit": "2d99799e9774373389e1c74613603bb34884fea8"
 }

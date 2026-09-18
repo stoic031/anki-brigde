@@ -9,8 +9,9 @@ import {
 } from 'obsidian';
 import type AnkiBridgePlugin from '../main';
 import { AnkiConnectClient } from '../sync/ankiConnect';
-import { readAnkiFrontmatter } from '../sync/parser';
+import { readAnkiFrontmatter, writeAnkiFrontmatter } from '../sync/parser';
 import { fieldConfigKey, resolveAnkiConnectUrl } from '../settings';
+import type { AnkiFrontmatter } from '../types';
 import { buildFolderTreeEntries } from '../utils/folderTree';
 import { toastError } from './toast';
 import { DeckModelChangeWarningModal } from './modals/deckModelChangeWarning';
@@ -155,7 +156,7 @@ export class SidebarView extends ItemView {
 			activeFile instanceof TFile &&
 			readAnkiFrontmatter(this.plugin.app, activeFile)?.anki_note_id !== undefined;
 
-		if (!isSynced) {
+		if (!(activeFile instanceof TFile) || !isSynced) {
 			await this.applySelectionChange(key, value);
 			return;
 		}
@@ -167,7 +168,7 @@ export class SidebarView extends ItemView {
 			() => {
 				dropdown.setValue(this.plugin.settings[key]);
 			},
-			() => void this.applySelectionChange(key, value),
+			() => void this.applyDeckModelUpdate(activeFile, key, value),
 		).open();
 	}
 
@@ -178,6 +179,23 @@ export class SidebarView extends ItemView {
 		this.plugin.settings[key] = value;
 		await this.plugin.saveSettings();
 		await this.renderFieldCheckboxes();
+	}
+
+	// docs/design/scenarios.md Scenario 4 — "Update": overwrite the changed field in
+	// the active (already-synced) note's own frontmatter and clear anki_note_id, so
+	// the next sync creates a new Anki note instead of updating the old one.
+	private async applyDeckModelUpdate(
+		activeFile: TFile,
+		key: 'currentDeck' | 'currentModel',
+		value: string,
+	): Promise<void> {
+		await this.applySelectionChange(key, value);
+		const fieldUpdate: Partial<AnkiFrontmatter> =
+			key === 'currentDeck' ? { anki_deck: value } : { anki_model: value };
+		await writeAnkiFrontmatter(this.plugin.app, activeFile, {
+			...fieldUpdate,
+			anki_note_id: undefined,
+		});
 	}
 
 	// docs/design/07-sidebar.md §7.2.1 — Folder select. Populated from the vault, not
