@@ -3,6 +3,7 @@ import { Notice, PluginSettingTab, Setting } from 'obsidian';
 import type AnkiBridgePlugin from '../main';
 import { DEFAULT_ANKI_CONNECT_URL } from '../utils/constants';
 import { isValidUrl } from '../utils/validation';
+import { buildFolderTreeEntries } from '../utils/folderTree';
 import { resolveAnkiConnectUrl } from '../settings';
 import { AnkiConnectClient } from '../sync/ankiConnect';
 import { toastError, toastSuccess } from './toast';
@@ -99,13 +100,12 @@ function renderDefaultFolderDropdown(
 	plugin: AnkiBridgePlugin,
 ): void {
 	new Setting(containerEl).setName('Save notes to').addDropdown((dropdown) => {
-		const folders = plugin.app.vault.getAllFolders(true);
+		const folders = plugin.app.vault
+			.getAllFolders(true)
+			.filter((folder) => !folder.isRoot());
 		const entries = [
 			{ value: '', label: '/ (vault root)' },
-			...folders
-				.filter((folder) => !folder.isRoot())
-				.map((folder) => ({ value: folder.path, label: folder.path }))
-				.sort((a, b) => a.value.localeCompare(b.value)),
+			...buildFolderTreeEntries(folders),
 		];
 		for (const { value, label } of entries) {
 			dropdown.addOption(value, label);
@@ -113,8 +113,7 @@ function renderDefaultFolderDropdown(
 
 		const current = plugin.settings.defaultFolder;
 		const currentExists =
-			current !== '' &&
-			folders.some((folder) => !folder.isRoot() && folder.path === current);
+			current !== '' && folders.some((folder) => folder.path === current);
 		if (currentExists) {
 			dropdown.setValue(current);
 		}

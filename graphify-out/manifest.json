@@ -175,13 +175,13 @@
     "semantic_hash": ""
   },
   "docs/design/06-settings.md": {
-    "mtime": 1786267729.4961514,
-    "ast_hash": "14f6edd5c3e14ecd9c1ca711c05c2c5e",
+    "mtime": 1789723187.3559592,
+    "ast_hash": "3078b522b8212e0624ddc7d0e17e34fb",
     "semantic_hash": ""
   },
   "docs/design/07-sidebar.md": {
-    "mtime": 1789633187.5377603,
-    "ast_hash": "f8b87d463890cb60bc639da0040c60af",
+    "mtime": 1789723187.356169,
+    "ast_hash": "528e7ef02dc5111c19b920b54008fb11",
     "semantic_hash": ""
   },
   "docs/design/README.md": {
@@ -335,13 +335,13 @@
     "semantic_hash": ""
   },
   "src/ui/settingsTab.test.ts": {
-    "mtime": 1789667801.5157285,
-    "ast_hash": "63a973e44ce85ceb07df6df05daf8f72",
+    "mtime": 1789723187.360856,
+    "ast_hash": "aa93733a2a6ab72320968afcef02efde",
     "semantic_hash": ""
   },
   "src/ui/settingsTab.ts": {
-    "mtime": 1789667801.515991,
-    "ast_hash": "7d4c650682b93b3767bec57e28301949",
+    "mtime": 1789723187.3610623,
+    "ast_hash": "5dc1600a097b8b5bf5ffea37a05111cc",
     "semantic_hash": ""
   },
   "src/utils/constants.ts": {
@@ -415,13 +415,13 @@
     "semantic_hash": ""
   },
   "src/ui/sidebarView.test.ts": {
-    "mtime": 1789669355.4295208,
-    "ast_hash": "49d08dc796a25efbbd14d1a5b2d5204d",
+    "mtime": 1789724754.5721736,
+    "ast_hash": "1ea099d787c81959101bb9e5d96fc5f1",
     "semantic_hash": ""
   },
   "src/ui/sidebarView.ts": {
-    "mtime": 1789669547.9752786,
-    "ast_hash": "5787e7df8184304546f46bf5eda0bc7e",
+    "mtime": 1789724602.2348163,
+    "ast_hash": "feb8e24bdd5506a0343f70f16f2bead9",
     "semantic_hash": ""
   },
   "src/note/createNote.test.ts": {
@@ -452,6 +452,26 @@
   "src/note/aiPreCheck.ts": {
     "mtime": 1789667801.5138118,
     "ast_hash": "37c00afe6824789e42a0ff0d1d3a7a2a",
+    "semantic_hash": ""
+  },
+  "src/ui/modals/deckModelChangeWarning.test.ts": {
+    "mtime": 1789670039.7994664,
+    "ast_hash": "2dd0a1a00024bd0d9ff273aa103b803e",
+    "semantic_hash": ""
+  },
+  "src/ui/modals/deckModelChangeWarning.ts": {
+    "mtime": 1789670039.7995539,
+    "ast_hash": "53201614eef0b2914c672bd5680314dc",
+    "semantic_hash": ""
+  },
+  "src/utils/folderTree.test.ts": {
+    "mtime": 1789723187.3616269,
+    "ast_hash": "28a8628f7a13e86b124faa6d5203d766",
+    "semantic_hash": ""
+  },
+  "src/utils/folderTree.ts": {
+    "mtime": 1789723187.3618052,
+    "ast_hash": "3b6b4a4df4f5670c9a5feded43d6adae",
     "semantic_hash": ""
   }
 }

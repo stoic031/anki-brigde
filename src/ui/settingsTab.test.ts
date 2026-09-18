@@ -50,6 +50,7 @@ class FakeButtonComponent {
 
 class FakeDropdownComponent {
 	options: Record<string, string> = {};
+	optionOrder: string[] = [];
 	value = '';
 	selectEl: { empty: () => void };
 	private changeCb: ((v: string) => unknown) | null = null;
@@ -58,11 +59,13 @@ class FakeDropdownComponent {
 		this.selectEl = {
 			empty: () => {
 				this.options = {};
+				this.optionOrder = [];
 			},
 		};
 	}
 	addOption(value: string, display: string) {
 		this.options[value] = display;
+		this.optionOrder.push(value);
 		return this;
 	}
 	setValue(v: string) {
@@ -178,12 +181,34 @@ import { renderConnectionSection } from './settingsTab';
 // `expect(saveSettings).toHaveBeenCalled()` don't trip @typescript-eslint/unbound-method.
 interface FakeFolder {
 	path: string;
+	name: string;
+	parent: FakeFolder | null;
 	isRoot: () => boolean;
+}
+
+// Matches real Obsidian: vault.getRoot().path is "/", not "", and every top-level
+// folder's .parent is that root object, never null.
+const fakeRoot: FakeFolder = {
+	path: '/',
+	name: '',
+	parent: null,
+	isRoot: () => true,
+};
+
+// parent defaults to the vault root object. Pass an explicit parent to build nested
+// fixtures.
+function fakeFolder(path: string, parent: FakeFolder = fakeRoot): FakeFolder {
+	return {
+		path,
+		name: path.split('/').pop() ?? path,
+		parent,
+		isRoot: () => false,
+	};
 }
 
 function fakePlugin(
 	overrides: Partial<AnkiBridgeSettings> = {},
-	folderPaths: string[] = [],
+	folders: FakeFolder[] = [],
 ): {
 	plugin: AnkiBridgePlugin;
 	saveSettings: ReturnType<typeof vi.fn>;
@@ -200,16 +225,13 @@ function fakePlugin(
 		generateWithAiFields: {},
 		...overrides,
 	};
-	const folders: FakeFolder[] = [
-		{ path: '', isRoot: () => true },
-		...folderPaths.map((path) => ({ path, isRoot: () => false })),
-	];
+	const allFolders: FakeFolder[] = [fakeRoot, ...folders];
 	const plugin = {
 		settings,
 		saveSettings,
 		app: {
 			vault: {
-				getAllFolders: () => folders,
+				getAllFolders: () => allFolders,
 			},
 		},
 	} as unknown as AnkiBridgePlugin;
@@ -425,7 +447,10 @@ describe('renderConnectionSection — Connect button', () => {
 
 describe('renderConnectionSection — Save notes to folder', () => {
 	it('renders immediately with the vault root option, no Connect needed', () => {
-		const { plugin } = fakePlugin({}, ['Vocab', 'Anki Notes']);
+		const { plugin } = fakePlugin(
+			{},
+			[fakeFolder('Vocab'), fakeFolder('Anki Notes')],
+		);
 
 		renderConnectionSection(fakeDiv() as unknown as HTMLElement, plugin);
 
@@ -439,7 +464,10 @@ describe('renderConnectionSection — Save notes to folder', () => {
 	});
 
 	it('pre-selects a saved defaultFolder if it still exists', () => {
-		const { plugin } = fakePlugin({ defaultFolder: 'Vocab' }, ['Vocab']);
+		const { plugin } = fakePlugin(
+			{ defaultFolder: 'Vocab' },
+			[fakeFolder('Vocab')],
+		);
 
 		renderConnectionSection(fakeDiv() as unknown as HTMLElement, plugin);
 
@@ -447,7 +475,10 @@ describe('renderConnectionSection — Save notes to folder', () => {
 	});
 
 	it('leaves the saved defaultFolder unselected if it no longer exists', () => {
-		const { plugin } = fakePlugin({ defaultFolder: 'Deleted' }, ['Vocab']);
+		const { plugin } = fakePlugin(
+			{ defaultFolder: 'Deleted' },
+			[fakeFolder('Vocab')],
+		);
 
 		renderConnectionSection(fakeDiv() as unknown as HTMLElement, plugin);
 
@@ -455,12 +486,47 @@ describe('renderConnectionSection — Save notes to folder', () => {
 	});
 
 	it('persists the selection when the user picks a folder', async () => {
-		const { plugin, saveSettings } = fakePlugin({}, ['Vocab']);
+		const { plugin, saveSettings } = fakePlugin({}, [fakeFolder('Vocab')]);
 
 		renderConnectionSection(fakeDiv() as unknown as HTMLElement, plugin);
 		await settings[3]?.dropdownComponents[0]?.triggerChange('Vocab');
 
 		expect(plugin.settings.defaultFolder).toBe('Vocab');
 		expect(saveSettings).toHaveBeenCalledTimes(1);
+	});
+
+	it('indents nested folders by depth and shows only each folder’s own name', () => {
+		const INDENT = '  ';
+		const japanese = fakeFolder('Japanese');
+		const n2 = fakeFolder('Japanese/N2', japanese);
+		const vocab = fakeFolder('Japanese/N2/Vocab', n2);
+		const { plugin } = fakePlugin({}, [japanese, n2, vocab]);
+
+		renderConnectionSection(fakeDiv() as unknown as HTMLElement, plugin);
+
+		expect(settings[3]?.dropdownComponents[0]?.options).toEqual({
+			'': '/ (vault root)',
+			'Japanese': 'Japanese',
+			'Japanese/N2': `${INDENT}N2`,
+			'Japanese/N2/Vocab': `${INDENT}${INDENT}Vocab`,
+		});
+	});
+
+	it('does not let a sibling folder wedge between a parent and its own child (path-string sort bug)', () => {
+		// Same regression this dropdown shares with sidebarView.ts's, since both now
+		// use the shared buildFolderTreeEntries() helper: "Japanese Advanced" (space,
+		// 0x20) sorts before "Japanese/N2" (slash, 0x2F) under plain path-string
+		// comparison, even though Japanese/N2 is a child of the unrelated "Japanese"
+		// folder.
+		const japanese = fakeFolder('Japanese');
+		const japaneseAdvanced = fakeFolder('Japanese Advanced');
+		const n2 = fakeFolder('Japanese/N2', japanese);
+		const { plugin } = fakePlugin({}, [japaneseAdvanced, japanese, n2]);
+
+		renderConnectionSection(fakeDiv() as unknown as HTMLElement, plugin);
+
+		expect(
+			settings[3]?.dropdownComponents[0]?.optionOrder,
+		).toEqual(['', 'Japanese', 'Japanese/N2', 'Japanese Advanced']);
 	});
 });

@@ -4,12 +4,17 @@ import {
 	DropdownComponent,
 	ItemView,
 	Setting,
+	TFile,
 	WorkspaceLeaf,
 } from 'obsidian';
 import type AnkiBridgePlugin from '../main';
 import { AnkiConnectClient } from '../sync/ankiConnect';
+import { readAnkiFrontmatter, writeAnkiFrontmatter } from '../sync/parser';
 import { fieldConfigKey, resolveAnkiConnectUrl } from '../settings';
+import type { AnkiFrontmatter } from '../types';
+import { buildFolderTreeEntries } from '../utils/folderTree';
 import { toastError } from './toast';
+import { DeckModelChangeWarningModal } from './modals/deckModelChangeWarning';
 
 export const VIEW_TYPE_SIDEBAR = 'anki-bridge-sidebar';
 
@@ -19,9 +24,16 @@ export class SidebarView extends ItemView {
 	private deckDropdown?: DropdownComponent;
 	private modelDropdown?: DropdownComponent;
 	private folderDropdown?: DropdownComponent;
+	// Set once the user actually picks a value from the Folder dropdown — distinguishes
+	// an explicit "vault root" choice from '' just meaning "never customized," so a
+	// later 🔄 click (which re-runs populateFolderDropdown()) doesn't silently revert
+	// it back to the active note's folder. Deliberately not persisted: on a fresh
+	// SidebarView instance (e.g. after reopening the view), '' still means "unset" and
+	// re-derives from the active note, same as before this fix.
+	private folderExplicitlySelected = false;
 	private fieldsContainerEl?: HTMLElement;
 	private connectionStatusSetting?: Setting;
-	private testConnectionButton?: ButtonComponent;
+	private refreshButton?: ButtonComponent;
 
 	constructor(
 		leaf: WorkspaceLeaf,
@@ -45,6 +57,8 @@ export class SidebarView extends ItemView {
 	async onOpen(): Promise<void> {
 		this.contentEl.empty();
 		this.contentEl.createEl('h4', { text: 'Anki Bridge' });
+		this.renderConnectionStatus();
+		await this.testConnection();
 		this.renderDeckDropdown();
 		await this.refreshDecks();
 		this.renderModelDropdown();
@@ -55,36 +69,19 @@ export class SidebarView extends ItemView {
 			cls: 'anki-bridge-sidebar__field-checkboxes',
 		});
 		await this.renderFieldCheckboxes();
-		this.renderConnectionStatus();
-		await this.testConnection();
 	}
 
-	// docs/design/07-sidebar.md §7.2.1 — Deck dropdown + 🔄 Refresh.
+	// docs/design/07-sidebar.md §7.2.1 — Deck dropdown. Refresh is handled by the single
+	// 🔄 button on the Connection Status row (see renderConnectionStatus()), not per-dropdown.
 	private renderDeckDropdown(): void {
 		new Setting(this.contentEl)
 			.setName('Deck')
 			.addDropdown((dropdown) => {
 				this.deckDropdown = dropdown;
 				dropdown.onChange(async (value) => {
-					this.plugin.settings.currentDeck = value;
-					await this.plugin.saveSettings();
-					await this.renderFieldCheckboxes();
+					await this.handleSelectionChange('currentDeck', value, dropdown);
 				});
-			})
-			.addButton((btn) =>
-				btn
-					.setButtonText('🔄 Refresh')
-					.onClick(() => this.handleDeckRefreshClick()),
-			);
-	}
-
-	// Also re-renders the field checkboxes: if AnkiConnect was unreachable when the
-	// sidebar first opened, this is the recovery path back to a working state, since
-	// refreshDecks() alone only repopulates the dropdown (setValue() doesn't fire
-	// onChange, so nothing else would pick the reconnect up).
-	private async handleDeckRefreshClick(): Promise<void> {
-		await this.refreshDecks();
-		await this.renderFieldCheckboxes();
+			});
 	}
 
 	private async refreshDecks(): Promise<void> {
@@ -110,29 +107,17 @@ export class SidebarView extends ItemView {
 		}
 	}
 
-	// docs/design/07-sidebar.md §7.2.1 — Model dropdown + 🔄 Refresh.
+	// docs/design/07-sidebar.md §7.2.1 — Model dropdown. Refresh is handled by the single
+	// 🔄 button on the Connection Status row (see renderConnectionStatus()), not per-dropdown.
 	private renderModelDropdown(): void {
 		new Setting(this.contentEl)
 			.setName('Model')
 			.addDropdown((dropdown) => {
 				this.modelDropdown = dropdown;
 				dropdown.onChange(async (value) => {
-					this.plugin.settings.currentModel = value;
-					await this.plugin.saveSettings();
-					await this.renderFieldCheckboxes();
+					await this.handleSelectionChange('currentModel', value, dropdown);
 				});
-			})
-			.addButton((btn) =>
-				btn
-					.setButtonText('🔄 Refresh')
-					.onClick(() => this.handleModelRefreshClick()),
-			);
-	}
-
-	// See handleDeckRefreshClick() above — same reconnect-recovery reasoning.
-	private async handleModelRefreshClick(): Promise<void> {
-		await this.refreshModels();
-		await this.renderFieldCheckboxes();
+			});
 	}
 
 	private async refreshModels(): Promise<void> {
@@ -158,14 +143,89 @@ export class SidebarView extends ItemView {
 		}
 	}
 
+	// docs/design/scenarios.md Scenario 4 / docs/design/07-sidebar.md §7.3 — changing
+	// Deck/Model while the active note already has anki_note_id needs a warning modal
+	// instead of applying immediately; unsynced (or no active note) applies right away.
+	private async handleSelectionChange(
+		key: 'currentDeck' | 'currentModel',
+		value: string,
+		dropdown: DropdownComponent,
+	): Promise<void> {
+		const activeFile = this.plugin.app.workspace.getActiveFile();
+		const isSynced =
+			activeFile instanceof TFile &&
+			readAnkiFrontmatter(this.plugin.app, activeFile)?.anki_note_id !== undefined;
+
+		if (!(activeFile instanceof TFile) || !isSynced) {
+			await this.applySelectionChange(key, value);
+			if (activeFile instanceof TFile) {
+				await this.writeDeckModelFrontmatterField(activeFile, key, value, false);
+			}
+			return;
+		}
+
+		new DeckModelChangeWarningModal(
+			this.plugin.app,
+			// Keep old: settings[key] is still the pre-change value here, so this just
+			// puts the visible dropdown back where it was.
+			() => {
+				dropdown.setValue(this.plugin.settings[key]);
+			},
+			() => void this.applyDeckModelUpdate(activeFile, key, value),
+		).open();
+	}
+
+	private async applySelectionChange(
+		key: 'currentDeck' | 'currentModel',
+		value: string,
+	): Promise<void> {
+		this.plugin.settings[key] = value;
+		await this.plugin.saveSettings();
+		await this.renderFieldCheckboxes();
+	}
+
+	// docs/design/scenarios.md Scenario 4 — "Update": overwrite the changed field in
+	// the active (already-synced) note's own frontmatter and clear anki_note_id, so
+	// the next sync creates a new Anki note instead of updating the old one.
+	private async applyDeckModelUpdate(
+		activeFile: TFile,
+		key: 'currentDeck' | 'currentModel',
+		value: string,
+	): Promise<void> {
+		await this.applySelectionChange(key, value);
+		await this.writeDeckModelFrontmatterField(activeFile, key, value, true);
+	}
+
+	// Shared by applyDeckModelUpdate (synced "Update" path, clears anki_note_id to
+	// force a new Anki note on next sync) and the unsynced path in
+	// handleSelectionChange (docs/design/scenarios.md Scenario 4's final paragraph /
+	// 07-sidebar.md §7.3 step [7] — unsynced notes overwrite frontmatter directly,
+	// with no anki_note_id to clear).
+	private async writeDeckModelFrontmatterField(
+		activeFile: TFile,
+		key: 'currentDeck' | 'currentModel',
+		value: string,
+		clearNoteId: boolean,
+	): Promise<void> {
+		const fieldUpdate: Partial<AnkiFrontmatter> =
+			key === 'currentDeck' ? { anki_deck: value } : { anki_model: value };
+		await writeAnkiFrontmatter(this.plugin.app, activeFile, {
+			...fieldUpdate,
+			...(clearNoteId ? { anki_note_id: undefined } : {}),
+		});
+	}
+
 	// docs/design/07-sidebar.md §7.2.1 — Folder select. Populated from the vault, not
-	// AnkiConnect, so no Refresh button and no try/catch (no network call to fail).
+	// AnkiConnect (no try/catch — no network call to fail). Refreshed by the single 🔄
+	// button on the Connection Status row (see renderConnectionStatus()), not its own
+	// button — that's also the only way a folder created after the sidebar opened shows up.
 	private renderFolderDropdown(): void {
 		new Setting(this.contentEl)
 			.setName('Save notes to')
 			.addDropdown((dropdown) => {
 				this.folderDropdown = dropdown;
 				dropdown.onChange(async (value) => {
+					this.folderExplicitlySelected = true;
 					this.plugin.settings.currentFolder = value;
 					await this.plugin.saveSettings();
 				});
@@ -175,15 +235,14 @@ export class SidebarView extends ItemView {
 	private async populateFolderDropdown(): Promise<void> {
 		if (!this.folderDropdown) return;
 
-		const folders = this.plugin.app.vault.getAllFolders(true);
 		// Obsidian's root TFolder.path is '' at runtime, not '/' — use isRoot(), not a
 		// path comparison, to identify it.
+		const folders = this.plugin.app.vault
+			.getAllFolders(true)
+			.filter((folder) => !folder.isRoot());
 		const entries = [
 			{ value: '', label: '/ (vault root)' },
-			...folders
-				.filter((folder) => !folder.isRoot())
-				.map((folder) => ({ value: folder.path, label: folder.path }))
-				.sort((a, b) => a.value.localeCompare(b.value)),
+			...buildFolderTreeEntries(folders),
 		];
 
 		this.folderDropdown.selectEl.empty();
@@ -193,21 +252,27 @@ export class SidebarView extends ItemView {
 
 		const current = this.plugin.settings.currentFolder;
 		const currentExists =
-			current !== '' &&
-			folders.some(
-				(folder) => !folder.isRoot() && folder.path === current,
-			);
-		if (currentExists) {
+			current !== '' && folders.some((folder) => folder.path === current);
+		// '' (vault root) only counts as a real, kept selection once the user has
+		// explicitly chosen it via the dropdown — otherwise it's indistinguishable from
+		// "never customized," and re-deriving from the active note's folder below is the
+		// more useful default. Without folderExplicitlySelected, every 🔄 click (which
+		// re-runs this) would silently stomp an explicit "root" choice back to whatever
+		// folder the active note happens to be in.
+		if (currentExists || (current === '' && this.folderExplicitlySelected)) {
 			this.folderDropdown.setValue(current);
 			return;
 		}
 
 		// No saved folder yet, or the saved folder was deleted — default to the active
 		// note's folder (vault root if none). '' means both "vault root" and "unset"
-		// for this setting (see settings.ts), so picking root from the dropdown is
-		// indistinguishable from never having customized it: the next time the sidebar
-		// opens, it will re-derive from whichever note is active then rather than
-		// staying pinned to root. Accepted tradeoff, not a bug to "fix" here.
+		// for this setting (see settings.ts) until folderExplicitlySelected is set, so
+		// picking root from the dropdown for the first time is indistinguishable from
+		// never having customized it: the next time the sidebar opens (a fresh
+		// SidebarView instance, folderExplicitlySelected reset), it will re-derive from
+		// whichever note is active then rather than staying pinned to root. Accepted
+		// tradeoff, not a bug to "fix" here — see folderExplicitlySelected's own comment
+		// for why a 🔄 click *within* the same session no longer has this problem.
 		const activeParent = this.plugin.app.workspace.getActiveFile()?.parent;
 		const fallback =
 			!activeParent || activeParent.isRoot() ? '' : activeParent.path;
@@ -217,9 +282,9 @@ export class SidebarView extends ItemView {
 	}
 
 	// docs/design/07-sidebar.md §7.2.1 — Field checkboxes, only shown once Deck + Model
-	// are both selected. Re-invoked from the Deck/Model onChange handlers above (rather
-	// than a Refresh button) since the field list and the saved ticks both depend on
-	// which Deck+Model pair is currently selected.
+	// are both selected. Re-invoked from the Deck/Model onChange handlers above and from
+	// handleRefreshAllClick() (there's no per-field Refresh button) since the field list
+	// and the saved ticks both depend on which Deck+Model pair is currently selected.
 	private async renderFieldCheckboxes(): Promise<void> {
 		if (!this.fieldsContainerEl) return;
 		this.fieldsContainerEl.empty();
@@ -275,30 +340,31 @@ export class SidebarView extends ItemView {
 		await this.plugin.saveSettings();
 	}
 
-	// docs/design/07-sidebar.md §7.2.1 — Connection Status + Test Connection. Uses
-	// AnkiConnect's `version` action (lightweight, built for exactly this) rather than
-	// deckNames/modelNames. Unlike the other Tab 1 controls, failure is shown inline in
-	// the persistent status line rather than via toastError — a toast on top of an
-	// always-visible status indicator would be redundant.
+	// docs/design/07-sidebar.md §7.2.1 — Connection Status, now the first control in Tab 1.
+	// Uses AnkiConnect's `version` action (lightweight, built for exactly this) rather
+	// than deckNames/modelNames. Unlike the other Tab 1 controls, failure is shown inline
+	// in the persistent status line rather than via toastError — a toast on top of an
+	// always-visible status indicator would be redundant. The 🔄 button doubles as the
+	// single refresh point for the whole tab (see handleRefreshAllClick()) instead of
+	// separate per-dropdown Refresh buttons.
 	private renderConnectionStatus(): void {
 		this.connectionStatusSetting = new Setting(this.contentEl)
 			.setName('Status: ⏳ Checking...')
 			.setDesc(`AnkiConnect: ${resolveAnkiConnectUrl(this.plugin.settings)}`)
 			.addButton((btn) => {
-				this.testConnectionButton = btn;
-				btn
-					.setButtonText('Test connection')
-					.onClick(() => this.handleTestConnectionClick());
+				this.refreshButton = btn;
+				btn.setButtonText('🔄').onClick(() => this.handleRefreshAllClick());
 			});
 	}
 
-	// Manual click only (not onOpen()'s automatic check below) — on success, also
-	// reloads decks/models/fields, since a "connection error" is the symptom most
-	// likely to send the user here after starting Anki, and this is the one action
-	// that recovers everything in one shot. See handleDeckRefreshClick() above for
-	// why nothing else would pick the reconnect up on its own.
-	private async handleTestConnectionClick(): Promise<void> {
+	// Manual click only (not onOpen()'s automatic check below). Folder refresh always
+	// runs — it's vault-local, not an AnkiConnect call, so it never needs gating on
+	// connection success. Decks/models/fields stay gated on a successful connection
+	// check to avoid firing two more toastErrors on top of an already-visible "can't
+	// connect" status line when Anki is confirmed still down.
+	private async handleRefreshAllClick(): Promise<void> {
 		const connected = await this.testConnection();
+		await this.populateFolderDropdown();
 		if (connected) {
 			await this.refreshDecks();
 			await this.refreshModels();
@@ -307,7 +373,7 @@ export class SidebarView extends ItemView {
 	}
 
 	private async testConnection(): Promise<boolean> {
-		this.testConnectionButton?.setDisabled(true);
+		this.refreshButton?.setDisabled(true);
 		this.connectionStatusSetting?.setName('Status: ⏳ Checking...');
 		try {
 			const client = new AnkiConnectClient(
@@ -322,7 +388,7 @@ export class SidebarView extends ItemView {
 			);
 			return false;
 		} finally {
-			this.testConnectionButton?.setDisabled(false);
+			this.refreshButton?.setDisabled(false);
 		}
 	}
 }

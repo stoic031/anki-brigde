@@ -13,11 +13,10 @@
   "11": "Milestone 1: Core Sync + Settings",
   "12": "docs/design/01-sync.md",
   "13": "MediaResult interface",
-  "14": "controlsBlock.test.ts",
   "15": "settingsTab.test.ts",
   "16": "TextProvider interface",
   "17": "graphify.js",
-  "18": "quickCapture.ts",
+  "18": "deckModelChangeWarning.test.ts",
   "19": "version-bump.mjs",
   "20": "build_merge Direct Graph Read",
   "21": "Incremental --update Flow",
@@ -77,11 +76,8 @@
   "75": "vitest.config.ts",
   "76": "graphify reference: GitHub clone and cross-repo merge",
   "77": "sidebarView.test.ts",
-  "78": "main.ts",
+  "78": "quickCapture.ts",
   "79": "[1.0.0]",
-  "80": "syncEngine.ts",
-  "81": "syncEngine.test.ts",
   "82": "confirmDelete.test.ts",
-  "83": "controlsBlock.ts",
-  "84": "AnkiConnectClient"
+  "86": "controlsBlock.ts"
 }
