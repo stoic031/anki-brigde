@@ -186,15 +186,23 @@ interface FakeFolder {
 	isRoot: () => boolean;
 }
 
-// parent defaults to null (= vault root) — matches how flat, non-nested test folders
-// behave: buildFolderTreeEntries() groups by `folder.parent?.path ?? ''`, and root's
-// path is '' either way. Pass an explicit parent to build nested fixtures.
-function fakeFolder(path: string, parent: FakeFolder | null = null): FakeFolder {
+// Matches real Obsidian: vault.getRoot().path is "/", not "", and every top-level
+// folder's .parent is that root object, never null.
+const fakeRoot: FakeFolder = {
+	path: '/',
+	name: '',
+	parent: null,
+	isRoot: () => true,
+};
+
+// parent defaults to the vault root object. Pass an explicit parent to build nested
+// fixtures.
+function fakeFolder(path: string, parent: FakeFolder = fakeRoot): FakeFolder {
 	return {
 		path,
-		name: path === '' ? '' : (path.split('/').pop() ?? path),
+		name: path.split('/').pop() ?? path,
 		parent,
-		isRoot: () => path === '',
+		isRoot: () => false,
 	};
 }
 
@@ -217,7 +225,7 @@ function fakePlugin(
 		generateWithAiFields: {},
 		...overrides,
 	};
-	const allFolders: FakeFolder[] = [fakeFolder(''), ...folders];
+	const allFolders: FakeFolder[] = [fakeRoot, ...folders];
 	const plugin = {
 		settings,
 		saveSettings,

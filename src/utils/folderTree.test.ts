@@ -5,13 +5,24 @@ interface FakeFolder {
 	path: string;
 	name: string;
 	parent: FakeFolder | null;
+	isRoot: () => boolean;
 }
 
-function fakeFolder(path: string, parent: FakeFolder | null = null): FakeFolder {
+// Matches real Obsidian: vault.getRoot().path is "/", not "", and every top-level
+// folder's .parent is this root object, never null.
+const fakeRoot: FakeFolder = {
+	path: '/',
+	name: '',
+	parent: null,
+	isRoot: () => true,
+};
+
+function fakeFolder(path: string, parent: FakeFolder = fakeRoot): FakeFolder {
 	return {
 		path,
 		name: path.split('/').pop() ?? path,
 		parent,
+		isRoot: () => false,
 	};
 }
 
@@ -85,5 +96,18 @@ describe('buildFolderTreeEntries', () => {
 
 	it('returns an empty list for an empty folder list', () => {
 		expect(buildFolderTreeEntries([])).toEqual([]);
+	});
+
+	it('includes top-level folders whose .parent is the vault root object (path "/", not null)', () => {
+		// Real Obsidian: vault.getRoot().path === '/' and every top-level folder's
+		// .parent is that root TFolder, never null. A grouping key of folder.parent?.path
+		// (without normalizing root to '') would key these under '/' instead of '',
+		// so walk('', 0) would find nothing and the list would come back empty.
+		const japanese = fakeFolder('Japanese', fakeRoot);
+		const korean = fakeFolder('Korean', fakeRoot);
+
+		const entries = buildFolderTreeEntries([japanese, korean] as never);
+
+		expect(entries.map((e) => e.value)).toEqual(['Japanese', 'Korean']);
 	});
 });

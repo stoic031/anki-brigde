@@ -242,15 +242,23 @@ interface FakeFolder {
 	isRoot: () => boolean;
 }
 
-// parent defaults to null (= vault root), matching how flat, non-nested test folders
-// behave today: buildFolderTreeEntries() groups by `folder.parent?.path ?? ''`, and
-// root's path is '' either way. Pass an explicit parent to build nested fixtures.
-function fakeFolder(path: string, parent: FakeFolder | null = null): FakeFolder {
+// Matches real Obsidian: vault.getRoot().path is "/", not "", and every top-level
+// folder's .parent is that root object, never null.
+const fakeRoot: FakeFolder = {
+	path: '/',
+	name: '',
+	parent: null,
+	isRoot: () => true,
+};
+
+// parent defaults to the vault root object. Pass an explicit parent to build nested
+// fixtures.
+function fakeFolder(path: string, parent: FakeFolder = fakeRoot): FakeFolder {
 	return {
 		path,
-		name: path === '' ? '' : (path.split('/').pop() ?? path),
+		name: path.split('/').pop() ?? path,
 		parent,
-		isRoot: () => path === '',
+		isRoot: () => false,
 	};
 }
 
@@ -267,7 +275,7 @@ function fakeApp(
 	getActiveFile: ReturnType<typeof vi.fn>;
 } {
 	const {
-		folders = [fakeFolder('')],
+		folders = [fakeRoot],
 		activeFileParent = null,
 		activeFile,
 		frontmatter = null,
@@ -484,7 +492,7 @@ describe('SidebarView', () => {
 			{},
 			{
 				folders: [
-					fakeFolder(''),
+					fakeRoot,
 					fakeFolder('Japanese'),
 					fakeFolder('Spanish'),
 				],
@@ -504,7 +512,7 @@ describe('SidebarView', () => {
 	it('pre-selects the saved currentFolder when it still exists', async () => {
 		const { plugin } = fakePlugin(
 			{ currentFolder: 'Japanese' },
-			{ folders: [fakeFolder(''), fakeFolder('Japanese')] },
+			{ folders: [fakeRoot, fakeFolder('Japanese')] },
 		);
 		const view = new SidebarView({} as WorkspaceLeaf, plugin);
 
@@ -517,7 +525,7 @@ describe('SidebarView', () => {
 		const { plugin, saveSettings } = fakePlugin(
 			{ currentFolder: '' },
 			{
-				folders: [fakeFolder(''), fakeFolder('Japanese')],
+				folders: [fakeRoot, fakeFolder('Japanese')],
 				activeFileParent: fakeFolder('Japanese'),
 			},
 		);
@@ -534,7 +542,7 @@ describe('SidebarView', () => {
 		const { plugin } = fakePlugin(
 			{ currentFolder: '' },
 			{
-				folders: [fakeFolder(''), fakeFolder('Japanese')],
+				folders: [fakeRoot, fakeFolder('Japanese')],
 				activeFileParent: null,
 			},
 		);
@@ -550,7 +558,7 @@ describe('SidebarView', () => {
 		const { plugin } = fakePlugin(
 			{ currentFolder: 'Deleted folder' },
 			{
-				folders: [fakeFolder(''), fakeFolder('Spanish')],
+				folders: [fakeRoot, fakeFolder('Spanish')],
 				activeFileParent: fakeFolder('Spanish'),
 			},
 		);
@@ -565,7 +573,7 @@ describe('SidebarView', () => {
 	it('persists the selected folder to settings.currentFolder onChange', async () => {
 		const { plugin, saveSettings } = fakePlugin(
 			{},
-			{ folders: [fakeFolder(''), fakeFolder('Japanese')] },
+			{ folders: [fakeRoot, fakeFolder('Japanese')] },
 		);
 		const view = new SidebarView({} as WorkspaceLeaf, plugin);
 
@@ -581,7 +589,7 @@ describe('SidebarView', () => {
 		const { plugin } = fakePlugin(
 			{},
 			{
-				folders: [fakeFolder(''), fakeFolder('Japanese')],
+				folders: [fakeRoot, fakeFolder('Japanese')],
 				// Would be the fallback pick if the fix below weren't in place.
 				activeFileParent: fakeFolder('Japanese'),
 			},
@@ -603,7 +611,7 @@ describe('SidebarView', () => {
 		const { plugin, getActiveFile } = fakePlugin(
 			{ currentFolder: '' },
 			{
-				folders: [fakeFolder(''), fakeFolder('Japanese'), fakeFolder('Spanish')],
+				folders: [fakeRoot, fakeFolder('Japanese'), fakeFolder('Spanish')],
 				activeFileParent: null,
 			},
 		);
@@ -632,7 +640,7 @@ describe('SidebarView', () => {
 			const vocab = fakeFolder('Japanese/N2/Vocab', n2);
 			const { plugin } = fakePlugin(
 				{},
-				{ folders: [fakeFolder(''), japanese, n2, vocab] },
+				{ folders: [fakeRoot, japanese, n2, vocab] },
 			);
 			const view = new SidebarView({} as WorkspaceLeaf, plugin);
 
@@ -655,7 +663,7 @@ describe('SidebarView', () => {
 			const { plugin } = fakePlugin(
 				{},
 				// Deliberately out of order as returned from the vault.
-				{ folders: [fakeFolder(''), korean, vocab, japanese, n2] },
+				{ folders: [fakeRoot, korean, vocab, japanese, n2] },
 			);
 			const view = new SidebarView({} as WorkspaceLeaf, plugin);
 
@@ -672,7 +680,7 @@ describe('SidebarView', () => {
 			const apple = fakeFolder('Japanese/Apple', japanese);
 			const { plugin } = fakePlugin(
 				{},
-				{ folders: [fakeFolder(''), japanese, zebra, apple] },
+				{ folders: [fakeRoot, japanese, zebra, apple] },
 			);
 			const view = new SidebarView({} as WorkspaceLeaf, plugin);
 
@@ -694,7 +702,7 @@ describe('SidebarView', () => {
 			const n2 = fakeFolder('Japanese/N2', japanese);
 			const { plugin } = fakePlugin(
 				{},
-				{ folders: [fakeFolder(''), japaneseAdvanced, japanese, n2] },
+				{ folders: [fakeRoot, japaneseAdvanced, japanese, n2] },
 			);
 			const view = new SidebarView({} as WorkspaceLeaf, plugin);
 

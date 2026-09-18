@@ -816,8 +816,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_main_test",
-      "community": 80,
-      "community_name": "main.test.ts",
+      "community": 78,
+      "community_name": "quickCapture.ts",
       "norm_label": "main.test.ts"
     },
     {
@@ -827,8 +827,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "src_main_test_pluginbase_addcommandspy",
-      "community": 80,
-      "community_name": "main.test.ts",
+      "community": 78,
+      "community_name": "quickCapture.ts",
       "norm_label": "{ pluginbase, addcommandspy }"
     },
     {
@@ -838,8 +838,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_main_test_loadsettings_savesettings",
-      "community": 80,
-      "community_name": "main.test.ts",
+      "community": 78,
+      "community_name": "quickCapture.ts",
       "norm_label": "{ loadsettings, savesettings }"
     },
     {
@@ -849,8 +849,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "src_main_test_registercontrolsblock",
-      "community": 80,
-      "community_name": "main.test.ts",
+      "community": 78,
+      "community_name": "quickCapture.ts",
       "norm_label": "{ registercontrolsblock }"
     },
     {
@@ -860,8 +860,8 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "src_main_test_runquickcapture",
-      "community": 80,
-      "community_name": "main.test.ts",
+      "community": 78,
+      "community_name": "quickCapture.ts",
       "norm_label": "{ runquickcapture }"
     },
     {
@@ -871,8 +871,8 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "src_main_test_runcreatenote",
-      "community": 80,
-      "community_name": "main.test.ts",
+      "community": 78,
+      "community_name": "quickCapture.ts",
       "norm_label": "{ runcreatenote }"
     },
     {
@@ -882,8 +882,8 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "src_main_test_registersidebarview_revealsidebarview",
-      "community": 80,
-      "community_name": "main.test.ts",
+      "community": 78,
+      "community_name": "quickCapture.ts",
       "norm_label": "{ registersidebarview, revealsidebarview }"
     },
     {
@@ -1015,7 +1015,7 @@
       "_origin": "ast",
       "id": "src_note_contenttemplate_test",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "contenttemplate.test.ts"
     },
     {
@@ -1047,8 +1047,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_note_controlsblock_test",
-      "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community": 86,
+      "community_name": "controlsBlock.ts",
       "norm_label": "controlsblock.test.ts"
     },
     {
@@ -1058,8 +1058,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "src_note_controlsblock_test_tfile",
-      "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community": 86,
+      "community_name": "controlsBlock.ts",
       "norm_label": "{ tfile }"
     },
     {
@@ -1069,8 +1069,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_note_controlsblock_test_syncnote_deletenote",
-      "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community": 86,
+      "community_name": "controlsBlock.ts",
       "norm_label": "{ syncnote, deletenote }"
     },
     {
@@ -1080,8 +1080,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_note_controlsblock_test_toastsuccess_toasterror",
-      "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community": 86,
+      "community_name": "controlsBlock.ts",
       "norm_label": "{ toastsuccess, toasterror }"
     },
     {
@@ -1091,8 +1091,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "src_note_controlsblock_test_confirmdeleteopen_confirmdeletecapture",
-      "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community": 86,
+      "community_name": "controlsBlock.ts",
       "norm_label": "{ confirmdeleteopen, confirmdeletecapture }"
     },
     {
@@ -1102,8 +1102,8 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "src_note_controlsblock_test_constructor",
-      "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community": 86,
+      "community_name": "controlsBlock.ts",
       "norm_label": "constructor()"
     },
     {
@@ -1113,8 +1113,8 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "src_note_controlsblock_test_fakeapp",
-      "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community": 86,
+      "community_name": "controlsBlock.ts",
       "norm_label": "fakeapp()"
     },
     {
@@ -1124,8 +1124,8 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "src_note_controlsblock_test_renderedbutton",
-      "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community": 86,
+      "community_name": "controlsBlock.ts",
       "norm_label": "renderedbutton"
     },
     {
@@ -1135,8 +1135,8 @@
       "source_location": "L71",
       "_origin": "ast",
       "id": "src_note_controlsblock_test_fakeel",
-      "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community": 86,
+      "community_name": "controlsBlock.ts",
       "norm_label": "fakeel()"
     },
     {
@@ -1146,8 +1146,8 @@
       "source_location": "L113",
       "_origin": "ast",
       "id": "src_note_controlsblock_test_fakectx",
-      "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community": 86,
+      "community_name": "controlsBlock.ts",
       "norm_label": "fakectx()"
     },
     {
@@ -1157,8 +1157,8 @@
       "source_location": "L257",
       "_origin": "ast",
       "id": "src_note_controlsblock_test_renderandgetsyncbutton",
-      "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community": 86,
+      "community_name": "controlsBlock.ts",
       "norm_label": "renderandgetsyncbutton()"
     },
     {
@@ -1168,8 +1168,8 @@
       "source_location": "L366",
       "_origin": "ast",
       "id": "src_note_controlsblock_test_renderandgetdeletebutton",
-      "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community": 86,
+      "community_name": "controlsBlock.ts",
       "norm_label": "renderandgetdeletebutton()"
     },
     {
@@ -1179,8 +1179,8 @@
       "source_location": "L375",
       "_origin": "ast",
       "id": "src_note_controlsblock_test_confirmdelete",
-      "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community": 86,
+      "community_name": "controlsBlock.ts",
       "norm_label": "confirmdelete()"
     },
     {
@@ -1190,7 +1190,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_note_controlsblock",
-      "community": 5,
+      "community": 86,
       "community_name": "controlsBlock.ts",
       "norm_label": "controlsblock.ts"
     },
@@ -1201,7 +1201,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_note_controlsblock_controlaction",
-      "community": 5,
+      "community": 86,
       "community_name": "controlsBlock.ts",
       "norm_label": "controlaction"
     },
@@ -1212,7 +1212,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "src_note_controlsblock_controlbuttonspec",
-      "community": 5,
+      "community": 86,
       "community_name": "controlsBlock.ts",
       "norm_label": "controlbuttonspec"
     },
@@ -1223,7 +1223,7 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "src_note_controlsblock_always_visible_buttons",
-      "community": 5,
+      "community": 86,
       "community_name": "controlsBlock.ts",
       "norm_label": "always_visible_buttons"
     },
@@ -1234,7 +1234,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "src_note_controlsblock_delete_button",
-      "community": 5,
+      "community": 86,
       "community_name": "controlsBlock.ts",
       "norm_label": "delete_button"
     },
@@ -1245,8 +1245,8 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "src_note_controlsblock_registercontrolsblock",
-      "community": 78,
-      "community_name": "quickCapture.ts",
+      "community": 86,
+      "community_name": "controlsBlock.ts",
       "norm_label": "registercontrolsblock()"
     },
     {
@@ -1256,8 +1256,8 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "src_note_controlsblock_rendercontrolsblock",
-      "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community": 86,
+      "community_name": "controlsBlock.ts",
       "norm_label": "rendercontrolsblock()"
     },
     {
@@ -1268,7 +1268,7 @@
       "_origin": "ast",
       "id": "src_note_controlsblock_handlesync",
       "community": 86,
-      "community_name": "settingsTab.ts",
+      "community_name": "controlsBlock.ts",
       "norm_label": "handlesync()"
     },
     {
@@ -1278,8 +1278,8 @@
       "source_location": "L123",
       "_origin": "ast",
       "id": "src_note_controlsblock_handledeleteclick",
-      "community": 14,
-      "community_name": "controlsBlock.test.ts",
+      "community": 86,
+      "community_name": "controlsBlock.ts",
       "norm_label": "handledeleteclick()"
     },
     {
@@ -1290,7 +1290,7 @@
       "_origin": "ast",
       "id": "src_note_controlsblock_performdelete",
       "community": 86,
-      "community_name": "settingsTab.ts",
+      "community_name": "controlsBlock.ts",
       "norm_label": "performdelete()"
     },
     {
@@ -1751,8 +1751,8 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "src_settings_resolveankiconnecturl",
-      "community": 78,
-      "community_name": "quickCapture.ts",
+      "community": 7,
+      "community_name": "SidebarView",
       "norm_label": "resolveankiconnecturl()"
     },
     {
@@ -1774,7 +1774,7 @@
       "_origin": "ast",
       "id": "src_sync_ankiconnect_test",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "ankiconnect.test.ts"
     },
     {
@@ -1785,7 +1785,7 @@
       "_origin": "ast",
       "id": "src_sync_ankiconnect_test_requesturl",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "{ requesturl }"
     },
     {
@@ -1796,7 +1796,7 @@
       "_origin": "ast",
       "id": "src_sync_ankiconnect_test_jsonresponse",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "jsonresponse()"
     },
     {
@@ -1807,7 +1807,7 @@
       "_origin": "ast",
       "id": "src_sync_ankiconnect_test_sentbody",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "sentbody()"
     },
     {
@@ -1818,7 +1818,7 @@
       "_origin": "ast",
       "id": "src_sync_ankiconnect_test_client",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "client()"
     },
     {
@@ -1828,8 +1828,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_sync_ankiconnect",
-      "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community": 78,
+      "community_name": "quickCapture.ts",
       "norm_label": "ankiconnect.ts"
     },
     {
@@ -1839,8 +1839,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectresponse",
-      "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community": 78,
+      "community_name": "quickCapture.ts",
       "norm_label": "ankiconnectresponse"
     },
     {
@@ -1851,7 +1851,7 @@
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectclient",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "ankiconnectclient"
     },
     {
@@ -1862,7 +1862,7 @@
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectclient_constructor",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": ".constructor()"
     },
     {
@@ -1873,7 +1873,7 @@
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectclient_invoke",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": ".invoke()"
     },
     {
@@ -1884,7 +1884,7 @@
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectclient_addnote",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": ".addnote()"
     },
     {
@@ -1895,7 +1895,7 @@
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectclient_updatenotefields",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": ".updatenotefields()"
     },
     {
@@ -1906,7 +1906,7 @@
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectclient_deletenotes",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": ".deletenotes()"
     },
     {
@@ -1917,7 +1917,7 @@
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectclient_decknames",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": ".decknames()"
     },
     {
@@ -1928,7 +1928,7 @@
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectclient_modelnames",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": ".modelnames()"
     },
     {
@@ -1939,7 +1939,7 @@
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectclient_modelfieldnames",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": ".modelfieldnames()"
     },
     {
@@ -1950,7 +1950,7 @@
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectclient_version",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": ".version()"
     },
     {
@@ -1961,7 +1961,7 @@
       "_origin": "ast",
       "id": "src_sync_fieldmapper_test",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "fieldmapper.test.ts"
     },
     {
@@ -1972,7 +1972,7 @@
       "_origin": "ast",
       "id": "src_sync_fieldmapper_test_sections",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "sections()"
     },
     {
@@ -1983,7 +1983,7 @@
       "_origin": "ast",
       "id": "src_sync_fieldmapper",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "fieldmapper.ts"
     },
     {
@@ -1994,7 +1994,7 @@
       "_origin": "ast",
       "id": "src_sync_fieldmapper_mapcontenttofields",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "mapcontenttofields()"
     },
     {
@@ -2005,7 +2005,7 @@
       "_origin": "ast",
       "id": "src_sync_fieldmapper_stringifysectionvalue",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "stringifysectionvalue()"
     },
     {
@@ -2016,7 +2016,7 @@
       "_origin": "ast",
       "id": "src_sync_parser_test",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "parser.test.ts"
     },
     {
@@ -2027,7 +2027,7 @@
       "_origin": "ast",
       "id": "src_sync_parser_test_fakereaderapp",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "fakereaderapp()"
     },
     {
@@ -2038,7 +2038,7 @@
       "_origin": "ast",
       "id": "src_sync_parser_test_fakewriterapp",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "fakewriterapp()"
     },
     {
@@ -2049,7 +2049,7 @@
       "_origin": "ast",
       "id": "src_sync_parser_test_file",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "file"
     },
     {
@@ -2060,7 +2060,7 @@
       "_origin": "ast",
       "id": "src_sync_parser",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "parser.ts"
     },
     {
@@ -2071,7 +2071,7 @@
       "_origin": "ast",
       "id": "src_sync_parser_readankifrontmatter",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "readankifrontmatter()"
     },
     {
@@ -2082,7 +2082,7 @@
       "_origin": "ast",
       "id": "src_sync_parser_writeankifrontmatter",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "writeankifrontmatter()"
     },
     {
@@ -2093,7 +2093,7 @@
       "_origin": "ast",
       "id": "src_sync_parser_parsesections",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "parsesections()"
     },
     {
@@ -2104,7 +2104,7 @@
       "_origin": "ast",
       "id": "src_sync_parser_extractsectionvalue",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "extractsectionvalue()"
     },
     {
@@ -2115,7 +2115,7 @@
       "_origin": "ast",
       "id": "src_sync_syncengine_test",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "syncengine.test.ts"
     },
     {
@@ -2126,7 +2126,7 @@
       "_origin": "ast",
       "id": "src_sync_syncengine_test_fields",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "fields"
     },
     {
@@ -2137,7 +2137,7 @@
       "_origin": "ast",
       "id": "src_sync_syncengine_test_fakeapp",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "fakeapp()"
     },
     {
@@ -2148,7 +2148,7 @@
       "_origin": "ast",
       "id": "src_sync_syncengine_test_fakeclient",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "fakeclient()"
     },
     {
@@ -2159,7 +2159,7 @@
       "_origin": "ast",
       "id": "src_sync_syncengine_test_file",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "file"
     },
     {
@@ -2170,7 +2170,7 @@
       "_origin": "ast",
       "id": "src_sync_syncengine",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "syncengine.ts"
     },
     {
@@ -2181,7 +2181,7 @@
       "_origin": "ast",
       "id": "src_sync_syncengine_syncnote",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "syncnote()"
     },
     {
@@ -2192,7 +2192,7 @@
       "_origin": "ast",
       "id": "src_sync_syncengine_deletenote",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "deletenote()"
     },
     {
@@ -2203,7 +2203,7 @@
       "_origin": "ast",
       "id": "src_sync_syncengine_isnotenotfound",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "isnotenotfound()"
     },
     {
@@ -2214,7 +2214,7 @@
       "_origin": "ast",
       "id": "src_sync_syncengine_tosyncerror",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "tosyncerror()"
     },
     {
@@ -2225,7 +2225,7 @@
       "_origin": "ast",
       "id": "src_sync_syncengine_createnote",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "createnote()"
     },
     {
@@ -2236,7 +2236,7 @@
       "_origin": "ast",
       "id": "src_types",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "types.ts"
     },
     {
@@ -2247,7 +2247,7 @@
       "_origin": "ast",
       "id": "src_types_ankifrontmatter",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "ankifrontmatter"
     },
     {
@@ -2258,7 +2258,7 @@
       "_origin": "ast",
       "id": "src_types_sectionvalue",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "sectionvalue"
     },
     {
@@ -2269,7 +2269,7 @@
       "_origin": "ast",
       "id": "src_types_parsednote",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "parsednote"
     },
     {
@@ -2280,7 +2280,7 @@
       "_origin": "ast",
       "id": "src_types_fieldmappingresult",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "fieldmappingresult"
     },
     {
@@ -2291,7 +2291,7 @@
       "_origin": "ast",
       "id": "src_types_textresult",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "textresult"
     },
     {
@@ -2302,7 +2302,7 @@
       "_origin": "ast",
       "id": "src_types_mediaresult",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "mediaresult"
     },
     {
@@ -2313,7 +2313,7 @@
       "_origin": "ast",
       "id": "src_types_textprovider",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "textprovider"
     },
     {
@@ -2324,7 +2324,7 @@
       "_origin": "ast",
       "id": "src_types_textprovider_processtext",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": ".processtext()"
     },
     {
@@ -2335,7 +2335,7 @@
       "_origin": "ast",
       "id": "src_types_audioprovider",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "audioprovider"
     },
     {
@@ -2346,7 +2346,7 @@
       "_origin": "ast",
       "id": "src_types_audioprovider_generateaudio",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": ".generateaudio()"
     },
     {
@@ -2357,7 +2357,7 @@
       "_origin": "ast",
       "id": "src_types_imageprovider",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "imageprovider"
     },
     {
@@ -2368,7 +2368,7 @@
       "_origin": "ast",
       "id": "src_types_imageprovider_generateimage",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": ".generateimage()"
     },
     {
@@ -2379,7 +2379,7 @@
       "_origin": "ast",
       "id": "src_types_texttask",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "texttask"
     },
     {
@@ -2390,7 +2390,7 @@
       "_origin": "ast",
       "id": "src_types_audiooptions",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "audiooptions"
     },
     {
@@ -2401,7 +2401,7 @@
       "_origin": "ast",
       "id": "src_types_imageoptions",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "imageoptions"
     },
     {
@@ -2412,7 +2412,7 @@
       "_origin": "ast",
       "id": "src_types_ankiconnecterror",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "ankiconnecterror"
     },
     {
@@ -2423,7 +2423,7 @@
       "_origin": "ast",
       "id": "src_types_ankiconnecterror_constructor",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": ".constructor()"
     },
     {
@@ -2434,7 +2434,7 @@
       "_origin": "ast",
       "id": "src_types_providererror",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "providererror"
     },
     {
@@ -2445,7 +2445,7 @@
       "_origin": "ast",
       "id": "src_types_providererror_constructor",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": ".constructor()"
     },
     {
@@ -2456,7 +2456,7 @@
       "_origin": "ast",
       "id": "src_types_syncerror",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "syncerror"
     },
     {
@@ -2467,7 +2467,7 @@
       "_origin": "ast",
       "id": "src_types_syncerror_constructor",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": ".constructor()"
     },
     {
@@ -3288,7 +3288,7 @@
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L57",
+      "source_location": "L58",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_fakedropdowncomponent_constructor",
       "community": 15,
@@ -3299,7 +3299,7 @@
       "label": ".addOption()",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L64",
+      "source_location": "L66",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_fakedropdowncomponent_addoption",
       "community": 15,
@@ -3310,7 +3310,7 @@
       "label": ".setValue()",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L68",
+      "source_location": "L71",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_fakedropdowncomponent_setvalue",
       "community": 15,
@@ -3321,7 +3321,7 @@
       "label": ".onChange()",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L72",
+      "source_location": "L75",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_fakedropdowncomponent_onchange",
       "community": 15,
@@ -3332,7 +3332,7 @@
       "label": ".triggerChange()",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L76",
+      "source_location": "L79",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_fakedropdowncomponent_triggerchange",
       "community": 15,
@@ -3343,7 +3343,7 @@
       "label": "FakeSetting",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L82",
+      "source_location": "L85",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_fakesetting",
       "community": 15,
@@ -3354,7 +3354,7 @@
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L89",
+      "source_location": "L92",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_fakesetting_constructor",
       "community": 15,
@@ -3365,7 +3365,7 @@
       "label": ".setName()",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L90",
+      "source_location": "L93",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_fakesetting_setname",
       "community": 15,
@@ -3376,7 +3376,7 @@
       "label": ".setDesc()",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L94",
+      "source_location": "L97",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_fakesetting_setdesc",
       "community": 15,
@@ -3387,7 +3387,7 @@
       "label": ".addText()",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L98",
+      "source_location": "L101",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_fakesetting_addtext",
       "community": 15,
@@ -3398,7 +3398,7 @@
       "label": ".addButton()",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L104",
+      "source_location": "L107",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_fakesetting_addbutton",
       "community": 15,
@@ -3409,7 +3409,7 @@
       "label": ".addDropdown()",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L110",
+      "source_location": "L113",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_fakesetting_adddropdown",
       "community": 15,
@@ -3420,7 +3420,7 @@
       "label": "FakeEl",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L118",
+      "source_location": "L121",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_fakeel",
       "community": 15,
@@ -3431,7 +3431,7 @@
       "label": ".createDiv()",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L120",
+      "source_location": "L123",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_fakeel_creatediv",
       "community": 15,
@@ -3442,7 +3442,7 @@
       "label": ".toggleClass()",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L121",
+      "source_location": "L124",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_fakeel_toggleclass",
       "community": 15,
@@ -3453,7 +3453,7 @@
       "label": ".hasClass()",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L122",
+      "source_location": "L125",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_fakeel_hasclass",
       "community": 15,
@@ -3464,7 +3464,7 @@
       "label": "fakeDiv()",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L125",
+      "source_location": "L128",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_fakediv",
       "community": 15,
@@ -3475,7 +3475,7 @@
       "label": "{ Notice, settings }",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L142",
+      "source_location": "L145",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_notice_settings",
       "community": 15,
@@ -3486,7 +3486,7 @@
       "label": "constructor()",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L149",
+      "source_location": "L152",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_constructor",
       "community": 15,
@@ -3497,7 +3497,7 @@
       "label": "{ deckNames, modelNames }",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L158",
+      "source_location": "L161",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_decknames_modelnames",
       "community": 15,
@@ -3508,7 +3508,7 @@
       "label": "{ toastSuccess, toastError }",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L169",
+      "source_location": "L172",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_toastsuccess_toasterror",
       "community": 15,
@@ -3519,7 +3519,7 @@
       "label": "FakeFolder",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L179",
+      "source_location": "L182",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_fakefolder",
       "community": 15,
@@ -3530,7 +3530,7 @@
       "label": "fakePlugin()",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L184",
+      "source_location": "L201",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_fakeplugin",
       "community": 15,
@@ -3541,7 +3541,7 @@
       "label": "renderAndConnect()",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L285",
+      "source_location": "L299",
       "_origin": "ast",
       "id": "src_ui_settingstab_test_renderandconnect",
       "community": 15,
@@ -3556,73 +3556,73 @@
       "_origin": "ast",
       "id": "src_ui_settingstab",
       "community": 86,
-      "community_name": "settingsTab.ts",
+      "community_name": "controlsBlock.ts",
       "norm_label": "settingstab.ts"
     },
     {
       "label": "AnkiBridgeSettingTab",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.ts",
-      "source_location": "L10",
+      "source_location": "L11",
       "_origin": "ast",
       "id": "src_ui_settingstab_ankibridgesettingtab",
       "community": 86,
-      "community_name": "settingsTab.ts",
+      "community_name": "controlsBlock.ts",
       "norm_label": "ankibridgesettingtab"
     },
     {
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.ts",
-      "source_location": "L11",
+      "source_location": "L12",
       "_origin": "ast",
       "id": "src_ui_settingstab_ankibridgesettingtab_constructor",
       "community": 86,
-      "community_name": "settingsTab.ts",
+      "community_name": "controlsBlock.ts",
       "norm_label": ".constructor()"
     },
     {
       "label": ".display()",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.ts",
-      "source_location": "L18",
+      "source_location": "L19",
       "_origin": "ast",
       "id": "src_ui_settingstab_ankibridgesettingtab_display",
       "community": 86,
-      "community_name": "settingsTab.ts",
+      "community_name": "controlsBlock.ts",
       "norm_label": ".display()"
     },
     {
       "label": "renderConnectionSection()",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.ts",
-      "source_location": "L27",
+      "source_location": "L28",
       "_origin": "ast",
       "id": "src_ui_settingstab_renderconnectionsection",
       "community": 86,
-      "community_name": "settingsTab.ts",
+      "community_name": "controlsBlock.ts",
       "norm_label": "renderconnectionsection()"
     },
     {
       "label": "renderDefaultFolderDropdown()",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.ts",
-      "source_location": "L97",
+      "source_location": "L98",
       "_origin": "ast",
       "id": "src_ui_settingstab_renderdefaultfolderdropdown",
       "community": 86,
-      "community_name": "settingsTab.ts",
+      "community_name": "controlsBlock.ts",
       "norm_label": "renderdefaultfolderdropdown()"
     },
     {
       "label": "handleConnect()",
       "file_type": "code",
       "source_file": "src/ui/settingsTab.ts",
-      "source_location": "L129",
+      "source_location": "L128",
       "_origin": "ast",
       "id": "src_ui_settingstab_handleconnect",
       "community": 86,
-      "community_name": "settingsTab.ts",
+      "community_name": "controlsBlock.ts",
       "norm_label": "handleconnect()"
     },
     {
@@ -3970,7 +3970,7 @@
       "label": "fakeTFile()",
       "file_type": "code",
       "source_file": "src/ui/sidebarView.test.ts",
-      "source_location": "L292",
+      "source_location": "L295",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_faketfile",
       "community": 77,
@@ -3981,7 +3981,7 @@
       "label": "fakePlugin()",
       "file_type": "code",
       "source_file": "src/ui/sidebarView.test.ts",
-      "source_location": "L299",
+      "source_location": "L302",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_fakeplugin",
       "community": 77,
@@ -4014,7 +4014,7 @@
       "label": ".constructor()",
       "file_type": "code",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L30",
+      "source_location": "L37",
       "_origin": "ast",
       "id": "src_ui_sidebarview_sidebarview_constructor",
       "community": 7,
@@ -4025,7 +4025,7 @@
       "label": ".getViewType()",
       "file_type": "code",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L37",
+      "source_location": "L44",
       "_origin": "ast",
       "id": "src_ui_sidebarview_sidebarview_getviewtype",
       "community": 7,
@@ -4036,7 +4036,7 @@
       "label": ".getDisplayText()",
       "file_type": "code",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L41",
+      "source_location": "L48",
       "_origin": "ast",
       "id": "src_ui_sidebarview_sidebarview_getdisplaytext",
       "community": 7,
@@ -4047,7 +4047,7 @@
       "label": ".getIcon()",
       "file_type": "code",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L45",
+      "source_location": "L52",
       "_origin": "ast",
       "id": "src_ui_sidebarview_sidebarview_geticon",
       "community": 7,
@@ -4058,7 +4058,7 @@
       "label": ".onOpen()",
       "file_type": "code",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L49",
+      "source_location": "L56",
       "_origin": "ast",
       "id": "src_ui_sidebarview_sidebarview_onopen",
       "community": 7,
@@ -4069,7 +4069,7 @@
       "label": ".renderDeckDropdown()",
       "file_type": "code",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L68",
+      "source_location": "L75",
       "_origin": "ast",
       "id": "src_ui_sidebarview_sidebarview_renderdeckdropdown",
       "community": 7,
@@ -4080,7 +4080,7 @@
       "label": ".refreshDecks()",
       "file_type": "code",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L79",
+      "source_location": "L86",
       "_origin": "ast",
       "id": "src_ui_sidebarview_sidebarview_refreshdecks",
       "community": 7,
@@ -4091,7 +4091,7 @@
       "label": ".renderModelDropdown()",
       "file_type": "code",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L104",
+      "source_location": "L111",
       "_origin": "ast",
       "id": "src_ui_sidebarview_sidebarview_rendermodeldropdown",
       "community": 7,
@@ -4102,7 +4102,7 @@
       "label": ".refreshModels()",
       "file_type": "code",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L115",
+      "source_location": "L122",
       "_origin": "ast",
       "id": "src_ui_sidebarview_sidebarview_refreshmodels",
       "community": 7,
@@ -4113,7 +4113,7 @@
       "label": ".handleSelectionChange()",
       "file_type": "code",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L141",
+      "source_location": "L148",
       "_origin": "ast",
       "id": "src_ui_sidebarview_sidebarview_handleselectionchange",
       "community": 7,
@@ -4124,7 +4124,7 @@
       "label": ".applySelectionChange()",
       "file_type": "code",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L167",
+      "source_location": "L174",
       "_origin": "ast",
       "id": "src_ui_sidebarview_sidebarview_applyselectionchange",
       "community": 7,
@@ -4135,7 +4135,7 @@
       "label": ".renderFolderDropdown()",
       "file_type": "code",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L180",
+      "source_location": "L187",
       "_origin": "ast",
       "id": "src_ui_sidebarview_sidebarview_renderfolderdropdown",
       "community": 7,
@@ -4146,7 +4146,7 @@
       "label": ".populateFolderDropdown()",
       "file_type": "code",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L192",
+      "source_location": "L200",
       "_origin": "ast",
       "id": "src_ui_sidebarview_sidebarview_populatefolderdropdown",
       "community": 7,
@@ -4154,21 +4154,10 @@
       "norm_label": ".populatefolderdropdown()"
     },
     {
-      "label": ".buildFolderTreeEntries()",
-      "file_type": "code",
-      "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L239",
-      "_origin": "ast",
-      "id": "src_ui_sidebarview_sidebarview_buildfoldertreeentries",
-      "community": 7,
-      "community_name": "SidebarView",
-      "norm_label": ".buildfoldertreeentries()"
-    },
-    {
       "label": ".renderFieldCheckboxes()",
       "file_type": "code",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L272",
+      "source_location": "L253",
       "_origin": "ast",
       "id": "src_ui_sidebarview_sidebarview_renderfieldcheckboxes",
       "community": 7,
@@ -4179,7 +4168,7 @@
       "label": ".setFieldSelected()",
       "file_type": "code",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L313",
+      "source_location": "L294",
       "_origin": "ast",
       "id": "src_ui_sidebarview_sidebarview_setfieldselected",
       "community": 7,
@@ -4190,7 +4179,7 @@
       "label": ".renderConnectionStatus()",
       "file_type": "code",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L334",
+      "source_location": "L315",
       "_origin": "ast",
       "id": "src_ui_sidebarview_sidebarview_renderconnectionstatus",
       "community": 7,
@@ -4201,7 +4190,7 @@
       "label": ".handleRefreshAllClick()",
       "file_type": "code",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L349",
+      "source_location": "L330",
       "_origin": "ast",
       "id": "src_ui_sidebarview_sidebarview_handlerefreshallclick",
       "community": 7,
@@ -4212,7 +4201,7 @@
       "label": ".testConnection()",
       "file_type": "code",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L359",
+      "source_location": "L340",
       "_origin": "ast",
       "id": "src_ui_sidebarview_sidebarview_testconnection",
       "community": 7,
@@ -4223,7 +4212,7 @@
       "label": "registerSidebarView()",
       "file_type": "code",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L380",
+      "source_location": "L361",
       "_origin": "ast",
       "id": "src_ui_sidebarview_registersidebarview",
       "community": 78,
@@ -4234,7 +4223,7 @@
       "label": "revealSidebarView()",
       "file_type": "code",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L389",
+      "source_location": "L370",
       "_origin": "ast",
       "id": "src_ui_sidebarview_revealsidebarview",
       "community": 78,
@@ -4249,7 +4238,7 @@
       "_origin": "ast",
       "id": "src_ui_toast_test",
       "community": 86,
-      "community_name": "settingsTab.ts",
+      "community_name": "controlsBlock.ts",
       "norm_label": "toast.test.ts"
     },
     {
@@ -4260,7 +4249,7 @@
       "_origin": "ast",
       "id": "src_ui_toast_test_notice",
       "community": 86,
-      "community_name": "settingsTab.ts",
+      "community_name": "controlsBlock.ts",
       "norm_label": "{ notice }"
     },
     {
@@ -4271,7 +4260,7 @@
       "_origin": "ast",
       "id": "src_ui_toast",
       "community": 86,
-      "community_name": "settingsTab.ts",
+      "community_name": "controlsBlock.ts",
       "norm_label": "toast.ts"
     },
     {
@@ -4282,7 +4271,7 @@
       "_origin": "ast",
       "id": "src_ui_toast_toastsuccess",
       "community": 86,
-      "community_name": "settingsTab.ts",
+      "community_name": "controlsBlock.ts",
       "norm_label": "toastsuccess()"
     },
     {
@@ -4293,7 +4282,7 @@
       "_origin": "ast",
       "id": "src_ui_toast_toasterror",
       "community": 86,
-      "community_name": "settingsTab.ts",
+      "community_name": "controlsBlock.ts",
       "norm_label": "toasterror()"
     },
     {
@@ -4304,7 +4293,7 @@
       "_origin": "ast",
       "id": "src_utils_constants",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "constants.ts"
     },
     {
@@ -4315,8 +4304,63 @@
       "_origin": "ast",
       "id": "src_utils_constants_field_aliases",
       "community": 5,
-      "community_name": "controlsBlock.ts",
+      "community_name": "types.ts",
       "norm_label": "field_aliases"
+    },
+    {
+      "label": "folderTree.test.ts",
+      "file_type": "code",
+      "source_file": "src/utils/folderTree.test.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_utils_foldertree_test",
+      "community": 86,
+      "community_name": "controlsBlock.ts",
+      "norm_label": "foldertree.test.ts"
+    },
+    {
+      "label": "FakeFolder",
+      "file_type": "code",
+      "source_file": "src/utils/folderTree.test.ts",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "src_utils_foldertree_test_fakefolder",
+      "community": 86,
+      "community_name": "controlsBlock.ts",
+      "norm_label": "fakefolder"
+    },
+    {
+      "label": "folderTree.ts",
+      "file_type": "code",
+      "source_file": "src/utils/folderTree.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_utils_foldertree",
+      "community": 86,
+      "community_name": "controlsBlock.ts",
+      "norm_label": "foldertree.ts"
+    },
+    {
+      "label": "FolderTreeEntry",
+      "file_type": "code",
+      "source_file": "src/utils/folderTree.ts",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "src_utils_foldertree_foldertreeentry",
+      "community": 86,
+      "community_name": "controlsBlock.ts",
+      "norm_label": "foldertreeentry"
+    },
+    {
+      "label": "buildFolderTreeEntries()",
+      "file_type": "code",
+      "source_file": "src/utils/folderTree.ts",
+      "source_location": "L16",
+      "_origin": "ast",
+      "id": "src_utils_foldertree_buildfoldertreeentries",
+      "community": 86,
+      "community_name": "controlsBlock.ts",
+      "norm_label": "buildfoldertreeentries()"
     },
     {
       "label": "validation.test.ts",
@@ -4326,7 +4370,7 @@
       "_origin": "ast",
       "id": "src_utils_validation_test",
       "community": 86,
-      "community_name": "settingsTab.ts",
+      "community_name": "controlsBlock.ts",
       "norm_label": "validation.test.ts"
     },
     {
@@ -4337,7 +4381,7 @@
       "_origin": "ast",
       "id": "src_utils_validation",
       "community": 86,
-      "community_name": "settingsTab.ts",
+      "community_name": "controlsBlock.ts",
       "norm_label": "validation.ts"
     },
     {
@@ -4348,7 +4392,7 @@
       "_origin": "ast",
       "id": "src_utils_validation_isvalidurl",
       "community": 86,
-      "community_name": "settingsTab.ts",
+      "community_name": "controlsBlock.ts",
       "norm_label": "isvalidurl()"
     },
     {
@@ -6644,9 +6688,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 85,
+      "community": 0,
       "norm_label": "design doc architecture overview",
-      "community_name": "Sidebar Modal (Right Sidebar View Panel)",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_readme_architecture_overview"
     },
     {
@@ -6686,7 +6730,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 81,
+      "community": 0,
       "norm_label": "provider abstraction layer",
       "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_02_providers_abstraction_layer"
@@ -6700,7 +6744,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 81,
+      "community": 0,
       "norm_label": "common provider interface (processtext/generateaudio/generateimage)",
       "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_02_providers_provider_interface"
@@ -6714,9 +6758,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 85,
+      "community": 0,
       "norm_label": "ai provider manager",
-      "community_name": "Sidebar Modal (Right Sidebar View Panel)",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_02_providers_ai_provider_manager_component"
     },
     {
@@ -6728,9 +6772,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 83,
+      "community": 0,
       "norm_label": "processtext()",
-      "community_name": "Generate with AI Button",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_02_providers_processtext"
     },
     {
@@ -6744,7 +6788,7 @@
       "contributor": null,
       "community": 0,
       "norm_label": "generateaudio()",
-      "community_name": "Create Note From Selection (Hotkey / Quick Capture)",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_02_providers_generateaudio"
     },
     {
@@ -6758,7 +6802,7 @@
       "contributor": null,
       "community": 0,
       "norm_label": "generateimage()",
-      "community_name": "Create Note From Selection (Hotkey / Quick Capture)",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_02_providers_generateimage"
     },
     {
@@ -6770,9 +6814,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 83,
+      "community": 0,
       "norm_label": "targetfields (processtext input)",
-      "community_name": "Generate with AI Button",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_02_providers_targetfields"
     },
     {
@@ -6784,9 +6828,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 83,
+      "community": 0,
       "norm_label": "textresult (processtext output)",
-      "community_name": "Generate with AI Button",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_02_providers_textresult"
     },
     {
@@ -6798,7 +6842,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 81,
+      "community": 0,
       "norm_label": "openai gpt-4/3.5 (text, cloud)",
       "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_02_providers_openai_gpt"
@@ -6812,7 +6856,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 81,
+      "community": 0,
       "norm_label": "claude (text, cloud)",
       "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_02_providers_claude"
@@ -6826,7 +6870,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 81,
+      "community": 0,
       "norm_label": "gemini (text, cloud)",
       "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_02_providers_gemini"
@@ -6840,7 +6884,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 81,
+      "community": 0,
       "norm_label": "ollama (text, local)",
       "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_02_providers_ollama"
@@ -6854,7 +6898,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 81,
+      "community": 0,
       "norm_label": "lm studio (text, local)",
       "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_02_providers_lm_studio"
@@ -6868,7 +6912,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 81,
+      "community": 0,
       "norm_label": "openai tts (audio, cloud)",
       "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_02_providers_openai_tts"
@@ -6882,7 +6926,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 81,
+      "community": 0,
       "norm_label": "azure speech (audio, cloud)",
       "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_02_providers_azure_speech"
@@ -6896,7 +6940,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 81,
+      "community": 0,
       "norm_label": "elevenlabs (audio, cloud)",
       "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_02_providers_elevenlabs"
@@ -6910,7 +6954,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 81,
+      "community": 0,
       "norm_label": "edge tts (audio, cloud, free)",
       "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_02_providers_edge_tts"
@@ -6924,7 +6968,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 81,
+      "community": 0,
       "norm_label": "sherpa-onnx (audio, local)",
       "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_02_providers_sherpa_onnx"
@@ -6938,7 +6982,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 81,
+      "community": 0,
       "norm_label": "dall-e 3 (image, cloud)",
       "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_02_providers_dalle3"
@@ -6952,7 +6996,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 81,
+      "community": 0,
       "norm_label": "stability ai (image, cloud)",
       "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_02_providers_stability_ai"
@@ -6966,7 +7010,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 81,
+      "community": 0,
       "norm_label": "replicate (image, cloud)",
       "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_02_providers_replicate"
@@ -6980,7 +7024,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 81,
+      "community": 0,
       "norm_label": "automatic1111 (image, local)",
       "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_02_providers_automatic1111"
@@ -6994,7 +7038,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 81,
+      "community": 0,
       "norm_label": "comfyui (image, local)",
       "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_02_providers_comfyui"
@@ -7008,9 +7052,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 85,
+      "community": 0,
       "norm_label": "anki-controls markdown code block",
-      "community_name": "Sidebar Modal (Right Sidebar View Panel)",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_03_note_custom_markdown_block"
     },
     {
@@ -7022,9 +7066,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 85,
+      "community": 0,
       "norm_label": "sync button",
-      "community_name": "Sidebar Modal (Right Sidebar View Panel)",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_03_note_sync_button"
     },
     {
@@ -7050,9 +7094,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 83,
+      "community": 0,
       "norm_label": "generate with ai button",
-      "community_name": "Generate with AI Button",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_03_note_generate_with_ai_button"
     },
     {
@@ -7066,7 +7110,7 @@
       "contributor": null,
       "community": 0,
       "norm_label": "add audio button",
-      "community_name": "Create Note From Selection (Hotkey / Quick Capture)",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_03_note_add_audio_button"
     },
     {
@@ -7080,7 +7124,7 @@
       "contributor": null,
       "community": 0,
       "norm_label": "add image button",
-      "community_name": "Create Note From Selection (Hotkey / Quick Capture)",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_03_note_add_image_button"
     },
     {
@@ -7094,7 +7138,7 @@
       "contributor": null,
       "community": 0,
       "norm_label": "shared pre-check for 3 ai buttons",
-      "community_name": "Create Note From Selection (Hotkey / Quick Capture)",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_03_note_precheck"
     },
     {
@@ -7122,7 +7166,7 @@
       "contributor": null,
       "community": 0,
       "norm_label": "content update logic (overwrite/append)",
-      "community_name": "Create Note From Selection (Hotkey / Quick Capture)",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_03_note_content_update_logic"
     },
     {
@@ -7148,9 +7192,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 83,
+      "community": 0,
       "norm_label": "auto-generate content structure",
-      "community_name": "Generate with AI Button",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_03_note_auto_generate_content_structure"
     },
     {
@@ -7164,7 +7208,7 @@
       "contributor": null,
       "community": 0,
       "norm_label": "create note from selection (hotkey / quick capture)",
-      "community_name": "Create Note From Selection (Hotkey / Quick Capture)",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_03_note_create_note_from_selection"
     },
     {
@@ -7178,7 +7222,7 @@
       "contributor": null,
       "community": 0,
       "norm_label": "sanitizeforfilename()",
-      "community_name": "Create Note From Selection (Hotkey / Quick Capture)",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_03_note_sanitizeforfilename"
     },
     {
@@ -7190,9 +7234,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 85,
+      "community": 0,
       "norm_label": "ai buttons never write to anki directly (sync-only) principle",
-      "community_name": "Sidebar Modal (Right Sidebar View Panel)",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_03_note_ai_write_isolation_principle"
     },
     {
@@ -7206,7 +7250,7 @@
       "contributor": null,
       "community": 0,
       "norm_label": "never overwrite user-entered section content principle",
-      "community_name": "Create Note From Selection (Hotkey / Quick Capture)",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_03_note_no_overwrite_principle"
     },
     {
@@ -7220,7 +7264,7 @@
       "contributor": null,
       "community": 0,
       "norm_label": "pdf selection support deferred (m1-2/v1) decision",
-      "community_name": "Create Note From Selection (Hotkey / Quick Capture)",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_03_note_pdf_out_of_scope_decision"
     },
     {
@@ -7234,7 +7278,7 @@
       "contributor": null,
       "community": 0,
       "norm_label": "no default hotkey shipped decision",
-      "community_name": "Create Note From Selection (Hotkey / Quick Capture)",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_03_note_no_default_hotkey_decision"
     },
     {
@@ -7260,9 +7304,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 85,
+      "community": 0,
       "norm_label": "sidebar modal (right sidebar view panel)",
-      "community_name": "Sidebar Modal (Right Sidebar View Panel)",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_07_sidebar_sidebar_modal"
     },
     {
@@ -7274,9 +7318,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 83,
+      "community": 0,
       "norm_label": "tab 1 \u2014 note (deck/model/folder/field checkboxes)",
-      "community_name": "Generate with AI Button",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_07_sidebar_tab1_note"
     },
     {
@@ -7290,7 +7334,7 @@
       "contributor": null,
       "community": 0,
       "norm_label": "tab 2 \u2014 audio (voice/language/overwrite-append/rows)",
-      "community_name": "Create Note From Selection (Hotkey / Quick Capture)",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_07_sidebar_tab2_audio"
     },
     {
@@ -7304,7 +7348,7 @@
       "contributor": null,
       "community": 0,
       "norm_label": "tab 3 \u2014 image (overwrite-append/single row)",
-      "community_name": "Create Note From Selection (Hotkey / Quick Capture)",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_07_sidebar_tab3_image"
     },
     {
@@ -7316,9 +7360,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 83,
+      "community": 0,
       "norm_label": "deck dropdown",
-      "community_name": "Generate with AI Button",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_07_sidebar_deck_dropdown"
     },
     {
@@ -7330,9 +7374,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 83,
+      "community": 0,
       "norm_label": "model dropdown",
-      "community_name": "Generate with AI Button",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_07_sidebar_model_dropdown"
     },
     {
@@ -7344,9 +7388,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 83,
+      "community": 0,
       "norm_label": "folder select (save notes to)",
-      "community_name": "Generate with AI Button",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_07_sidebar_folder_select"
     },
     {
@@ -7358,9 +7402,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 83,
+      "community": 0,
       "norm_label": "field checkboxes (generate with ai)",
-      "community_name": "Generate with AI Button",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_07_sidebar_field_checkboxes"
     },
     {
@@ -7372,9 +7416,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 83,
+      "community": 0,
       "norm_label": "connection status + test connection",
-      "community_name": "Generate with AI Button",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_07_sidebar_connection_status"
     },
     {
@@ -7386,9 +7430,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 84,
+      "community": 0,
       "norm_label": "action: create new note (2-branch)",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_07_sidebar_create_new_note_action"
     },
     {
@@ -7400,9 +7444,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 84,
+      "community": 0,
       "norm_label": "branch a \u2014 deck/model already configured",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_07_sidebar_branch_a"
     },
     {
@@ -7414,9 +7458,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 84,
+      "community": 0,
       "norm_label": "branch b \u2014 first-time setup modal",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_07_sidebar_branch_b"
     },
     {
@@ -7430,7 +7474,7 @@
       "contributor": null,
       "community": 0,
       "norm_label": "persistence (deck/model/folder + per-pair field-mapping config)",
-      "community_name": "Create Note From Selection (Hotkey / Quick Capture)",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_07_sidebar_persistence"
     },
     {
@@ -7442,9 +7486,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 84,
+      "community": 0,
       "norm_label": "ribbon icon (create note + open modal)",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_07_sidebar_ribbon_icon"
     },
     {
@@ -7456,9 +7500,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 84,
+      "community": 0,
       "norm_label": "command: \"anki: create new note\" (id create-note)",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_07_sidebar_create_note_command"
     },
     {
@@ -7470,9 +7514,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 85,
+      "community": 0,
       "norm_label": "command: \"anki: open deck & model selector\"",
-      "community_name": "Sidebar Modal (Right Sidebar View Panel)",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_07_sidebar_open_selector_command"
     },
     {
@@ -7484,9 +7528,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 83,
+      "community": 0,
       "norm_label": "modelfieldnames(model)",
-      "community_name": "Generate with AI Button",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_07_sidebar_modelfieldnames"
     },
     {
@@ -7500,7 +7544,7 @@
       "contributor": null,
       "community": 0,
       "norm_label": "settings tab (global provider) vs sidebar tab 2/3 (per deck+model mapping) \u2014 independent layers",
-      "community_name": "Create Note From Selection (Hotkey / Quick Capture)",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_07_sidebar_two_layer_config_rationale"
     },
     {
@@ -7512,9 +7556,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 84,
+      "community": 0,
       "norm_label": "scenario 1: create note via icon/command",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_scenarios_scenario1"
     },
     {
@@ -7528,7 +7572,7 @@
       "contributor": null,
       "community": 0,
       "norm_label": "scenario 2: create note from selected text (hotkey)",
-      "community_name": "Create Note From Selection (Hotkey / Quick Capture)",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_scenarios_scenario2"
     },
     {
@@ -7542,7 +7586,7 @@
       "contributor": null,
       "community": 0,
       "norm_label": "scenario 3: add audio (tab 2 config)",
-      "community_name": "Create Note From Selection (Hotkey / Quick Capture)",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_scenarios_scenario3"
     },
     {
@@ -7556,7 +7600,7 @@
       "contributor": null,
       "community": 0,
       "norm_label": "scenario 3b: add image (tab 3 config)",
-      "community_name": "Create Note From Selection (Hotkey / Quick Capture)",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_scenarios_scenario3b"
     },
     {
@@ -7568,9 +7612,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 84,
+      "community": 0,
       "norm_label": "scenario 4: change deck/model for already-synced note",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_scenarios_scenario4"
     },
     {
@@ -7582,9 +7626,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 84,
+      "community": 0,
       "norm_label": "warning only applies to already-synced notes",
-      "community_name": "Scenario 1: Create Note via Icon/Command",
+      "community_name": "Common Provider Interface (processText/generateAudio/generateImage)",
       "id": "docs_design_scenarios_scenario4_sync_warning_rationale"
     }
   ],
@@ -8671,7 +8715,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.ts",
-      "source_location": "L11",
+      "source_location": "L12",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_ankibridgesettingtab_constructor",
@@ -8695,7 +8739,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L11",
+      "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview",
@@ -8708,7 +8752,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L381",
+      "source_location": "L362",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_registersidebarview",
@@ -8719,7 +8763,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L30",
+      "source_location": "L37",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_constructor",
@@ -8840,7 +8884,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ui/settingsTab.ts",
-      "source_location": "L51",
+      "source_location": "L52",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_renderconnectionsection",
@@ -8852,7 +8896,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ui/settingsTab.ts",
-      "source_location": "L124",
+      "source_location": "L123",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_renderdefaultfolderdropdown",
@@ -8864,7 +8908,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L172",
+      "source_location": "L179",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_applyselectionchange",
@@ -8876,7 +8920,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L229",
+      "source_location": "L246",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_populatefolderdropdown",
@@ -8888,7 +8932,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L187",
+      "source_location": "L195",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_renderfolderdropdown",
@@ -8900,7 +8944,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L324",
+      "source_location": "L305",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_setfieldselected",
@@ -11226,7 +11270,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.ts",
-      "source_location": "L6",
+      "source_location": "L7",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab",
@@ -11250,7 +11294,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L14",
+      "source_location": "L13",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview",
@@ -11298,7 +11342,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.ts",
-      "source_location": "L6",
+      "source_location": "L7",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab",
@@ -11310,7 +11354,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.ts",
-      "source_location": "L141",
+      "source_location": "L140",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_handleconnect",
@@ -11322,7 +11366,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L14",
+      "source_location": "L13",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview",
@@ -11335,7 +11379,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L83",
+      "source_location": "L90",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_refreshdecks",
@@ -11347,7 +11391,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L119",
+      "source_location": "L126",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_refreshmodels",
@@ -11359,7 +11403,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L337",
+      "source_location": "L318",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_renderconnectionstatus",
@@ -11371,7 +11415,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L282",
+      "source_location": "L263",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_renderfieldcheckboxes",
@@ -11383,7 +11427,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L364",
+      "source_location": "L345",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_testconnection",
@@ -11394,7 +11438,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L14",
+      "source_location": "L13",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview",
@@ -11407,7 +11451,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L296",
+      "source_location": "L277",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_renderfieldcheckboxes",
@@ -11419,7 +11463,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L319",
+      "source_location": "L300",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_setfieldselected",
@@ -11604,7 +11648,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.ts",
-      "source_location": "L7",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab",
@@ -11616,7 +11660,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L12",
+      "source_location": "L11",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview",
@@ -11751,7 +11795,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.ts",
-      "source_location": "L7",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab",
@@ -11763,7 +11807,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L12",
+      "source_location": "L11",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview",
@@ -11872,7 +11916,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ui/settingsTab.ts",
-      "source_location": "L144",
+      "source_location": "L143",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_handleconnect",
@@ -11884,7 +11928,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L85",
+      "source_location": "L92",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_refreshdecks",
@@ -11896,7 +11940,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ui/settingsTab.ts",
-      "source_location": "L145",
+      "source_location": "L144",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_handleconnect",
@@ -11908,7 +11952,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L121",
+      "source_location": "L128",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_refreshmodels",
@@ -11932,7 +11976,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L284",
+      "source_location": "L265",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_renderfieldcheckboxes",
@@ -11944,7 +11988,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L366",
+      "source_location": "L347",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_testconnection",
@@ -12329,7 +12373,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L13",
+      "source_location": "L12",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview",
@@ -12377,7 +12421,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L13",
+      "source_location": "L12",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview",
@@ -12390,7 +12434,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L149",
+      "source_location": "L156",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_handleselectionchange",
@@ -13743,7 +13787,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L175",
+      "source_location": "L178",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test",
@@ -13755,7 +13799,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L175",
+      "source_location": "L178",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test",
@@ -13766,7 +13810,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L149",
+      "source_location": "L152",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test",
@@ -13777,7 +13821,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L158",
+      "source_location": "L161",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test",
@@ -13799,7 +13843,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L125",
+      "source_location": "L128",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test",
@@ -13821,7 +13865,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L118",
+      "source_location": "L121",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test",
@@ -13832,7 +13876,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L179",
+      "source_location": "L192",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test",
@@ -13843,7 +13887,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L184",
+      "source_location": "L201",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test",
@@ -13854,7 +13898,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L82",
+      "source_location": "L85",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test",
@@ -13876,7 +13920,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L142",
+      "source_location": "L145",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test",
@@ -13887,7 +13931,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L285",
+      "source_location": "L299",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test",
@@ -13898,7 +13942,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L169",
+      "source_location": "L172",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test",
@@ -14009,7 +14053,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L64",
+      "source_location": "L66",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test_fakedropdowncomponent",
@@ -14020,7 +14064,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L57",
+      "source_location": "L58",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test_fakedropdowncomponent",
@@ -14031,7 +14075,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L72",
+      "source_location": "L75",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test_fakedropdowncomponent",
@@ -14042,7 +14086,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L68",
+      "source_location": "L71",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test_fakedropdowncomponent",
@@ -14053,7 +14097,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L76",
+      "source_location": "L79",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test_fakedropdowncomponent",
@@ -14064,7 +14108,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L104",
+      "source_location": "L107",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test_fakesetting",
@@ -14075,7 +14119,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L110",
+      "source_location": "L113",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test_fakesetting",
@@ -14086,7 +14130,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L98",
+      "source_location": "L101",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test_fakesetting",
@@ -14097,7 +14141,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L89",
+      "source_location": "L92",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test_fakesetting",
@@ -14108,7 +14152,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L94",
+      "source_location": "L97",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test_fakesetting",
@@ -14119,7 +14163,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L90",
+      "source_location": "L93",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test_fakesetting",
@@ -14130,7 +14174,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L120",
+      "source_location": "L123",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test_fakeel",
@@ -14141,7 +14185,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L122",
+      "source_location": "L125",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test_fakeel",
@@ -14152,7 +14196,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L121",
+      "source_location": "L124",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test_fakeel",
@@ -14164,7 +14208,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L290",
+      "source_location": "L304",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test_renderandconnect",
@@ -14176,7 +14220,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L286",
+      "source_location": "L300",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test_renderandconnect",
@@ -14189,7 +14233,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ui/settingsTab.test.ts",
-      "source_location": "L290",
+      "source_location": "L304",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_test_renderandconnect",
@@ -14199,7 +14243,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.ts",
-      "source_location": "L10",
+      "source_location": "L11",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab",
@@ -14210,7 +14254,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.ts",
-      "source_location": "L129",
+      "source_location": "L128",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab",
@@ -14221,7 +14265,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.ts",
-      "source_location": "L27",
+      "source_location": "L28",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab",
@@ -14232,7 +14276,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.ts",
-      "source_location": "L97",
+      "source_location": "L98",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab",
@@ -14244,7 +14288,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.ts",
-      "source_location": "L8",
+      "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab",
@@ -14256,7 +14300,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.ts",
-      "source_location": "L8",
+      "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab",
@@ -14268,7 +14312,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.ts",
-      "source_location": "L8",
+      "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab",
@@ -14285,6 +14329,30 @@
       "_origin": "ast",
       "source": "src_ui_settingstab",
       "target": "src_utils_constants",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/settingsTab.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_settingstab",
+      "target": "src_utils_foldertree",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/settingsTab.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_settingstab",
+      "target": "src_utils_foldertree_buildfoldertreeentries",
       "confidence_score": 1.0
     },
     {
@@ -14315,7 +14383,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.ts",
-      "source_location": "L11",
+      "source_location": "L12",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_ankibridgesettingtab",
@@ -14326,7 +14394,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.ts",
-      "source_location": "L18",
+      "source_location": "L19",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_ankibridgesettingtab",
@@ -14338,7 +14406,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.ts",
-      "source_location": "L20",
+      "source_location": "L21",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_ankibridgesettingtab_display",
@@ -14350,7 +14418,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.ts",
-      "source_location": "L60",
+      "source_location": "L61",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_renderconnectionsection",
@@ -14362,7 +14430,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.ts",
-      "source_location": "L91",
+      "source_location": "L92",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_renderconnectionsection",
@@ -14375,7 +14443,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ui/settingsTab.ts",
-      "source_location": "L44",
+      "source_location": "L45",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_renderconnectionsection",
@@ -14386,7 +14454,19 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.ts",
-      "source_location": "L170",
+      "source_location": "L108",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_settingstab_renderdefaultfolderdropdown",
+      "target": "src_utils_foldertree_buildfoldertreeentries",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/settingsTab.ts",
+      "source_location": "L169",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_handleconnect",
@@ -14398,7 +14478,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/settingsTab.ts",
-      "source_location": "L167",
+      "source_location": "L166",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_settingstab_handleconnect",
@@ -14534,7 +14614,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.test.ts",
-      "source_location": "L299",
+      "source_location": "L302",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_test",
@@ -14567,7 +14647,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.test.ts",
-      "source_location": "L292",
+      "source_location": "L295",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_test",
@@ -14810,7 +14890,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.test.ts",
-      "source_location": "L311",
+      "source_location": "L315",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_test_fakeplugin",
@@ -14822,7 +14902,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.test.ts",
-      "source_location": "L308",
+      "source_location": "L312",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_test_fakeplugin",
@@ -14833,7 +14913,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L380",
+      "source_location": "L361",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview",
@@ -14844,7 +14924,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L389",
+      "source_location": "L370",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview",
@@ -14887,10 +14967,34 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/sidebarView.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_sidebarview",
+      "target": "src_utils_foldertree",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/sidebarView.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_sidebarview",
+      "target": "src_utils_foldertree_buildfoldertreeentries",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L167",
+      "source_location": "L174",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview",
@@ -14901,18 +15005,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L239",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_ui_sidebarview_sidebarview",
-      "target": "src_ui_sidebarview_sidebarview_buildfoldertreeentries",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "method",
-      "confidence": "EXTRACTED",
-      "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L30",
+      "source_location": "L37",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview",
@@ -14923,7 +15016,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L41",
+      "source_location": "L48",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview",
@@ -14934,7 +15027,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L45",
+      "source_location": "L52",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview",
@@ -14945,7 +15038,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L37",
+      "source_location": "L44",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview",
@@ -14956,7 +15049,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L349",
+      "source_location": "L330",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview",
@@ -14967,7 +15060,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L141",
+      "source_location": "L148",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview",
@@ -14978,7 +15071,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L49",
+      "source_location": "L56",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview",
@@ -14989,7 +15082,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L192",
+      "source_location": "L200",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview",
@@ -15000,7 +15093,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L79",
+      "source_location": "L86",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview",
@@ -15011,7 +15104,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L115",
+      "source_location": "L122",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview",
@@ -15022,7 +15115,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L334",
+      "source_location": "L315",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview",
@@ -15033,7 +15126,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L68",
+      "source_location": "L75",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview",
@@ -15044,7 +15137,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L272",
+      "source_location": "L253",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview",
@@ -15055,7 +15148,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L180",
+      "source_location": "L187",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview",
@@ -15066,7 +15159,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L104",
+      "source_location": "L111",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview",
@@ -15077,7 +15170,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L313",
+      "source_location": "L294",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview",
@@ -15088,11 +15181,47 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L359",
+      "source_location": "L340",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview",
       "target": "src_ui_sidebarview_sidebarview_testconnection",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/sidebarView.ts",
+      "source_location": "L66",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_sidebarview_sidebarview_onopen",
+      "target": "src_ui_sidebarview_sidebarview_populatefolderdropdown",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/sidebarView.ts",
+      "source_location": "L62",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_sidebarview_sidebarview_onopen",
+      "target": "src_ui_sidebarview_sidebarview_refreshdecks",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/sidebarView.ts",
+      "source_location": "L64",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_sidebarview_sidebarview_onopen",
+      "target": "src_ui_sidebarview_sidebarview_refreshmodels",
       "confidence_score": 1.0
     },
     {
@@ -15104,42 +15233,6 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_onopen",
-      "target": "src_ui_sidebarview_sidebarview_populatefolderdropdown",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L55",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_ui_sidebarview_sidebarview_onopen",
-      "target": "src_ui_sidebarview_sidebarview_refreshdecks",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L57",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_ui_sidebarview_sidebarview_onopen",
-      "target": "src_ui_sidebarview_sidebarview_refreshmodels",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L52",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "src_ui_sidebarview_sidebarview_onopen",
       "target": "src_ui_sidebarview_sidebarview_renderconnectionstatus",
       "confidence_score": 1.0
     },
@@ -15148,7 +15241,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L54",
+      "source_location": "L61",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_onopen",
@@ -15160,7 +15253,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L63",
+      "source_location": "L70",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_onopen",
@@ -15172,7 +15265,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L58",
+      "source_location": "L65",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_onopen",
@@ -15184,7 +15277,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L56",
+      "source_location": "L63",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_onopen",
@@ -15196,7 +15289,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L53",
+      "source_location": "L60",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_onopen",
@@ -15208,7 +15301,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L74",
+      "source_location": "L81",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_renderdeckdropdown",
@@ -15220,7 +15313,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L353",
+      "source_location": "L334",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_handlerefreshallclick",
@@ -15233,7 +15326,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L96",
+      "source_location": "L103",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_refreshdecks",
@@ -15244,7 +15337,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L110",
+      "source_location": "L117",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_rendermodeldropdown",
@@ -15256,7 +15349,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L354",
+      "source_location": "L335",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_handlerefreshallclick",
@@ -15269,7 +15362,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L132",
+      "source_location": "L139",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_refreshmodels",
@@ -15280,7 +15373,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L152",
+      "source_location": "L159",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_handleselectionchange",
@@ -15292,7 +15385,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L173",
+      "source_location": "L180",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_applyselectionchange",
@@ -15304,7 +15397,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L351",
+      "source_location": "L332",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_handlerefreshallclick",
@@ -15315,20 +15408,20 @@
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L202",
+      "source_location": "L210",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_populatefolderdropdown",
-      "target": "src_ui_sidebarview_sidebarview_buildfoldertreeentries",
-      "confidence_score": 1.0
+      "target": "src_utils_foldertree_buildfoldertreeentries"
     },
     {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L355",
+      "source_location": "L336",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_handlerefreshallclick",
@@ -15340,7 +15433,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L307",
+      "source_location": "L288",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_renderfieldcheckboxes",
@@ -15353,7 +15446,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L286",
+      "source_location": "L267",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_renderfieldcheckboxes",
@@ -15364,7 +15457,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L340",
+      "source_location": "L321",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_renderconnectionstatus",
@@ -15376,7 +15469,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebarView.ts",
-      "source_location": "L350",
+      "source_location": "L331",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebarview_sidebarview_handlerefreshallclick",
@@ -15461,6 +15554,63 @@
       "_origin": "ast",
       "source": "src_utils_constants",
       "target": "src_utils_constants_field_aliases",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/utils/folderTree.test.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_utils_foldertree_test",
+      "target": "src_utils_foldertree",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/utils/folderTree.test.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_utils_foldertree_test",
+      "target": "src_utils_foldertree_buildfoldertreeentries",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/utils/folderTree.test.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_utils_foldertree_test",
+      "target": "src_utils_foldertree_test_fakefolder",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/utils/folderTree.ts",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_utils_foldertree",
+      "target": "src_utils_foldertree_buildfoldertreeentries",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/utils/folderTree.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_utils_foldertree",
+      "target": "src_utils_foldertree_foldertreeentry",
       "confidence_score": 1.0
     },
     {
@@ -17895,5 +18045,5 @@
       "source_file": ".opencode/skills/graphify/SKILL.md"
     }
   ],
-  "built_at_commit": "a7fc6adc863047248c3bd787a8ba276008021334"
+  "built_at_commit": "f5bf0e15f973fa673f98911961eea7b428339b03"
 }

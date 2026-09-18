@@ -16,7 +16,9 @@ export interface FolderTreeEntry {
 export function buildFolderTreeEntries(folders: TFolder[]): FolderTreeEntry[] {
 	const byParent = new Map<string, TFolder[]>();
 	for (const folder of folders) {
-		const parentPath = folder.parent?.path ?? '';
+		// A top-level folder's .parent is the vault root TFolder itself (path "/"),
+		// never null — so it must be normalized to '' to match walk('', 0) below.
+		const parentPath = folder.parent && !folder.parent.isRoot() ? folder.parent.path : '';
 		const siblings = byParent.get(parentPath) ?? [];
 		siblings.push(folder);
 		byParent.set(parentPath, siblings);
