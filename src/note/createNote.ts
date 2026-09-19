@@ -15,24 +15,14 @@ import { NoteNameModal } from '../ui/modals/noteNameModal';
 import type AnkiBridgePlugin from '../main';
 
 // docs/design/07-sidebar.md §7.3 — Ribbon icon / "Anki: Create new note" command.
-// Deck/Model/Folder resolution reuses resolveQuickCaptureTarget: despite its name,
-// it's the general §7.3 step [2] 3-way resolution, already shared with the hotkey
-// flow (docs/design/03-note.md §3.7 step 4).
+// Deck/Model/Folder come from the active profile via resolveQuickCaptureTarget,
+// shared with the hotkey flow (docs/design/03-note.md §3.7 step 4).
 export async function runCreateNote(plugin: AnkiBridgePlugin): Promise<void> {
 	const target = resolveQuickCaptureTarget(plugin.settings);
 	if (!target) {
-		new Notice(
-			'Please configure Deck, Model, and Save location in Settings first',
-		);
+		new Notice('Please set up a profile in Settings first');
 		openPluginSettings(plugin.app, plugin.manifest.id);
 		return;
-	}
-
-	if (target.seededFromDefaults) {
-		plugin.settings.currentDeck = target.deck;
-		plugin.settings.currentModel = target.model;
-		plugin.settings.currentFolder = target.folder;
-		await plugin.saveSettings();
 	}
 
 	const name = await new Promise<string | null>((resolve) => {

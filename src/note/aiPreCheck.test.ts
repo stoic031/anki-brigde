@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { fieldConfigKey, type AnkiBridgeSettings } from '../settings';
+import {
+	DEFAULT_SETTINGS,
+	fieldConfigKey,
+	type AnkiBridgeSettings,
+} from '../settings';
 import { runAiPreCheck } from './aiPreCheck';
 
 function fakeSettings(
@@ -7,12 +11,8 @@ function fakeSettings(
 ): AnkiBridgeSettings {
 	return {
 		ankiConnectUrl: '',
-		defaultDeck: '',
-		defaultModel: '',
-		defaultFolder: '',
-		currentDeck: '',
-		currentModel: '',
-		currentFolder: '',
+		profiles: DEFAULT_SETTINGS.profiles,
+		activeProfileId: DEFAULT_SETTINGS.activeProfileId,
 		generateWithAiFields: {},
 		...overrides,
 	};
@@ -30,7 +30,7 @@ describe('runAiPreCheck — generate-ai', () => {
 		expect(result).toEqual({
 			configured: false,
 			message:
-				'Please configure AI field generation for this Deck/Model in the sidebar (Tab 1) first.',
+				'Please configure AI field generation for this Deck/Model in the sidebar (Text tab) first.',
 		});
 	});
 
@@ -41,7 +41,7 @@ describe('runAiPreCheck — generate-ai', () => {
 		expect(runAiPreCheck('generate-ai', settings, 'Japanese', 'Basic')).toEqual({
 			configured: false,
 			message:
-				'Please configure AI field generation for this Deck/Model in the sidebar (Tab 1) first.',
+				'Please configure AI field generation for this Deck/Model in the sidebar (Text tab) first.',
 		});
 	});
 
@@ -67,7 +67,7 @@ describe('runAiPreCheck — generate-ai', () => {
 		).toEqual({
 			configured: false,
 			message:
-				'Please configure AI field generation for this Deck/Model in the sidebar (Tab 1) first.',
+				'Please configure AI field generation for this Deck/Model in the sidebar (Text tab) first.',
 		});
 	});
 });
@@ -79,7 +79,7 @@ describe('runAiPreCheck — add-audio', () => {
 		).toEqual({
 			configured: false,
 			message:
-				'Please configure Audio field mapping for this Deck/Model in the sidebar (Tab 2) first.',
+				'Please configure Audio field mapping for this Deck/Model in the sidebar (Audio tab) first.',
 		});
 	});
 });
@@ -91,7 +91,7 @@ describe('runAiPreCheck — add-image', () => {
 		).toEqual({
 			configured: false,
 			message:
-				'Please configure Image field mapping for this Deck/Model in the sidebar (Tab 3) first.',
+				'Please configure Image field mapping for this Deck/Model in the sidebar (Image tab) first.',
 		});
 	});
 });

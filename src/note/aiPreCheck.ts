@@ -22,7 +22,7 @@ export function runAiPreCheck(
 			return {
 				configured: false,
 				message:
-					'Please configure AI field generation for this Deck/Model in the sidebar (Tab 1) first.',
+					'Please configure AI field generation for this Deck/Model in the sidebar (Text tab) first.',
 			};
 		}
 		// Tab 2/Tab 3 have no settings shape yet — Features #40/#41 (Sidebar Tab 2/3)
@@ -32,13 +32,13 @@ export function runAiPreCheck(
 			return {
 				configured: false,
 				message:
-					'Please configure Audio field mapping for this Deck/Model in the sidebar (Tab 2) first.',
+					'Please configure Audio field mapping for this Deck/Model in the sidebar (Audio tab) first.',
 			};
 		case 'add-image':
 			return {
 				configured: false,
 				message:
-					'Please configure Image field mapping for this Deck/Model in the sidebar (Tab 3) first.',
+					'Please configure Image field mapping for this Deck/Model in the sidebar (Image tab) first.',
 			};
 	}
 }

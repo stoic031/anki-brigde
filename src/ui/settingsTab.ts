@@ -1,11 +1,11 @@
-import type { App, ButtonComponent, DropdownComponent } from 'obsidian';
+import type { App, ButtonComponent } from 'obsidian';
 import { Notice, PluginSettingTab, Setting } from 'obsidian';
 import type AnkiBridgePlugin from '../main';
 import { DEFAULT_ANKI_CONNECT_URL } from '../utils/constants';
 import { isValidUrl } from '../utils/validation';
-import { buildFolderTreeEntries } from '../utils/folderTree';
 import { resolveAnkiConnectUrl } from '../settings';
 import { AnkiConnectClient } from '../sync/ankiConnect';
+import { renderProfilesSection, type ProfilesSection } from './profilesSection';
 import { toastError, toastSuccess } from './toast';
 
 export class AnkiBridgeSettingTab extends PluginSettingTab {
@@ -16,21 +16,24 @@ export class AnkiBridgeSettingTab extends PluginSettingTab {
 		super(app, plugin);
 	}
 
+	private profiles?: ProfilesSection;
+
 	display(): void {
 		this.containerEl.empty();
-		renderConnectionSection(this.containerEl, this.plugin);
+		this.profiles = renderConnectionSection(this.containerEl, this.plugin);
+	}
+
+	hide(): void {
+		this.profiles?.dispose();
+		this.profiles = undefined;
 	}
 }
-
-const DROPDOWNS_HIDDEN_CLASS = 'anki-bridge-settings__hidden';
 
 // docs/design/06-settings.md §6.1
 export function renderConnectionSection(
 	containerEl: HTMLElement,
 	plugin: AnkiBridgePlugin,
-): void {
-	let deckDropdown!: DropdownComponent;
-	let modelDropdown!: DropdownComponent;
+): ProfilesSection {
 	let connectButton!: ButtonComponent;
 
 	new Setting(containerEl)
@@ -57,79 +60,38 @@ export function renderConnectionSection(
 			button
 				.setButtonText('🔗 Connect')
 				.onClick(
-					() =>
-						void handleConnect(
-							plugin,
-							dropdownsEl,
-							deckDropdown,
-							modelDropdown,
-							connectButton,
-						),
+					() => void handleConnect(plugin, profiles, connectButton),
 				);
 		});
 
-	const dropdownsEl = containerEl.createDiv({
-		cls: `anki-bridge-settings__dropdowns ${DROPDOWNS_HIDDEN_CLASS}`,
-	});
-
-	new Setting(dropdownsEl).setName('Default deck').addDropdown((dropdown) => {
-		deckDropdown = dropdown;
-		dropdown.onChange(async (value) => {
-			plugin.settings.defaultDeck = value;
-			await plugin.saveSettings();
-		});
-	});
-	new Setting(dropdownsEl)
-		.setName('Default model')
-		.addDropdown((dropdown) => {
-			modelDropdown = dropdown;
-			dropdown.onChange(async (value) => {
-				plugin.settings.defaultModel = value;
-				await plugin.saveSettings();
-			});
-		});
-
-	renderDefaultFolderDropdown(containerEl, plugin);
+	const profiles = renderProfilesSection(containerEl, plugin);
+	// Load Anki's deck/model names on open so the pickers are full without pressing
+	// Connect. Silent on failure — Connect is what reports connection problems.
+	void loadAnkiNames(plugin, profiles);
+	return profiles;
 }
 
-// docs/design/06-settings.md §6.1 — "Save notes to" default. Unlike Deck/Model, this
-// doesn't depend on AnkiConnect, so it's populated immediately and always visible
-// (no Connect gating, no Refresh button) — mirrors sidebarView.ts's folder dropdown.
-function renderDefaultFolderDropdown(
-	containerEl: HTMLElement,
+async function loadAnkiNames(
 	plugin: AnkiBridgePlugin,
-): void {
-	new Setting(containerEl).setName('Save notes to').addDropdown((dropdown) => {
-		const folders = plugin.app.vault
-			.getAllFolders(true)
-			.filter((folder) => !folder.isRoot());
-		const entries = [
-			{ value: '', label: '/ (vault root)' },
-			...buildFolderTreeEntries(folders),
-		];
-		for (const { value, label } of entries) {
-			dropdown.addOption(value, label);
-		}
-
-		const current = plugin.settings.defaultFolder;
-		const currentExists =
-			current !== '' && folders.some((folder) => folder.path === current);
-		if (currentExists) {
-			dropdown.setValue(current);
-		}
-
-		dropdown.onChange(async (value) => {
-			plugin.settings.defaultFolder = value;
-			await plugin.saveSettings();
-		});
-	});
+	profiles: ProfilesSection,
+): Promise<void> {
+	try {
+		const client = new AnkiConnectClient(
+			resolveAnkiConnectUrl(plugin.settings),
+		);
+		const [deckNames, modelNames] = await Promise.all([
+			client.deckNames(),
+			client.modelNames(),
+		]);
+		profiles.setAnkiNames(deckNames, modelNames);
+	} catch {
+		// Anki offline: pickers keep showing the saved values.
+	}
 }
 
 async function handleConnect(
 	plugin: AnkiBridgePlugin,
-	dropdownsEl: HTMLElement,
-	deckDropdown: DropdownComponent,
-	modelDropdown: DropdownComponent,
+	profiles: ProfilesSection,
 	button: ButtonComponent,
 ): Promise<void> {
 	button.setDisabled(true);
@@ -144,28 +106,9 @@ async function handleConnect(
 			client.modelNames(),
 		]);
 
-		deckDropdown.selectEl.empty();
-		for (const name of deckNames) deckDropdown.addOption(name, name);
-		if (
-			plugin.settings.defaultDeck &&
-			deckNames.includes(plugin.settings.defaultDeck)
-		) {
-			deckDropdown.setValue(plugin.settings.defaultDeck);
-		}
-
-		modelDropdown.selectEl.empty();
-		for (const name of modelNames) modelDropdown.addOption(name, name);
-		if (
-			plugin.settings.defaultModel &&
-			modelNames.includes(plugin.settings.defaultModel)
-		) {
-			modelDropdown.setValue(plugin.settings.defaultModel);
-		}
-
-		dropdownsEl.toggleClass(DROPDOWNS_HIDDEN_CLASS, false);
+		profiles.setAnkiNames(deckNames, modelNames);
 		toastSuccess('✅ Connected to Anki!');
 	} catch {
-		dropdownsEl.toggleClass(DROPDOWNS_HIDDEN_CLASS, true);
 		toastError(
 			'❌ Cannot connect to Anki. Please check URL and AnkiConnect.',
 		);

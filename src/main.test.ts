@@ -18,11 +18,6 @@ const { loadSettings, saveSettings } = vi.hoisted(() => ({
 }));
 vi.mock('./settings', () => ({ loadSettings, saveSettings }));
 
-const { registerControlsBlock } = vi.hoisted(() => ({
-	registerControlsBlock: vi.fn(),
-}));
-vi.mock('./note/controlsBlock', () => ({ registerControlsBlock }));
-
 const { runQuickCapture } = vi.hoisted(() => ({
 	runQuickCapture: vi.fn().mockResolvedValue(undefined),
 }));

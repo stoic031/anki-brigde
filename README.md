@@ -17,10 +17,10 @@ AI-generated media into your vault (media goes straight to Anki's media folder).
 
 - Sync a note's content to an Anki note via AnkiConnect, with dynamic field mapping
   based on the Anki model you select (no hardcoded deck/model/field names).
-- In-note controls (a custom `anki-controls` code block) to trigger sync and AI
-  generation directly from the note.
-- A sidebar modal for choosing Deck/Model and configuring audio/image generation
-  per note.
+- A sidebar with sync / rebuild / delete buttons and AI generation controls for the
+  active note, plus quick Deck/Model editing. Notes stay clean: just properties and
+  `## Field` sections.
+- Profiles (Deck + Model + save folder) for creating new notes.
 - Pluggable AI providers for text, audio (TTS), and image generation — bring your
   own API key, nothing is bundled or hardcoded.
 - Works entirely on your machine: Anki + AnkiConnect must be running locally.

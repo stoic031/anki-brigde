@@ -1,4 +1,98 @@
-/* docs/design/06-settings.md §6.1 — Deck/Model dropdowns stay hidden until Connect succeeds */
-.anki-bridge-settings__hidden {
+/* docs/design/07-sidebar.md §7.2 — sidebar tabs, action row, section header.
+   Theme variables only, so it follows light/dark and community themes. */
+.anki-bridge-sidebar__tabs {
+	display: flex;
+	gap: var(--size-4-1);
+	margin: var(--size-4-2) 0 var(--size-4-3);
+	border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.anki-bridge-sidebar__tab {
+	margin-bottom: -1px;
+	padding: var(--size-4-1) var(--size-4-3);
+	border: none;
+	border-bottom: 2px solid transparent;
+	border-radius: 0;
+	background: none;
+	box-shadow: none;
+	color: var(--text-muted);
+	cursor: pointer;
+}
+
+.anki-bridge-sidebar__tab:hover {
+	color: var(--text-normal);
+}
+
+.anki-bridge-sidebar__tab.is-active {
+	border-bottom-color: var(--interactive-accent);
+	color: var(--text-accent);
+	font-weight: var(--font-semibold);
+}
+
+.anki-bridge-sidebar__panel--hidden {
 	display: none;
+}
+
+.anki-bridge-sidebar__actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--size-4-2);
+	margin-top: var(--size-4-3);
+}
+
+.anki-bridge-sidebar__action {
+	display: inline-flex;
+	flex: 1 1 auto;
+	align-items: center;
+	justify-content: center;
+	gap: var(--size-4-1);
+}
+
+.anki-bridge-sidebar__action[hidden] {
+	display: none;
+}
+
+.anki-bridge-sidebar__action:disabled {
+	opacity: 0.6;
+	cursor: not-allowed;
+}
+
+.anki-bridge-sidebar__action--primary {
+	background-color: var(--interactive-accent);
+	color: var(--text-on-accent);
+}
+
+.anki-bridge-sidebar__action--primary:hover:not(:disabled) {
+	background-color: var(--interactive-accent-hover);
+}
+
+.anki-bridge-sidebar__action--danger {
+	color: var(--text-error);
+}
+
+.anki-bridge-sidebar__action-icon {
+	display: inline-flex;
+}
+
+.anki-bridge-sidebar__action-icon svg {
+	width: var(--icon-s);
+	height: var(--icon-s);
+}
+
+.anki-bridge-sidebar__section-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--size-4-2);
+	margin-bottom: var(--size-4-2);
+}
+
+.anki-bridge-sidebar__section-title {
+	color: var(--text-normal);
+	font-weight: var(--font-semibold);
+}
+
+.anki-bridge-sidebar__hint {
+	color: var(--text-muted);
+	font-size: var(--font-ui-smaller);
 }

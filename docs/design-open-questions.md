@@ -43,6 +43,9 @@ invent a settings shape for Tab 2/3 rows ahead of the UI that would define it.
 
 ### 16. `roadmap.md` milestone boundaries don't cover a working demo
 
+> **Update:** the `anki-controls` block referenced below was removed; its buttons now live
+> in the sidebar (03-note.md §3.1, 07-sidebar.md §7.2.1). The milestone question stands.
+
 Found while mapping Features/Tasks to milestones for GitHub issue planning:
 
 - Milestone 1 lists Module 1/5/6 but not Module 3 — yet its deliverable ("tạo/cập nhật

@@ -1,5 +1,4 @@
 import { Plugin } from 'obsidian';
-import { registerControlsBlock } from './note/controlsBlock';
 import { runQuickCapture } from './note/quickCapture';
 import { runCreateNote } from './note/createNote';
 import {
@@ -9,6 +8,7 @@ import {
 } from './settings';
 import { AnkiBridgeSettingTab } from './ui/settingsTab';
 import { registerSidebarView, revealSidebarView } from './ui/sidebarView';
+import { PROFILE_CHANGED_EVENT } from './utils/constants';
 
 export default class AnkiBridgePlugin extends Plugin {
 	settings!: AnkiBridgeSettings;
@@ -16,7 +16,6 @@ export default class AnkiBridgePlugin extends Plugin {
 	async onload(): Promise<void> {
 		this.settings = await loadSettings(this);
 		this.addSettingTab(new AnkiBridgeSettingTab(this.app, this));
-		registerControlsBlock(this);
 		registerSidebarView(this);
 
 		this.addCommand({
@@ -40,6 +39,14 @@ export default class AnkiBridgePlugin extends Plugin {
 
 	async saveSettings(): Promise<void> {
 		await saveSettings(this, this.settings);
+	}
+
+	// Settings tab and sidebar both re-render their profile selector on this event.
+	// Also used after adding/renaming/deleting a profile, since the selector lists them.
+	async setActiveProfile(id: string): Promise<void> {
+		this.settings.activeProfileId = id;
+		await this.saveSettings();
+		this.app.workspace.trigger(PROFILE_CHANGED_EVENT);
 	}
 
 	onunload(): void {}

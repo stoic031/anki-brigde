@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import type { AnkiBridgeSettings } from '../settings';
+import { DEFAULT_SETTINGS, type AnkiBridgeSettings } from '../settings';
 import type AnkiBridgePlugin from '../main';
 
 const { Notice } = vi.hoisted(() => ({ Notice: vi.fn() }));
@@ -52,8 +52,8 @@ const { NoteNameModal, submitNoteName, resetCapturedSubmit } = vi.hoisted(() => 
 	}
 	return {
 		NoteNameModal,
-		// runCreateNote may `await` (e.g. seeding settings) before constructing the
-		// modal, so wait for capturedSubmit to actually exist rather than racing it.
+		// runCreateNote may `await` before constructing the modal, so wait for
+		// capturedSubmit to actually exist rather than racing it.
 		submitNoteName: async (name: string | null) => {
 			while (!capturedSubmit) {
 				await new Promise((resolve) => setTimeout(resolve, 0));
@@ -79,12 +79,8 @@ function fakeSettings(
 ): AnkiBridgeSettings {
 	return {
 		ankiConnectUrl: '',
-		defaultDeck: '',
-		defaultModel: '',
-		defaultFolder: '',
-		currentDeck: '',
-		currentModel: '',
-		currentFolder: '',
+		profiles: DEFAULT_SETTINGS.profiles,
+		activeProfileId: DEFAULT_SETTINGS.activeProfileId,
 		generateWithAiFields: {},
 		...overrides,
 	};
@@ -116,16 +112,11 @@ describe('runCreateNote', () => {
 			deck: 'Japanese',
 			model: 'Basic',
 			folder: 'Vocab',
-			seededFromDefaults: false,
 		});
 		getUniqueNotePath.mockReturnValue('Vocab/word.md');
 		modelFieldNamesMock.mockResolvedValue(['Word', 'Meaning']);
 		const { plugin, saveSettings, vaultCreate, openFile, createdFile } =
-			fakePlugin({
-				currentDeck: 'Japanese',
-				currentModel: 'Basic',
-				currentFolder: 'Vocab',
-			});
+			fakePlugin();
 
 		const promise = runCreateNote(plugin);
 		await submitNoteName('word');
@@ -138,7 +129,7 @@ describe('runCreateNote', () => {
 		);
 		expect(vaultCreate).toHaveBeenCalledWith(
 			'Vocab/word.md',
-			'```anki-controls\n```\n\n## Word\n\n## Meaning\n',
+			'## Word\n\n## Meaning\n',
 		);
 		expect(writeAnkiFrontmatter).toHaveBeenCalledWith(plugin.app, createdFile, {
 			anki_deck: 'Japanese',
@@ -149,35 +140,14 @@ describe('runCreateNote', () => {
 		expect(saveSettings).not.toHaveBeenCalled();
 	});
 
-	it('persists the seeded Deck/Model/Folder when the target came from Settings Tab defaults', async () => {
-		resolveQuickCaptureTarget.mockReturnValue({
-			deck: 'Japanese',
-			model: 'Basic',
-			folder: 'Vocab',
-			seededFromDefaults: true,
-		});
-		getUniqueNotePath.mockReturnValue('Vocab/word.md');
-		modelFieldNamesMock.mockResolvedValue(['Word']);
-		const { plugin, saveSettings } = fakePlugin();
-
-		const promise = runCreateNote(plugin);
-		await submitNoteName('word');
-		await promise;
-
-		expect(saveSettings).toHaveBeenCalled();
-		expect(plugin.settings.currentDeck).toBe('Japanese');
-		expect(plugin.settings.currentModel).toBe('Basic');
-		expect(plugin.settings.currentFolder).toBe('Vocab');
-	});
-
-	it('shows a Notice and opens plugin settings when neither current nor default Deck/Model are set', async () => {
+	it('shows a Notice and opens plugin settings when the active profile has no Deck/Model', async () => {
 		resolveQuickCaptureTarget.mockReturnValue(null);
 		const { plugin, vaultCreate } = fakePlugin();
 
 		await runCreateNote(plugin);
 
 		expect(Notice).toHaveBeenCalledWith(
-			'Please configure Deck, Model, and Save location in Settings first',
+			'Please set up a profile in Settings first',
 		);
 		expect(openPluginSettings).toHaveBeenCalledWith(plugin.app, 'anki-bridge');
 		expect(vaultCreate).not.toHaveBeenCalled();
@@ -188,7 +158,6 @@ describe('runCreateNote', () => {
 			deck: 'Japanese',
 			model: 'Basic',
 			folder: '',
-			seededFromDefaults: false,
 		});
 		const { plugin, vaultCreate } = fakePlugin();
 
@@ -204,7 +173,6 @@ describe('runCreateNote', () => {
 			deck: 'Japanese',
 			model: 'Basic',
 			folder: '',
-			seededFromDefaults: false,
 		});
 		getUniqueNotePath.mockReturnValue('word.md');
 		modelFieldNamesMock.mockRejectedValue(new Error('boom'));
