@@ -1,12 +1,19 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { App, WorkspaceLeaf } from 'obsidian';
-import { fieldConfigKey, type AnkiBridgeSettings } from '../settings';
+import {
+	DEFAULT_SETTINGS,
+	fieldConfigKey,
+	type AnkiBridgeSettings,
+	type Profile,
+} from '../settings';
+import { PROFILE_CHANGED_EVENT } from '../utils/constants';
 import type AnkiBridgePlugin from '../main';
 
 class FakeDropdownComponent {
 	options: Record<string, string> = {};
 	optionOrder: string[] = [];
 	value = '';
+	disabled = false;
 	selectEl: { empty: () => void };
 	private changeCb: ((v: string) => unknown) | null = null;
 
@@ -25,6 +32,10 @@ class FakeDropdownComponent {
 	}
 	setValue(v: string) {
 		this.value = v;
+		return this;
+	}
+	setDisabled(d: boolean) {
+		this.disabled = d;
 		return this;
 	}
 	onChange(cb: (v: string) => unknown) {
@@ -181,8 +192,24 @@ const {
 });
 vi.mock('../sync/ankiConnect', () => ({ AnkiConnectClient }));
 
-const { toastError } = vi.hoisted(() => ({ toastError: vi.fn() }));
-vi.mock('./toast', () => ({ toastError }));
+const { toastError, toastSuccess } = vi.hoisted(() => ({
+	toastError: vi.fn(),
+	toastSuccess: vi.fn(),
+}));
+vi.mock('./toast', () => ({ toastError, toastSuccess }));
+
+const { confirmRebuildOpen, confirmRebuildCapture } = vi.hoisted(() => ({
+	confirmRebuildOpen: vi.fn(),
+	confirmRebuildCapture: { onConfirm: undefined as (() => void) | undefined },
+}));
+vi.mock('./modals/confirmRebuildFields', () => ({
+	ConfirmRebuildFieldsModal: class {
+		constructor(_app: unknown, onConfirm: () => void) {
+			confirmRebuildCapture.onConfirm = onConfirm;
+		}
+		open = confirmRebuildOpen;
+	},
+}));
 
 const { deckModelWarningOpen, deckModelWarningCapture } = vi.hoisted(() => ({
 	deckModelWarningOpen: vi.fn(),
@@ -218,84 +245,42 @@ afterEach(() => {
 	settings.length = 0;
 	deckModelWarningCapture.onKeepOld = undefined;
 	deckModelWarningCapture.onUpdate = undefined;
+	confirmRebuildCapture.onConfirm = undefined;
 });
+
+
+const profileA: Profile = {
+	id: 'a',
+	name: 'Japanese',
+	deck: '',
+	model: '',
+	folder: '',
+};
+const profileB: Profile = { ...profileA, id: 'b', name: 'Spanish' };
 
 function fakeSettings(
 	overrides: Partial<AnkiBridgeSettings> = {},
 ): AnkiBridgeSettings {
 	return {
-		ankiConnectUrl: '',
-		defaultDeck: '',
-		defaultModel: '',
-		defaultFolder: '',
-		currentDeck: '',
-		currentModel: '',
-		currentFolder: '',
-		generateWithAiFields: {},
+		...DEFAULT_SETTINGS,
+		profiles: [{ ...profileA }, { ...profileB }],
+		activeProfileId: 'a',
 		...overrides,
-	};
-}
-
-interface FakeFolder {
-	path: string;
-	name: string;
-	parent: FakeFolder | null;
-	isRoot: () => boolean;
-}
-
-// Matches real Obsidian: vault.getRoot().path is "/", not "", and every top-level
-// folder's .parent is that root object, never null.
-const fakeRoot: FakeFolder = {
-	path: '/',
-	name: '',
-	parent: null,
-	isRoot: () => true,
-};
-
-// parent defaults to the vault root object. Pass an explicit parent to build nested
-// fixtures.
-function fakeFolder(path: string, parent: FakeFolder = fakeRoot): FakeFolder {
-	return {
-		path,
-		name: path.split('/').pop() ?? path,
-		parent,
-		isRoot: () => false,
 	};
 }
 
 function fakeApp(
 	options: {
-		folders?: FakeFolder[];
-		activeFileParent?: FakeFolder | null;
 		activeFile?: object | null;
 		frontmatter?: Record<string, unknown> | null;
 	} = {},
-): {
-	app: App;
-	getAllFolders: ReturnType<typeof vi.fn>;
-	getActiveFile: ReturnType<typeof vi.fn>;
-	getFileCache: ReturnType<typeof vi.fn>;
-	workspaceOn: ReturnType<typeof vi.fn>;
-	processFrontMatter: ReturnType<typeof vi.fn>;
-	frontmatter: Record<string, unknown>;
-} {
-	const {
-		folders = [fakeRoot],
-		activeFileParent = null,
-		activeFile,
-		frontmatter = null,
-	} = options;
-	const resolvedActiveFile =
-		activeFile !== undefined
-			? activeFile
-			: activeFileParent === null
-				? null
-				: { parent: activeFileParent };
-	const getAllFolders = vi.fn().mockReturnValue(folders);
-	const getActiveFile = vi.fn().mockReturnValue(resolvedActiveFile);
+) {
+	const { activeFile = null, frontmatter = null } = options;
+	const getActiveFile = vi.fn().mockReturnValue(activeFile);
 	const workspaceOn = vi.fn();
+	const metadataOn = vi.fn();
 	const liveFrontmatter: Record<string, unknown> = { ...frontmatter };
-	// Returned as a plain local (not read back off `app`) so assertions like
+	// Returned as plain locals (not read back off `app`) so assertions like
 	// `expect(processFrontMatter).not.toHaveBeenCalled()` don't trip
 	// @typescript-eslint/unbound-method.
 	const processFrontMatter = vi
@@ -308,26 +293,35 @@ function fakeApp(
 	const getFileCache = vi
 		.fn()
 		.mockReturnValue(frontmatter ? { frontmatter } : null);
+	// Runs the callback against a fixed note so tests can assert the rewritten content.
+	const process = vi
+		.fn()
+		.mockImplementation((_file: unknown, fn: (data: string) => string) =>
+			fn('---\nanki_deck: Japanese\n---\n\nold body\n'),
+		);
 	const app = {
-		vault: { getAllFolders },
+		vault: { process },
 		workspace: { getActiveFile, on: workspaceOn },
-		metadataCache: { getFileCache },
+		metadataCache: { getFileCache, on: metadataOn },
 		fileManager: { processFrontMatter },
 	} as unknown as App;
 	return {
 		app,
-		getAllFolders,
 		getActiveFile,
 		getFileCache,
 		workspaceOn,
+		metadataOn,
 		processFrontMatter,
+		process,
 		frontmatter: liveFrontmatter,
 	};
 }
 
+// Defaults to a markdown file — the only kind the Deck/Model dropdowns work on.
 function fakeTFile(overrides: Record<string, unknown> = {}): TFile {
 	return Object.assign(
 		Object.create(TFile.prototype) as TFile,
+		{ extension: 'md' },
 		overrides,
 	);
 }
@@ -335,49 +329,50 @@ function fakeTFile(overrides: Record<string, unknown> = {}): TFile {
 function fakePlugin(
 	overrides: Partial<AnkiBridgeSettings> = {},
 	appOptions: Parameters<typeof fakeApp>[0] = {},
-): {
-	plugin: AnkiBridgePlugin;
-	saveSettings: ReturnType<typeof vi.fn>;
-	getAllFolders: ReturnType<typeof vi.fn>;
-	getActiveFile: ReturnType<typeof vi.fn>;
-	getFileCache: ReturnType<typeof vi.fn>;
-	workspaceOn: ReturnType<typeof vi.fn>;
-	processFrontMatter: ReturnType<typeof vi.fn>;
-	frontmatter: Record<string, unknown>;
-} {
+) {
 	const saveSettings = vi.fn().mockResolvedValue(undefined);
-	const {
-		app,
-		getAllFolders,
-		getActiveFile,
-		getFileCache,
-		workspaceOn,
-		processFrontMatter,
-		frontmatter,
-	} = fakeApp(appOptions);
+	const setActiveProfile = vi.fn().mockResolvedValue(undefined);
+	const appParts = fakeApp(appOptions);
 	const plugin = {
-		app,
+		app: appParts.app,
 		settings: fakeSettings(overrides),
 		saveSettings,
+		setActiveProfile,
 	} as unknown as AnkiBridgePlugin;
-	return {
-		plugin,
-		saveSettings,
-		getAllFolders,
-		getActiveFile,
-		getFileCache,
-		workspaceOn,
-		processFrontMatter,
-		frontmatter,
-	};
+	return { plugin, saveSettings, setActiveProfile, ...appParts };
 }
 
-// Setting row order in Tab 1: Connection Status (0), Deck (1), Model (2), Folder (3),
-// Fields (4+, only once Deck+Model are both set).
-const STATUS_IDX = 0;
+// A note that's open and has the given frontmatter (metadata cache pre-populated).
+function noteOptions(frontmatter: Record<string, unknown>) {
+	return { activeFile: fakeTFile(), frontmatter };
+}
+
+function handlerFor(
+	mock: ReturnType<typeof vi.fn>,
+	eventName: string,
+): (...args: unknown[]) => void {
+	const handler = mock.mock.calls.find(([name]) => name === eventName)?.[1] as
+		| ((...args: unknown[]) => void)
+		| undefined;
+	if (!handler) throw new Error(`no "${eventName}" handler registered`);
+	return handler;
+}
+
+// Setting row order: Profile (0), Deck (1), Model (2), Rebuild fields (3),
+// then Fields (4+, only once the active note has both Deck and Model).
+const PROFILE_IDX = 0;
 const DECK_IDX = 1;
 const MODEL_IDX = 2;
-const FOLDER_IDX = 3;
+const REBUILD_IDX = 3;
+const FIRST_FIELD_IDX = 4;
+
+const deckDropdown = () => settings[DECK_IDX]?.dropdownComponents[0];
+const modelDropdown = () => settings[MODEL_IDX]?.dropdownComponents[0];
+
+function openView(plugin: AnkiBridgePlugin) {
+	const view = new SidebarView({} as WorkspaceLeaf, plugin);
+	return { view, opened: view.onOpen() };
+}
 
 describe('SidebarView', () => {
 	it('reports its view type', () => {
@@ -395,1013 +390,625 @@ describe('SidebarView', () => {
 		expect(view.getIcon()).toBeTruthy();
 	});
 
-	it('renders the Connection Status row first, before Deck/Model/Folder, without throwing', async () => {
+	it('renders Profile, Deck, Model, Rebuild fields in that order — and no Save notes to', async () => {
 		const { plugin } = fakePlugin();
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+		const { opened } = openView(plugin);
 
-		await expect(view.onOpen()).resolves.toBeUndefined();
+		await expect(opened).resolves.toBeUndefined();
 		expect(contentElEmpty).toHaveBeenCalled();
 		expect(contentElCreateEl).toHaveBeenCalledWith('h4', {
 			text: 'Anki Bridge',
 		});
-		expect(settings[STATUS_IDX]?.name).toContain('Status:');
+		expect(settings[PROFILE_IDX]?.name).toBe('Profile');
 		expect(settings[DECK_IDX]?.name).toBe('Deck');
 		expect(settings[MODEL_IDX]?.name).toBe('Model');
-		expect(settings[FOLDER_IDX]?.name).toBe('Save notes to');
+		expect(settings[REBUILD_IDX]?.name).toBe('Note fields');
+		expect(settings.some((s) => s.name === 'Save notes to')).toBe(false);
 	});
 
-	it('populates the Deck dropdown and pre-selects the saved current deck', async () => {
-		deckNamesMock.mockResolvedValue(['Japanese', 'Spanish']);
-		const { plugin } = fakePlugin({ currentDeck: 'Spanish' });
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+	describe('Profile dropdown', () => {
+		it('lists every profile and selects the active one', async () => {
+			const { plugin } = fakePlugin({ activeProfileId: 'b' });
 
-		await view.onOpen();
+			await openView(plugin).opened;
 
-		const dropdown = settings[DECK_IDX]?.dropdownComponents[0];
-		expect(dropdown?.options).toEqual({
-			Japanese: 'Japanese',
-			Spanish: 'Spanish',
+			const dropdown = settings[PROFILE_IDX]?.dropdownComponents[0];
+			expect(dropdown?.options).toEqual({ a: 'Japanese', b: 'Spanish' });
+			expect(dropdown?.value).toBe('b');
 		});
-		expect(dropdown?.value).toBe('Spanish');
-	});
 
-	it('does not pre-select a saved deck that no longer exists', async () => {
-		deckNamesMock.mockResolvedValue(['Japanese']);
-		const { plugin } = fakePlugin({ currentDeck: 'Deleted deck' });
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+		it('picking a profile calls plugin.setActiveProfile', async () => {
+			const { plugin, setActiveProfile } = fakePlugin();
+			await openView(plugin).opened;
 
-		await view.onOpen();
+			await settings[PROFILE_IDX]?.dropdownComponents[0]?.triggerChange('b');
 
-		expect(settings[DECK_IDX]?.dropdownComponents[0]?.value).toBe('');
-	});
+			expect(setActiveProfile).toHaveBeenCalledWith('b');
+		});
 
-	it('persists the selected deck to settings.currentDeck', async () => {
-		deckNamesMock.mockResolvedValue(['Japanese']);
-		const { plugin, saveSettings } = fakePlugin();
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+		it('re-renders when the profile changes elsewhere (e.g. the Settings tab)', async () => {
+			const { plugin, workspaceOn } = fakePlugin();
+			await openView(plugin).opened;
 
-		await view.onOpen();
-		await settings[DECK_IDX]?.dropdownComponents[0]?.triggerChange('Japanese');
+			plugin.settings.profiles.push({ ...profileA, id: 'c', name: 'French' });
+			plugin.settings.activeProfileId = 'c';
+			handlerFor(workspaceOn, PROFILE_CHANGED_EVENT)();
 
-		expect(plugin.settings.currentDeck).toBe('Japanese');
-		expect(saveSettings).toHaveBeenCalled();
-	});
-
-	it('has no Refresh button of its own on the Deck row', async () => {
-		const { plugin } = fakePlugin();
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-
-		await view.onOpen();
-
-		expect(settings[DECK_IDX]?.buttonComponents).toHaveLength(0);
-	});
-
-	it('shows an error toast when loading decks fails, without throwing', async () => {
-		deckNamesMock.mockRejectedValueOnce(new Error('boom'));
-		const { plugin } = fakePlugin();
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-
-		await expect(view.onOpen()).resolves.toBeUndefined();
-
-		expect(toastError).toHaveBeenCalledWith(
-			'❌ Failed to load decks. Please check Anki connection.',
-		);
-	});
-
-	it('populates the Model dropdown and pre-selects the saved current model', async () => {
-		modelNamesMock.mockResolvedValue(['Basic', 'Cloze']);
-		const { plugin } = fakePlugin({ currentModel: 'Cloze' });
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-
-		await view.onOpen();
-
-		const dropdown = settings[MODEL_IDX]?.dropdownComponents[0];
-		expect(dropdown?.options).toEqual({ Basic: 'Basic', Cloze: 'Cloze' });
-		expect(dropdown?.value).toBe('Cloze');
-	});
-
-	it('does not pre-select a saved model that no longer exists', async () => {
-		modelNamesMock.mockResolvedValue(['Basic']);
-		const { plugin } = fakePlugin({ currentModel: 'Deleted model' });
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-
-		await view.onOpen();
-
-		expect(settings[MODEL_IDX]?.dropdownComponents[0]?.value).toBe('');
-	});
-
-	it('persists the selected model to settings.currentModel', async () => {
-		modelNamesMock.mockResolvedValue(['Basic']);
-		const { plugin, saveSettings } = fakePlugin();
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-
-		await view.onOpen();
-		await settings[MODEL_IDX]?.dropdownComponents[0]?.triggerChange('Basic');
-
-		expect(plugin.settings.currentModel).toBe('Basic');
-		expect(saveSettings).toHaveBeenCalled();
-	});
-
-	it('has no Refresh button of its own on the Model row', async () => {
-		const { plugin } = fakePlugin();
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-
-		await view.onOpen();
-
-		expect(settings[MODEL_IDX]?.buttonComponents).toHaveLength(0);
-	});
-
-	it('shows an error toast when loading models fails, without throwing', async () => {
-		modelNamesMock.mockRejectedValueOnce(new Error('boom'));
-		const { plugin } = fakePlugin();
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-
-		await expect(view.onOpen()).resolves.toBeUndefined();
-
-		expect(toastError).toHaveBeenCalledWith(
-			'❌ Failed to load models. Please check Anki connection.',
-		);
-	});
-
-	it('renders the Folder dropdown on open, with no Refresh button of its own', async () => {
-		const { plugin } = fakePlugin();
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-
-		await view.onOpen();
-
-		expect(settings[FOLDER_IDX]?.name).toBe('Save notes to');
-		expect(settings[FOLDER_IDX]?.buttonComponents).toHaveLength(0);
-	});
-
-	it('populates the Folder dropdown with vault root plus top-level vault folders', async () => {
-		const { plugin } = fakePlugin(
-			{},
-			{
-				folders: [
-					fakeRoot,
-					fakeFolder('Japanese'),
-					fakeFolder('Spanish'),
-				],
-			},
-		);
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-
-		await view.onOpen();
-
-		expect(settings[FOLDER_IDX]?.dropdownComponents[0]?.options).toEqual({
-			'': '/ (vault root)',
-			Japanese: 'Japanese',
-			Spanish: 'Spanish',
+			const dropdown = settings[PROFILE_IDX]?.dropdownComponents[0];
+			expect(dropdown?.options).toMatchObject({ c: 'French' });
+			expect(dropdown?.value).toBe('c');
 		});
 	});
 
-	it('pre-selects the saved currentFolder when it still exists', async () => {
-		const { plugin } = fakePlugin(
-			{ currentFolder: 'Japanese' },
-			{ folders: [fakeRoot, fakeFolder('Japanese')] },
-		);
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+	describe('Deck dropdown', () => {
+		it('lists Anki’s decks and shows the active note’s anki_deck', async () => {
+			deckNamesMock.mockResolvedValue(['Japanese', 'Spanish']);
+			const { plugin } = fakePlugin({}, noteOptions({ anki_deck: 'Spanish' }));
 
-		await view.onOpen();
+			await openView(plugin).opened;
 
-		expect(settings[FOLDER_IDX]?.dropdownComponents[0]?.value).toBe('Japanese');
-	});
+			expect(deckDropdown()?.optionOrder).toEqual(['', 'Japanese', 'Spanish']);
+			expect(deckDropdown()?.value).toBe('Spanish');
+			expect(deckDropdown()?.disabled).toBe(false);
+		});
 
-	it('falls back to the active file folder when currentFolder is unset, and persists it', async () => {
-		const { plugin, saveSettings } = fakePlugin(
-			{ currentFolder: '' },
-			{
-				folders: [fakeRoot, fakeFolder('Japanese')],
-				activeFileParent: fakeFolder('Japanese'),
-			},
-		);
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+		it('is disabled with a placeholder when no note is open', async () => {
+			deckNamesMock.mockResolvedValue(['Japanese']);
+			const { plugin } = fakePlugin();
 
-		await view.onOpen();
+			await openView(plugin).opened;
 
-		expect(settings[FOLDER_IDX]?.dropdownComponents[0]?.value).toBe('Japanese');
-		expect(plugin.settings.currentFolder).toBe('Japanese');
-		expect(saveSettings).toHaveBeenCalled();
-	});
+			expect(deckDropdown()?.disabled).toBe(true);
+			expect(deckDropdown()?.options['']).toBe('No active note');
+			expect(deckDropdown()?.value).toBe('');
+		});
 
-	it('falls back to vault root when currentFolder is unset and there is no active file', async () => {
-		const { plugin } = fakePlugin(
-			{ currentFolder: '' },
-			{
-				folders: [fakeRoot, fakeFolder('Japanese')],
-				activeFileParent: null,
-			},
-		);
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-
-		await view.onOpen();
-
-		expect(settings[FOLDER_IDX]?.dropdownComponents[0]?.value).toBe('');
-		expect(plugin.settings.currentFolder).toBe('');
-	});
-
-	it('falls back to the active file folder when the saved currentFolder no longer exists', async () => {
-		const { plugin } = fakePlugin(
-			{ currentFolder: 'Deleted folder' },
-			{
-				folders: [fakeRoot, fakeFolder('Spanish')],
-				activeFileParent: fakeFolder('Spanish'),
-			},
-		);
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-
-		await view.onOpen();
-
-		expect(settings[FOLDER_IDX]?.dropdownComponents[0]?.value).toBe('Spanish');
-		expect(plugin.settings.currentFolder).toBe('Spanish');
-	});
-
-	it('persists the selected folder to settings.currentFolder onChange', async () => {
-		const { plugin, saveSettings } = fakePlugin(
-			{},
-			{ folders: [fakeRoot, fakeFolder('Japanese')] },
-		);
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-
-		await view.onOpen();
-		saveSettings.mockClear();
-		await settings[FOLDER_IDX]?.dropdownComponents[0]?.triggerChange('Japanese');
-
-		expect(plugin.settings.currentFolder).toBe('Japanese');
-		expect(saveSettings).toHaveBeenCalled();
-	});
-
-	it('keeps an explicitly-selected vault root across a 🔄-triggered refresh', async () => {
-		const { plugin } = fakePlugin(
-			{},
-			{
-				folders: [fakeRoot, fakeFolder('Japanese')],
-				// Would be the fallback pick if the fix below weren't in place.
-				activeFileParent: fakeFolder('Japanese'),
-			},
-		);
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-		await view.onOpen();
-
-		await settings[FOLDER_IDX]?.dropdownComponents[0]?.triggerChange('');
-		expect(plugin.settings.currentFolder).toBe('');
-
-		versionMock.mockResolvedValueOnce(6);
-		await settings[STATUS_IDX]?.buttonComponents[0]?.triggerClick();
-
-		expect(settings[FOLDER_IDX]?.dropdownComponents[0]?.value).toBe('');
-		expect(plugin.settings.currentFolder).toBe('');
-	});
-
-	it('still re-derives from the active note’s folder on refresh when the folder was never explicitly chosen', async () => {
-		const { plugin, getActiveFile } = fakePlugin(
-			{ currentFolder: '' },
-			{
-				folders: [fakeRoot, fakeFolder('Japanese'), fakeFolder('Spanish')],
-				activeFileParent: null,
-			},
-		);
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-		await view.onOpen();
-
-		// No active file yet, and never explicitly picked anything — stays at root.
-		expect(plugin.settings.currentFolder).toBe('');
-
-		// A note becomes active before the next refresh — still never explicitly
-		// chosen, so the (unchanged) fallback behavior should pick it up.
-		getActiveFile.mockReturnValue({ parent: fakeFolder('Spanish') });
-		versionMock.mockResolvedValueOnce(6);
-		await settings[STATUS_IDX]?.buttonComponents[0]?.triggerClick();
-
-		expect(settings[FOLDER_IDX]?.dropdownComponents[0]?.value).toBe('Spanish');
-		expect(plugin.settings.currentFolder).toBe('Spanish');
-	});
-
-	describe('nested folder display', () => {
-		const INDENT = '  ';
-
-		it('indents nested folders by depth and shows only each folder’s own name', async () => {
-			const japanese = fakeFolder('Japanese');
-			const n2 = fakeFolder('Japanese/N2', japanese);
-			const vocab = fakeFolder('Japanese/N2/Vocab', n2);
+		it('is disabled when the active file is not a markdown note', async () => {
 			const { plugin } = fakePlugin(
 				{},
-				{ folders: [fakeRoot, japanese, n2, vocab] },
+				{
+					activeFile: fakeTFile({ extension: 'png' }),
+					frontmatter: { anki_deck: 'Japanese' },
+				},
 			);
-			const view = new SidebarView({} as WorkspaceLeaf, plugin);
 
-			await view.onOpen();
+			await openView(plugin).opened;
 
-			const dropdown = settings[FOLDER_IDX]?.dropdownComponents[0];
-			expect(dropdown?.options).toEqual({
-				'': '/ (vault root)',
-				'Japanese': 'Japanese',
-				'Japanese/N2': `${INDENT}N2`,
-				'Japanese/N2/Vocab': `${INDENT}${INDENT}Vocab`,
-			});
+			expect(deckDropdown()?.disabled).toBe(true);
+			expect(deckDropdown()?.value).toBe('');
 		});
 
-		it('walks the tree depth-first: each folder immediately followed by its own children', async () => {
-			const japanese = fakeFolder('Japanese');
-			const n2 = fakeFolder('Japanese/N2', japanese);
-			const vocab = fakeFolder('Japanese/N2/Vocab', n2);
-			const korean = fakeFolder('Korean');
+		it('shows "Not set" when the note has no anki_deck', async () => {
+			deckNamesMock.mockResolvedValue(['Japanese']);
+			const { plugin } = fakePlugin({}, noteOptions({}));
+
+			await openView(plugin).opened;
+
+			expect(deckDropdown()?.options['']).toBe('Not set');
+			expect(deckDropdown()?.value).toBe('');
+			expect(deckDropdown()?.disabled).toBe(false);
+		});
+
+		it('still shows the note’s deck when Anki does not list it', async () => {
+			deckNamesMock.mockResolvedValue(['Japanese']);
 			const { plugin } = fakePlugin(
 				{},
-				// Deliberately out of order as returned from the vault.
-				{ folders: [fakeRoot, korean, vocab, japanese, n2] },
+				noteOptions({ anki_deck: 'Deleted deck' }),
 			);
-			const view = new SidebarView({} as WorkspaceLeaf, plugin);
 
-			await view.onOpen();
+			await openView(plugin).opened;
 
-			expect(
-				settings[FOLDER_IDX]?.dropdownComponents[0]?.optionOrder,
-			).toEqual(['', 'Japanese', 'Japanese/N2', 'Japanese/N2/Vocab', 'Korean']);
+			expect(deckDropdown()?.options['Deleted deck']).toBe('Deleted deck');
+			expect(deckDropdown()?.value).toBe('Deleted deck');
 		});
 
-		it('sorts sibling folders by their own name, not full path', async () => {
-			const japanese = fakeFolder('Japanese');
-			const zebra = fakeFolder('Japanese/Zebra', japanese);
-			const apple = fakeFolder('Japanese/Apple', japanese);
+		it('ignores the active profile — the note is the only source', async () => {
+			deckNamesMock.mockResolvedValue(['Japanese', 'Spanish']);
 			const { plugin } = fakePlugin(
-				{},
-				{ folders: [fakeRoot, japanese, zebra, apple] },
+				{ profiles: [{ ...profileA, deck: 'Spanish' }] },
+				noteOptions({ anki_deck: 'Japanese' }),
 			);
-			const view = new SidebarView({} as WorkspaceLeaf, plugin);
 
-			await view.onOpen();
+			await openView(plugin).opened;
 
-			expect(
-				settings[FOLDER_IDX]?.dropdownComponents[0]?.optionOrder,
-			).toEqual(['', 'Japanese', 'Japanese/Apple', 'Japanese/Zebra']);
+			expect(deckDropdown()?.value).toBe('Japanese');
 		});
 
-		it('does not let a sibling folder wedge between a parent and its own child (path-string sort bug)', async () => {
-			// "Japanese Advanced" (space, 0x20) sorts before "Japanese/N2" (slash,
-			// 0x2F) under plain path-string comparison, even though Japanese/N2 is a
-			// child of the unrelated "Japanese" folder. Grouping by actual
-			// TFolder.parent (not path strings) must keep Japanese/N2 directly under
-			// Japanese regardless of what other top-level folders exist.
-			const japanese = fakeFolder('Japanese');
-			const japaneseAdvanced = fakeFolder('Japanese Advanced');
-			const n2 = fakeFolder('Japanese/N2', japanese);
-			const { plugin } = fakePlugin(
+		it('writes the picked deck to the note’s frontmatter, not to settings', async () => {
+			deckNamesMock.mockResolvedValue(['Japanese', 'Spanish']);
+			const { plugin, saveSettings, frontmatter, processFrontMatter } =
+				fakePlugin({}, noteOptions({ anki_deck: 'Japanese' }));
+			await openView(plugin).opened;
+
+			await deckDropdown()?.triggerChange('Spanish');
+
+			expect(frontmatter.anki_deck).toBe('Spanish');
+			expect(processFrontMatter).toHaveBeenCalledTimes(1);
+			expect(saveSettings).not.toHaveBeenCalled();
+			expect(plugin.settings.profiles[0]?.deck).toBe('');
+		});
+
+		it('does not write anything when the "Not set" placeholder is picked', async () => {
+			deckNamesMock.mockResolvedValue(['Japanese']);
+			const { plugin, processFrontMatter } = fakePlugin(
 				{},
-				{ folders: [fakeRoot, japaneseAdvanced, japanese, n2] },
+				noteOptions({ anki_deck: 'Japanese' }),
 			);
-			const view = new SidebarView({} as WorkspaceLeaf, plugin);
+			await openView(plugin).opened;
 
-			await view.onOpen();
+			await deckDropdown()?.triggerChange('');
 
-			expect(
-				settings[FOLDER_IDX]?.dropdownComponents[0]?.optionOrder,
-			).toEqual(['', 'Japanese', 'Japanese/N2', 'Japanese Advanced']);
+			expect(processFrontMatter).not.toHaveBeenCalled();
+			expect(deckDropdown()?.value).toBe('Japanese');
+		});
+
+		it('has no Refresh button of its own', async () => {
+			const { plugin } = fakePlugin();
+			await openView(plugin).opened;
+
+			expect(settings[DECK_IDX]?.buttonComponents).toHaveLength(0);
+		});
+
+		it('shows an error toast when loading decks fails, without throwing', async () => {
+			deckNamesMock.mockRejectedValueOnce(new Error('boom'));
+			const { plugin } = fakePlugin();
+
+			await expect(openView(plugin).opened).resolves.toBeUndefined();
+
+			expect(toastError).toHaveBeenCalledWith(
+				'❌ Failed to load decks. Please check Anki connection.',
+			);
 		});
 	});
 
-	it('does not render field checkboxes until Deck and Model are both selected', async () => {
-		const { plugin } = fakePlugin({
-			currentDeck: 'Japanese',
-			currentModel: '',
+	describe('Model dropdown', () => {
+		it('lists Anki’s models and shows the active note’s anki_model', async () => {
+			modelNamesMock.mockResolvedValue(['Basic', 'Cloze']);
+			const { plugin } = fakePlugin({}, noteOptions({ anki_model: 'Cloze' }));
+
+			await openView(plugin).opened;
+
+			expect(modelDropdown()?.optionOrder).toEqual(['', 'Basic', 'Cloze']);
+			expect(modelDropdown()?.value).toBe('Cloze');
 		});
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
 
-		await view.onOpen();
+		it('is disabled when no note is open', async () => {
+			const { plugin } = fakePlugin();
 
-		expect(modelFieldNamesMock).not.toHaveBeenCalled();
-		expect(settings).toHaveLength(4); // Connection status, Deck, Model, Folder
-		expect(fieldsContainerEl.empty).toHaveBeenCalled();
-	});
+			await openView(plugin).opened;
 
-	it('renders a toggle per model field once Deck and Model are selected', async () => {
-		modelFieldNamesMock.mockResolvedValue(['Meaning', 'Furigana']);
-		const { plugin } = fakePlugin({
-			currentDeck: 'Japanese',
-			currentModel: 'Basic',
+			expect(modelDropdown()?.disabled).toBe(true);
 		});
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
 
-		await view.onOpen();
+		it('writes the picked model to the note’s frontmatter, not to settings', async () => {
+			modelNamesMock.mockResolvedValue(['Basic', 'Cloze']);
+			const { plugin, saveSettings, frontmatter } = fakePlugin(
+				{},
+				noteOptions({ anki_model: 'Basic' }),
+			);
+			await openView(plugin).opened;
 
-		expect(modelFieldNamesMock).toHaveBeenCalledWith('Basic');
-		expect(fieldsContainerEl.createEl).toHaveBeenCalledWith('p', {
-			text: 'Fields to generate with AI:',
+			await modelDropdown()?.triggerChange('Cloze');
+
+			expect(frontmatter.anki_model).toBe('Cloze');
+			expect(saveSettings).not.toHaveBeenCalled();
 		});
-		expect(settings[4]?.name).toBe('Meaning');
-		expect(settings[5]?.name).toBe('Furigana');
-	});
 
-	it('pre-ticks fields previously selected for that Deck+Model pair', async () => {
-		modelFieldNamesMock.mockResolvedValue(['Meaning', 'Furigana']);
-		const key = fieldConfigKey('Japanese', 'Basic');
-		const { plugin } = fakePlugin({
-			currentDeck: 'Japanese',
-			currentModel: 'Basic',
-			generateWithAiFields: { [key]: ['Furigana'] },
+		it('has no Refresh button of its own', async () => {
+			const { plugin } = fakePlugin();
+			await openView(plugin).opened;
+
+			expect(settings[MODEL_IDX]?.buttonComponents).toHaveLength(0);
 		});
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
 
-		await view.onOpen();
+		it('shows an error toast when loading models fails, without throwing', async () => {
+			modelNamesMock.mockRejectedValueOnce(new Error('boom'));
+			const { plugin } = fakePlugin();
 
-		expect(settings[4]?.toggleComponents[0]?.value).toBe(false);
-		expect(settings[5]?.toggleComponents[0]?.value).toBe(true);
-	});
+			await expect(openView(plugin).opened).resolves.toBeUndefined();
 
-	it('does not leak ticked fields from a different Deck+Model pair', async () => {
-		modelFieldNamesMock.mockResolvedValue(['Meaning']);
-		const otherKey = fieldConfigKey('Spanish', 'Cloze');
-		const { plugin } = fakePlugin({
-			currentDeck: 'Japanese',
-			currentModel: 'Basic',
-			generateWithAiFields: { [otherKey]: ['Meaning'] },
+			expect(toastError).toHaveBeenCalledWith(
+				'❌ Failed to load models. Please check Anki connection.',
+			);
 		});
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-
-		await view.onOpen();
-
-		expect(settings[4]?.toggleComponents[0]?.value).toBe(false);
-	});
-
-	it('persists a ticked field to generateWithAiFields for the current Deck+Model pair', async () => {
-		modelFieldNamesMock.mockResolvedValue(['Meaning', 'Furigana']);
-		const { plugin, saveSettings } = fakePlugin({
-			currentDeck: 'Japanese',
-			currentModel: 'Basic',
-		});
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-
-		await view.onOpen();
-		saveSettings.mockClear();
-		await settings[4]?.toggleComponents[0]?.triggerChange(true);
-
-		const key = fieldConfigKey('Japanese', 'Basic');
-		expect(plugin.settings.generateWithAiFields[key]).toEqual(['Meaning']);
-		expect(saveSettings).toHaveBeenCalled();
-	});
-
-	it('removes a field from generateWithAiFields when unticked', async () => {
-		modelFieldNamesMock.mockResolvedValue(['Meaning', 'Furigana']);
-		const key = fieldConfigKey('Japanese', 'Basic');
-		const { plugin } = fakePlugin({
-			currentDeck: 'Japanese',
-			currentModel: 'Basic',
-			generateWithAiFields: { [key]: ['Meaning', 'Furigana'] },
-		});
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-
-		await view.onOpen();
-		await settings[4]?.toggleComponents[0]?.triggerChange(false);
-
-		expect(plugin.settings.generateWithAiFields[key]).toEqual(['Furigana']);
-	});
-
-	it('re-fetches and re-renders field checkboxes when the Deck dropdown changes', async () => {
-		modelFieldNamesMock.mockResolvedValueOnce(['Meaning']);
-		const { plugin } = fakePlugin({
-			currentDeck: 'Japanese',
-			currentModel: 'Basic',
-		});
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-		await view.onOpen();
-
-		modelFieldNamesMock.mockResolvedValueOnce(['Meaning', 'Furigana']);
-		await settings[DECK_IDX]?.dropdownComponents[0]?.triggerChange('Spanish');
-
-		expect(plugin.settings.currentDeck).toBe('Spanish');
-		expect(modelFieldNamesMock).toHaveBeenCalledTimes(2);
-		expect(settings.slice(-2).map((s) => s.name)).toEqual([
-			'Meaning',
-			'Furigana',
-		]);
-	});
-
-	it('re-fetches and re-renders field checkboxes when the Model dropdown changes', async () => {
-		modelFieldNamesMock.mockResolvedValueOnce(['Meaning']);
-		const { plugin } = fakePlugin({
-			currentDeck: 'Japanese',
-			currentModel: 'Basic',
-		});
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-		await view.onOpen();
-
-		modelFieldNamesMock.mockResolvedValueOnce(['Front', 'Back']);
-		await settings[MODEL_IDX]?.dropdownComponents[0]?.triggerChange('Cloze');
-
-		expect(plugin.settings.currentModel).toBe('Cloze');
-		expect(modelFieldNamesMock).toHaveBeenCalledTimes(2);
-		expect(settings.slice(-2).map((s) => s.name)).toEqual([
-			'Front',
-			'Back',
-		]);
-	});
-
-	it('shows an error toast when loading fields fails, without throwing', async () => {
-		modelFieldNamesMock.mockRejectedValueOnce(new Error('boom'));
-		const { plugin } = fakePlugin({
-			currentDeck: 'Japanese',
-			currentModel: 'Basic',
-		});
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-
-		await expect(view.onOpen()).resolves.toBeUndefined();
-
-		expect(toastError).toHaveBeenCalledWith(
-			'❌ Failed to load fields. Please check Anki connection.',
-		);
 	});
 
 	describe('field checkboxes follow the active note', () => {
-		it('resolves Deck/Model for the field list from the active note frontmatter, not the dropdowns', async () => {
-			modelFieldNamesMock.mockResolvedValue(['Meaning']);
-			const activeFile = fakeTFile();
-			const { plugin } = fakePlugin(
-				{ currentDeck: 'DropdownDeck', currentModel: 'DropdownModel' },
-				{
-					activeFile,
-					frontmatter: { anki_deck: 'NoteDeck', anki_model: 'NoteModel' },
-				},
-			);
-			const view = new SidebarView({} as WorkspaceLeaf, plugin);
+		const pair = { anki_deck: 'Japanese', anki_model: 'Basic' };
 
-			await view.onOpen();
+		it('does not render field checkboxes when no note is open', async () => {
+			const { plugin } = fakePlugin();
 
-			expect(modelFieldNamesMock).toHaveBeenCalledWith('NoteModel');
+			await openView(plugin).opened;
+
+			expect(modelFieldNamesMock).not.toHaveBeenCalled();
+			expect(settings).toHaveLength(FIRST_FIELD_IDX);
+			expect(fieldsContainerEl.empty).toHaveBeenCalled();
 		});
 
-		it('persists a ticked field under the active note’s Deck+Model pair, not the dropdown pair', async () => {
-			modelFieldNamesMock.mockResolvedValue(['Meaning']);
-			const activeFile = fakeTFile();
-			const { plugin } = fakePlugin(
-				{ currentDeck: 'DropdownDeck', currentModel: 'DropdownModel' },
-				{
-					activeFile,
-					frontmatter: { anki_deck: 'NoteDeck', anki_model: 'NoteModel' },
-				},
-			);
-			const view = new SidebarView({} as WorkspaceLeaf, plugin);
+		it('does not render field checkboxes until the note has both Deck and Model', async () => {
+			const { plugin } = fakePlugin({}, noteOptions({ anki_deck: 'Japanese' }));
 
-			await view.onOpen();
-			await settings[4]?.toggleComponents[0]?.triggerChange(true);
+			await openView(plugin).opened;
 
-			const key = fieldConfigKey('NoteDeck', 'NoteModel');
-			expect(plugin.settings.generateWithAiFields[key]).toEqual(['Meaning']);
+			expect(modelFieldNamesMock).not.toHaveBeenCalled();
+			expect(settings).toHaveLength(FIRST_FIELD_IDX);
 		});
 
-		it('falls back to the dropdown Deck/Model when the active note has no anki_deck/anki_model', async () => {
-			modelFieldNamesMock.mockResolvedValue(['Meaning']);
-			const activeFile = fakeTFile();
+		it('ignores the active profile when the note has no Deck/Model', async () => {
 			const { plugin } = fakePlugin(
-				{ currentDeck: 'DropdownDeck', currentModel: 'DropdownModel' },
-				{ activeFile, frontmatter: {} },
+				{ profiles: [{ ...profileA, deck: 'Japanese', model: 'Basic' }] },
+				noteOptions({}),
 			);
-			const view = new SidebarView({} as WorkspaceLeaf, plugin);
 
-			await view.onOpen();
+			await openView(plugin).opened;
 
-			expect(modelFieldNamesMock).toHaveBeenCalledWith('DropdownModel');
+			expect(modelFieldNamesMock).not.toHaveBeenCalled();
 		});
 
-		it('falls back to the dropdown Deck/Model when no note is open', async () => {
-			modelFieldNamesMock.mockResolvedValue(['Meaning']);
-			const { plugin } = fakePlugin({
-				currentDeck: 'DropdownDeck',
-				currentModel: 'DropdownModel',
+		it('renders a toggle per model field of the note’s Model', async () => {
+			modelFieldNamesMock.mockResolvedValue(['Meaning', 'Furigana']);
+			const { plugin } = fakePlugin({}, noteOptions(pair));
+
+			await openView(plugin).opened;
+
+			expect(modelFieldNamesMock).toHaveBeenCalledWith('Basic');
+			expect(fieldsContainerEl.createEl).toHaveBeenCalledWith('p', {
+				text: 'Fields to generate with AI:',
 			});
-			const view = new SidebarView({} as WorkspaceLeaf, plugin);
-
-			await view.onOpen();
-
-			expect(modelFieldNamesMock).toHaveBeenCalledWith('DropdownModel');
+			expect(settings[FIRST_FIELD_IDX]?.name).toBe('Meaning');
+			expect(settings[FIRST_FIELD_IDX + 1]?.name).toBe('Furigana');
 		});
 
-		it('re-resolves and re-renders the field list when switching to a different open note', async () => {
-			modelFieldNamesMock.mockResolvedValueOnce(['Meaning']);
-			const noteA = fakeTFile();
-			const { plugin, getActiveFile, getFileCache, workspaceOn } = fakePlugin(
-				{ currentDeck: 'Japanese', currentModel: 'Basic' },
-				{ activeFile: noteA, frontmatter: {} },
+		it('pre-ticks fields previously selected for that Deck+Model pair', async () => {
+			modelFieldNamesMock.mockResolvedValue(['Meaning', 'Furigana']);
+			const key = fieldConfigKey('Japanese', 'Basic');
+			const { plugin } = fakePlugin(
+				{ generateWithAiFields: { [key]: ['Furigana'] } },
+				noteOptions(pair),
 			);
-			const view = new SidebarView({} as WorkspaceLeaf, plugin);
-			await view.onOpen();
 
-			const fileOpenHandler = workspaceOn.mock.calls.find(
-				([event]) => event === 'file-open',
-			)?.[1] as (() => void) | undefined;
-			expect(fileOpenHandler).toBeTypeOf('function');
+			await openView(plugin).opened;
 
-			const noteB = fakeTFile();
-			getActiveFile.mockReturnValue(noteB);
+			expect(settings[FIRST_FIELD_IDX]?.toggleComponents[0]?.value).toBe(false);
+			expect(settings[FIRST_FIELD_IDX + 1]?.toggleComponents[0]?.value).toBe(
+				true,
+			);
+		});
+
+		it('does not leak ticked fields from a different Deck+Model pair', async () => {
+			modelFieldNamesMock.mockResolvedValue(['Meaning']);
+			const otherKey = fieldConfigKey('Spanish', 'Cloze');
+			const { plugin } = fakePlugin(
+				{ generateWithAiFields: { [otherKey]: ['Meaning'] } },
+				noteOptions(pair),
+			);
+
+			await openView(plugin).opened;
+
+			expect(settings[FIRST_FIELD_IDX]?.toggleComponents[0]?.value).toBe(false);
+		});
+
+		it('persists a ticked field for the note’s Deck+Model pair', async () => {
+			modelFieldNamesMock.mockResolvedValue(['Meaning', 'Furigana']);
+			const { plugin, saveSettings } = fakePlugin({}, noteOptions(pair));
+			await openView(plugin).opened;
+			saveSettings.mockClear();
+
+			await settings[FIRST_FIELD_IDX]?.toggleComponents[0]?.triggerChange(true);
+
+			const key = fieldConfigKey('Japanese', 'Basic');
+			expect(plugin.settings.generateWithAiFields[key]).toEqual(['Meaning']);
+			expect(saveSettings).toHaveBeenCalled();
+		});
+
+		it('removes a field from generateWithAiFields when unticked', async () => {
+			modelFieldNamesMock.mockResolvedValue(['Meaning', 'Furigana']);
+			const key = fieldConfigKey('Japanese', 'Basic');
+			const { plugin } = fakePlugin(
+				{ generateWithAiFields: { [key]: ['Meaning', 'Furigana'] } },
+				noteOptions(pair),
+			);
+			await openView(plugin).opened;
+
+			await settings[FIRST_FIELD_IDX]?.toggleComponents[0]?.triggerChange(false);
+
+			expect(plugin.settings.generateWithAiFields[key]).toEqual(['Furigana']);
+		});
+
+		it('shows an error toast when loading fields fails, without throwing', async () => {
+			modelFieldNamesMock.mockRejectedValueOnce(new Error('boom'));
+			const { plugin } = fakePlugin({}, noteOptions(pair));
+
+			await expect(openView(plugin).opened).resolves.toBeUndefined();
+
+			expect(toastError).toHaveBeenCalledWith(
+				'❌ Failed to load fields. Please check Anki connection.',
+			);
+		});
+
+		it('re-syncs dropdowns and field list when switching to a different open note', async () => {
+			modelFieldNamesMock.mockResolvedValueOnce(['Meaning']);
+			deckNamesMock.mockResolvedValue(['Japanese', 'French']);
+			const { plugin, getActiveFile, getFileCache, workspaceOn } = fakePlugin(
+				{},
+				noteOptions(pair),
+			);
+			await openView(plugin).opened;
+
+			getActiveFile.mockReturnValue(fakeTFile());
 			getFileCache.mockReturnValue({
 				frontmatter: { anki_deck: 'French', anki_model: 'Cloze' },
 			});
 			modelFieldNamesMock.mockResolvedValueOnce(['Front', 'Back']);
+			handlerFor(workspaceOn, 'file-open')();
 
-			fileOpenHandler?.();
 			await vi.waitFor(() => {
 				expect(modelFieldNamesMock).toHaveBeenLastCalledWith('Cloze');
 			});
+			expect(deckDropdown()?.value).toBe('French');
+		});
+
+		it('disables the dropdowns when the last note is closed', async () => {
+			const { plugin, getActiveFile, workspaceOn } = fakePlugin(
+				{},
+				noteOptions(pair),
+			);
+			await openView(plugin).opened;
+			expect(deckDropdown()?.disabled).toBe(false);
+
+			getActiveFile.mockReturnValue(null);
+			handlerFor(workspaceOn, 'file-open')();
+
+			await vi.waitFor(() => {
+				expect(deckDropdown()?.disabled).toBe(true);
+			});
+		});
+
+		it('re-syncs when the active note’s metadata changes (e.g. Deck edited in YAML)', async () => {
+			modelFieldNamesMock.mockResolvedValue(['Meaning']);
+			const { plugin, getActiveFile, getFileCache, metadataOn } = fakePlugin(
+				{},
+				noteOptions(pair),
+			);
+			await openView(plugin).opened;
+			const active = getActiveFile() as TFile;
+
+			getFileCache.mockReturnValue({
+				frontmatter: { anki_deck: 'Spanish', anki_model: 'Basic' },
+			});
+			handlerFor(metadataOn, 'changed')(active);
+
+			await vi.waitFor(() => {
+				expect(deckDropdown()?.value).toBe('Spanish');
+			});
+			expect(modelFieldNamesMock).toHaveBeenCalledTimes(2);
+		});
+
+		it('does not re-fetch fields when metadata changes but Deck+Model do not (typing in the note)', async () => {
+			modelFieldNamesMock.mockResolvedValue(['Meaning']);
+			const { plugin, getActiveFile, metadataOn } = fakePlugin(
+				{},
+				noteOptions(pair),
+			);
+			await openView(plugin).opened;
+
+			handlerFor(metadataOn, 'changed')(getActiveFile());
+			await Promise.resolve();
+
+			expect(modelFieldNamesMock).toHaveBeenCalledTimes(1);
+		});
+
+		it('ignores metadata changes of notes that are not the active one', async () => {
+			modelFieldNamesMock.mockResolvedValue(['Meaning']);
+			const { plugin, getFileCache, metadataOn } = fakePlugin(
+				{},
+				noteOptions(pair),
+			);
+			await openView(plugin).opened;
+
+			getFileCache.mockReturnValue({
+				frontmatter: { anki_deck: 'Other', anki_model: 'Other' },
+			});
+			handlerFor(metadataOn, 'changed')(fakeTFile());
+			await Promise.resolve();
+
+			expect(modelFieldNamesMock).toHaveBeenCalledTimes(1);
+			expect(deckDropdown()?.value).toBe('Japanese');
 		});
 	});
 
-	it('renders the connection status with the resolved AnkiConnect URL and an icon-only 🔄 button', async () => {
-		const { plugin } = fakePlugin({ ankiConnectUrl: 'http://localhost:9999' });
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
+	describe('Rebuild fields', () => {
+		const pair = { anki_deck: 'Japanese', anki_model: 'Basic' };
+		const rebuildButton = () => settings[REBUILD_IDX]?.buttonComponents[0];
 
-		await view.onOpen();
+		it('renders below Model, and no connection status or refresh button anywhere', async () => {
+			const { plugin } = fakePlugin({}, noteOptions(pair));
 
-		const statusSetting = settings[STATUS_IDX];
-		expect(statusSetting?.desc).toBe('AnkiConnect: http://localhost:9999');
-		expect(statusSetting?.buttonComponents[0]?.text).toBe('🔄');
-	});
+			await openView(plugin).opened;
 
-	it('uses the default AnkiConnect URL in the description when the setting is blank', async () => {
-		const { plugin } = fakePlugin({ ankiConnectUrl: '' });
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-
-		await view.onOpen();
-
-		const statusSetting = settings[STATUS_IDX];
-		expect(statusSetting?.desc).toBe('AnkiConnect: http://localhost:8765');
-	});
-
-	it('shows Connected after a successful auto-test on open', async () => {
-		versionMock.mockResolvedValue(6);
-		const { plugin } = fakePlugin();
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-
-		await view.onOpen();
-
-		const statusSetting = settings[STATUS_IDX];
-		expect(statusSetting?.name).toBe('Status: ✅ Connected');
-	});
-
-	it('shows a failure message after a failed auto-test on open, without a toast', async () => {
-		versionMock.mockRejectedValueOnce(new Error('boom'));
-		const { plugin } = fakePlugin();
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-
-		await view.onOpen();
-
-		const statusSetting = settings[STATUS_IDX];
-		expect(statusSetting?.name).toBe(
-			'Status: ❌ Cannot connect to Anki. Please check URL and AnkiConnect.',
-		);
-		expect(toastError).not.toHaveBeenCalled();
-	});
-
-	it('re-tests and updates the status when 🔄 is clicked', async () => {
-		versionMock.mockResolvedValueOnce(6);
-		const { plugin } = fakePlugin();
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-		await view.onOpen();
-
-		const statusSetting = settings[STATUS_IDX];
-		expect(statusSetting?.name).toBe('Status: ✅ Connected');
-
-		versionMock.mockRejectedValueOnce(new Error('boom'));
-		await statusSetting?.buttonComponents[0]?.triggerClick();
-
-		expect(statusSetting?.name).toBe(
-			'Status: ❌ Cannot connect to Anki. Please check URL and AnkiConnect.',
-		);
-	});
-
-	it('disables 🔄 while a click is in-flight, and re-enables it after', async () => {
-		versionMock.mockResolvedValueOnce(6);
-		const { plugin } = fakePlugin();
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-		await view.onOpen();
-
-		const statusSetting = settings[STATUS_IDX];
-		let resolveVersion!: (v: number) => void;
-		versionMock.mockReturnValueOnce(
-			new Promise<number>((resolve) => {
-				resolveVersion = resolve;
-			}),
-		);
-
-		const clickPromise = statusSetting?.buttonComponents[0]?.triggerClick();
-		expect(statusSetting?.buttonComponents[0]?.disabled).toBe(true);
-
-		resolveVersion(6);
-		await clickPromise;
-
-		expect(statusSetting?.buttonComponents[0]?.disabled).toBe(false);
-	});
-
-	it('reloads decks, models, fields, and folders after a successful 🔄 click', async () => {
-		versionMock.mockRejectedValueOnce(new Error('Anki not running yet'));
-		const { plugin, getAllFolders: getAllFoldersMock } = fakePlugin({
-			currentDeck: 'Japanese',
-			currentModel: 'Basic',
+			expect(settings[REBUILD_IDX]?.name).toBe('Note fields');
+			expect(rebuildButton()?.text).toBe('Rebuild fields');
+			expect(settings.some((s) => s.name.startsWith('Status:'))).toBe(false);
+			expect(versionMock).not.toHaveBeenCalled();
 		});
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-		await view.onOpen();
 
-		deckNamesMock.mockClear();
-		modelNamesMock.mockClear();
-		modelFieldNamesMock.mockClear();
-		getAllFoldersMock.mockClear();
-		versionMock.mockResolvedValueOnce(6);
+		it('is disabled with no active note, or when the note has no Model', async () => {
+			const noNote = fakePlugin();
+			await openView(noNote.plugin).opened;
+			expect(rebuildButton()?.disabled).toBe(true);
 
-		const statusSetting = settings[STATUS_IDX];
-		await statusSetting?.buttonComponents[0]?.triggerClick();
-
-		expect(deckNamesMock).toHaveBeenCalledTimes(1);
-		expect(modelNamesMock).toHaveBeenCalledTimes(1);
-		expect(modelFieldNamesMock).toHaveBeenCalledTimes(1);
-		expect(getAllFoldersMock).toHaveBeenCalledTimes(1);
-	});
-
-	it('still reloads folders (but not decks/models/fields) after a failed 🔄 click', async () => {
-		const { plugin, getAllFolders: getAllFoldersMock } = fakePlugin({
-			currentDeck: 'Japanese',
-			currentModel: 'Basic',
+			settings.length = 0;
+			const noModel = fakePlugin({}, noteOptions({ anki_deck: 'Japanese' }));
+			await openView(noModel.plugin).opened;
+			expect(rebuildButton()?.disabled).toBe(true);
 		});
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-		await view.onOpen();
 
-		deckNamesMock.mockClear();
-		modelNamesMock.mockClear();
-		modelFieldNamesMock.mockClear();
-		getAllFoldersMock.mockClear();
-		versionMock.mockRejectedValueOnce(new Error('boom'));
+		it('is enabled when the note has a Model', async () => {
+			const { plugin } = fakePlugin({}, noteOptions(pair));
 
-		const statusSetting = settings[STATUS_IDX];
-		await statusSetting?.buttonComponents[0]?.triggerClick();
+			await openView(plugin).opened;
 
-		expect(deckNamesMock).not.toHaveBeenCalled();
-		expect(modelNamesMock).not.toHaveBeenCalled();
-		expect(modelFieldNamesMock).not.toHaveBeenCalled();
-		expect(getAllFoldersMock).toHaveBeenCalledTimes(1);
-	});
-
-	it('does not cascade into decks/models/fields/folders a second time during the automatic check on open', async () => {
-		versionMock.mockResolvedValueOnce(6);
-		const { plugin, getAllFolders: getAllFoldersMock } = fakePlugin({
-			currentDeck: 'Japanese',
-			currentModel: 'Basic',
+			expect(rebuildButton()?.disabled).toBe(false);
 		});
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
 
-		await view.onOpen();
+		it('asks for confirmation and does not touch the note until confirmed', async () => {
+			const { plugin, process } = fakePlugin({}, noteOptions(pair));
+			await openView(plugin).opened;
 
-		expect(deckNamesMock).toHaveBeenCalledTimes(1);
-		expect(modelNamesMock).toHaveBeenCalledTimes(1);
-		expect(modelFieldNamesMock).toHaveBeenCalledTimes(1);
-		expect(getAllFoldersMock).toHaveBeenCalledTimes(1);
+			await rebuildButton()?.triggerClick();
+
+			expect(confirmRebuildOpen).toHaveBeenCalledTimes(1);
+			expect(process).not.toHaveBeenCalled();
+		});
+
+		it('on confirm: replaces the note body with the Model’s fields, keeping frontmatter', async () => {
+			modelFieldNamesMock.mockResolvedValue(['Front', 'Back']);
+			const { plugin, process } = fakePlugin({}, noteOptions(pair));
+			await openView(plugin).opened;
+			modelFieldNamesMock.mockClear();
+			await rebuildButton()?.triggerClick();
+
+			confirmRebuildCapture.onConfirm?.();
+
+			await vi.waitFor(() => {
+				expect(process).toHaveBeenCalledTimes(1);
+			});
+			expect(modelFieldNamesMock).toHaveBeenCalledWith('Basic');
+			expect(process.mock.results[0]?.value).toBe(
+				'---\nanki_deck: Japanese\n---\n\n```anki-controls\n```\n\n## Front\n\n## Back\n',
+			);
+			expect(toastSuccess).toHaveBeenCalledWith('✅ Note fields rebuilt.');
+			expect(rebuildButton()?.text).toBe('Rebuild fields');
+		});
+
+		it('on failure: leaves the note alone and shows an error toast', async () => {
+			const { plugin, process } = fakePlugin({}, noteOptions(pair));
+			await openView(plugin).opened;
+			modelFieldNamesMock.mockRejectedValueOnce(new Error('boom'));
+			await rebuildButton()?.triggerClick();
+
+			confirmRebuildCapture.onConfirm?.();
+
+			await vi.waitFor(() => {
+				expect(toastError).toHaveBeenCalledWith(
+					'❌ Failed to rebuild fields. Please check Anki connection.',
+				);
+			});
+			expect(process).not.toHaveBeenCalled();
+			expect(rebuildButton()?.disabled).toBe(false);
+		});
 	});
 });
 
 describe('Deck/Model change warning', () => {
-	it('opens the warning modal instead of applying, when the Deck dropdown changes on a synced note', async () => {
-		deckNamesMock.mockResolvedValue(['Japanese', 'Spanish']);
-		const activeFile = fakeTFile();
-		const { plugin, saveSettings } = fakePlugin(
-			{ currentDeck: 'Japanese' },
-			{ activeFile, frontmatter: { anki_note_id: 123 } },
-		);
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-		await view.onOpen();
-		saveSettings.mockClear();
-
-		await settings[DECK_IDX]?.dropdownComponents[0]?.triggerChange('Spanish');
-
-		expect(deckModelWarningOpen).toHaveBeenCalledTimes(1);
-		expect(plugin.settings.currentDeck).toBe('Japanese');
-		expect(saveSettings).not.toHaveBeenCalled();
-	});
-
-	it('opens the warning modal instead of applying, when the Model dropdown changes on a synced note', async () => {
-		modelNamesMock.mockResolvedValue(['Basic', 'Cloze']);
-		const activeFile = fakeTFile();
-		const { plugin, saveSettings } = fakePlugin(
-			{ currentModel: 'Basic' },
-			{ activeFile, frontmatter: { anki_note_id: 123 } },
-		);
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-		await view.onOpen();
-		saveSettings.mockClear();
-
-		await settings[MODEL_IDX]?.dropdownComponents[0]?.triggerChange('Cloze');
-
-		expect(deckModelWarningOpen).toHaveBeenCalledTimes(1);
-		expect(plugin.settings.currentModel).toBe('Basic');
-		expect(saveSettings).not.toHaveBeenCalled();
-	});
-
-	it('applies the change when the modal calls onUpdate', async () => {
-		deckNamesMock.mockResolvedValue(['Japanese', 'Spanish']);
-		const activeFile = fakeTFile();
-		const { plugin, saveSettings } = fakePlugin(
-			{ currentDeck: 'Japanese' },
-			{ activeFile, frontmatter: { anki_note_id: 123 } },
-		);
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-		await view.onOpen();
-		await settings[DECK_IDX]?.dropdownComponents[0]?.triggerChange('Spanish');
-
-		deckModelWarningCapture.onUpdate?.();
-		await Promise.resolve();
-
-		expect(plugin.settings.currentDeck).toBe('Spanish');
-		expect(saveSettings).toHaveBeenCalled();
-	});
-
-	it('applies the change when the modal calls onUpdate for the Model dropdown', async () => {
-		modelNamesMock.mockResolvedValue(['Basic', 'Cloze']);
-		const activeFile = fakeTFile();
-		const { plugin, saveSettings } = fakePlugin(
-			{ currentModel: 'Basic' },
-			{ activeFile, frontmatter: { anki_note_id: 123 } },
-		);
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-		await view.onOpen();
-		await settings[MODEL_IDX]?.dropdownComponents[0]?.triggerChange('Cloze');
-
-		deckModelWarningCapture.onUpdate?.();
-		await Promise.resolve();
-
-		expect(plugin.settings.currentModel).toBe('Cloze');
-		expect(saveSettings).toHaveBeenCalled();
-	});
-
-	it('overwrites anki_deck and clears anki_note_id on the active note when onUpdate fires for the Deck dropdown', async () => {
-		deckNamesMock.mockResolvedValue(['Japanese', 'Spanish']);
-		const activeFile = fakeTFile();
-		const { plugin, frontmatter } = fakePlugin(
-			{ currentDeck: 'Japanese' },
-			{ activeFile, frontmatter: { anki_deck: 'Japanese', anki_note_id: 123 } },
-		);
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-		await view.onOpen();
-		await settings[DECK_IDX]?.dropdownComponents[0]?.triggerChange('Spanish');
-
-		deckModelWarningCapture.onUpdate?.();
-
-		await vi.waitFor(() => {
-			expect(frontmatter.anki_deck).toBe('Spanish');
+	const synced = (extra: Record<string, unknown> = {}) =>
+		noteOptions({
+			anki_deck: 'Japanese',
+			anki_model: 'Basic',
+			anki_note_id: 123,
+			...extra,
 		});
-		expect(frontmatter.anki_note_id).toBeUndefined();
-	});
 
-	it('overwrites anki_model and clears anki_note_id on the active note when onUpdate fires for the Model dropdown', async () => {
+	type Case = {
+		label: 'Deck' | 'Model';
+		key: 'anki_deck' | 'anki_model';
+		idx: number;
+		names: string[];
+		from: string;
+		to: string;
+	};
+	const cases: Case[] = [
+		{
+			label: 'Deck',
+			key: 'anki_deck',
+			idx: DECK_IDX,
+			names: ['Japanese', 'Spanish'],
+			from: 'Japanese',
+			to: 'Spanish',
+		},
+		{
+			label: 'Model',
+			key: 'anki_model',
+			idx: MODEL_IDX,
+			names: ['Basic', 'Cloze'],
+			from: 'Basic',
+			to: 'Cloze',
+		},
+	];
+
+	async function openSynced(c: Case) {
+		deckNamesMock.mockResolvedValue(['Japanese', 'Spanish']);
 		modelNamesMock.mockResolvedValue(['Basic', 'Cloze']);
-		const activeFile = fakeTFile();
-		const { plugin, frontmatter } = fakePlugin(
-			{ currentModel: 'Basic' },
-			{ activeFile, frontmatter: { anki_model: 'Basic', anki_note_id: 123 } },
-		);
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-		await view.onOpen();
-		await settings[MODEL_IDX]?.dropdownComponents[0]?.triggerChange('Cloze');
+		const parts = fakePlugin({}, synced());
+		await openView(parts.plugin).opened;
+		const dropdown = settings[c.idx]?.dropdownComponents[0];
+		return { ...parts, dropdown };
+	}
 
-		deckModelWarningCapture.onUpdate?.();
+	describe.each(cases)('$label dropdown on a synced note', (c) => {
+		it('opens the warning modal instead of writing', async () => {
+			const { dropdown, processFrontMatter, saveSettings } =
+				await openSynced(c);
 
-		await vi.waitFor(() => {
-			expect(frontmatter.anki_model).toBe('Cloze');
+			await dropdown?.triggerChange(c.to);
+
+			expect(deckModelWarningOpen).toHaveBeenCalledTimes(1);
+			expect(processFrontMatter).not.toHaveBeenCalled();
+			expect(saveSettings).not.toHaveBeenCalled();
 		});
-		expect(frontmatter.anki_note_id).toBeUndefined();
+
+		it(`on Update: overwrites ${c.key} and clears anki_note_id`, async () => {
+			const { dropdown, frontmatter } = await openSynced(c);
+			await dropdown?.triggerChange(c.to);
+
+			deckModelWarningCapture.onUpdate?.();
+
+			await vi.waitFor(() => {
+				expect(frontmatter[c.key]).toBe(c.to);
+			});
+			expect(frontmatter.anki_note_id).toBeUndefined();
+		});
+
+		it('on Keep old: reverts the dropdown and leaves the note untouched', async () => {
+			const { dropdown, processFrontMatter, saveSettings } =
+				await openSynced(c);
+			await dropdown?.triggerChange(c.to);
+
+			deckModelWarningCapture.onKeepOld?.();
+
+			expect(dropdown?.value).toBe(c.from);
+			expect(processFrontMatter).not.toHaveBeenCalled();
+			expect(saveSettings).not.toHaveBeenCalled();
+		});
 	});
 
-	it('reverts the dropdown to the prior value when the modal calls onKeepOld', async () => {
+	it('writes directly, without a modal, when the note has no anki_note_id', async () => {
 		deckNamesMock.mockResolvedValue(['Japanese', 'Spanish']);
-		const activeFile = fakeTFile();
-		const { plugin, saveSettings } = fakePlugin(
-			{ currentDeck: 'Japanese' },
-			{ activeFile, frontmatter: { anki_note_id: 123 } },
+		const { plugin, frontmatter } = fakePlugin(
+			{},
+			noteOptions({ anki_deck: 'Japanese' }),
 		);
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-		await view.onOpen();
-		saveSettings.mockClear();
-		await settings[DECK_IDX]?.dropdownComponents[0]?.triggerChange('Spanish');
+		await openView(plugin).opened;
 
-		deckModelWarningCapture.onKeepOld?.();
-
-		expect(settings[DECK_IDX]?.dropdownComponents[0]?.value).toBe('Japanese');
-		expect(plugin.settings.currentDeck).toBe('Japanese');
-		expect(saveSettings).not.toHaveBeenCalled();
-	});
-
-	it('does not touch the active note frontmatter when the modal calls onKeepOld', async () => {
-		deckNamesMock.mockResolvedValue(['Japanese', 'Spanish']);
-		const activeFile = fakeTFile();
-		const { plugin, processFrontMatter } = fakePlugin(
-			{ currentDeck: 'Japanese' },
-			{ activeFile, frontmatter: { anki_deck: 'Japanese', anki_note_id: 123 } },
-		);
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-		await view.onOpen();
-		await settings[DECK_IDX]?.dropdownComponents[0]?.triggerChange('Spanish');
-
-		deckModelWarningCapture.onKeepOld?.();
-
-		expect(processFrontMatter).not.toHaveBeenCalled();
-	});
-
-	it('reverts the Model dropdown to the prior value when the modal calls onKeepOld', async () => {
-		modelNamesMock.mockResolvedValue(['Basic', 'Cloze']);
-		const activeFile = fakeTFile();
-		const { plugin, saveSettings } = fakePlugin(
-			{ currentModel: 'Basic' },
-			{ activeFile, frontmatter: { anki_note_id: 123 } },
-		);
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-		await view.onOpen();
-		saveSettings.mockClear();
-		await settings[MODEL_IDX]?.dropdownComponents[0]?.triggerChange('Cloze');
-
-		deckModelWarningCapture.onKeepOld?.();
-
-		expect(settings[MODEL_IDX]?.dropdownComponents[0]?.value).toBe('Basic');
-		expect(plugin.settings.currentModel).toBe('Basic');
-		expect(saveSettings).not.toHaveBeenCalled();
-	});
-
-	it('does not touch the active note frontmatter when the modal calls onKeepOld for the Model dropdown', async () => {
-		modelNamesMock.mockResolvedValue(['Basic', 'Cloze']);
-		const activeFile = fakeTFile();
-		const { plugin, processFrontMatter } = fakePlugin(
-			{ currentModel: 'Basic' },
-			{ activeFile, frontmatter: { anki_model: 'Basic', anki_note_id: 123 } },
-		);
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-		await view.onOpen();
-		await settings[MODEL_IDX]?.dropdownComponents[0]?.triggerChange('Cloze');
-
-		deckModelWarningCapture.onKeepOld?.();
-
-		expect(processFrontMatter).not.toHaveBeenCalled();
-	});
-
-	it('applies the change directly, without a modal, when the active file has no anki_note_id', async () => {
-		deckNamesMock.mockResolvedValue(['Japanese', 'Spanish']);
-		const activeFile = fakeTFile();
-		const { plugin, saveSettings, frontmatter } = fakePlugin(
-			{ currentDeck: 'Japanese' },
-			{ activeFile, frontmatter: { anki_deck: 'Japanese' } },
-		);
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-		await view.onOpen();
-
-		await settings[DECK_IDX]?.dropdownComponents[0]?.triggerChange('Spanish');
+		await deckDropdown()?.triggerChange('Spanish');
 
 		expect(deckModelWarningOpen).not.toHaveBeenCalled();
-		expect(plugin.settings.currentDeck).toBe('Spanish');
-		expect(saveSettings).toHaveBeenCalled();
 		expect(frontmatter.anki_deck).toBe('Spanish');
-		expect(frontmatter.anki_note_id).toBeUndefined();
 	});
 
-	it('overwrites anki_model directly, without a modal, when the Model dropdown changes on a note with no anki_note_id', async () => {
+	it('writes the Model directly, without a modal, when the note has no anki_note_id', async () => {
 		modelNamesMock.mockResolvedValue(['Basic', 'Cloze']);
-		const activeFile = fakeTFile();
 		const { plugin, frontmatter } = fakePlugin(
-			{ currentModel: 'Basic' },
-			{ activeFile, frontmatter: { anki_model: 'Basic' } },
+			{},
+			noteOptions({ anki_model: 'Basic' }),
 		);
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-		await view.onOpen();
+		await openView(plugin).opened;
 
-		await settings[MODEL_IDX]?.dropdownComponents[0]?.triggerChange('Cloze');
+		await modelDropdown()?.triggerChange('Cloze');
 
 		expect(deckModelWarningOpen).not.toHaveBeenCalled();
-		expect(plugin.settings.currentModel).toBe('Cloze');
 		expect(frontmatter.anki_model).toBe('Cloze');
-		expect(frontmatter.anki_note_id).toBeUndefined();
-	});
-
-	it('applies the change directly, without a modal, when there is no active file', async () => {
-		deckNamesMock.mockResolvedValue(['Japanese', 'Spanish']);
-		const { plugin, saveSettings, processFrontMatter } = fakePlugin({
-			currentDeck: 'Japanese',
-		});
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-		await view.onOpen();
-
-		await settings[DECK_IDX]?.dropdownComponents[0]?.triggerChange('Spanish');
-
-		expect(deckModelWarningOpen).not.toHaveBeenCalled();
-		expect(plugin.settings.currentDeck).toBe('Spanish');
-		expect(saveSettings).toHaveBeenCalled();
-		expect(processFrontMatter).not.toHaveBeenCalled();
-	});
-
-	it('applies the change directly, without a modal, when there is no active file (Model dropdown)', async () => {
-		modelNamesMock.mockResolvedValue(['Basic', 'Cloze']);
-		const { plugin, saveSettings, processFrontMatter } = fakePlugin({
-			currentModel: 'Basic',
-		});
-		const view = new SidebarView({} as WorkspaceLeaf, plugin);
-		await view.onOpen();
-
-		await settings[MODEL_IDX]?.dropdownComponents[0]?.triggerChange('Cloze');
-
-		expect(deckModelWarningOpen).not.toHaveBeenCalled();
-		expect(plugin.settings.currentModel).toBe('Cloze');
-		expect(saveSettings).toHaveBeenCalled();
-		expect(processFrontMatter).not.toHaveBeenCalled();
 	});
 });
 

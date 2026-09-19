@@ -1,5 +1,5 @@
 {
-  "0": "Common Provider Interface (processText/generateAudio/generateImage)",
+  "0": "Create Note From Selection (Hotkey / Quick Capture)",
   "1": "graphify Skill (/graphify)",
   "2": "devDependencies",
   "3": "compilerOptions",
@@ -76,14 +76,16 @@
   "74": "README.md — Obsidian Sample Plugin boilerplate",
   "75": "vitest.config.ts",
   "76": "graphify reference: GitHub clone and cross-repo merge",
-  "77": "sidebarView.test.ts",
-  "78": "quickCapture.ts",
+  "77": "settings.ts",
+  "78": "sidebarView.test.ts",
   "79": "[1.0.0]",
-  "80": "FakeSetting",
-  "81": "FakeDropdownComponent",
+  "80": "quickCapture.ts",
+  "81": "confirmRebuildFields.test.ts",
   "82": "confirmDelete.test.ts",
-  "83": "FakeButtonComponent",
-  "84": "FakeTextComponent",
-  "85": "FakeEl",
-  "86": "controlsBlock.ts"
+  "83": "Common Provider Interface (processText/generateAudio/generateImage)",
+  "84": "main.test.ts",
+  "85": "Generate with AI Button",
+  "86": "controlsBlock.ts",
+  "87": "Scenario 1: Create Note via Icon/Command",
+  "88": "Sidebar Modal (Right Sidebar View Panel)"
 }

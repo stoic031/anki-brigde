@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { fieldConfigKey, type AnkiBridgeSettings } from '../settings';
+import {
+	DEFAULT_SETTINGS,
+	fieldConfigKey,
+	type AnkiBridgeSettings,
+} from '../settings';
 import { runAiPreCheck } from './aiPreCheck';
 
 function fakeSettings(
@@ -7,12 +11,8 @@ function fakeSettings(
 ): AnkiBridgeSettings {
 	return {
 		ankiConnectUrl: '',
-		defaultDeck: '',
-		defaultModel: '',
-		defaultFolder: '',
-		currentDeck: '',
-		currentModel: '',
-		currentFolder: '',
+		profiles: DEFAULT_SETTINGS.profiles,
+		activeProfileId: DEFAULT_SETTINGS.activeProfileId,
 		generateWithAiFields: {},
 		...overrides,
 	};

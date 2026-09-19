@@ -8,37 +8,36 @@
 Sidebar Modal luôn có mặt ở Right Sidebar ngay sau khi cài plugin, gồm 3 tab cố định
 (xem `07-sidebar.md` §7.2):
 
-- **Tab 1 — Note:** Deck, Model, Folder lưu note, checkbox chọn field cho Generate with
-  AI (checkbox chỉ hiện sau khi đã chọn Deck + Model).
+- **Tab 1 — Note:** Profile (Deck/Model/Folder cho note mới), Deck/Model của note đang
+  mở, checkbox chọn field cho Generate with AI (checkbox chỉ hiện khi note đang mở có cả
+  Deck + Model).
 - **Tab 2 — Audio:** Voice, Language, Overwrite/Append, nhiều dòng mapping field
   (Input → Output) — cho phép tạo nhiều field audio khác nhau trong 1 note.
 - **Tab 3 — Image:** Overwrite/Append, 1 dòng mapping field (Input → Output) cố định —
   không cần nhiều dòng vì 1 note thường chỉ cần 1 ảnh.
 
-Tab 2 và Tab 3 chỉ hiện sau khi Tab 1 đã có Deck + Model.
+Tab 2 và Tab 3 chỉ hiện khi note đang mở có cả Deck + Model.
 
 Bấm icon "+" trong Ribbon hoặc chạy command **"Anki: Create new note"** sẽ **tạo note
 ngay** và đồng thời mở Sidebar Modal ra (nếu chưa mở) — không còn yêu cầu user tự mở
-modal, chọn Deck/Model rồi mới bấm nút Create như trước.
+modal, chọn Deck/Model rồi mới bấm nút Create như trước. Deck/Model/Folder của note mới
+lấy từ **profile đang chọn** (Settings Tab hoặc dropdown Profile ở Tab 1).
 
-**Resolve Deck/Model/Folder trước khi tạo note (xem `07-sidebar.md` §7.3/§7.4):**
+**Lấy Deck/Model/Folder từ profile trước khi tạo note (xem `07-sidebar.md` §7.3/§7.4):**
 
 ```
 [1] User bấm icon "+" (hoặc command "Anki: Create new note")
     ↓
-[2] Resolve Deck/Model/Folder:
-    ├─ Tab 1 đã có giá trị "hiện tại" → dùng luôn (trường hợp thường gặp, sang [3])
-    ├─ Tab 1 chưa có, nhưng Settings Tab (`06-settings.md` §6.1) đã cấu hình default
-    │  → seed Tab 1 bằng default này, sang [3] (giống hệt luồng dưới, không hỏi lại gì)
-    └─ Cả Tab 1 lẫn Settings đều chưa cấu hình → Notice "Please configure Deck, Model,
-       and Save location in Settings first", tự mở Settings tới tab của plugin,
-       KHÔNG tạo note, dừng lại tại đây
+[2] Lấy profile đang chọn (`06-settings.md` §6.1):
+    ├─ Có cả Deck và Model → sang [3]
+    └─ Thiếu Deck hoặc Model → Notice "Please set up a profile in Settings first", tự mở
+       Settings tới tab của plugin, KHÔNG tạo note, dừng lại tại đây
     ↓
 [3] Plugin hỏi tên note: "Enter note name:"
     ↓
 [4] User nhập tên: "診察"
     ↓
-[5] Plugin tạo note ngay bằng Deck/Model/Folder đã resolve ở bước [2]:
+[5] Plugin tạo note ngay bằng Deck/Model/Folder của profile:
     ---
     anki_deck: "Japanese::N2"
     anki_model: "Basic (and reversed card)"
@@ -55,8 +54,8 @@ modal, chọn Deck/Model rồi mới bấm nút Create như trước.
     ↓
 [6] Mở note mới trong editor
     ↓
-[7] Sidebar Modal tự mở (Tab 1) nếu chưa mở, để user xem lại/đổi Deck/Model/Folder cho
-    note vừa tạo — note chưa sync nên đổi ở đây chỉ ghi frontmatter, không cảnh báo
+[7] Sidebar Modal tự mở (Tab 1) nếu chưa mở; Deck/Model ở Tab 1 hiện đúng giá trị của
+    note vừa tạo, user có thể đổi nhanh — note chưa sync nên đổi ở đây chỉ ghi frontmatter, không cảnh báo
     (khác Scenario 4, áp dụng cho note đã sync)
     ↓
 [8] User điền content:
@@ -83,8 +82,8 @@ modal, chọn Deck/Model rồi mới bấm nút Create như trước.
 ## Scenario 2: User tạo note từ text được chọn (Hotkey), dùng chung Sidebar Modal
 
 Cũng dùng chung Sidebar Modal và cùng cơ chế 2-nhánh ở Scenario 1 — khác biệt duy nhất:
-filename lấy từ text đã bôi đen (không hỏi tên). Folder đích **dùng Folder select đã lưu
-ở Tab 1** (giống hệt Scenario 1), không phải folder của note đang active. Chi tiết đầy
+filename lấy từ text đã bôi đen (không hỏi tên). Folder đích là **Save notes to của
+profile đang chọn** (giống hệt Scenario 1), không phải folder của note đang active. Chi tiết đầy
 đủ: `03-note.md` §3.7.
 
 ```
@@ -94,17 +93,15 @@ filename lấy từ text đã bôi đen (không hỏi tên). Folder đích **dù
     ↓
 [3] Plugin tính filename = sanitizeForFilename("薬") = "薬.md"
     ↓
-[4] Plugin resolve Deck/Model/Folder (cùng cơ chế `07-sidebar.md` §7.3):
-    ├─ Tab 1 đã có giá trị "hiện tại" (VD: Deck "Japanese::N2", Model "Japanese
-    │  Vocabulary", Folder "Vocabulary/") → dùng ngay
-    ├─ Tab 1 chưa có, nhưng Settings Tab đã cấu hình default → seed Tab 1 bằng default
-    │  này, dùng ngay (không hỏi lại gì, xem `03-note.md` §3.7)
-    └─ Cả Tab 1 lẫn Settings đều chưa cấu hình → Notice nhắc cấu hình trong Settings, tự
-       mở Settings tới tab của plugin, KHÔNG tạo note, dừng lại
+[4] Plugin lấy Deck/Model/Folder từ profile đang chọn (cùng cơ chế `07-sidebar.md` §7.3;
+    VD: Deck "Japanese::N2", Model "Japanese Vocabulary", Folder "Vocabulary/"):
+    ├─ Có cả Deck và Model → dùng ngay, không hỏi lại gì
+    └─ Thiếu Deck hoặc Model → Notice nhắc thiết lập profile trong Settings, tự mở Settings
+       tới tab của plugin, KHÔNG tạo note, dừng lại
     ↓
 [5] Trùng tên đã tồn tại trong Folder đích → tự thêm hậu tố số ("薬 1.md")
     ↓
-[6] Plugin tạo note trong Folder đã resolve ở bước 4:
+[6] Plugin tạo note trong Folder của profile (bước 4):
     ---
     anki_deck: "Japanese::N2"
     anki_model: "Japanese Vocabulary"
@@ -218,12 +215,13 @@ Giống Scenario 3 nhưng chỉ 1 dòng mapping cố định, không có Voice/L
 [9] Button "🖼️ Add Image" vẫn hiện — có thể bấm lại nhiều lần (không tự ẩn)
 ```
 
-## Scenario 4: User thay đổi Deck/Model trong Sidebar Modal (Tab 1)
+## Scenario 4: User thay đổi Deck/Model của note trong Sidebar Modal (Tab 1)
 
 ```
 [1] User mở note đã sync (có anki_note_id trong frontmatter)
     ↓
-[2] Mở Sidebar Modal → Tab 1 → Chọn Deck mới hoặc Model mới
+[2] Mở Sidebar Modal → Tab 1 (Deck/Model đang hiện đúng giá trị trong frontmatter của
+    note) → Chọn Deck mới hoặc Model mới
     ↓
 [3] Plugin hiển thị warning modal:
     "Note này đã sync với Deck/Model cũ.

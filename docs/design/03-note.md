@@ -166,10 +166,14 @@ Khi user tạo note mới (qua command hoặc hotkey), plugin tự động sinh 
 ## Image
 ````
 
+> **Đổi Model cho note có sẵn:** nút "Rebuild fields" ở Sidebar Tab 1
+> (`07-sidebar.md` §7.2.1) xoá nội dung bên dưới frontmatter và sinh lại đúng skeleton này
+> theo Model hiện tại của note.
+
 ## 3.7. Tạo Note Từ Text Được Chọn (Hotkey / Quick Capture)
 
 Cách tạo note nhanh nhất: bôi đen 1 từ đang đọc, bấm hotkey, note mới xuất hiện ngay
-trong cùng folder — không cần mở Sidebar Modal, không cần nhập tên.
+trong folder của profile đang chọn — không cần mở Sidebar Modal, không cần nhập tên.
 
 **Trigger:**
 
@@ -188,26 +192,22 @@ trong cùng folder — không cần mở Sidebar Modal, không cần nhập tên
 
 **Flow:**
 
-Dùng chung Sidebar Modal và cùng cơ chế 2-nhánh với `07-sidebar.md` §7.3 (Deck/Model/
-Folder đã từng cấu hình hay chưa) — khác biệt duy nhất so với §7.3: filename lấy từ text
-đã bôi đen (không hỏi tên). Folder đích **dùng Folder select đã lưu ở Tab 1** (giống hệt
-§7.3), không phải folder của note đang active.
+Deck/Model/Folder lấy từ **profile đang chọn** — cùng cơ chế với `07-sidebar.md` §7.3;
+khác biệt duy nhất so với §7.3: filename lấy từ text đã bôi đen (không hỏi tên). Folder
+đích là **Save notes to của profile** (`06-settings.md` §6.1), không phải folder của note
+đang active.
 
 1. User bôi đen text trong note markdown đang mở.
 2. Bấm hotkey đã gán cho command `create-note-from-selection`.
 3. Plugin tính filename = `sanitizeForFilename(selectedText)` + `.md` (tái dùng hàm từ
    `../contracts.md` §5 — vốn trước đây chỉ dùng cho tên file media, nay dùng chung cho
    tên note).
-4. Plugin resolve Deck/Model/Folder theo đúng cơ chế `07-sidebar.md` §7.3 (không có ô
-   nhập tên note ở bất kỳ nhánh nào — tên đã có từ text bôi đen):
-   - **Tab 1 đã có giá trị "hiện tại"** (đã lưu từ lần trước) → tạo note ngay, bỏ qua
-     bước 5.
-   - **Tab 1 chưa có, nhưng Settings Tab (`06-settings.md` §6.1) đã cấu hình
-     Deck/Model/Folder mặc định** → seed Tab 1 bằng default này, tạo note ngay (không
-     hỏi lại gì), bỏ qua bước 5.
-   - **Cả Tab 1 lẫn Settings Tab đều chưa cấu hình gì** → hiện Notice "Please configure
-     Deck, Model, and Save location in Settings first", tự mở Obsidian Settings tới tab
-     của plugin, **không tạo note**, dừng lại (không có bước 5 trở đi).
+4. Plugin lấy Deck/Model/Folder từ profile đang chọn (không có ô nhập tên note — tên đã có
+   từ text bôi đen):
+   - **Profile có cả Deck và Model** → tạo note ngay, sang bước 5.
+   - **Profile thiếu Deck hoặc Model** → hiện Notice "Please set up a profile in Settings
+     first", tự mở Obsidian Settings tới tab của plugin, **không tạo note**, dừng lại
+     (không có bước 5 trở đi).
 5. Trùng tên file đã tồn tại trong Folder đích → tự thêm hậu tố số (hành vi mặc định của
    Obsidian khi tạo file trùng tên, VD "word 1.md") — không ghi đè, không báo lỗi, không
    mở file cũ thay vào.
@@ -215,10 +215,10 @@ Folder đã từng cấu hình hay chưa) — khác biệt duy nhất so với �
    field của Model, theo đúng thứ tự `modelFieldNames`) — **ngoại lệ duy nhất**: section
    của field đầu tiên (`fields[0]`) được điền sẵn text đã chọn; các section còn lại để
    trống như §3.6 mô tả.
-   - Frontmatter: `anki_deck`, `anki_model` lấy từ Deck/Model đã resolve ở bước 4.
-7. Mở note mới trong editor (tại Folder đích đã resolve ở bước 4).
-8. Nếu Sidebar Modal chưa mở → tự mở ra (Tab 1), để user xem lại/đổi Deck/Model/Folder
-   cho note vừa tạo nếu cần (giống `07-sidebar.md` §7.3 bước cuối).
+   - Frontmatter: `anki_deck`, `anki_model` lấy từ Deck/Model của profile (bước 4).
+7. Mở note mới trong editor (tại Folder của profile, bước 4).
+8. Nếu Sidebar Modal chưa mở → tự mở ra (Tab 1), để user xem/đổi Deck/Model của note vừa
+   tạo nếu cần (giống `07-sidebar.md` §7.3 bước cuối).
 
 Sau khi note được tạo, việc điền Meaning/Furigana/... không còn tự động — user tự bấm
 "🤖 Generate with AI" trong note-controls (§3.2) khi cần, có thể bấm lại nhiều lần.

@@ -24,7 +24,7 @@ chỉ cần mở ra để xem/sửa).
 
 | Tab | Nội dung | Điều kiện hiện |
 | --- | --- | --- |
-| **Tab 1 — Note** | Deck, Model, Folder lưu note, checkbox chọn field cho Generate with AI | Luôn hiện; phần checkbox field chỉ hiện sau khi đã chọn Deck + Model |
+| **Tab 1 — Note** | Profile (cho note mới), Deck/Model của note đang mở, checkbox chọn field cho Generate with AI | Luôn hiện; Deck/Model bị vô hiệu khi không có note đang mở; phần checkbox field chỉ hiện khi note đang mở có cả Deck + Model |
 | **Tab 2 — Audio** | Voice, Language, Overwrite/Append, danh sách dòng mapping field (input → output) | Chỉ hiện khi Tab 1 đã có Deck + Model |
 | **Tab 3 — Image** | Overwrite/Append, 1 dòng mapping field (input → output) cố định | Chỉ hiện khi Tab 1 đã có Deck + Model |
 
@@ -37,68 +37,66 @@ chỉ cần mở ra để xem/sửa).
 
 ### 7.2.1. Tab 1 — Note
 
-Thứ tự hiển thị: **Connection Status** (đầu tiên) → Deck → Model → Folder → Field
-checkboxes.
+Thứ tự hiển thị: Profile → Deck → Model → Rebuild fields → Field checkboxes. Không có Folder select ở Sidebar — folder lưu note mới thuộc về Profile
+(`06-settings.md` §6.1).
 
-**Connection Status:**
+> **Không có dòng Connection Status / nút 🔄 ở Sidebar.** Trạng thái và địa chỉ
+> AnkiConnect chỉ quản lý ở Settings Tab (`06-settings.md` §6.1, nút Connect). Danh sách
+> Deck/Model/Field được nạp khi Sidebar mở; lỗi kết nối báo bằng toast tại chỗ.
 
-```
-Status: ✅ Connected                              [🔄]
-AnkiConnect: http://localhost:8765
-```
-
-- Hiển thị trạng thái kết nối. Nút **🔄** (chỉ icon, không có chữ) là điểm refresh
-  **duy nhất** của cả Tab 1 — không còn nút Refresh riêng ở Deck/Model, và không còn
-  nút "Test Connection" tách biệt. Bấm 🔄 sẽ:
-  1. Kiểm tra lại kết nối AnkiConnect (cập nhật dòng Status).
-  2. Reload danh sách Folder (mục dưới) — luôn chạy, vì không gọi AnkiConnect nên
-     không phụ thuộc kết quả bước 1. Đây cũng là cách duy nhất để một folder vừa tạo
-     trong Obsidian xuất hiện trong dropdown mà không cần đóng/mở lại Sidebar.
-  3. Nếu bước 1 kết nối thành công → reload Deck, Model, và Field checkboxes. Nếu
-     Anki vẫn chưa kết nối được, bỏ qua bước này (tránh báo lỗi lặp lại 3 lần cho
-     cùng một nguyên nhân).
-
-**Deck Dropdown:**
+**Profile Dropdown (cho note mới):**
 
 ```
-Select Deck: [Japanese::N2 ▼]
+Profile: [Japanese ▼]
 ```
 
-- Populate từ API `deckNames`. Không có nút Refresh riêng — dùng nút 🔄 ở Connection
-  Status.
+- Liệt kê các profile đã tạo ở Settings Tab (`06-settings.md` §6.1) và chọn profile đang
+  dùng (active). Profile này quyết định Deck/Model/Folder của **note mới** — cả "Create new
+  note" (§7.3) lẫn "Create note from selection" (`03-note.md` §3.7).
+- Đồng bộ hai chiều với dropdown Profile ở Settings Tab: đổi ở một nơi thì nơi còn lại
+  cập nhật ngay (cùng `settings.activeProfileId`; plugin phát sự kiện nội bộ để cả hai
+  vẽ lại). Không thêm/sửa/xoá profile ở Sidebar — việc đó chỉ làm ở Settings Tab.
+- Đổi profile **không** ảnh hưởng note đang mở.
 
-**Model Dropdown:**
-
-```
-Select Model: [Basic (and reversed card) ▼]
-```
-
-- Populate từ API `modelNames`. Không có nút Refresh riêng — dùng nút 🔄 ở Connection
-  Status.
-
-**Folder select (lưu note mới):**
+**Deck Dropdown / Model Dropdown (của note đang mở):**
 
 ```
-Save notes to: [/ (vault root) ▼]
-        Japanese
-          N2
-            Vocab
+Deck:  [Japanese::N2 ▼]
+Model: [Basic (and reversed card) ▼]
 ```
 
-- Mặc định = folder của note đang active tại thời điểm mở modal; nếu không có note
-  nào đang active (VD mở Obsidian lần đầu) → mặc định vault root (`/`).
-- User đổi giá trị này sẽ áp dụng cho lần tạo note tiếp theo qua §7.3.
-- Folder lồng nhau hiển thị dạng cây: mỗi dòng chỉ hiện **tên riêng** của folder (không
-  lặp lại full path), thụt lề theo độ sâu, nhóm folder con ngay dưới folder cha —
-  không sắp theo kiểu so sánh chuỗi full path (dễ sai thứ tự khi có folder tên gần
-  giống, VD "Japanese Advanced" so với "Japanese/N2").
-- Refresh qua nút 🔄 ở Connection Status (không có nút Refresh riêng), nên tạo folder
-  mới trong Obsidian rồi bấm 🔄 sẽ thấy folder đó ngay trong dropdown.
-- Nếu user đã chọn tường minh `/ (vault root)`, giá trị này **không** bị bấm 🔄 ghi đè
-  lại thành folder của note đang active — chỉ khi nào Folder thật sự chưa từng được
-  chọn (hoặc folder đã chọn trước đó bị xoá) thì mới tự suy ra lại từ note đang active.
-  Lựa chọn tường minh chỉ tồn tại trong phiên Sidebar hiện tại; đóng rồi mở lại Sidebar
-  (tạo lại view mới) thì hành vi suy ra mặc định ở dòng trên vẫn áp dụng như cũ.
+- Giá trị đang chọn luôn là `anki_deck` / `anki_model` trong frontmatter của **note đang
+  mở** — không lấy từ profile và không lưu vào settings. Tự cập nhật khi user chuyển note
+  khác và khi metadata của note đang mở đổi (kể cả khi user sửa tay frontmatter).
+- Danh sách lựa chọn populate từ `deckNames` / `modelNames`. Nếu giá trị trong note không
+  có trong danh sách (VD deck đã bị xoá trong Anki, hoặc Anki chưa kết nối) vẫn hiển thị
+  giá trị đó để user thấy đúng những gì note đang ghi.
+- Không có note markdown nào đang mở (hoặc file đang mở không phải `.md`): dropdown bị vô
+  hiệu, hiện "No active note". Note đang mở nhưng chưa có `anki_deck`/`anki_model`: hiện
+  "Not set" (chưa chọn); chọn "Not set" không làm gì.
+- Đổi giá trị = sửa nhanh property của note: ghi thẳng vào frontmatter của note. Nếu note
+  đã sync (có `anki_note_id`) thì hiện modal cảnh báo trước — xem `scenarios.md`
+  Scenario 4. Không có nút Refresh riêng.
+
+**Rebuild fields (đồng bộ field của Model sang nội dung note):**
+
+```
+Note fields: [Rebuild fields]
+```
+
+- Đổi Model ở dropdown chỉ đổi property `anki_model` (kèm cảnh báo nếu note đã sync); nội
+  dung note không tự đổi theo. Nút này để user chủ động làm nội dung khớp Model mới.
+- Bấm nút → hiện modal xác nhận "Rebuild note fields?" (Cancel / Rebuild): thao tác
+  **xoá toàn bộ nội dung bên dưới frontmatter** rồi tạo lại skeleton đúng như §3.6
+  (`03-note.md`): code block `anki-controls` + một `## Field` trống cho mỗi field của
+  Model, theo thứ tự `modelFieldNames`. Không thể hoàn tác, nội dung cũ mất hết kể cả text
+  đã viết.
+- Frontmatter (`anki_deck`, `anki_model`, `anki_note_id`, ...) giữ nguyên; nút không tự
+  xoá `anki_note_id`.
+- Bị vô hiệu khi không có note markdown đang mở hoặc note chưa có `anki_model`. Trong lúc
+  chạy hiện "⏳ Rebuilding...", xong hiện toast "✅ Note fields rebuilt."; lỗi kết nối
+  hiện toast "❌ Failed to rebuild fields. Please check Anki connection." và giữ nguyên
+  note.
 
 **Field checkboxes (Generate with AI):**
 
@@ -108,16 +106,11 @@ Fields to generate with AI:
 ☐ Furigana
 ```
 
-- Chỉ hiện khi đã resolve được cả Deck + Model. Deck/Model dùng cho danh sách field
-  này lấy từ frontmatter (`anki_deck`/`anki_model`) của **note đang mở (active)**,
-  không phải từ 2 dropdown Deck/Model ở trên; nếu note đang mở chưa có frontmatter,
-  chưa có `anki_deck`/`anki_model` (VD note mới tạo), hoặc không có note nào đang mở,
-  fallback về Deck/Model "hiện tại" đang chọn ở 2 dropdown
-  (`settings.currentDeck`/`currentModel`). Danh sách field lấy từ
-  `modelFieldNames(model)` với Model đã resolve theo cách trên. Danh sách checkbox tự
-  cập nhật lại khi user chuyển sang note khác đang mở trong editor — giá trị 2
-  dropdown Deck/Model phía trên **không đổi theo**, nên có thể tạm thời khác với
-  Deck/Model đang dùng cho field checkbox; đây là chủ đích, không phải lỗi.
+- Chỉ hiện khi note đang mở có cả `anki_deck` và `anki_model`; Deck/Model dùng cho danh
+  sách này chính là cặp đang hiển thị ở 2 dropdown phía trên (cùng lấy từ frontmatter
+  của note đang mở). Danh sách field lấy từ `modelFieldNames(model)`. Danh sách checkbox
+  tự cập nhật khi user chuyển sang note khác hoặc khi cặp Deck+Model của note đổi; gõ nội
+  dung trong note không kéo theo tải lại.
 - Đây là field mà nút "🤖 Generate with AI" trong note-controls sẽ nhắm tới — xem
   [`03-note.md`](03-note.md) §3.2. Không tick field nào → nút Generate with AI coi như
   chưa cấu hình (xem §7.4 và 03-note.md §3.2).
@@ -166,71 +159,57 @@ Input: [Word ▼]   →   Output: [Image ▼]
 
 ## 7.3. Action: Create New Note
 
-Trước khi tạo note, plugin resolve Deck/Model/Folder theo thứ tự sau (xem §7.4
-Persistence):
+Deck/Model/Folder của note mới lấy từ **profile đang chọn** (§7.2.1; `06-settings.md`
+§6.1), không lấy từ 2 dropdown Deck/Model của Sidebar.
 
 ```
 [1] User bấm icon "+" trong Ribbon, hoặc chạy command "Anki: Create new note"
     ↓
-[2] Resolve Deck/Model/Folder:
-    ├─ Tab 1 đã có giá trị "hiện tại" (đã dùng/lưu từ lần trước) → dùng luôn, sang [3]
-    ├─ Tab 1 chưa có, nhưng Settings Tab (06-settings.md §6.1) đã cấu hình Deck/Model/
-    │  Folder mặc định → seed giá trị "hiện tại" của Tab 1 bằng default này, sang [3]
-    └─ Cả Tab 1 lẫn Settings Tab đều chưa cấu hình gì → hiện Notice "Please configure
-       Deck, Model, and Save location in Settings first", tự mở Obsidian Settings tới
-       tab của plugin, KHÔNG tạo note, dừng lại (không có bước nào tiếp theo)
+[2] Lấy profile đang chọn:
+    ├─ Có cả Deck và Model → sang [3]
+    └─ Thiếu Deck hoặc Model → hiện Notice "Please set up a profile in Settings first",
+       tự mở Obsidian Settings tới tab của plugin, KHÔNG tạo note, dừng lại
     ↓
 [3] Plugin hỏi tên note: "Enter note name:"
     ↓
 [4] User nhập tên (VD: "診察")
     ↓
-[5] Plugin tạo note ngay bằng Deck/Model/Folder đã resolve ở bước [2]:
+[5] Plugin tạo note ngay bằng Deck/Model/Folder của profile:
     - Frontmatter: anki_deck, anki_model
     - Content: `anki-controls` code block + section theo modelFieldNames (03-note.md §3.6)
-    - Vị trí: Folder đã resolve ở bước [2]
+    - Vị trí: Folder của profile
     ↓
 [6] Mở note mới trong editor
     ↓
-[7] Nếu Sidebar Modal chưa mở → tự mở ra (Tab 1), để user xem lại/đổi Deck/Model/Folder
-    cho note vừa tạo nếu cần. Note vừa tạo chưa sync (không có anki_note_id) nên đổi
+[7] Nếu Sidebar Modal chưa mở → tự mở ra (Tab 1); Deck/Model ở Tab 1 lúc này hiện đúng
+    giá trị vừa ghi vào note. Note vừa tạo chưa sync (không có anki_note_id) nên đổi
     Deck/Model ở bước này chỉ ghi đè frontmatter, không cần cảnh báo như Scenario 4.
 ```
 
-Không còn modal "Set up Anki Bridge" ở giữa màn hình — Settings Tab đã có đủ Deck/Model/
-Folder mặc định (§6.1) nên không cần hỏi lại user ngay tại thời điểm tạo note; nếu chưa
-cấu hình gì cả thì điều hướng thẳng tới Settings thay vì hỏi lại trong 1 modal riêng.
-
 ## 7.4. Persistence
 
-**Deck/Model/Folder "hiện tại":**
+**Profile:**
 
-- Lưu vào plugin settings. Đây là giá trị dùng cho §7.3 (khi đã có) và cho hotkey tạo
-  note từ selection (`03-note.md` §3.7).
-- Khi mở lại Obsidian → Tab 1 tự động chọn lại Deck/Model/Folder đã lưu.
-- Kể từ khi field checkbox (Generate with AI) resolve Deck/Model theo note đang mở
-  (xem §7.2.1), giá trị "hiện tại" này chỉ còn là **fallback** cho field checkbox khi
-  note đang mở không có `anki_deck`/`anki_model` — không còn là nguồn trực tiếp duy
-  nhất như trước.
+- Danh sách profile (`settings.profiles`: id, name, deck, model, folder) và profile đang
+  chọn (`settings.activeProfileId`) lưu vào plugin settings. Khi mở lại Obsidian, Sidebar
+  và Settings Tab đều chọn lại profile đã lưu.
+- Sidebar và Settings Tab dùng chung một object settings; đổi profile ở đâu cũng phát sự
+  kiện nội bộ để nơi còn lại vẽ lại dropdown Profile.
+- Nâng cấp từ bản cũ: nếu chưa có `profiles`, tạo profile "Default" từ Deck/Model/Folder
+  "hiện tại" hoặc mặc định cũ (`06-settings.md` §6.1) rồi bỏ các khoá cũ.
+
+**Deck/Model của note:** không lưu ở settings. Nguồn duy nhất là frontmatter
+`anki_deck` / `anki_model` của từng note (§7.2.1).
 
 **Cấu hình field-mapping theo từng cặp Deck+Model:**
 
 - Field khả dụng (`modelFieldNames`) phụ thuộc Model, nên checkbox Tab 1, các dòng
   Tab 2, và dòng Tab 3 được lưu **riêng theo từng cặp Deck+Model**, không dùng chung 1
-  cấu hình toàn cục.
-- Đổi Deck/Model ở Tab 1 → Tab 2/3 tự hiện lại cấu hình đã lưu cho cặp Deck+Model đó
-  (nếu có), hoặc trống nếu cặp đó chưa từng được cấu hình. Tương tự, chuyển sang note
-  khác đang mở có `anki_deck`/`anki_model` khác → field checkbox (Tab 1) tự hiện lại
-  cấu hình đã lưu cho cặp đó.
+  cấu hình toàn cục. Khoá lưu theo cặp Deck+Model, không theo profile.
+- Chuyển sang note khác đang mở có `anki_deck`/`anki_model` khác (hoặc đổi Deck/Model của
+  note) → Tab 1/2/3 tự hiện lại cấu hình đã lưu cho cặp đó (nếu có), hoặc trống nếu cặp
+  đó chưa từng được cấu hình.
 - "Chưa cấu hình" (cho mục đích pre-check ở `03-note.md` §3.2) nghĩa là: Tab 1 chưa
   tick field nào (với Generate with AI), Tab 2 chưa có dòng nào (với Add Audio), hoặc
   Tab 3 dòng Input/Output chưa được chọn (với Add Image) — **cho cặp Deck+Model của
   note đang mở**.
-
-**Sync với Settings Tab:**
-
-- Deck/Model/Folder ở Settings Tab (`06-settings.md` §6.1) là nguồn **fallback** cho
-  giá trị "hiện tại" của Tab 1 khi Tab 1 chưa từng được set (xem §7.3 bước [2]) — không
-  còn là giá trị độc lập chỉ dùng cho kết nối/preview.
-- Sau khi Tab 1 đã được seed (hoặc user tự đổi trong Tab 1), Tab 1 giữ giá trị "hiện
-  tại" của riêng nó; đổi Deck/Model/Folder default trong Settings Tab sau đó **không**
-  tự động ghi đè lại giá trị đã có ở Tab 1.

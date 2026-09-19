@@ -47,8 +47,10 @@ Prefix all CSS classes to avoid collisions with other plugins.
 ## State
 
 Settings tab and sidebar view read and write the **same** `this.settings` object and
-both re-render on change. Two copies of deck/model state that drift apart is the single
-most likely bug in this area.
+both re-render on change — the active profile selector in particular, via
+`plugin.setActiveProfile()` and `PROFILE_CHANGED_EVENT`. The sidebar's Deck/Model
+dropdowns are not settings at all: they mirror the active note's frontmatter. Two copies
+of deck/model state that drift apart is the single most likely bug in this area.
 
 ## Cleanup
 

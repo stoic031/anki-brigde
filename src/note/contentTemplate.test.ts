@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { generateContentSkeleton } from './contentTemplate';
+import { generateContentSkeleton, rebuildContent } from './contentTemplate';
 import { parseSections } from '../sync/parser';
 
 describe('generateContentSkeleton', () => {
@@ -55,5 +55,38 @@ describe('generateContentSkeleton', () => {
 
 		expect(sections.get('word')).toBe(selectedText);
 		expect(sections.get('meaning')).toBe('');
+	});
+});
+
+describe('rebuildContent', () => {
+	const skeleton = '```anki-controls\n```\n\n## Front\n\n## Back\n';
+
+	it('keeps the frontmatter and replaces everything after it', () => {
+		const content =
+			'---\nanki_deck: Japanese\nanki_note_id: 5\n---\n\n```anki-controls\n```\n\n## Word\n\nold text\n';
+
+		expect(rebuildContent(content, ['Front', 'Back'])).toBe(
+			`---\nanki_deck: Japanese\nanki_note_id: 5\n---\n\n${skeleton}`,
+		);
+	});
+
+	it('handles frontmatter with no trailing newline', () => {
+		expect(rebuildContent('---\nanki_deck: X\n---', ['Front', 'Back'])).toBe(
+			`---\nanki_deck: X\n---\n\n${skeleton}`,
+		);
+	});
+
+	it('returns just the skeleton when there is no frontmatter', () => {
+		expect(rebuildContent('some text', ['Front', 'Back'])).toBe(skeleton);
+	});
+
+	it('does not mistake a later --- rule for frontmatter', () => {
+		expect(rebuildContent('intro\n---\nmore', ['Front', 'Back'])).toBe(skeleton);
+	});
+
+	it('is stable when applied twice (idempotent)', () => {
+		const once = rebuildContent('---\na: 1\n---\n\nbody', ['Front', 'Back']);
+
+		expect(rebuildContent(once, ['Front', 'Back'])).toBe(once);
 	});
 });

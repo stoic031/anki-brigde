@@ -16,3 +16,7 @@ export const FIELD_ALIASES: Record<string, string[]> = {
 	furigana: ['reading', 'kana'],
 	example: ['sentence', 'usage'],
 };
+
+// Fired on app.workspace when the active profile changes, so the Settings tab and
+// sidebar can re-render their profile selector. docs/design/07-sidebar.md §7.4.
+export const PROFILE_CHANGED_EVENT = 'anki-bridge:profile-changed';

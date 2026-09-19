@@ -3,6 +3,7 @@ import type { Plugin } from 'obsidian';
 import {
 	DEFAULT_SETTINGS,
 	fieldConfigKey,
+	getActiveProfile,
 	loadSettings,
 	resolveAnkiConnectUrl,
 	saveSettings,
@@ -37,24 +38,101 @@ describe('loadSettings', () => {
 		});
 
 		await expect(loadSettings(plugin)).resolves.toEqual({
+			...DEFAULT_SETTINGS,
 			ankiConnectUrl: 'http://localhost:9999',
-			defaultDeck: '',
-			defaultModel: '',
-			defaultFolder: '',
-			currentDeck: '',
-			currentModel: '',
-			currentFolder: '',
-			generateWithAiFields: {},
 		});
 	});
 
-	it('preserves a saved defaultFolder', async () => {
-		const { plugin } = fakePlugin({ defaultFolder: 'Anki Notes' });
+	it('does not share the default profiles array between loads', async () => {
+		const first = await loadSettings(fakePlugin(null).plugin);
+		first.profiles[0]!.deck = 'Mutated';
 
-		await expect(loadSettings(plugin)).resolves.toEqual({
-			...DEFAULT_SETTINGS,
-			defaultFolder: 'Anki Notes',
+		const second = await loadSettings(fakePlugin(null).plugin);
+
+		expect(second.profiles[0]?.deck).toBe('');
+	});
+
+	it('preserves saved profiles and the active profile', async () => {
+		const profiles = [
+			{ id: 'a', name: 'A', deck: 'D1', model: 'M1', folder: 'F1' },
+			{ id: 'b', name: 'B', deck: 'D2', model: 'M2', folder: '' },
+		];
+		const { plugin } = fakePlugin({ profiles, activeProfileId: 'b' });
+
+		const loaded = await loadSettings(plugin);
+
+		expect(loaded.profiles).toEqual(profiles);
+		expect(loaded.activeProfileId).toBe('b');
+	});
+
+	it('falls back to the first profile when activeProfileId is unknown', async () => {
+		const profiles = [
+			{ id: 'a', name: 'A', deck: '', model: '', folder: '' },
+		];
+		const { plugin } = fakePlugin({ profiles, activeProfileId: 'gone' });
+
+		await expect(loadSettings(plugin)).resolves.toMatchObject({
+			activeProfileId: 'a',
 		});
+	});
+
+	describe('legacy migration', () => {
+		it('turns default* fields into a Default profile and drops the old keys', async () => {
+			const { plugin } = fakePlugin({
+				defaultDeck: 'Deck',
+				defaultModel: 'Model',
+				defaultFolder: 'Anki Notes',
+			});
+
+			const loaded = await loadSettings(plugin);
+
+			expect(loaded.profiles).toEqual([
+				{
+					id: 'default',
+					name: 'Default',
+					deck: 'Deck',
+					model: 'Model',
+					folder: 'Anki Notes',
+				},
+			]);
+			expect(loaded.activeProfileId).toBe('default');
+			expect(loaded).not.toHaveProperty('defaultDeck');
+			expect(loaded).not.toHaveProperty('currentFolder');
+		});
+
+		it('prefers current* over default* (what the user last used)', async () => {
+			const { plugin } = fakePlugin({
+				defaultDeck: 'OldDeck',
+				currentDeck: 'NewDeck',
+				defaultModel: 'OldModel',
+				currentModel: 'NewModel',
+				defaultFolder: 'Old',
+				currentFolder: 'New',
+			});
+
+			const loaded = await loadSettings(plugin);
+
+			expect(loaded.profiles[0]).toMatchObject({
+				deck: 'NewDeck',
+				model: 'NewModel',
+				folder: 'New',
+			});
+		});
+	});
+});
+
+describe('getActiveProfile', () => {
+	it('returns the active profile', () => {
+		const settings = {
+			...DEFAULT_SETTINGS,
+			profiles: [
+				{ id: 'a', name: 'A', deck: '', model: '', folder: '' },
+				{ id: 'b', name: 'B', deck: '', model: '', folder: '' },
+			],
+			activeProfileId: 'b',
+		};
+
+		expect(getActiveProfile(settings).id).toBe('b');
 	});
 });
 
@@ -63,12 +141,8 @@ describe('saveSettings', () => {
 		const { plugin, saveData } = fakePlugin(null);
 		const settings: AnkiBridgeSettings = {
 			ankiConnectUrl: 'http://localhost:1234',
-			defaultDeck: '',
-			defaultModel: '',
-			defaultFolder: '',
-			currentDeck: '',
-			currentModel: '',
-			currentFolder: '',
+			profiles: DEFAULT_SETTINGS.profiles,
+			activeProfileId: DEFAULT_SETTINGS.activeProfileId,
 			generateWithAiFields: {},
 		};
 
@@ -83,12 +157,8 @@ describe('resolveAnkiConnectUrl', () => {
 		expect(
 			resolveAnkiConnectUrl({
 				ankiConnectUrl: '',
-				defaultDeck: '',
-				defaultModel: '',
-				defaultFolder: '',
-				currentDeck: '',
-				currentModel: '',
-				currentFolder: '',
+				profiles: DEFAULT_SETTINGS.profiles,
+				activeProfileId: DEFAULT_SETTINGS.activeProfileId,
 				generateWithAiFields: {},
 			}),
 		).toBe(DEFAULT_ANKI_CONNECT_URL);
@@ -98,12 +168,8 @@ describe('resolveAnkiConnectUrl', () => {
 		expect(
 			resolveAnkiConnectUrl({
 				ankiConnectUrl: '   ',
-				defaultDeck: '',
-				defaultModel: '',
-				defaultFolder: '',
-				currentDeck: '',
-				currentModel: '',
-				currentFolder: '',
+				profiles: DEFAULT_SETTINGS.profiles,
+				activeProfileId: DEFAULT_SETTINGS.activeProfileId,
 				generateWithAiFields: {},
 			}),
 		).toBe(DEFAULT_ANKI_CONNECT_URL);
@@ -113,12 +179,8 @@ describe('resolveAnkiConnectUrl', () => {
 		expect(
 			resolveAnkiConnectUrl({
 				ankiConnectUrl: '  http://localhost:9999  ',
-				defaultDeck: '',
-				defaultModel: '',
-				defaultFolder: '',
-				currentDeck: '',
-				currentModel: '',
-				currentFolder: '',
+				profiles: DEFAULT_SETTINGS.profiles,
+				activeProfileId: DEFAULT_SETTINGS.activeProfileId,
 				generateWithAiFields: {},
 			}),
 		).toBe('http://localhost:9999');

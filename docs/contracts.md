@@ -224,23 +224,32 @@ Every user-visible error states **what broke** and **what to do next**. An empty
 ## 7. Settings (`src/settings.ts`)
 
 ```ts
+interface Profile {
+ id: string; // stable, generated on Add ('default' for the auto-created one)
+ name: string; // unique, non-empty
+ deck: string; // '' = unset
+ model: string; // '' = unset
+ folder: string; // '' = vault root
+}
+
 interface AnkiBridgeSettings {
  ankiConnectUrl: string; // '' = unset, resolves to DEFAULT_ANKI_CONNECT_URL at use time
- defaultDeck: string; // '' = unset — Settings Tab fallback default, docs/design/06-settings.md §6.1
- defaultModel: string; // '' = unset — same role as defaultDeck
- defaultFolder: string; // '' = vault root/unset — same role as defaultDeck
- currentDeck: string; // '' = not yet set — Sidebar Tab 1's persisted "current" value, docs/design/07-sidebar.md §7.4
- currentModel: string; // '' = not yet set
- currentFolder: string; // '' = vault root
+ profiles: Profile[]; // always >= 1 — a named Deck+Model+Folder bundle for NEW notes, docs/design/06-settings.md §6.1
+ activeProfileId: string; // always an id in `profiles` — selected in both Settings Tab and Sidebar Tab 1
  generateWithAiFields: Record<string, string[]>; // Tab 1 field checkboxes, keyed by fieldConfigKey(deck, model)
 }
 ```
 
-`default*` fields are the Settings Tab's global fallback, used only to seed `current*`
-the first time Tab 1 (or the hotkey/Branch A note-creation flow) resolves a target with
-no `current*` value yet — see `resolveQuickCaptureTarget` in `src/note/quickCapture.ts`.
-Once seeded, `current*` is independent: changing a `default*` value afterward does not
-retroactively overwrite `current*`.
+The active profile decides Deck/Model/Folder for **new** notes only — see
+`resolveQuickCaptureTarget` in `src/note/quickCapture.ts`, shared by "Create new note" and
+"Create note from selection"; it returns `null` when the profile has no Deck or Model. An
+existing note's Deck/Model always come from its own `anki_deck` / `anki_model` frontmatter.
+
+`loadSettings` migrates pre-profile data once: with no saved `profiles`, it creates a
+`Default` profile from `currentDeck/Model/Folder` (falling back to `defaultDeck/Model/
+Folder`) and drops those legacy keys; an unknown `activeProfileId` falls back to the first
+profile. `plugin.setActiveProfile(id)` saves and fires `PROFILE_CHANGED_EVENT`
+(`src/utils/constants.ts`) so Settings Tab and Sidebar re-render their profile selector.
 
 `fieldConfigKey(deck, model)` encodes the pair as `JSON.stringify([deck, model])` rather
 than a delimited string, because deck names routinely contain `::` (Anki's subdeck
