@@ -249,7 +249,7 @@ describe('runQuickCapture', () => {
 
 		expect(vaultCreate).toHaveBeenCalledWith(
 			'Vocab/薬.md',
-			'```anki-controls\n```\n\n## Word\n\n薬\n\n## Meaning\n',
+			'## Word\n\n薬\n\n## Meaning\n',
 		);
 		expect(writeAnkiFrontmatter).toHaveBeenCalledWith(plugin.app, createdFile, {
 			anki_deck: 'Japanese',

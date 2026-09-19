@@ -35,7 +35,7 @@ Câu hỏi/mâu thuẫn thiết kế chưa chốt: xem `docs/design-open-questio
 
 - Vault Obsidian sạch (không lưu media)
 - Media lưu thẳng vào Anki qua `storeMediaFile`
-- Button điều khiển trực tiếp trong note (Custom Markdown Block)
+- Nút điều khiển (Sync, Rebuild, Delete, Generate...) nằm ở Sidebar, không nằm trong note
 - Hỗ trợ cả Cloud API và Local Model
 - Frontmatter chỉ chứa metadata sync, dữ liệu từ vựng nằm trong content
 - Dynamic field generation dựa trên Anki Model được chọn
@@ -56,5 +56,5 @@ Câu hỏi/mâu thuẫn thiết kế chưa chốt: xem `docs/design-open-questio
 10. **Conditional rendering** - Chỉ hiện button cần thiết dựa trên trạng thái note
 11. **Content parsing** - Dựa trên heading structure (## SectionName)
 12. **Content update** - Ghi vào đúng section (Append hoặc Overwrite tag cũ tuỳ cấu hình
-    Tab 2/3, xem `03-note.md` §3.4), không ghi đè toàn bộ file
-13. **Persistence** - Lưu Deck/Model đã chọn trong settings, sync giữa Settings Tab và Sidebar Modal
+    tab Audio/Image, xem `03-note.md` §3.4), không ghi đè toàn bộ file
+13. **Persistence** - Lưu Deck/Model đã chọn trong settings, sync giữa Settings Tab và Sidebar

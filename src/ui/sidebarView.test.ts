@@ -2,11 +2,11 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { App, WorkspaceLeaf } from 'obsidian';
 import {
 	DEFAULT_SETTINGS,
-	fieldConfigKey,
 	type AnkiBridgeSettings,
 	type Profile,
 } from '../settings';
 import { PROFILE_CHANGED_EVENT } from '../utils/constants';
+import type { FakeEl } from '../test/fakeDom';
 import type AnkiBridgePlugin from '../main';
 
 class FakeDropdownComponent {
@@ -124,92 +124,53 @@ class FakeSetting {
 	}
 }
 
-const {
-	ItemView,
-	contentElEmpty,
-	contentElCreateEl,
-	fieldsContainerEl,
-	settings,
-} = vi.hoisted(() => {
-	const contentElEmpty = vi.fn();
-	const contentElCreateEl = vi.fn();
-	const fieldsContainerEl = { empty: vi.fn(), createEl: vi.fn() };
-	const contentElCreateDiv = vi.fn().mockReturnValue(fieldsContainerEl);
-	const settings: FakeSetting[] = [];
+const { settings } = vi.hoisted(() => ({ settings: [] as FakeSetting[] }));
+vi.mock('obsidian', async () => {
+	const { FakeEl } = await import('../test/fakeDom');
 	class ItemView {
-		contentEl = {
-			empty: contentElEmpty,
-			createEl: contentElCreateEl,
-			createDiv: contentElCreateDiv,
-		};
+		contentEl = new FakeEl();
 		constructor(public leaf: unknown) {}
 		registerEvent(_ref: unknown) {}
 	}
 	return {
 		ItemView,
-		contentElEmpty,
-		contentElCreateEl,
-		fieldsContainerEl,
-		settings,
+		Setting: class {
+			constructor(containerEl: unknown) {
+				const s = new FakeSetting(containerEl);
+				settings.push(s);
+				return s;
+			}
+		},
+		TFile: class FakeTFile {},
 	};
 });
-vi.mock('obsidian', () => ({
-	ItemView,
-	Setting: class {
-		constructor(containerEl: unknown) {
-			const s = new FakeSetting(containerEl);
-			settings.push(s);
-			return s;
-		}
-	},
-	TFile: class FakeTFile {},
+
+// The action row and Text tab have their own tests; here they're spies so the view's
+// wiring (what it passes them, and when) can be asserted directly.
+const { noteActionsUpdate, textTabSync } = vi.hoisted(() => ({
+	noteActionsUpdate: vi.fn(),
+	textTabSync: vi.fn().mockResolvedValue(undefined),
+}));
+vi.mock('./sidebar/noteActions', () => ({
+	renderNoteActions: vi.fn(() => ({ update: noteActionsUpdate })),
+}));
+vi.mock('./sidebar/textTab', () => ({
+	renderTextTab: vi.fn(() => ({ sync: textTabSync })),
 }));
 
-const {
-	deckNamesMock,
-	modelNamesMock,
-	modelFieldNamesMock,
-	versionMock,
-	AnkiConnectClient,
-} = vi.hoisted(() => {
+const { deckNamesMock, modelNamesMock, AnkiConnectClient } = vi.hoisted(() => {
 	const deckNamesMock = vi.fn().mockResolvedValue([]);
 	const modelNamesMock = vi.fn().mockResolvedValue([]);
-	const modelFieldNamesMock = vi.fn().mockResolvedValue([]);
-	const versionMock = vi.fn().mockResolvedValue(6);
 	class AnkiConnectClient {
 		deckNames = deckNamesMock;
 		modelNames = modelNamesMock;
-		modelFieldNames = modelFieldNamesMock;
-		version = versionMock;
 	}
-	return {
-		deckNamesMock,
-		modelNamesMock,
-		modelFieldNamesMock,
-		versionMock,
-		AnkiConnectClient,
-	};
+	return { deckNamesMock, modelNamesMock, AnkiConnectClient };
 });
 vi.mock('../sync/ankiConnect', () => ({ AnkiConnectClient }));
 
-const { toastError, toastSuccess } = vi.hoisted(() => ({
-	toastError: vi.fn(),
-	toastSuccess: vi.fn(),
-}));
-vi.mock('./toast', () => ({ toastError, toastSuccess }));
-
-const { confirmRebuildOpen, confirmRebuildCapture } = vi.hoisted(() => ({
-	confirmRebuildOpen: vi.fn(),
-	confirmRebuildCapture: { onConfirm: undefined as (() => void) | undefined },
-}));
-vi.mock('./modals/confirmRebuildFields', () => ({
-	ConfirmRebuildFieldsModal: class {
-		constructor(_app: unknown, onConfirm: () => void) {
-			confirmRebuildCapture.onConfirm = onConfirm;
-		}
-		open = confirmRebuildOpen;
-	},
-}));
+const { toastError } = vi.hoisted(() => ({ toastError: vi.fn() }));
+vi.mock('./toast', () => ({ toastError }));
 
 const { deckModelWarningOpen, deckModelWarningCapture } = vi.hoisted(() => ({
 	deckModelWarningOpen: vi.fn(),
@@ -243,9 +204,9 @@ import {
 afterEach(() => {
 	vi.clearAllMocks();
 	settings.length = 0;
+	textTabSync.mockResolvedValue(undefined);
 	deckModelWarningCapture.onKeepOld = undefined;
 	deckModelWarningCapture.onUpdate = undefined;
-	confirmRebuildCapture.onConfirm = undefined;
 });
 
 
@@ -293,14 +254,7 @@ function fakeApp(
 	const getFileCache = vi
 		.fn()
 		.mockReturnValue(frontmatter ? { frontmatter } : null);
-	// Runs the callback against a fixed note so tests can assert the rewritten content.
-	const process = vi
-		.fn()
-		.mockImplementation((_file: unknown, fn: (data: string) => string) =>
-			fn('---\nanki_deck: Japanese\n---\n\nold body\n'),
-		);
 	const app = {
-		vault: { process },
 		workspace: { getActiveFile, on: workspaceOn },
 		metadataCache: { getFileCache, on: metadataOn },
 		fileManager: { processFrontMatter },
@@ -312,7 +266,6 @@ function fakeApp(
 		workspaceOn,
 		metadataOn,
 		processFrontMatter,
-		process,
 		frontmatter: liveFrontmatter,
 	};
 }
@@ -358,13 +311,10 @@ function handlerFor(
 	return handler;
 }
 
-// Setting row order: Profile (0), Deck (1), Model (2), Rebuild fields (3),
-// then Fields (4+, only once the active note has both Deck and Model).
+// Setting row order (the Text tab's field toggles are rendered by textTab, mocked here).
 const PROFILE_IDX = 0;
 const DECK_IDX = 1;
 const MODEL_IDX = 2;
-const REBUILD_IDX = 3;
-const FIRST_FIELD_IDX = 4;
 
 const deckDropdown = () => settings[DECK_IDX]?.dropdownComponents[0];
 const modelDropdown = () => settings[MODEL_IDX]?.dropdownComponents[0];
@@ -390,20 +340,24 @@ describe('SidebarView', () => {
 		expect(view.getIcon()).toBeTruthy();
 	});
 
-	it('renders Profile, Deck, Model, Rebuild fields in that order — and no Save notes to', async () => {
+	it('renders the title, Profile above the tabs, then Deck and Model in the Note tab — and no Save notes to', async () => {
 		const { plugin } = fakePlugin();
-		const { opened } = openView(plugin);
+		const { view, opened } = openView(plugin);
 
 		await expect(opened).resolves.toBeUndefined();
-		expect(contentElEmpty).toHaveBeenCalled();
-		expect(contentElCreateEl).toHaveBeenCalledWith('h4', {
-			text: 'Anki Bridge',
-		});
-		expect(settings[PROFILE_IDX]?.name).toBe('Profile');
-		expect(settings[DECK_IDX]?.name).toBe('Deck');
-		expect(settings[MODEL_IDX]?.name).toBe('Model');
-		expect(settings[REBUILD_IDX]?.name).toBe('Note fields');
-		expect(settings.some((s) => s.name === 'Save notes to')).toBe(false);
+
+		const contentEl = view.contentEl as unknown as FakeEl;
+		expect(contentEl.children[0]?.text).toBe('Anki Bridge');
+		expect(contentEl.byClass('anki-bridge-sidebar__tab').map((t) => t.text)).toEqual([
+			'Note',
+			'Text',
+		]);
+		expect(settings.map((s) => s.name)).toEqual(['Profile', 'Deck', 'Model']);
+		// Deck and Model live in the Note panel, not above the tabs.
+		const [notePanel] = contentEl.byClass('anki-bridge-sidebar__panel');
+		expect(notePanel?.children).toHaveLength(0);
+		expect(settings[DECK_IDX]?.containerEl).toBe(notePanel);
+		expect(settings[MODEL_IDX]?.containerEl).toBe(notePanel);
 	});
 
 	describe('Profile dropdown', () => {
@@ -613,122 +567,79 @@ describe('SidebarView', () => {
 		});
 	});
 
-	describe('field checkboxes follow the active note', () => {
+	describe('wiring to the action row and Text tab', () => {
 		const pair = { anki_deck: 'Japanese', anki_model: 'Basic' };
 
-		it('does not render field checkboxes when no note is open', async () => {
+		it('hands the Text tab the active note’s Deck+Model on open', async () => {
+			const { plugin } = fakePlugin({}, noteOptions(pair));
+
+			await openView(plugin).opened;
+
+			expect(textTabSync).toHaveBeenLastCalledWith('Japanese', 'Basic');
+		});
+
+		it('hands empty Deck/Model to the Text tab when no note is open', async () => {
 			const { plugin } = fakePlugin();
 
 			await openView(plugin).opened;
 
-			expect(modelFieldNamesMock).not.toHaveBeenCalled();
-			expect(settings).toHaveLength(FIRST_FIELD_IDX);
-			expect(fieldsContainerEl.empty).toHaveBeenCalled();
+			expect(textTabSync).toHaveBeenLastCalledWith('', '');
 		});
 
-		it('does not render field checkboxes until the note has both Deck and Model', async () => {
-			const { plugin } = fakePlugin({}, noteOptions({ anki_deck: 'Japanese' }));
-
-			await openView(plugin).opened;
-
-			expect(modelFieldNamesMock).not.toHaveBeenCalled();
-			expect(settings).toHaveLength(FIRST_FIELD_IDX);
-		});
-
-		it('ignores the active profile when the note has no Deck/Model', async () => {
+		it('ignores the active profile — only the note decides', async () => {
 			const { plugin } = fakePlugin(
-				{ profiles: [{ ...profileA, deck: 'Japanese', model: 'Basic' }] },
+				{ profiles: [{ ...profileA, deck: 'Other', model: 'Other' }] },
 				noteOptions({}),
 			);
 
 			await openView(plugin).opened;
 
-			expect(modelFieldNamesMock).not.toHaveBeenCalled();
+			expect(textTabSync).toHaveBeenLastCalledWith('', '');
 		});
 
-		it('renders a toggle per model field of the note’s Model', async () => {
-			modelFieldNamesMock.mockResolvedValue(['Meaning', 'Furigana']);
-			const { plugin } = fakePlugin({}, noteOptions(pair));
+		it('tells the action row about the note, its Model, and whether it is synced', async () => {
+			const { plugin, getActiveFile } = fakePlugin(
+				{},
+				noteOptions({ ...pair, anki_note_id: 42 }),
+			);
 
 			await openView(plugin).opened;
 
-			expect(modelFieldNamesMock).toHaveBeenCalledWith('Basic');
-			expect(fieldsContainerEl.createEl).toHaveBeenCalledWith('p', {
-				text: 'Fields to generate with AI:',
+			expect(noteActionsUpdate).toHaveBeenLastCalledWith({
+				note: getActiveFile() as TFile,
+				model: 'Basic',
+				synced: true,
 			});
-			expect(settings[FIRST_FIELD_IDX]?.name).toBe('Meaning');
-			expect(settings[FIRST_FIELD_IDX + 1]?.name).toBe('Furigana');
 		});
 
-		it('pre-ticks fields previously selected for that Deck+Model pair', async () => {
-			modelFieldNamesMock.mockResolvedValue(['Meaning', 'Furigana']);
-			const key = fieldConfigKey('Japanese', 'Basic');
+		it('reports no note, no Model, not synced when nothing is open', async () => {
+			const { plugin } = fakePlugin();
+
+			await openView(plugin).opened;
+
+			expect(noteActionsUpdate).toHaveBeenLastCalledWith({
+				note: null,
+				model: '',
+				synced: false,
+			});
+		});
+
+		it('treats a non-markdown file as no note', async () => {
 			const { plugin } = fakePlugin(
-				{ generateWithAiFields: { [key]: ['Furigana'] } },
-				noteOptions(pair),
+				{},
+				{ activeFile: fakeTFile({ extension: 'png' }), frontmatter: pair },
 			);
 
 			await openView(plugin).opened;
 
-			expect(settings[FIRST_FIELD_IDX]?.toggleComponents[0]?.value).toBe(false);
-			expect(settings[FIRST_FIELD_IDX + 1]?.toggleComponents[0]?.value).toBe(
-				true,
-			);
+			expect(noteActionsUpdate).toHaveBeenLastCalledWith({
+				note: null,
+				model: '',
+				synced: false,
+			});
 		});
 
-		it('does not leak ticked fields from a different Deck+Model pair', async () => {
-			modelFieldNamesMock.mockResolvedValue(['Meaning']);
-			const otherKey = fieldConfigKey('Spanish', 'Cloze');
-			const { plugin } = fakePlugin(
-				{ generateWithAiFields: { [otherKey]: ['Meaning'] } },
-				noteOptions(pair),
-			);
-
-			await openView(plugin).opened;
-
-			expect(settings[FIRST_FIELD_IDX]?.toggleComponents[0]?.value).toBe(false);
-		});
-
-		it('persists a ticked field for the note’s Deck+Model pair', async () => {
-			modelFieldNamesMock.mockResolvedValue(['Meaning', 'Furigana']);
-			const { plugin, saveSettings } = fakePlugin({}, noteOptions(pair));
-			await openView(plugin).opened;
-			saveSettings.mockClear();
-
-			await settings[FIRST_FIELD_IDX]?.toggleComponents[0]?.triggerChange(true);
-
-			const key = fieldConfigKey('Japanese', 'Basic');
-			expect(plugin.settings.generateWithAiFields[key]).toEqual(['Meaning']);
-			expect(saveSettings).toHaveBeenCalled();
-		});
-
-		it('removes a field from generateWithAiFields when unticked', async () => {
-			modelFieldNamesMock.mockResolvedValue(['Meaning', 'Furigana']);
-			const key = fieldConfigKey('Japanese', 'Basic');
-			const { plugin } = fakePlugin(
-				{ generateWithAiFields: { [key]: ['Meaning', 'Furigana'] } },
-				noteOptions(pair),
-			);
-			await openView(plugin).opened;
-
-			await settings[FIRST_FIELD_IDX]?.toggleComponents[0]?.triggerChange(false);
-
-			expect(plugin.settings.generateWithAiFields[key]).toEqual(['Furigana']);
-		});
-
-		it('shows an error toast when loading fields fails, without throwing', async () => {
-			modelFieldNamesMock.mockRejectedValueOnce(new Error('boom'));
-			const { plugin } = fakePlugin({}, noteOptions(pair));
-
-			await expect(openView(plugin).opened).resolves.toBeUndefined();
-
-			expect(toastError).toHaveBeenCalledWith(
-				'❌ Failed to load fields. Please check Anki connection.',
-			);
-		});
-
-		it('re-syncs dropdowns and field list when switching to a different open note', async () => {
-			modelFieldNamesMock.mockResolvedValueOnce(['Meaning']);
+		it('re-syncs dropdowns, action row and Text tab when switching notes', async () => {
 			deckNamesMock.mockResolvedValue(['Japanese', 'French']);
 			const { plugin, getActiveFile, getFileCache, workspaceOn } = fakePlugin(
 				{},
@@ -736,24 +647,26 @@ describe('SidebarView', () => {
 			);
 			await openView(plugin).opened;
 
-			getActiveFile.mockReturnValue(fakeTFile());
+			const next = fakeTFile();
+			getActiveFile.mockReturnValue(next);
 			getFileCache.mockReturnValue({
-				frontmatter: { anki_deck: 'French', anki_model: 'Cloze' },
+				frontmatter: { anki_deck: 'French', anki_model: 'Cloze', anki_note_id: 7 },
 			});
-			modelFieldNamesMock.mockResolvedValueOnce(['Front', 'Back']);
 			handlerFor(workspaceOn, 'file-open')();
 
 			await vi.waitFor(() => {
-				expect(modelFieldNamesMock).toHaveBeenLastCalledWith('Cloze');
+				expect(textTabSync).toHaveBeenLastCalledWith('French', 'Cloze');
 			});
 			expect(deckDropdown()?.value).toBe('French');
+			expect(noteActionsUpdate).toHaveBeenLastCalledWith({
+				note: next,
+				model: 'Cloze',
+				synced: true,
+			});
 		});
 
 		it('disables the dropdowns when the last note is closed', async () => {
-			const { plugin, getActiveFile, workspaceOn } = fakePlugin(
-				{},
-				noteOptions(pair),
-			);
+			const { plugin, getActiveFile, workspaceOn } = fakePlugin({}, noteOptions(pair));
 			await openView(plugin).opened;
 			expect(deckDropdown()?.disabled).toBe(false);
 
@@ -763,10 +676,14 @@ describe('SidebarView', () => {
 			await vi.waitFor(() => {
 				expect(deckDropdown()?.disabled).toBe(true);
 			});
+			expect(noteActionsUpdate).toHaveBeenLastCalledWith({
+				note: null,
+				model: '',
+				synced: false,
+			});
 		});
 
-		it('re-syncs when the active note’s metadata changes (e.g. Deck edited in YAML)', async () => {
-			modelFieldNamesMock.mockResolvedValue(['Meaning']);
+		it('re-syncs when the active note’s metadata changes — e.g. Delete appears after the first sync', async () => {
 			const { plugin, getActiveFile, getFileCache, metadataOn } = fakePlugin(
 				{},
 				noteOptions(pair),
@@ -774,38 +691,22 @@ describe('SidebarView', () => {
 			await openView(plugin).opened;
 			const active = getActiveFile() as TFile;
 
-			getFileCache.mockReturnValue({
-				frontmatter: { anki_deck: 'Spanish', anki_model: 'Basic' },
-			});
+			getFileCache.mockReturnValue({ frontmatter: { ...pair, anki_note_id: 9 } });
 			handlerFor(metadataOn, 'changed')(active);
 
 			await vi.waitFor(() => {
-				expect(deckDropdown()?.value).toBe('Spanish');
+				expect(noteActionsUpdate).toHaveBeenLastCalledWith({
+					note: active,
+					model: 'Basic',
+					synced: true,
+				});
 			});
-			expect(modelFieldNamesMock).toHaveBeenCalledTimes(2);
-		});
-
-		it('does not re-fetch fields when metadata changes but Deck+Model do not (typing in the note)', async () => {
-			modelFieldNamesMock.mockResolvedValue(['Meaning']);
-			const { plugin, getActiveFile, metadataOn } = fakePlugin(
-				{},
-				noteOptions(pair),
-			);
-			await openView(plugin).opened;
-
-			handlerFor(metadataOn, 'changed')(getActiveFile());
-			await Promise.resolve();
-
-			expect(modelFieldNamesMock).toHaveBeenCalledTimes(1);
 		});
 
 		it('ignores metadata changes of notes that are not the active one', async () => {
-			modelFieldNamesMock.mockResolvedValue(['Meaning']);
-			const { plugin, getFileCache, metadataOn } = fakePlugin(
-				{},
-				noteOptions(pair),
-			);
+			const { plugin, getFileCache, metadataOn } = fakePlugin({}, noteOptions(pair));
 			await openView(plugin).opened;
+			const calls = textTabSync.mock.calls.length;
 
 			getFileCache.mockReturnValue({
 				frontmatter: { anki_deck: 'Other', anki_model: 'Other' },
@@ -813,90 +714,8 @@ describe('SidebarView', () => {
 			handlerFor(metadataOn, 'changed')(fakeTFile());
 			await Promise.resolve();
 
-			expect(modelFieldNamesMock).toHaveBeenCalledTimes(1);
+			expect(textTabSync).toHaveBeenCalledTimes(calls);
 			expect(deckDropdown()?.value).toBe('Japanese');
-		});
-	});
-
-	describe('Rebuild fields', () => {
-		const pair = { anki_deck: 'Japanese', anki_model: 'Basic' };
-		const rebuildButton = () => settings[REBUILD_IDX]?.buttonComponents[0];
-
-		it('renders below Model, and no connection status or refresh button anywhere', async () => {
-			const { plugin } = fakePlugin({}, noteOptions(pair));
-
-			await openView(plugin).opened;
-
-			expect(settings[REBUILD_IDX]?.name).toBe('Note fields');
-			expect(rebuildButton()?.text).toBe('Rebuild fields');
-			expect(settings.some((s) => s.name.startsWith('Status:'))).toBe(false);
-			expect(versionMock).not.toHaveBeenCalled();
-		});
-
-		it('is disabled with no active note, or when the note has no Model', async () => {
-			const noNote = fakePlugin();
-			await openView(noNote.plugin).opened;
-			expect(rebuildButton()?.disabled).toBe(true);
-
-			settings.length = 0;
-			const noModel = fakePlugin({}, noteOptions({ anki_deck: 'Japanese' }));
-			await openView(noModel.plugin).opened;
-			expect(rebuildButton()?.disabled).toBe(true);
-		});
-
-		it('is enabled when the note has a Model', async () => {
-			const { plugin } = fakePlugin({}, noteOptions(pair));
-
-			await openView(plugin).opened;
-
-			expect(rebuildButton()?.disabled).toBe(false);
-		});
-
-		it('asks for confirmation and does not touch the note until confirmed', async () => {
-			const { plugin, process } = fakePlugin({}, noteOptions(pair));
-			await openView(plugin).opened;
-
-			await rebuildButton()?.triggerClick();
-
-			expect(confirmRebuildOpen).toHaveBeenCalledTimes(1);
-			expect(process).not.toHaveBeenCalled();
-		});
-
-		it('on confirm: replaces the note body with the Model’s fields, keeping frontmatter', async () => {
-			modelFieldNamesMock.mockResolvedValue(['Front', 'Back']);
-			const { plugin, process } = fakePlugin({}, noteOptions(pair));
-			await openView(plugin).opened;
-			modelFieldNamesMock.mockClear();
-			await rebuildButton()?.triggerClick();
-
-			confirmRebuildCapture.onConfirm?.();
-
-			await vi.waitFor(() => {
-				expect(process).toHaveBeenCalledTimes(1);
-			});
-			expect(modelFieldNamesMock).toHaveBeenCalledWith('Basic');
-			expect(process.mock.results[0]?.value).toBe(
-				'---\nanki_deck: Japanese\n---\n\n```anki-controls\n```\n\n## Front\n\n## Back\n',
-			);
-			expect(toastSuccess).toHaveBeenCalledWith('✅ Note fields rebuilt.');
-			expect(rebuildButton()?.text).toBe('Rebuild fields');
-		});
-
-		it('on failure: leaves the note alone and shows an error toast', async () => {
-			const { plugin, process } = fakePlugin({}, noteOptions(pair));
-			await openView(plugin).opened;
-			modelFieldNamesMock.mockRejectedValueOnce(new Error('boom'));
-			await rebuildButton()?.triggerClick();
-
-			confirmRebuildCapture.onConfirm?.();
-
-			await vi.waitFor(() => {
-				expect(toastError).toHaveBeenCalledWith(
-					'❌ Failed to rebuild fields. Please check Anki connection.',
-				);
-			});
-			expect(process).not.toHaveBeenCalled();
-			expect(rebuildButton()?.disabled).toBe(false);
 		});
 	});
 });

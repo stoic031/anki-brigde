@@ -1,6 +1,5 @@
 import {
 	App,
-	ButtonComponent,
 	DropdownComponent,
 	Events,
 	ItemView,
@@ -11,12 +10,13 @@ import {
 import type AnkiBridgePlugin from '../main';
 import { AnkiConnectClient } from '../sync/ankiConnect';
 import { readAnkiFrontmatter, writeAnkiFrontmatter } from '../sync/parser';
-import { fieldConfigKey, resolveAnkiConnectUrl } from '../settings';
+import { resolveAnkiConnectUrl } from '../settings';
 import { PROFILE_CHANGED_EVENT } from '../utils/constants';
-import { rebuildContent } from '../note/contentTemplate';
-import { toastError, toastSuccess } from './toast';
-import { ConfirmRebuildFieldsModal } from './modals/confirmRebuildFields';
+import { toastError } from './toast';
 import { DeckModelChangeWarningModal } from './modals/deckModelChangeWarning';
+import { renderNoteActions, type NoteActions } from './sidebar/noteActions';
+import { renderTabs } from './sidebar/tabs';
+import { renderTextTab, type TextTab } from './sidebar/textTab';
 
 export const VIEW_TYPE_SIDEBAR = 'anki-bridge-sidebar';
 
@@ -30,11 +30,8 @@ export class SidebarView extends ItemView {
 	// *value* always comes from the active note's frontmatter (see renderDropdownValues()).
 	private deckNames: string[] = [];
 	private modelNames: string[] = [];
-	// fieldConfigKey of the pair the field checkboxes were last rendered for — lets
-	// syncFromNote() skip re-fetching fields on metadata events that didn't change it.
-	private renderedFieldsKey = '';
-	private fieldsContainerEl?: HTMLElement;
-	private rebuildButton?: ButtonComponent;
+	private noteActions?: NoteActions;
+	private textTab?: TextTab;
 
 	constructor(
 		leaf: WorkspaceLeaf,
@@ -59,20 +56,25 @@ export class SidebarView extends ItemView {
 		this.contentEl.empty();
 		this.contentEl.createEl('h4', { text: 'Anki Bridge' });
 		this.renderProfileDropdown();
-		this.renderDeckDropdown();
-		await this.refreshDecks();
-		this.renderModelDropdown();
-		await this.refreshModels();
-		this.renderRebuildButton();
-		this.fieldsContainerEl = this.contentEl.createDiv({
-			cls: 'anki-bridge-sidebar__field-checkboxes',
-		});
-		await this.syncFromNote();
 
-		// docs/design/07-sidebar.md §7.2.1 — Deck/Model dropdowns and the field-checkbox
-		// list mirror the active note's frontmatter, so they re-sync on every note switch
-		// and whenever its metadata changes (our own writes, or the user editing YAML).
-		// 'changed' fires on every edit, hence syncFromNote()'s key check.
+		// docs/design/07-sidebar.md §7.2 — Profile sits above the tabs (it is about new
+		// notes); everything below is about the active note.
+		const panels = renderTabs(this.contentEl, [
+			{ id: 'note', label: 'Note' },
+			{ id: 'text', label: 'Text' },
+		]);
+		const notePanel = panels.note;
+		const textPanel = panels.text;
+		if (!notePanel || !textPanel) return;
+		this.renderDeckDropdown(notePanel);
+		this.renderModelDropdown(notePanel);
+		this.noteActions = renderNoteActions(notePanel, this.plugin);
+		this.textTab = renderTextTab(textPanel, this.plugin);
+
+		// docs/design/07-sidebar.md §7.2.1 — everything below mirrors the active note's
+		// frontmatter, so it re-syncs on every note switch and whenever its metadata
+		// changes (our own writes, or the user editing YAML). 'changed' fires on every
+		// edit, hence the pair check inside TextTab.sync().
 		this.registerEvent(
 			this.plugin.app.workspace.on('file-open', () => {
 				void this.syncFromNote();
@@ -92,6 +94,10 @@ export class SidebarView extends ItemView {
 				this.renderProfileDropdownOptions(),
 			),
 		);
+
+		await this.refreshDecks();
+		await this.refreshModels();
+		await this.syncFromNote();
 	}
 
 	// docs/design/07-sidebar.md §7.2.1 — Profile select. Picks the Deck/Model/folder used
@@ -117,8 +123,8 @@ export class SidebarView extends ItemView {
 
 	// docs/design/07-sidebar.md §7.2.1 — Deck dropdown. Shows/edits the active note's
 	// anki_deck; disabled with no active note. Lists load when the sidebar opens.
-	private renderDeckDropdown(): void {
-		new Setting(this.contentEl)
+	private renderDeckDropdown(parent: HTMLElement): void {
+		new Setting(parent)
 			.setName('Deck')
 			.addDropdown((dropdown) => {
 				this.deckDropdown = dropdown;
@@ -143,8 +149,8 @@ export class SidebarView extends ItemView {
 	}
 
 	// docs/design/07-sidebar.md §7.2.1 — Model dropdown; same rules as Deck above.
-	private renderModelDropdown(): void {
-		new Setting(this.contentEl)
+	private renderModelDropdown(parent: HTMLElement): void {
+		new Setting(parent)
 			.setName('Model')
 			.addDropdown((dropdown) => {
 				this.modelDropdown = dropdown;
@@ -204,17 +210,27 @@ export class SidebarView extends ItemView {
 		};
 		fill(this.deckDropdown, this.deckNames, deck);
 		fill(this.modelDropdown, this.modelNames, model);
-		this.rebuildButton?.setDisabled(!model);
+		this.noteActions?.update({
+			note: this.getActiveNote(),
+			model,
+			synced: this.isSynced(),
+		});
 	}
 
-	// Re-reads the dropdown values from the note, and re-renders the field checkboxes
-	// only if the note's Deck+Model pair actually changed.
+	private isSynced(): boolean {
+		const note = this.getActiveNote();
+		return (
+			note !== null &&
+			readAnkiFrontmatter(this.plugin.app, note)?.anki_note_id !== undefined
+		);
+	}
+
+	// Re-reads everything that mirrors the active note: dropdown values, action-row
+	// state, and the Text tab's field list.
 	private async syncFromNote(): Promise<void> {
 		this.renderDropdownValues();
 		const { deck, model } = this.getNoteDeckModel();
-		if (fieldConfigKey(deck, model) !== this.renderedFieldsKey) {
-			await this.renderFieldCheckboxes();
-		}
+		await this.textTab?.sync(deck, model);
 	}
 
 	// docs/design/scenarios.md Scenario 4 / docs/design/07-sidebar.md §7.3 — changing
@@ -233,9 +249,7 @@ export class SidebarView extends ItemView {
 			return;
 		}
 
-		const isSynced =
-			readAnkiFrontmatter(this.plugin.app, note)?.anki_note_id !== undefined;
-		if (!isSynced) {
+		if (!this.isSynced()) {
 			await writeAnkiFrontmatter(this.plugin.app, note, { [key]: value });
 			return;
 		}
@@ -253,107 +267,6 @@ export class SidebarView extends ItemView {
 					anki_note_id: undefined,
 				}),
 		).open();
-	}
-
-	// docs/design/07-sidebar.md §7.2.1 — Field checkboxes for the active note's
-	// Deck+Model (see getNoteDeckModel()), only shown once both are set. Re-invoked from
-	// syncFromNote() when that pair changes.
-	private async renderFieldCheckboxes(): Promise<void> {
-		if (!this.fieldsContainerEl) return;
-		this.fieldsContainerEl.empty();
-
-		const { deck, model } = this.getNoteDeckModel();
-		this.renderedFieldsKey = fieldConfigKey(deck, model);
-		if (!deck || !model) return;
-
-		let fields: string[];
-		try {
-			const client = new AnkiConnectClient(
-				resolveAnkiConnectUrl(this.plugin.settings),
-			);
-			fields = await client.modelFieldNames(model);
-		} catch {
-			toastError(
-				'❌ Failed to load fields. Please check Anki connection.',
-			);
-			return;
-		}
-
-		this.fieldsContainerEl.createEl('p', {
-			text: 'Fields to generate with AI:',
-		});
-
-		const key = fieldConfigKey(deck, model);
-		const selected = new Set(
-			this.plugin.settings.generateWithAiFields[key],
-		);
-
-		for (const field of fields) {
-			new Setting(this.fieldsContainerEl)
-				.setName(field)
-				.addToggle((toggle) => {
-					toggle.setValue(selected.has(field));
-					toggle.onChange(async (value) => {
-						await this.setFieldSelected(deck, model, field, value);
-					});
-				});
-		}
-	}
-
-	private async setFieldSelected(
-		deck: string,
-		model: string,
-		field: string,
-		selected: boolean,
-	): Promise<void> {
-		const key = fieldConfigKey(deck, model);
-		const current = new Set(this.plugin.settings.generateWithAiFields[key]);
-		if (selected) current.add(field);
-		else current.delete(field);
-		this.plugin.settings.generateWithAiFields[key] = [...current];
-		await this.plugin.saveSettings();
-	}
-
-	// docs/design/07-sidebar.md §7.2.1 — Rebuild fields. Replaces the note body (not the
-	// frontmatter) with the skeleton for the note's current Model, e.g. after switching
-	// Model. Destructive, so it always asks first.
-	private renderRebuildButton(): void {
-		new Setting(this.contentEl)
-			.setName('Note fields')
-			.setDesc(
-				'Replace the note content with one empty section per field of its Model.',
-			)
-			.addButton((btn) => {
-				this.rebuildButton = btn;
-				btn.setButtonText('Rebuild fields').onClick(() => {
-					const note = this.getActiveNote();
-					const { model } = this.getNoteDeckModel();
-					if (!note || !model) return;
-					new ConfirmRebuildFieldsModal(
-						this.plugin.app,
-						() => void this.rebuildFields(note, model),
-					).open();
-				});
-			});
-	}
-
-	private async rebuildFields(note: TFile, model: string): Promise<void> {
-		this.rebuildButton?.setDisabled(true).setButtonText('⏳ Rebuilding...');
-		try {
-			const client = new AnkiConnectClient(
-				resolveAnkiConnectUrl(this.plugin.settings),
-			);
-			const fields = await client.modelFieldNames(model);
-			await this.plugin.app.vault.process(note, (content) =>
-				rebuildContent(content, fields),
-			);
-			toastSuccess('✅ Note fields rebuilt.');
-		} catch {
-			toastError('❌ Failed to rebuild fields. Please check Anki connection.');
-		} finally {
-			this.rebuildButton?.setButtonText('Rebuild fields');
-			this.renderDropdownValues();
-		}
 	}
 }
 

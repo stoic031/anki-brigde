@@ -62,7 +62,7 @@ src/
   types.ts             # shared interfaces — see docs/contracts.md
   sync/                # Module 1: ankiConnect, parser, fieldMapper, syncEngine
   providers/           # Module 2: types, providerManager, text/, audio/, image/
-  note/                # Module 3: controlsBlock, contentTemplate, mediaNaming
+  note/                # Module 3: contentTemplate, mediaNaming
   ui/                  # Module 5+6+7: settingsTab, sidebarView, modals/, toast
   utils/               # helpers, constants
 docs/

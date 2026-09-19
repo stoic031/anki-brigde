@@ -1,5 +1,4 @@
 import { Plugin } from 'obsidian';
-import { registerControlsBlock } from './note/controlsBlock';
 import { runQuickCapture } from './note/quickCapture';
 import { runCreateNote } from './note/createNote';
 import {
@@ -17,7 +16,6 @@ export default class AnkiBridgePlugin extends Plugin {
 	async onload(): Promise<void> {
 		this.settings = await loadSettings(this);
 		this.addSettingTab(new AnkiBridgeSettingTab(this.app, this));
-		registerControlsBlock(this);
 		registerSidebarView(this);
 
 		this.addCommand({

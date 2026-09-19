@@ -1,27 +1,25 @@
 # 🔄 Luồng xử lý tổng thể (Updated)
 
-> Xem [`README.md`](README.md) cho tổng quan kiến trúc. Chi tiết Sidebar Modal (3 tab):
-> [`07-sidebar.md`](07-sidebar.md). Chi tiết nút note-controls: [`03-note.md`](03-note.md).
+> Xem [`README.md`](README.md) cho tổng quan kiến trúc. Chi tiết Sidebar (Profile + tab):
+> [`07-sidebar.md`](07-sidebar.md). Chi tiết các nút hành động (nằm ở Sidebar): [`03-note.md`](03-note.md).
 
 ## Scenario 1: User tạo note qua icon "+" / command (lần đầu vs. đã cấu hình)
 
-Sidebar Modal luôn có mặt ở Right Sidebar ngay sau khi cài plugin, gồm 3 tab cố định
-(xem `07-sidebar.md` §7.2):
+Sidebar luôn có mặt ở Right Sidebar ngay sau khi cài plugin: dropdown **Profile** ở trên
+cùng, rồi các tab (xem `07-sidebar.md` §7.2):
 
-- **Tab 1 — Note:** Profile (Deck/Model/Folder cho note mới), Deck/Model của note đang
-  mở, checkbox chọn field cho Generate with AI (checkbox chỉ hiện khi note đang mở có cả
-  Deck + Model).
-- **Tab 2 — Audio:** Voice, Language, Overwrite/Append, nhiều dòng mapping field
-  (Input → Output) — cho phép tạo nhiều field audio khác nhau trong 1 note.
-- **Tab 3 — Image:** Overwrite/Append, 1 dòng mapping field (Input → Output) cố định —
-  không cần nhiều dòng vì 1 note thường chỉ cần 1 ảnh.
-
-Tab 2 và Tab 3 chỉ hiện khi note đang mở có cả Deck + Model.
+- **Tab Note:** Deck/Model của note đang mở và hàng nút **Sync | Rebuild | Delete**.
+- **Tab Text:** chọn field cho Generate with AI + nút **Generate** (chỉ liệt kê field khi
+  note đang mở có cả Deck + Model).
+- **Tab Audio** *(chưa triển khai)*: Voice, Language, Overwrite/Append, nhiều dòng mapping
+  field (Input → Output) — cho phép tạo nhiều field audio khác nhau trong 1 note.
+- **Tab Image** *(chưa triển khai)*: Overwrite/Append, 1 dòng mapping field (Input →
+  Output) cố định — không cần nhiều dòng vì 1 note thường chỉ cần 1 ảnh.
 
 Bấm icon "+" trong Ribbon hoặc chạy command **"Anki: Create new note"** sẽ **tạo note
-ngay** và đồng thời mở Sidebar Modal ra (nếu chưa mở) — không còn yêu cầu user tự mở
+ngay** và đồng thời mở Sidebar ra (nếu chưa mở) — không còn yêu cầu user tự mở
 modal, chọn Deck/Model rồi mới bấm nút Create như trước. Deck/Model/Folder của note mới
-lấy từ **profile đang chọn** (Settings Tab hoặc dropdown Profile ở Tab 1).
+lấy từ **profile đang chọn** (Settings Tab hoặc dropdown Profile ở Sidebar).
 
 **Lấy Deck/Model/Folder từ profile trước khi tạo note (xem `07-sidebar.md` §7.3/§7.4):**
 
@@ -43,8 +41,6 @@ lấy từ **profile đang chọn** (Settings Tab hoặc dropdown Profile ở Ta
     anki_model: "Basic (and reversed card)"
     ---
 
-    (code block `anki-controls`)
-
     ## Front
 
 
@@ -54,7 +50,7 @@ lấy từ **profile đang chọn** (Settings Tab hoặc dropdown Profile ở Ta
     ↓
 [6] Mở note mới trong editor
     ↓
-[7] Sidebar Modal tự mở (Tab 1) nếu chưa mở; Deck/Model ở Tab 1 hiện đúng giá trị của
+[7] Sidebar tự mở (tab Note) nếu chưa mở; Deck/Model ở tab Note hiện đúng giá trị của
     note vừa tạo, user có thể đổi nhanh — note chưa sync nên đổi ở đây chỉ ghi frontmatter, không cảnh báo
     (khác Scenario 4, áp dụng cho note đã sync)
     ↓
@@ -66,7 +62,7 @@ lấy từ **profile đang chọn** (Settings Tab hoặc dropdown Profile ở Ta
     Khám bệnh
 
     ↓
-[9] Bấm button "🔄 Sync" trong note
+[9] Bấm nút "Sync" ở Sidebar (tab Note)
     ↓
 [10] Plugin parse content → map "## Front" → Anki "Front", "## Back" → Anki "Back"
     ↓
@@ -74,14 +70,14 @@ lấy từ **profile đang chọn** (Settings Tab hoặc dropdown Profile ở Ta
     ↓
 [12] Lưu anki_note_id vào frontmatter
     ↓
-[13] Button đổi thành "✅ Synced" (2 giây)
+[13] Nút đổi thành "✅ Done!" (2 giây)
     ↓
-[14] Re-render controls (hiện thêm Delete button)
+[14] Sidebar nhận thay đổi frontmatter → hiện thêm nút Delete
 ```
 
-## Scenario 2: User tạo note từ text được chọn (Hotkey), dùng chung Sidebar Modal
+## Scenario 2: User tạo note từ text được chọn (Hotkey), dùng chung Sidebar
 
-Cũng dùng chung Sidebar Modal và cùng cơ chế 2-nhánh ở Scenario 1 — khác biệt duy nhất:
+Cũng dùng chung Sidebar và cùng cơ chế 2-nhánh ở Scenario 1 — khác biệt duy nhất:
 filename lấy từ text đã bôi đen (không hỏi tên). Folder đích là **Save notes to của
 profile đang chọn** (giống hệt Scenario 1), không phải folder của note đang active. Chi tiết đầy
 đủ: `03-note.md` §3.7.
@@ -107,8 +103,6 @@ profile đang chọn** (giống hệt Scenario 1), không phải folder của no
     anki_model: "Japanese Vocabulary"
     ---
 
-    (code block `anki-controls`)
-
     ## Word
     薬
 
@@ -126,42 +120,42 @@ profile đang chọn** (giống hệt Scenario 1), không phải folder của no
     ↓
 [7] Mở note mới trong editor
     ↓
-[8] Sidebar Modal tự mở (Tab 1) nếu chưa mở
+[8] Sidebar tự mở (tab Note) nếu chưa mở
     ↓
-[9] User bấm "🤖 Generate with AI" trong note-controls
-    (không mở modal chọn field — nút generate ngay theo checkbox đã tick sẵn ở Tab 1
-    cho cặp Deck+Model này, VD: Meaning, Furigana)
+[9] User chuyển sang tab Text, bấm "Generate"
+    (không mở modal chọn field — nút generate ngay theo checkbox đã tick sẵn ở tab Text
+    cho cặp Deck+Model này, VD: Meaning, Furigana; phần gọi AI hiện chưa triển khai)
     ↓
 [10] Plugin đọc "薬" từ section "## Word" → Gọi AI Provider
     processText("薬", "extract-vocabulary", ["Meaning", "Furigana"])
     → Nhận TextResult: { Meaning: "Thuốc", Furigana: "くすり" }
     → Điền vào "## Meaning" và "## Furigana" (đang rỗng)
     ↓
-[11] (Tuỳ chọn) User bấm "🔊 Add Audio" / "🖼️ Add Image"
-    (cũng generate ngay theo mapping đã cấu hình ở Tab 2/3 — xem Scenario 3/3b)
+[11] (Tuỳ chọn, chưa triển khai) User bấm "Add Audio" / "Add Image" ở tab Audio / Image
+    (cũng generate ngay theo mapping đã cấu hình ở đó — xem Scenario 3/3b)
     ↓
 [12] User review, chỉnh sửa nếu cần
     ↓
-[13] Bấm "🔄 Sync" → Lưu vào Anki
+[13] Chuyển sang tab Note, bấm "Sync" → Lưu vào Anki
 ```
 
-> Nếu Tab 1 chưa tick field nào (Generate with AI) hoặc Tab 2/3 chưa cấu hình dòng
+> Nếu tab Text chưa tick field nào (Generate) hoặc tab Audio/Image chưa cấu hình dòng
 > mapping nào cho cặp Deck+Model này, bấm nút tương ứng chỉ hiện Notice nhắc cấu hình
 > và không làm gì — xem `03-note.md` §3.2.
 
-## Scenario 3: User thêm audio vào note (theo cấu hình Tab 2)
+## Scenario 3: User thêm audio vào note (theo cấu hình tab Audio) — chưa triển khai
 
-Khác với trước đây, không còn Field Selection Modal mở ra khi bấm — Tab 2 (Audio) của
-Sidebar Modal đã cấu hình sẵn Voice, Language, Overwrite/Append và các dòng mapping
+Khác với trước đây, không còn Field Selection Modal mở ra khi bấm — tab Audio của
+Sidebar đã cấu hình sẵn Voice, Language, Overwrite/Append và các dòng mapping
 Input → Output cho cặp Deck+Model của note này (xem `07-sidebar.md` §7.2.2). Ví dụ cấu
-hình Tab 2: Voice = Female, Language = Japanese, On existing tag = Append, 2 dòng:
+hình tab Audio: Voice = Female, Language = Japanese, On existing tag = Append, 2 dòng:
 `Word → Audio`, `Example → Example Audio`.
 
 ```
-[1] User bấm "🔊 Add Audio"
+[1] User bấm "Add Audio" (tab Audio)
     ↓
-[2] Tab 2 chưa có dòng mapping nào cho Deck+Model này? → Notice "Please configure Audio
-    field mapping for this Deck/Model in the sidebar (Tab 2) first." → dừng lại
+[2] Tab Audio chưa có dòng mapping nào cho Deck+Model này? → Notice "Please configure Audio
+    field mapping for this Deck/Model in the sidebar (Audio tab) first." → dừng lại
     (trường hợp còn lại tiếp tục các bước dưới)
     ↓
 [3] Với mỗi dòng đã cấu hình (VD dòng 1: Word → Audio):
@@ -182,20 +176,20 @@ hình Tab 2: Voice = Female, Language = Japanese, On existing tag = Append, 2 d�
     ↓
 [9] Save file → Re-render
     ↓
-[10] Button "🔊 Add Audio" vẫn hiện — có thể bấm lại nhiều lần (không tự ẩn)
+[10] Nút "Add Audio" vẫn hiện — có thể bấm lại nhiều lần (không tự ẩn)
 ```
 
-## Scenario 3b: User thêm image vào note (theo cấu hình Tab 3)
+## Scenario 3b: User thêm image vào note (theo cấu hình tab Image) — chưa triển khai
 
 Giống Scenario 3 nhưng chỉ 1 dòng mapping cố định, không có Voice/Language (xem
-`07-sidebar.md` §7.2.3). Ví dụ cấu hình Tab 3: On existing tag = Overwrite,
+`07-sidebar.md` §7.2.3). Ví dụ cấu hình tab Image: On existing tag = Overwrite,
 `Word → Image`.
 
 ```
-[1] User bấm "🖼️ Add Image"
+[1] User bấm "Add Image" (tab Image)
     ↓
-[2] Tab 3 chưa chọn Input/Output cho Deck+Model này? → Notice "Please configure Image
-    field mapping for this Deck/Model in the sidebar (Tab 3) first." → dừng lại
+[2] Tab Image chưa chọn Input/Output cho Deck+Model này? → Notice "Please configure Image
+    field mapping for this Deck/Model in the sidebar (Image tab) first." → dừng lại
     ↓
 [3] Đọc nội dung section "## Word" (field Input) làm prompt
     - Section rỗng → Notice "Nothing to generate an image from — please fill in the
@@ -212,15 +206,15 @@ Giống Scenario 3 nhưng chỉ 1 dòng mapping cố định, không có Voice/L
     ↓
 [8] Save file → Re-render
     ↓
-[9] Button "🖼️ Add Image" vẫn hiện — có thể bấm lại nhiều lần (không tự ẩn)
+[9] Nút "Add Image" vẫn hiện — có thể bấm lại nhiều lần (không tự ẩn)
 ```
 
-## Scenario 4: User thay đổi Deck/Model của note trong Sidebar Modal (Tab 1)
+## Scenario 4: User thay đổi Deck/Model của note trong Sidebar (tab Note)
 
 ```
 [1] User mở note đã sync (có anki_note_id trong frontmatter)
     ↓
-[2] Mở Sidebar Modal → Tab 1 (Deck/Model đang hiện đúng giá trị trong frontmatter của
+[2] Mở Sidebar → tab Note (Deck/Model đang hiện đúng giá trị trong frontmatter của
     note) → Chọn Deck mới hoặc Model mới
     ↓
 [3] Plugin hiển thị warning modal:

@@ -20,29 +20,40 @@ chỉ cần mở ra để xem/sửa).
 - Hotkey tạo note từ text bôi đen (`create-note-from-selection`) — xem
   [`03-note.md`](03-note.md) §3.7, dùng chung Sidebar Modal theo cùng cơ chế ở §7.3.
 
-## 7.2. Cấu trúc 3 Tab
+## 7.2. Cấu trúc Sidebar: Profile + Tab
 
-| Tab | Nội dung | Điều kiện hiện |
+```
+Anki Bridge
+Profile [Japanese ▼]          ← luôn hiện, nằm trên các tab (dùng cho note MỚI)
+[ Note | Text | Audio | Image ]
+```
+
+| Tab | Nội dung | Trạng thái |
 | --- | --- | --- |
-| **Tab 1 — Note** | Profile (cho note mới), Deck/Model của note đang mở, checkbox chọn field cho Generate with AI | Luôn hiện; Deck/Model bị vô hiệu khi không có note đang mở; phần checkbox field chỉ hiện khi note đang mở có cả Deck + Model |
-| **Tab 2 — Audio** | Voice, Language, Overwrite/Append, danh sách dòng mapping field (input → output) | Chỉ hiện khi Tab 1 đã có Deck + Model |
-| **Tab 3 — Image** | Overwrite/Append, 1 dòng mapping field (input → output) cố định | Chỉ hiện khi Tab 1 đã có Deck + Model |
+| **Note** | Deck/Model của note đang mở; hàng nút **Sync \| Rebuild \| Delete** | Đã có |
+| **Text** | Chọn field cho Generate with AI + nút **Generate** | Đã có (phần gọi AI chưa triển khai) |
+| **Audio** | Voice, Language, Overwrite/Append, dòng mapping field (input → output) + nút **Add Audio** | **Chưa triển khai** — thiết kế ở §7.2.2 |
+| **Image** | Overwrite/Append, 1 dòng mapping field (input → output) cố định + nút **Add Image** | **Chưa triển khai** — thiết kế ở §7.2.3 |
+
+- Chỉ hiển thị tab đã triển khai (hiện: Note, Text). Tab đang chọn giữ trong bộ nhớ view,
+  mặc định là Note.
+- Trước đây Sidebar chia "Tab 1/2/3" (Note / Audio / Image) và các nút nằm trong note; nay
+  nút hành động nằm ở Sidebar (xem `03-note.md` §3.1) và phần chọn field cho AI tách
+  thành tab **Text** riêng, cùng dạng với Audio/Image.
 
 > **Không nhầm với Settings Tab (`06-settings.md` §6.2).** Settings Tab cấu hình
-> **provider** (chọn dịch vụ AI nào, API key, model) — áp dụng toàn cục. Tab 2/3 ở đây
-> cấu hình **field nào map vào field nào** cho từng cặp Deck+Model cụ thể, cộng thêm
-> Voice/Language/Overwrite-Append áp dụng cho lần generate đó. Hai lớp độc lập, không
-> field nào trùng nhau; đổi provider ở Settings Tab không ảnh hưởng mapping ở đây và
-> ngược lại.
-
-### 7.2.1. Tab 1 — Note
-
-Thứ tự hiển thị: Profile → Deck → Model → Rebuild fields → Field checkboxes. Không có Folder select ở Sidebar — folder lưu note mới thuộc về Profile
-(`06-settings.md` §6.1).
+> **provider** (chọn dịch vụ AI nào, API key, model) — áp dụng toàn cục. Các tab
+> Text/Audio/Image ở đây cấu hình **field nào map vào field nào** cho từng cặp Deck+Model
+> cụ thể, cộng thêm Voice/Language/Overwrite-Append áp dụng cho lần generate đó. Hai lớp
+> độc lập, không field nào trùng nhau; đổi provider ở Settings Tab không ảnh hưởng mapping
+> ở đây và ngược lại.
 
 > **Không có dòng Connection Status / nút 🔄 ở Sidebar.** Trạng thái và địa chỉ
 > AnkiConnect chỉ quản lý ở Settings Tab (`06-settings.md` §6.1, nút Connect). Danh sách
-> Deck/Model/Field được nạp khi Sidebar mở; lỗi kết nối báo bằng toast tại chỗ.
+> Deck/Model/Field được nạp khi Sidebar mở; lỗi kết nối báo bằng toast tại chỗ. Không có
+> Folder select ở Sidebar — folder lưu note mới thuộc về Profile (`06-settings.md` §6.1).
+
+### 7.2.1. Profile, tab Note và tab Text
 
 **Profile Dropdown (cho note mới):**
 
@@ -58,11 +69,12 @@ Profile: [Japanese ▼]
   vẽ lại). Không thêm/sửa/xoá profile ở Sidebar — việc đó chỉ làm ở Settings Tab.
 - Đổi profile **không** ảnh hưởng note đang mở.
 
-**Deck Dropdown / Model Dropdown (của note đang mở):**
+**Tab Note — Deck / Model của note đang mở:**
 
 ```
 Deck:  [Japanese::N2 ▼]
 Model: [Basic (and reversed card) ▼]
+[⟳ Sync] [🔨 Rebuild] [🗑 Delete]
 ```
 
 - Giá trị đang chọn luôn là `anki_deck` / `anki_model` trong frontmatter của **note đang
@@ -78,44 +90,48 @@ Model: [Basic (and reversed card) ▼]
   đã sync (có `anki_note_id`) thì hiện modal cảnh báo trước — xem `scenarios.md`
   Scenario 4. Không có nút Refresh riêng.
 
-**Rebuild fields (đồng bộ field của Model sang nội dung note):**
+**Hàng nút Sync | Rebuild | Delete** (cùng một hàng, tự xuống dòng khi Sidebar hẹp; mỗi
+nút gồm icon Obsidian + chữ; hành vi và thông báo chi tiết: `03-note.md` §3.2):
+
+- **Sync:** luôn hiện, vô hiệu khi không có note markdown đang mở.
+- **Rebuild:** đồng bộ nội dung note theo Model hiện tại. Đổi Model ở dropdown chỉ đổi
+  property `anki_model` (kèm cảnh báo nếu note đã sync); nội dung note không tự đổi theo —
+  nút này để user chủ động làm nội dung khớp Model mới.
+  - Bấm nút → hiện modal xác nhận "Rebuild note fields?" (Cancel / Rebuild): thao tác
+    **xoá toàn bộ nội dung bên dưới frontmatter** rồi tạo lại skeleton đúng như §3.6
+    (`03-note.md`): một `## Field` trống cho mỗi field của Model, theo thứ tự
+    `modelFieldNames`. Không thể hoàn tác, nội dung cũ mất hết kể cả text đã viết (và cả
+    khối `anki-controls` cũ nếu note còn).
+  - Frontmatter (`anki_deck`, `anki_model`, `anki_note_id`, ...) giữ nguyên; nút không tự
+    xoá `anki_note_id`.
+  - Vô hiệu khi không có note đang mở hoặc note chưa có `anki_model`. Xong hiện toast
+    "✅ Note fields rebuilt."; lỗi kết nối hiện toast "❌ Failed to rebuild fields. Please
+    check Anki connection." và giữ nguyên note.
+- **Delete:** chỉ hiện khi note có `anki_note_id`; tự hiện ngay sau lần sync đầu và tự ẩn
+  sau khi xoá (vì trạng thái theo dõi frontmatter, không phải render một lần như khi nút
+  còn nằm trong note). Có modal xác nhận.
+- Chu kỳ trạng thái mỗi nút: bình thường → "⏳ Processing..." (vô hiệu) → "✅ Done!" (2
+  giây) hoặc "❌ Error" (3 giây) → bình thường (`.claude/rules/ui-copy.md`).
+
+**Tab Text — Fields to generate with AI:**
 
 ```
-Note fields: [Rebuild fields]
-```
-
-- Đổi Model ở dropdown chỉ đổi property `anki_model` (kèm cảnh báo nếu note đã sync); nội
-  dung note không tự đổi theo. Nút này để user chủ động làm nội dung khớp Model mới.
-- Bấm nút → hiện modal xác nhận "Rebuild note fields?" (Cancel / Rebuild): thao tác
-  **xoá toàn bộ nội dung bên dưới frontmatter** rồi tạo lại skeleton đúng như §3.6
-  (`03-note.md`): code block `anki-controls` + một `## Field` trống cho mỗi field của
-  Model, theo thứ tự `modelFieldNames`. Không thể hoàn tác, nội dung cũ mất hết kể cả text
-  đã viết.
-- Frontmatter (`anki_deck`, `anki_model`, `anki_note_id`, ...) giữ nguyên; nút không tự
-  xoá `anki_note_id`.
-- Bị vô hiệu khi không có note markdown đang mở hoặc note chưa có `anki_model`. Trong lúc
-  chạy hiện "⏳ Rebuilding...", xong hiện toast "✅ Note fields rebuilt."; lỗi kết nối
-  hiện toast "❌ Failed to rebuild fields. Please check Anki connection." và giữ nguyên
-  note.
-
-**Field checkboxes (Generate with AI):**
-
-```
-Fields to generate with AI:
+Fields to generate with AI                [✨ Generate]
 ☐ Meaning
 ☐ Furigana
 ```
 
-- Chỉ hiện khi note đang mở có cả `anki_deck` và `anki_model`; Deck/Model dùng cho danh
-  sách này chính là cặp đang hiển thị ở 2 dropdown phía trên (cùng lấy từ frontmatter
-  của note đang mở). Danh sách field lấy từ `modelFieldNames(model)`. Danh sách checkbox
-  tự cập nhật khi user chuyển sang note khác hoặc khi cặp Deck+Model của note đổi; gõ nội
-  dung trong note không kéo theo tải lại.
-- Đây là field mà nút "🤖 Generate with AI" trong note-controls sẽ nhắm tới — xem
-  [`03-note.md`](03-note.md) §3.2. Không tick field nào → nút Generate with AI coi như
-  chưa cấu hình (xem §7.4 và 03-note.md §3.2).
+- Chỉ liệt kê field khi note đang mở có cả `anki_deck` và `anki_model` (không thì hiện
+  gợi ý "Set a Deck and Model on the Note tab first." và nút Generate bị vô hiệu). Danh
+  sách field lấy từ `modelFieldNames(model)` của note đang mở. Tự cập nhật khi user chuyển
+  sang note khác hoặc khi cặp Deck+Model của note đổi; gõ nội dung trong note không kéo
+  theo tải lại.
+- Nút **Generate** (icon + chữ) nằm ngay cạnh tiêu đề, nhắm tới các field đang tick — xem
+  [`03-note.md`](03-note.md) §3.2. Không tick field nào → coi như chưa cấu hình (xem §7.4
+  và 03-note.md §3.2). **Hiện chưa gọi AI:** đã tick field thì hiện Notice "Generate with AI
+  is not available yet.".
 
-### 7.2.2. Tab 2 — Audio
+### 7.2.2. Tab Audio (chưa triển khai)
 
 ```
 Voice: [Female ▼]      Language: [Japanese ▼]
@@ -127,7 +143,7 @@ Row 2:  Input: [Example ▼] →  Output: [Example Audio ▼]  [🗑]
 [+ Add row]
 ```
 
-- **Voice:** Male / Female — chỉ ảnh hưởng lần generate qua Tab này, độc lập với field
+- **Voice:** Male / Female — chỉ ảnh hưởng lần generate qua tab này, độc lập với field
   Voice ở Settings Tab §6.2 (xem lưu ý ở §7.2).
 - **Language:** dropdown, danh sách phụ thuộc provider Audio đang cấu hình ở Settings
   Tab §6.2.
@@ -139,11 +155,11 @@ Row 2:  Input: [Example ▼] →  Output: [Example Audio ▼]  [🗑]
     (chỉ xoá tag, giữ nguyên text khác user đã viết thêm trong section đó).
 - **Rows (Input → Output):** mỗi dòng là 1 cặp field độc lập — Input = field đọc text để
   chuyển thành audio, Output = field ghi tag `[sound:...]` vào. Input/Output đều là
-  dropdown lấy từ `modelFieldNames(model)` của Deck+Model đang chọn ở Tab 1. "+ Add row"
+  dropdown lấy từ `modelFieldNames(model)` của Deck+Model của note đang mở (tab Note). "+ Add row"
   thêm dòng mới; 🗑 xoá dòng. Cho phép nhiều dòng vì 1 note có thể cần audio cho nhiều
   field khác nhau (VD Word và Example câu riêng).
 
-### 7.2.3. Tab 3 — Image
+### 7.2.3. Tab Image (chưa triển khai)
 
 ```
 On existing tag: [Append ▼]   (hoặc "Overwrite")
@@ -151,7 +167,7 @@ On existing tag: [Append ▼]   (hoặc "Overwrite")
 Input: [Word ▼]   →   Output: [Image ▼]
 ```
 
-- Giống Tab 2 về khái niệm Overwrite/Append và mapping Input → Output, nhưng **cố định
+- Giống tab Audio về khái niệm Overwrite/Append và mapping Input → Output, nhưng **cố định
   đúng 1 dòng** — không có "+ Add row"/🗑 vì một note thường chỉ cần 1 ảnh minh hoạ.
   Không có Voice/Language (không áp dụng cho ảnh).
 - Overwrite ở đây nghĩa: xoá tag `<img src="...">` cũ trong section Output trước khi
@@ -176,12 +192,12 @@ Deck/Model/Folder của note mới lấy từ **profile đang chọn** (§7.2.1;
     ↓
 [5] Plugin tạo note ngay bằng Deck/Model/Folder của profile:
     - Frontmatter: anki_deck, anki_model
-    - Content: `anki-controls` code block + section theo modelFieldNames (03-note.md §3.6)
+    - Content: một section `## Field` theo modelFieldNames (03-note.md §3.6)
     - Vị trí: Folder của profile
     ↓
 [6] Mở note mới trong editor
     ↓
-[7] Nếu Sidebar Modal chưa mở → tự mở ra (Tab 1); Deck/Model ở Tab 1 lúc này hiện đúng
+[7] Nếu Sidebar Modal chưa mở → tự mở ra (tab Note); Deck/Model ở tab Note lúc này hiện đúng
     giá trị vừa ghi vào note. Note vừa tạo chưa sync (không có anki_note_id) nên đổi
     Deck/Model ở bước này chỉ ghi đè frontmatter, không cần cảnh báo như Scenario 4.
 ```
@@ -203,13 +219,13 @@ Deck/Model/Folder của note mới lấy từ **profile đang chọn** (§7.2.1;
 
 **Cấu hình field-mapping theo từng cặp Deck+Model:**
 
-- Field khả dụng (`modelFieldNames`) phụ thuộc Model, nên checkbox Tab 1, các dòng
-  Tab 2, và dòng Tab 3 được lưu **riêng theo từng cặp Deck+Model**, không dùng chung 1
+- Field khả dụng (`modelFieldNames`) phụ thuộc Model, nên checkbox tab Text, các dòng
+  tab Audio, và dòng tab Image được lưu **riêng theo từng cặp Deck+Model**, không dùng chung 1
   cấu hình toàn cục. Khoá lưu theo cặp Deck+Model, không theo profile.
 - Chuyển sang note khác đang mở có `anki_deck`/`anki_model` khác (hoặc đổi Deck/Model của
-  note) → Tab 1/2/3 tự hiện lại cấu hình đã lưu cho cặp đó (nếu có), hoặc trống nếu cặp
+  note) → các tab Text/Audio/Image tự hiện lại cấu hình đã lưu cho cặp đó (nếu có), hoặc trống nếu cặp
   đó chưa từng được cấu hình.
-- "Chưa cấu hình" (cho mục đích pre-check ở `03-note.md` §3.2) nghĩa là: Tab 1 chưa
-  tick field nào (với Generate with AI), Tab 2 chưa có dòng nào (với Add Audio), hoặc
-  Tab 3 dòng Input/Output chưa được chọn (với Add Image) — **cho cặp Deck+Model của
+- "Chưa cấu hình" (cho mục đích pre-check ở `03-note.md` §3.2) nghĩa là: tab Text chưa
+  tick field nào (với Generate), tab Audio chưa có dòng nào (với Add Audio), hoặc
+  tab Image dòng Input/Output chưa được chọn (với Add Image) — **cho cặp Deck+Model của
   note đang mở**.

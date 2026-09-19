@@ -1,7 +1,6 @@
 ---
 paths:
     - 'src/ui/**/*.ts'
-    - 'src/note/controlsBlock.ts'
     - 'styles.css'
 ---
 
@@ -17,8 +16,11 @@ Spec: `docs/design/03-note.md`, `docs/design/05-ui.md`, `docs/design/06-settings
   consistent with the surrounding copy.
 - Sentence case: "Add audio", not "Add Audio".
 - Bold for literal UI labels; arrow notation for navigation: **Settings → Community plugins**.
-- Reuse the existing emoji set (🔄 sync, 🗑️ delete, 🔊 audio, 🖼️ image, ⏳ working,
-  ✅ success, ❌ error). Don't invent new icons per feature.
+- **Action buttons** (sidebar) are icon + text, using Obsidian's built-in Lucide icons via
+  `setIcon` (`refresh-cw` sync, `hammer` rebuild, `trash-2` delete, `sparkles` generate).
+  Add new ones from the same set; don't ship custom SVGs.
+- **Status text and toasts** keep the emoji set (⏳ working, ✅ success, ❌ error). Don't
+  invent new status icons per feature.
 - Failure copy says what happened **and what to do next**: "❌ Failed to sync. Please
   check Anki connection." — never a bare error code.
 
@@ -28,7 +30,7 @@ Every action button cycles: normal → `⏳ …` (disabled, opacity 0.6, `cursor
 → `✅ Done!` (~2s) or `❌ Error` (~3s) → back to normal, or hidden if the action is no
 longer applicable.
 
-Visibility is conditional per `docs/design/03-note.md` §3.2 — e.g. Delete only renders when
+Visibility is conditional per `docs/design/03-note.md` §3.2 — e.g. Delete is only shown when
 `anki_note_id` exists, Add Audio only when the content has no `[sound:...]`.
 
 ## Long operations

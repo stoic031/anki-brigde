@@ -165,8 +165,8 @@
     "semantic_hash": "532eca29f923c56bf2295bcb4e47fbea"
   },
   "docs/design/03-note.md": {
-    "mtime": 1789800050.776845,
-    "ast_hash": "2cf8df7da206b204f522799bc139d0f6",
+    "mtime": 1789801735.3838215,
+    "ast_hash": "5c234f99375c5ca479bbded4f21ccdda",
     "semantic_hash": ""
   },
   "docs/design/05-ui.md": {
@@ -180,8 +180,8 @@
     "semantic_hash": ""
   },
   "docs/design/07-sidebar.md": {
-    "mtime": 1789800040.9970212,
-    "ast_hash": "a3247b135bdfe7f666905300c6eafb23",
+    "mtime": 1789801735.3835568,
+    "ast_hash": "7bf1b39044a5b534c90b178472958b77",
     "semantic_hash": ""
   },
   "docs/design/README.md": {
@@ -390,13 +390,13 @@
     "semantic_hash": ""
   },
   "src/note/contentTemplate.test.ts": {
-    "mtime": 1789799576.079955,
-    "ast_hash": "1c5413526104caee86b6bdace0d6b56d",
+    "mtime": 1789801712.058691,
+    "ast_hash": "d23125458d94cd9098734841a6928541",
     "semantic_hash": ""
   },
   "src/note/contentTemplate.ts": {
-    "mtime": 1789539121.6488354,
-    "ast_hash": "a022f391226f2d77bb3810251fc053f3",
+    "mtime": 1789801669.783093,
+    "ast_hash": "a777f39c2bba1533051887f6411db227",
     "semantic_hash": ""
   },
   "src/note/quickCapture.test.ts": {
@@ -415,13 +415,13 @@
     "semantic_hash": ""
   },
   "src/ui/sidebarView.test.ts": {
-    "mtime": 1789799952.9649713,
-    "ast_hash": "d45dcc24bcb00501e29665d55d5a9d20",
+    "mtime": 1789801701.5921805,
+    "ast_hash": "873173e49f8e96c79763b7f71c58312e",
     "semantic_hash": ""
   },
   "src/ui/sidebarView.ts": {
-    "mtime": 1789799651.031901,
-    "ast_hash": "06fafb0a5cd0a94927feb38acc6481ae",
+    "mtime": 1789801669.7826214,
+    "ast_hash": "2cd94d91c63e15b03a905bb30e12317b",
     "semantic_hash": ""
   },
   "src/note/createNote.test.ts": {
@@ -477,6 +477,16 @@
   "src/ui/profilesSection.ts": {
     "mtime": 1789800632.6878881,
     "ast_hash": "effe48019ad115e66fe83246c962722d",
+    "semantic_hash": ""
+  },
+  "src/ui/modals/confirmRebuildFields.test.ts": {
+    "mtime": 1789801717.8542206,
+    "ast_hash": "abc6daf37862eee6c5861f67c47032bf",
+    "semantic_hash": ""
+  },
+  "src/ui/modals/confirmRebuildFields.ts": {
+    "mtime": 1789801669.7832754,
+    "ast_hash": "fda42aa53b0bcda173ca5831216e146c",
     "semantic_hash": ""
   }
 }
