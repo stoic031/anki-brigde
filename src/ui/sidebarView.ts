@@ -69,6 +69,15 @@ export class SidebarView extends ItemView {
 			cls: 'anki-bridge-sidebar__field-checkboxes',
 		});
 		await this.renderFieldCheckboxes();
+
+		// docs/design/07-sidebar.md §7.2.1 — the field-checkbox list follows the active
+		// note (see getFieldsDeckModel()), so it needs to re-resolve on every note switch,
+		// not just on Deck/Model dropdown changes.
+		this.registerEvent(
+			this.plugin.app.workspace.on('file-open', () => {
+				void this.renderFieldCheckboxes();
+			}),
+		);
 	}
 
 	// docs/design/07-sidebar.md §7.2.1 — Deck dropdown. Refresh is handled by the single
@@ -281,15 +290,35 @@ export class SidebarView extends ItemView {
 		await this.plugin.saveSettings();
 	}
 
+	// docs/design/07-sidebar.md §7.2.1 — Deck/Model used for the field-checkbox list
+	// itself, distinct from the Tab 1 dropdowns' settings.currentDeck/currentModel: this
+	// follows the *active note's* own anki_deck/anki_model frontmatter first, falling
+	// back to the dropdowns' current selection when the active note has none (new note,
+	// no note open, non-note file active). The dropdown values and this resolved pair
+	// can legitimately disagree — that's the intended effect of this design, not the
+	// "drift" bug .claude/rules/ui-copy.md warns about elsewhere.
+	private getFieldsDeckModel(): { deck: string; model: string } {
+		const activeFile = this.plugin.app.workspace.getActiveFile();
+		const fm =
+			activeFile instanceof TFile
+				? readAnkiFrontmatter(this.plugin.app, activeFile)
+				: undefined;
+		return {
+			deck: fm?.anki_deck || this.plugin.settings.currentDeck,
+			model: fm?.anki_model || this.plugin.settings.currentModel,
+		};
+	}
+
 	// docs/design/07-sidebar.md §7.2.1 — Field checkboxes, only shown once Deck + Model
-	// are both selected. Re-invoked from the Deck/Model onChange handlers above and from
-	// handleRefreshAllClick() (there's no per-field Refresh button) since the field list
-	// and the saved ticks both depend on which Deck+Model pair is currently selected.
+	// are both resolved (see getFieldsDeckModel()). Re-invoked from the Deck/Model
+	// onChange handlers above, handleRefreshAllClick() (there's no per-field Refresh
+	// button), and the 'file-open' listener in onOpen() (switching notes can change
+	// which Deck+Model this resolves to).
 	private async renderFieldCheckboxes(): Promise<void> {
 		if (!this.fieldsContainerEl) return;
 		this.fieldsContainerEl.empty();
 
-		const { currentDeck: deck, currentModel: model } = this.plugin.settings;
+		const { deck, model } = this.getFieldsDeckModel();
 		if (!deck || !model) return;
 
 		let fields: string[];

@@ -175,13 +175,13 @@
     "semantic_hash": ""
   },
   "docs/design/06-settings.md": {
-    "mtime": 1789725029.490589,
+    "mtime": 1789723187.3559592,
     "ast_hash": "3078b522b8212e0624ddc7d0e17e34fb",
     "semantic_hash": ""
   },
   "docs/design/07-sidebar.md": {
-    "mtime": 1789789129.4836621,
-    "ast_hash": "cb388728595d2c04b75a32b8ba277742",
+    "mtime": 1789723187.356169,
+    "ast_hash": "528e7ef02dc5111c19b920b54008fb11",
     "semantic_hash": ""
   },
   "docs/design/README.md": {
@@ -335,12 +335,12 @@
     "semantic_hash": ""
   },
   "src/ui/settingsTab.test.ts": {
-    "mtime": 1789725029.4956799,
+    "mtime": 1789723187.360856,
     "ast_hash": "aa93733a2a6ab72320968afcef02efde",
     "semantic_hash": ""
   },
   "src/ui/settingsTab.ts": {
-    "mtime": 1789725029.4958882,
+    "mtime": 1789723187.3610623,
     "ast_hash": "5dc1600a097b8b5bf5ffea37a05111cc",
     "semantic_hash": ""
   },
@@ -415,13 +415,13 @@
     "semantic_hash": ""
   },
   "src/ui/sidebarView.test.ts": {
-    "mtime": 1789789216.6714194,
-    "ast_hash": "93e6215de0f48a89717d5b349f84f93f",
+    "mtime": 1789724754.5721736,
+    "ast_hash": "1ea099d787c81959101bb9e5d96fc5f1",
     "semantic_hash": ""
   },
   "src/ui/sidebarView.ts": {
-    "mtime": 1789789110.8954406,
-    "ast_hash": "92cf322f1aca83b6d07d37a4816042bc",
+    "mtime": 1789724602.2348163,
+    "ast_hash": "feb8e24bdd5506a0343f70f16f2bead9",
     "semantic_hash": ""
   },
   "src/note/createNote.test.ts": {
@@ -455,22 +455,22 @@
     "semantic_hash": ""
   },
   "src/ui/modals/deckModelChangeWarning.test.ts": {
-    "mtime": 1789725029.495379,
+    "mtime": 1789670039.7994664,
     "ast_hash": "2dd0a1a00024bd0d9ff273aa103b803e",
     "semantic_hash": ""
   },
   "src/ui/modals/deckModelChangeWarning.ts": {
-    "mtime": 1789725029.4954662,
+    "mtime": 1789670039.7995539,
     "ast_hash": "53201614eef0b2914c672bd5680314dc",
     "semantic_hash": ""
   },
   "src/utils/folderTree.test.ts": {
-    "mtime": 1789725029.496497,
+    "mtime": 1789723187.3616269,
     "ast_hash": "28a8628f7a13e86b124faa6d5203d766",
     "semantic_hash": ""
   },
   "src/utils/folderTree.ts": {
-    "mtime": 1789725029.4968228,
+    "mtime": 1789723187.3618052,
     "ast_hash": "3b6b4a4df4f5670c9a5feded43d6adae",
     "semantic_hash": ""
   }

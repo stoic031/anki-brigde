@@ -108,8 +108,16 @@ Fields to generate with AI:
 ☐ Furigana
 ```
 
-- Chỉ hiện sau khi đã chọn Deck + Model. Danh sách field lấy từ
-  `modelFieldNames(model)`.
+- Chỉ hiện khi đã resolve được cả Deck + Model. Deck/Model dùng cho danh sách field
+  này lấy từ frontmatter (`anki_deck`/`anki_model`) của **note đang mở (active)**,
+  không phải từ 2 dropdown Deck/Model ở trên; nếu note đang mở chưa có frontmatter,
+  chưa có `anki_deck`/`anki_model` (VD note mới tạo), hoặc không có note nào đang mở,
+  fallback về Deck/Model "hiện tại" đang chọn ở 2 dropdown
+  (`settings.currentDeck`/`currentModel`). Danh sách field lấy từ
+  `modelFieldNames(model)` với Model đã resolve theo cách trên. Danh sách checkbox tự
+  cập nhật lại khi user chuyển sang note khác đang mở trong editor — giá trị 2
+  dropdown Deck/Model phía trên **không đổi theo**, nên có thể tạm thời khác với
+  Deck/Model đang dùng cho field checkbox; đây là chủ đích, không phải lỗi.
 - Đây là field mà nút "🤖 Generate with AI" trong note-controls sẽ nhắm tới — xem
   [`03-note.md`](03-note.md) §3.2. Không tick field nào → nút Generate with AI coi như
   chưa cấu hình (xem §7.4 và 03-note.md §3.2).
@@ -199,6 +207,10 @@ cấu hình gì cả thì điều hướng thẳng tới Settings thay vì hỏi
 - Lưu vào plugin settings. Đây là giá trị dùng cho §7.3 (khi đã có) và cho hotkey tạo
   note từ selection (`03-note.md` §3.7).
 - Khi mở lại Obsidian → Tab 1 tự động chọn lại Deck/Model/Folder đã lưu.
+- Kể từ khi field checkbox (Generate with AI) resolve Deck/Model theo note đang mở
+  (xem §7.2.1), giá trị "hiện tại" này chỉ còn là **fallback** cho field checkbox khi
+  note đang mở không có `anki_deck`/`anki_model` — không còn là nguồn trực tiếp duy
+  nhất như trước.
 
 **Cấu hình field-mapping theo từng cặp Deck+Model:**
 
@@ -206,7 +218,9 @@ cấu hình gì cả thì điều hướng thẳng tới Settings thay vì hỏi
   Tab 2, và dòng Tab 3 được lưu **riêng theo từng cặp Deck+Model**, không dùng chung 1
   cấu hình toàn cục.
 - Đổi Deck/Model ở Tab 1 → Tab 2/3 tự hiện lại cấu hình đã lưu cho cặp Deck+Model đó
-  (nếu có), hoặc trống nếu cặp đó chưa từng được cấu hình.
+  (nếu có), hoặc trống nếu cặp đó chưa từng được cấu hình. Tương tự, chuyển sang note
+  khác đang mở có `anki_deck`/`anki_model` khác → field checkbox (Tab 1) tự hiện lại
+  cấu hình đã lưu cho cặp đó.
 - "Chưa cấu hình" (cho mục đích pre-check ở `03-note.md` §3.2) nghĩa là: Tab 1 chưa
   tick field nào (với Generate with AI), Tab 2 chưa có dòng nào (với Add Audio), hoặc
   Tab 3 dòng Input/Output chưa được chọn (với Add Image) — **cho cặp Deck+Model của

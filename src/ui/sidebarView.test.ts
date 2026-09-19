@@ -132,6 +132,7 @@ const {
 			createDiv: contentElCreateDiv,
 		};
 		constructor(public leaf: unknown) {}
+		registerEvent(_ref: unknown) {}
 	}
 	return {
 		ItemView,
@@ -273,6 +274,8 @@ function fakeApp(
 	app: App;
 	getAllFolders: ReturnType<typeof vi.fn>;
 	getActiveFile: ReturnType<typeof vi.fn>;
+	getFileCache: ReturnType<typeof vi.fn>;
+	workspaceOn: ReturnType<typeof vi.fn>;
 	processFrontMatter: ReturnType<typeof vi.fn>;
 	frontmatter: Record<string, unknown>;
 } {
@@ -290,6 +293,7 @@ function fakeApp(
 				: { parent: activeFileParent };
 	const getAllFolders = vi.fn().mockReturnValue(folders);
 	const getActiveFile = vi.fn().mockReturnValue(resolvedActiveFile);
+	const workspaceOn = vi.fn();
 	const liveFrontmatter: Record<string, unknown> = { ...frontmatter };
 	// Returned as a plain local (not read back off `app`) so assertions like
 	// `expect(processFrontMatter).not.toHaveBeenCalled()` don't trip
@@ -301,20 +305,21 @@ function fakeApp(
 				fn(liveFrontmatter);
 			},
 		);
+	const getFileCache = vi
+		.fn()
+		.mockReturnValue(frontmatter ? { frontmatter } : null);
 	const app = {
 		vault: { getAllFolders },
-		workspace: { getActiveFile },
-		metadataCache: {
-			getFileCache: vi
-				.fn()
-				.mockReturnValue(frontmatter ? { frontmatter } : null),
-		},
+		workspace: { getActiveFile, on: workspaceOn },
+		metadataCache: { getFileCache },
 		fileManager: { processFrontMatter },
 	} as unknown as App;
 	return {
 		app,
 		getAllFolders,
 		getActiveFile,
+		getFileCache,
+		workspaceOn,
 		processFrontMatter,
 		frontmatter: liveFrontmatter,
 	};
@@ -335,12 +340,21 @@ function fakePlugin(
 	saveSettings: ReturnType<typeof vi.fn>;
 	getAllFolders: ReturnType<typeof vi.fn>;
 	getActiveFile: ReturnType<typeof vi.fn>;
+	getFileCache: ReturnType<typeof vi.fn>;
+	workspaceOn: ReturnType<typeof vi.fn>;
 	processFrontMatter: ReturnType<typeof vi.fn>;
 	frontmatter: Record<string, unknown>;
 } {
 	const saveSettings = vi.fn().mockResolvedValue(undefined);
-	const { app, getAllFolders, getActiveFile, processFrontMatter, frontmatter } =
-		fakeApp(appOptions);
+	const {
+		app,
+		getAllFolders,
+		getActiveFile,
+		getFileCache,
+		workspaceOn,
+		processFrontMatter,
+		frontmatter,
+	} = fakeApp(appOptions);
 	const plugin = {
 		app,
 		settings: fakeSettings(overrides),
@@ -351,6 +365,8 @@ function fakePlugin(
 		saveSettings,
 		getAllFolders,
 		getActiveFile,
+		getFileCache,
+		workspaceOn,
 		processFrontMatter,
 		frontmatter,
 	};
@@ -893,6 +909,99 @@ describe('SidebarView', () => {
 		expect(toastError).toHaveBeenCalledWith(
 			'❌ Failed to load fields. Please check Anki connection.',
 		);
+	});
+
+	describe('field checkboxes follow the active note', () => {
+		it('resolves Deck/Model for the field list from the active note frontmatter, not the dropdowns', async () => {
+			modelFieldNamesMock.mockResolvedValue(['Meaning']);
+			const activeFile = fakeTFile();
+			const { plugin } = fakePlugin(
+				{ currentDeck: 'DropdownDeck', currentModel: 'DropdownModel' },
+				{
+					activeFile,
+					frontmatter: { anki_deck: 'NoteDeck', anki_model: 'NoteModel' },
+				},
+			);
+			const view = new SidebarView({} as WorkspaceLeaf, plugin);
+
+			await view.onOpen();
+
+			expect(modelFieldNamesMock).toHaveBeenCalledWith('NoteModel');
+		});
+
+		it('persists a ticked field under the active note’s Deck+Model pair, not the dropdown pair', async () => {
+			modelFieldNamesMock.mockResolvedValue(['Meaning']);
+			const activeFile = fakeTFile();
+			const { plugin } = fakePlugin(
+				{ currentDeck: 'DropdownDeck', currentModel: 'DropdownModel' },
+				{
+					activeFile,
+					frontmatter: { anki_deck: 'NoteDeck', anki_model: 'NoteModel' },
+				},
+			);
+			const view = new SidebarView({} as WorkspaceLeaf, plugin);
+
+			await view.onOpen();
+			await settings[4]?.toggleComponents[0]?.triggerChange(true);
+
+			const key = fieldConfigKey('NoteDeck', 'NoteModel');
+			expect(plugin.settings.generateWithAiFields[key]).toEqual(['Meaning']);
+		});
+
+		it('falls back to the dropdown Deck/Model when the active note has no anki_deck/anki_model', async () => {
+			modelFieldNamesMock.mockResolvedValue(['Meaning']);
+			const activeFile = fakeTFile();
+			const { plugin } = fakePlugin(
+				{ currentDeck: 'DropdownDeck', currentModel: 'DropdownModel' },
+				{ activeFile, frontmatter: {} },
+			);
+			const view = new SidebarView({} as WorkspaceLeaf, plugin);
+
+			await view.onOpen();
+
+			expect(modelFieldNamesMock).toHaveBeenCalledWith('DropdownModel');
+		});
+
+		it('falls back to the dropdown Deck/Model when no note is open', async () => {
+			modelFieldNamesMock.mockResolvedValue(['Meaning']);
+			const { plugin } = fakePlugin({
+				currentDeck: 'DropdownDeck',
+				currentModel: 'DropdownModel',
+			});
+			const view = new SidebarView({} as WorkspaceLeaf, plugin);
+
+			await view.onOpen();
+
+			expect(modelFieldNamesMock).toHaveBeenCalledWith('DropdownModel');
+		});
+
+		it('re-resolves and re-renders the field list when switching to a different open note', async () => {
+			modelFieldNamesMock.mockResolvedValueOnce(['Meaning']);
+			const noteA = fakeTFile();
+			const { plugin, getActiveFile, getFileCache, workspaceOn } = fakePlugin(
+				{ currentDeck: 'Japanese', currentModel: 'Basic' },
+				{ activeFile: noteA, frontmatter: {} },
+			);
+			const view = new SidebarView({} as WorkspaceLeaf, plugin);
+			await view.onOpen();
+
+			const fileOpenHandler = workspaceOn.mock.calls.find(
+				([event]) => event === 'file-open',
+			)?.[1] as (() => void) | undefined;
+			expect(fileOpenHandler).toBeTypeOf('function');
+
+			const noteB = fakeTFile();
+			getActiveFile.mockReturnValue(noteB);
+			getFileCache.mockReturnValue({
+				frontmatter: { anki_deck: 'French', anki_model: 'Cloze' },
+			});
+			modelFieldNamesMock.mockResolvedValueOnce(['Front', 'Back']);
+
+			fileOpenHandler?.();
+			await vi.waitFor(() => {
+				expect(modelFieldNamesMock).toHaveBeenLastCalledWith('Cloze');
+			});
+		});
 	});
 
 	it('renders the connection status with the resolved AnkiConnect URL and an icon-only 🔄 button', async () => {
