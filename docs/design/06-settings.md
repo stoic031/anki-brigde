@@ -84,6 +84,14 @@ cho mọi profile; mặc định chưa có cấu hình nào = không gọi AI). 
 - API Key: text field (tùy chọn với local)
 - Model: text field tự do, kèm `datalist` gợi ý (không giới hạn danh sách)
 - Nhãn Cloud / Local: tự suy ra từ Base URL (localhost, 127.0.0.1 = Local, còn lại = Cloud)
+- Dropdown active có mục **None**; Add tạo cấu hình mới và chọn nó làm active; Delete xoá cấu
+  hình đang active (active về None). Form sửa hiện bên dưới, chỉ cho cấu hình đang active
+- Lưu khi rời ô nhập (Name, Base URL) hoặc khi gõ (API Key, Model). Base URL sai định dạng →
+  Notice "❌ Invalid URL. Please check the base URL." và giữ giá trị cũ; Name rỗng bị từ chối
+- Cấu hình active thiếu Base URL hoặc Model được coi như **chưa cấu hình** (không gọi AI)
+  — `getActiveTextConfig` trong `src/settings.ts` trả `null`
+- API Key lưu dạng plain text trong `data.json` của plugin (Obsidian không có secret store),
+  ô nhập ẩn ký tự. Chỉ gửi tới Base URL của cấu hình đang active
 
 **Image Generation:**
 
