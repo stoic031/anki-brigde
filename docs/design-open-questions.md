@@ -37,6 +37,17 @@ the milestone's stated deliverable), or explicitly moving them to a later milest
 updating Milestone 2's description to drop the Tab 2/3 scaffolding line. Until then, don't
 invent a settings shape for Tab 2/3 rows ahead of the UI that would define it.
 
+### 20. Text provider v1: Anthropic native hay OpenAI-compatible trước?
+
+`02-providers.md` §2.2 chỉ định hai loại endpoint (OpenAI-compatible, Anthropic). Đề xuất:
+làm OpenAI-compatible trước (phủ gần hết thị trường, kể cả Gemini/Ollama), Anthropic
+adapter làm sau. Chưa chốt.
+
+### 21. Có cần nút "Fetch models" không?
+
+`GET {baseUrl}/models` có ở OpenAI, OpenRouter, Ollama, Groq. Đề xuất: v1 chỉ nhập tay +
+`datalist`; nút Fetch (bấm mới gọi, không tự gọi ở `onload`) để sau. Chưa chốt.
+
 ---
 
 ## 🟢 Worth doing, not blocking
