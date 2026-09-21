@@ -11,10 +11,7 @@ cùng, rồi các tab (xem `07-sidebar.md` §7.2):
 - **Tab Note:** Deck/Model của note đang mở và hàng nút **Sync | Rebuild | Delete**.
 - **Tab Text:** chọn field cho Generate with AI + nút **Generate** (chỉ liệt kê field khi
   note đang mở có cả Deck + Model).
-- **Tab Audio** *(chưa triển khai)*: Voice, Language, Overwrite/Append, nhiều dòng mapping
-  field (Input → Output) — cho phép tạo nhiều field audio khác nhau trong 1 note.
-- **Tab Image** *(chưa triển khai)*: Overwrite/Append, 1 dòng mapping field (Input →
-  Output) cố định — không cần nhiều dòng vì 1 note thường chỉ cần 1 ảnh.
+- **Tab Image** *(chưa triển khai)*: Overwrite/Append, chọn field Output. Prompt tạo ảnh do text model đã chọn viết từ các field của note.
 
 Bấm icon "+" trong Ribbon hoặc chạy command **"Anki: Create new note"** sẽ **tạo note
 ngay** và đồng thời mở Sidebar ra (nếu chưa mở) — không còn yêu cầu user tự mở
@@ -131,82 +128,50 @@ profile đang chọn** (giống hệt Scenario 1), không phải folder của no
     → Nhận TextResult: { Meaning: "Thuốc", Furigana: "くすり" }
     → Điền vào "## Meaning" và "## Furigana" (đang rỗng)
     ↓
-[11] (Tuỳ chọn, chưa triển khai) User bấm "Add Audio" / "Add Image" ở tab Audio / Image
-    (cũng generate ngay theo mapping đã cấu hình ở đó — xem Scenario 3/3b)
+[11] (Tuỳ chọn, chưa triển khai) User bấm "Add Image" ở tab Image
+    (cũng generate ngay theo cấu hình ở đó — xem Scenario 3)
     ↓
 [12] User review, chỉnh sửa nếu cần
     ↓
 [13] Chuyển sang tab Note, bấm "Sync" → Lưu vào Anki
 ```
 
-> Nếu tab Text chưa tick field nào (Generate) hoặc tab Audio/Image chưa cấu hình dòng
-> mapping nào cho cặp Deck+Model này, bấm nút tương ứng chỉ hiện Notice nhắc cấu hình
+> Nếu tab Text chưa tick field nào (Generate) hoặc tab Image chưa chọn field Output cho cặp Deck+Model này, bấm nút tương ứng chỉ hiện Notice nhắc cấu hình
 > và không làm gì — xem `03-note.md` §3.2.
 
-## Scenario 3: User thêm audio vào note (theo cấu hình tab Audio) — chưa triển khai
+## Scenario 3: User thêm image vào note (theo cấu hình tab Image) — chưa triển khai
 
-Khác với trước đây, không còn Field Selection Modal mở ra khi bấm — tab Audio của
-Sidebar đã cấu hình sẵn Voice, Language, Overwrite/Append và các dòng mapping
-Input → Output cho cặp Deck+Model của note này (xem `07-sidebar.md` §7.2.2). Ví dụ cấu
-hình tab Audio: Voice = Female, Language = Japanese, On existing tag = Append, 2 dòng:
-`Word → Audio`, `Example → Example Audio`.
-
-```
-[1] User bấm "Add Audio" (tab Audio)
-    ↓
-[2] Tab Audio chưa có dòng mapping nào cho Deck+Model này? → Notice "Please configure Audio
-    field mapping for this Deck/Model in the sidebar (Audio tab) first." → dừng lại
-    (trường hợp còn lại tiếp tục các bước dưới)
-    ↓
-[3] Với mỗi dòng đã cấu hình (VD dòng 1: Word → Audio):
-    - Đọc nội dung section "## Word" làm input
-    - Section rỗng → bỏ qua dòng này, không báo lỗi cả nút
-    ↓
-[4] Hiển thị progress: "🔊 Generating audio..."
-    ↓
-[5] Gọi AI Provider → generateAudio(wordContent, { voice: "Female", language: "Japanese" })
-    ↓
-[6] Nhận base64 → Gọi AnkiConnect "storeMediaFile"
-    ↓
-[7] Ghi vào section "## Audio" (field Output của dòng này) theo tuỳ chọn Append/Overwrite:
-    - Append: giữ tag [sound:...] cũ (nếu có) + thêm tag mới
-    - Overwrite: xoá tag [sound:...] cũ, ghi tag mới
-    ↓
-[8] Lặp lại bước 3-7 cho từng dòng còn lại (VD dòng 2: Example → Example Audio)
-    ↓
-[9] Save file → Re-render
-    ↓
-[10] Nút "Add Audio" vẫn hiện — có thể bấm lại nhiều lần (không tự ẩn)
-```
-
-## Scenario 3b: User thêm image vào note (theo cấu hình tab Image) — chưa triển khai
-
-Giống Scenario 3 nhưng chỉ 1 dòng mapping cố định, không có Voice/Language (xem
-`07-sidebar.md` §7.2.3). Ví dụ cấu hình tab Image: On existing tag = Overwrite,
-`Word → Image`.
+Text model mà user đã chọn viết prompt từ các field của note, image model vẽ theo prompt đó
+(xem `07-sidebar.md` §7.2.2). Ví dụ cấu hình tab Image: On existing tag = Overwrite,
+Output = `Image`.
 
 ```
 [1] User bấm "Add Image" (tab Image)
     ↓
-[2] Tab Image chưa chọn Input/Output cho Deck+Model này? → Notice "Please configure Image
+[2] Tab Image chưa chọn Output cho Deck+Model này? → Notice "Please configure Image
     field mapping for this Deck/Model in the sidebar (Image tab) first." → dừng lại
     ↓
-[3] Đọc nội dung section "## Word" (field Input) làm prompt
-    - Section rỗng → Notice "Nothing to generate an image from — please fill in the
-      Word section first." → dừng lại
+[3] Chưa cấu hình text provider? → Notice "Set up a text model in settings to generate
+    image prompts." → dừng lại
     ↓
-[4] Hiển thị progress: "🎨 Generating image..."
+[4] Gom các section không rỗng (trừ Output) — VD Word, Meaning, Example. Không có section
+    nào → Notice "Nothing to generate an image from — please fill in at least one field
+    first." → dừng lại
     ↓
-[5] Gọi AI Provider → generateImage(wordContent, opts) → Nhận base64
+[5] Hiển thị progress: "🎨 Generating image..."
     ↓
-[6] Gọi AnkiConnect "storeMediaFile"
+[6] Text provider → processText(fields, "build-image-prompt", []) → prompt
     ↓
-[7] Ghi vào section "## Image" (field Output) theo tuỳ chọn Overwrite: xoá tag
+[7] Image provider → generateImage(prompt, opts) → Nhận base64
+    ↓
+[8] Gọi AnkiConnect "storeMediaFile"
+    ↓
+[9] Ghi vào section "## Image" (field Output) theo tuỳ chọn Overwrite: xoá tag
     <img src="..."> cũ, ghi tag mới
     ↓
-[8] Save file → Re-render
+[10] Save file → Re-render
     ↓
-[9] Nút "Add Image" vẫn hiện — có thể bấm lại nhiều lần (không tự ẩn)
+[11] Nút "Add Image" vẫn hiện — có thể bấm lại nhiều lần (không tự ẩn)
 ```
 
 ## Scenario 4: User thay đổi Deck/Model của note trong Sidebar (tab Note)

@@ -1,16 +1,16 @@
 # Graph Report - anki-bridge  (2026-09-21)
 
 ## Corpus Check
-- 103 files · ~61,950 words
+- 104 files · ~62,759 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 732 nodes · 1119 edges · 85 communities (28 shown, 57 thin omitted)
+- 736 nodes · 1134 edges · 86 communities (29 shown, 57 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 15 edges (avg confidence: 0.86)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `33ca59de`
+- Built from commit: `5bf26da4`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -92,6 +92,7 @@
 - quickCapture.ts
 - sidebarView.test.ts
 - [1.1.0]
+- main.test.ts
 - confirmRebuildFields.test.ts
 - confirmDelete.test.ts
 - FakeEl
@@ -144,7 +145,7 @@
 - **Pluggable AI Provider Interfaces** — docs_contracts_textprovider, docs_contracts_audioprovider, docs_contracts_imageprovider, docs_design_02_providers_abstraction_layer [INFERRED 0.85]
 - **AST + Semantic Extraction Forming the Merged Graph Build** — opencode_skills_graphify_skill_ast_extraction, opencode_skills_graphify_skill_semantic_extraction, opencode_skills_graphify_references_extraction_spec_node_id_format, opencode_skills_graphify_references_extraction_spec_confidence_rubric [INFERRED 0.85]
 
-## Communities (85 total, 57 thin omitted)
+## Communities (86 total, 57 thin omitted)
 
 ### Community 0 - "Common Provider Interface (processText/generateAudio/generateImage)"
 Cohesion: 0.05
@@ -199,8 +200,8 @@ Cohesion: 0.50
 Nodes (5): AGENTS.md Non-Negotiables (9 rules), AudioProvider interface, ImageProvider interface, MediaResult interface, Q14: AudioOptions/ImageOptions shape undefined
 
 ### Community 14 - "profilesSection.ts"
-Cohesion: 0.15
-Nodes (14): { loadSettings, saveSettings }, { PluginBase, addCommandSpy }, { registerSidebarView, revealSidebarView }, { runCreateNote }, { runQuickCapture }, getActiveProfile(), renderFolderPicker(), renderPicker() (+6 more)
+Cohesion: 0.24
+Nodes (9): getActiveProfile(), renderFolderPicker(), renderPicker(), renderProfilesSection(), uniqueName(), buildFolderTreeEntries(), FolderTreeEntry, FakeFolder (+1 more)
 
 ### Community 15 - "settingsTab.test.ts"
 Cohesion: 0.05
@@ -215,8 +216,8 @@ Cohesion: 0.12
 Nodes (5): DeckModelChangeWarningModal, FakeButtonComponent, FakeSetting, openModal(), { settings, modalState }
 
 ### Community 77 - "quickCapture.ts"
-Cohesion: 0.08
-Nodes (34): AnkiBridgePlugin, generateContentSkeleton(), rebuildContent(), runCreateNote(), sanitizeForFilename(), AppWithSettingTab, getQuickCaptureFilename(), getSelectedText() (+26 more)
+Cohesion: 0.09
+Nodes (33): AnkiBridgePlugin, generateContentSkeleton(), rebuildContent(), runCreateNote(), sanitizeForFilename(), AppWithSettingTab, getQuickCaptureFilename(), getSelectedText() (+25 more)
 
 ### Community 78 - "sidebarView.test.ts"
 Cohesion: 0.05
@@ -225,6 +226,10 @@ Nodes (20): Case, { deckModelWarningOpen, deckModelWarningCapture }, { deckNames
 ### Community 79 - "[1.1.0]"
 Cohesion: 0.18
 Nodes (10): [1.0.0], [1.1.0], Added, Added, Changed, Changelog, Fixed, Fixed (+2 more)
+
+### Community 80 - "main.test.ts"
+Cohesion: 0.33
+Nodes (5): { loadSettings, saveSettings }, { PluginBase, addCommandSpy }, { registerSidebarView, revealSidebarView }, { runCreateNote }, { runQuickCapture }
 
 ### Community 81 - "confirmRebuildFields.test.ts"
 Cohesion: 0.12
@@ -240,28 +245,28 @@ Nodes (15): CreateOpts, FakeEl, ActionState, { deleteModal, rebuildModal }, { mo
 
 ### Community 84 - "settings.ts"
 Cohesion: 0.05
-Nodes (37): plugin, $schema, .opencode/plugins/graphify.js, AiButtonAction, AiPreCheckResult, runAiPreCheck(), fakePlugin(), fakeSettings() (+29 more)
+Nodes (38): plugin, $schema, .opencode/plugins/graphify.js, AiButtonAction, AiPreCheckResult, runAiPreCheck(), fakePlugin(), fakeSettings() (+30 more)
 
 ### Community 85 - "providerManager.ts"
 Cohesion: 0.12
-Nodes (17): Cached, Factory, normalizeErrors(), ProviderConfig, ProviderKind, ProviderManager, ProviderManagerOptions, toProviderError() (+9 more)
+Nodes (20): Cached, Factory, normalizeErrors(), ProviderConfig, ProviderKind, ProviderManager, ProviderManagerOptions, makeManager() (+12 more)
 
 ## Knowledge Gaps
-- **218 isolated node(s):** `$schema`, `.opencode/plugins/graphify.js`, `id`, `name`, `version` (+213 more)
+- **217 isolated node(s):** `$schema`, `.opencode/plugins/graphify.js`, `id`, `name`, `version` (+212 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **57 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `AnkiBridgePlugin` connect `quickCapture.ts` to `sidebarView.test.ts`, `profilesSection.ts`, `settingsTab.test.ts`, `FakeEl`, `settings.ts`?**
+- **Why does `AnkiBridgePlugin` connect `quickCapture.ts` to `SidebarView`, `profilesSection.ts`, `settingsTab.test.ts`, `main.test.ts`, `sidebarView.test.ts`, `FakeEl`, `settings.ts`?**
   _High betweenness centrality (0.045) - this node is a cross-community bridge._
 - **Why does `FakeEl` connect `FakeEl` to `settings.ts`, `sidebarView.test.ts`?**
   _High betweenness centrality (0.024) - this node is a cross-community bridge._
 - **Why does `NoteNameModal` connect `noteNameModal.test.ts` to `quickCapture.ts`?**
   _High betweenness centrality (0.021) - this node is a cross-community bridge._
 - **What connects `$schema`, `.opencode/plugins/graphify.js`, `id` to the rest of the system?**
-  _218 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _217 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Common Provider Interface (processText/generateAudio/generateImage)` be split into smaller, more focused modules?**
   _Cohesion score 0.0523532522474881 - nodes in this community are weakly interconnected._
 - **Should `graphify Skill (/graphify)` be split into smaller, more focused modules?**

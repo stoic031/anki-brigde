@@ -1,6 +1,6 @@
 # Obsidian-Anki AI Plugin — Agent Guide
 
-Obsidian community plugin: sync vocabulary notes → Anki, and generate audio/image
+Obsidian community plugin: sync vocabulary notes → Anki, and generate image
 media via pluggable AI providers. The plugin is an **orchestrator only** — it calls
 external APIs (AnkiConnect, AI providers), never runs or bundles models.
 
@@ -61,7 +61,7 @@ src/
   settings.ts          # interface, DEFAULT_SETTINGS, load/save
   types.ts             # shared interfaces — see docs/contracts.md
   sync/                # Module 1: ankiConnect, parser, fieldMapper, syncEngine
-  providers/           # Module 2: types, providerManager, text/, audio/, image/
+  providers/           # Module 2: types, providerManager, text/, image/
   note/                # Module 3: contentTemplate, mediaNaming
   ui/                  # Module 5+6+7: settingsTab, sidebarView, modals/, toast
   utils/               # helpers, constants

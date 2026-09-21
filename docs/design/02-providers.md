@@ -4,11 +4,10 @@
 
 ## 2.1. Kiến trúc lõi
 
-Plugin sử dụng **Abstraction Layer** để dễ dàng chuyển đổi giữa Cloud API và Local Model. Mỗi provider implement một interface chung với 3 phương thức chính:
+Plugin sử dụng **Abstraction Layer** để dễ dàng chuyển đổi giữa Cloud API và Local Model. Mỗi provider implement một interface chung với 2 phương thức chính:
 
 - `processText()`: Xử lý văn bản (extract từ vựng, tạo câu ví dụ, rewrite)
-- `generateAudio()`: Tạo audio từ text (TTS)
-- `generateImage()`: Tạo ảnh từ prompt
+- `generateImage()`: Tạo ảnh từ prompt. Prompt do **chính text provider** user đã chọn tạo ra (task `build-image-prompt`) từ các field của thẻ — không dùng nguyên văn field làm prompt
 
 ## 2.2. Supported Providers
 
@@ -22,11 +21,6 @@ chuỗi user tự nhập:
   vLLM
 - **Anthropic** (`/v1/messages`): format khác OpenAI nên cần adapter riêng
 
-**Audio Generation:**
-
-- Cloud: OpenAI TTS, Azure Speech, ElevenLabs, Edge TTS (miễn phí)
-- Local: sherpa-onnx (user tự setup)
-
 **Image Generation:**
 
 - Cloud: DALL-E 3, Stability AI, Replicate
@@ -37,7 +31,7 @@ chuỗi user tự nhập:
 Quản lý lifecycle của các provider:
 
 - Khởi tạo provider dựa trên settings
-- Cung cấp method để lấy provider theo task (getTextProvider, getAudioProvider, getImageProvider)
+- Cung cấp method để lấy provider theo task (getTextProvider, getImageProvider)
 - Chuẩn hóa lỗi: mọi lỗi từ provider (kể cả lỗi dựng provider) được bọc thành `ProviderError`
   (`contracts.md` §6). Manager **không** tự chuyển sang provider khác — mỗi loại chỉ có một
   provider user đã chọn, đổi sang provider khác sẽ gửi nội dung tới endpoint user chưa chọn
@@ -68,13 +62,7 @@ dùng active) — thay đổi cộng thêm, không phá dữ liệu cũ.
   `response_format: json_object` vì không phải model nào cũng hỗ trợ
 - Gọi HTTP bằng `requestUrl` của Obsidian (không dùng `fetch`) để tránh CORS
 
-**Audio Generation:**
-
-- Input: text string + `AudioOptions` (`voice`, `language`, `speed?`)
-- Output: `MediaResult` (`base64`, `ext`, `mimeType`). Provider không đặt tên file và không
-  gọi `storeMediaFile` — đặt tên thuộc `note/mediaNaming.ts`, lưu thuộc `sync/ankiConnect.ts`
-
 **Image Generation:**
 
 - Input: prompt string + `ImageOptions` (`size?`, `steps?`, `negativePrompt?`)
-- Output: `MediaResult` (như Audio)
+- Output: `MediaResult` (`base64`, `ext`, `mimeType`). Provider không đặt tên file và không gọi `storeMediaFile` — đặt tên thuộc `note/mediaNaming.ts`, lưu thuộc `sync/ankiConnect.ts`

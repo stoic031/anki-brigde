@@ -13,8 +13,8 @@ the entry here.
 ### 15. No Image provider scoped for Milestone 3
 
 `docs/design/roadmap.md` Milestone 3 lists "Module 2: AI Provider Manager (OpenAI +
-Ollama + Edge TTS)", but that milestone's own deliverable is "Plugin có thể tạo
-audio/**image** và lưu vào Anki" — no Image provider is named to satisfy the image
+Ollama)", but that milestone's own deliverable is "Plugin có thể tạo
+**image** và lưu vào Anki" — no Image provider is named to satisfy the image
 half. `02-providers.md` §2.2 lists 5 image provider options (DALL-E 3, Stability AI,
 Replicate, Automatic1111, ComfyUI) but roadmap.md doesn't pick one for M3. Blocks
 scoping the Add Image button / Image provider work for Milestone 3. Resolve by either
@@ -22,12 +22,12 @@ naming one provider in roadmap.md's Milestone 3 bullet (DALL-E 3 pairs naturally
 the OpenAI text provider already in M3, same API key), or explicitly moving Add Image
 to a later milestone and dropping "image" from M3's deliverable line.
 
-### 18. Tab 2/Tab 3 field-mapping persistence blocked on unbuilt Features #40/#41
+### 18. Image-tab field persistence blocked on unbuilt Feature #41 (Audio tab dropped)
 
-Task #147 ("Persist field-mapping config per Deck+Model pair") covers Tab 1 checkboxes,
-Tab 2 (Audio) rows, and Tab 3 (Image) row. Tab 1's share is done (`generateWithAiFields`
-in `settings.ts`, task #140). Tab 2/Tab 3 have no UI, no types, nothing to persist yet:
-Features #40 ("6.3-Tab 2 — Audio") and #41 ("6.4-Tab 3 — Image") are open with **zero**
+Task #147 ("Persist field-mapping config per Deck+Model pair") covers Tab 1 checkboxes
+and the Image tab's Output field (the Audio tab was dropped). Tab 1's share is done (`generateWithAiFields`
+in `settings.ts`, task #140). The Image tab has no UI, no types, nothing to persist yet:
+Feature #41 ("6.4-Tab 3 — Image") are open with **zero**
 sub-tasks and aren't attached to any milestone — even though Milestone 2's own
 description lists Tab 2/3 scaffolding as a deliverable. Same blocker applies to task
 #149 ("Reload Tab 2/3 UI when Tab 1's Deck/Model changes"): nothing to reload.
@@ -120,3 +120,13 @@ barrier to outside contributors — and to any agent a contributor runs. Transla
 a larger job than the files around it, but it's the one that decides whether people can
 contribute at all. The module split (see history, was #11) makes this easier to do
 incrementally, one file at a time, instead of one 772-line pass.
+
+### 19. Image prompt built by the text model — details unspecified
+
+Audio generation was dropped; Add Image now asks the user's text model
+(`build-image-prompt` task) to write the image prompt from the note's non-empty fields
+(`03-note.md` §3.2, `07-sidebar.md` §7.2.2). Unresolved: (a) the prompt template /
+system instruction, (b) whether the prompt should be English regardless of note
+language, (c) whether to let the user preview/edit the prompt before the image call,
+(d) with no text provider configured we currently **stop with a Notice** rather than
+fall back to the raw field text — confirm that is what you want.

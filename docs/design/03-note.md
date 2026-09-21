@@ -4,8 +4,7 @@
 
 ## 3.1. Vị trí các nút điều khiển
 
-Các nút hành động của note (Sync, Rebuild, Delete, Generate with AI, và sau này Add Audio /
-Add Image) nằm ở **Sidebar**, không còn nằm trong nội dung note — xem
+Các nút hành động của note (Sync, Rebuild, Delete, Generate with AI, và sau này Add Image) nằm ở **Sidebar**, không còn nằm trong nội dung note — xem
 [`07-sidebar.md`](07-sidebar.md) §7.2. Note chỉ chứa frontmatter và các section `## Field`,
 không còn khối ```` ```anki-controls ```` (trước đây do `registerMarkdownCodeBlockProcessor`
 render).
@@ -20,17 +19,17 @@ render).
 ## 3.2. Button Actions
 
 Các nút nằm ở Sidebar (`07-sidebar.md` §7.2.1). Hiện có: **Sync | Rebuild | Delete** (cùng
-một hàng, tab Note) và **Generate** (tab Text, cạnh phần chọn field). **Add Audio** và
-**Add Image** thuộc kế hoạch (tab Audio / Image) — **chưa triển khai**, các mô tả bên dưới
+một hàng, tab Note) và **Generate** (tab Text, cạnh phần chọn field). **Add Image**
+thuộc kế hoạch (tab Image) — **chưa triển khai**, các mô tả bên dưới
 là thiết kế cho lần làm sau. Mỗi nút gồm icon + chữ.
 
-> **Nguyên tắc chung cho 3 nút AI** (Generate, Add Audio, Add Image): không nút
-> nào trong 3 nút này gọi `updateNoteFields` — mỗi nút chỉ ghi vào **content của note
+> **Nguyên tắc chung cho 2 nút AI** (Generate, Add Image): không nút
+> nào trong 2 nút này gọi `updateNoteFields` — mỗi nút chỉ ghi vào **content của note
 > Obsidian**. Field trên Anki chỉ được cập nhật khi user bấm 🔄 Sync một cách tường minh.
-> Cả 3 đều đọc input từ **content**, không đọc từ tên file/tiêu đề note — đổi tên file sau
-> khi tạo không làm hỏng hành vi của các nút này. Cả 3 nút **không mở modal chọn field**
+> Cả 2 đều đọc input từ **content**, không đọc từ tên file/tiêu đề note — đổi tên file sau
+> khi tạo không làm hỏng hành vi của các nút này. Cả 2 nút **không mở modal chọn field**
 > khi bấm — cấu hình field đã được chọn sẵn từ trước trong Sidebar Modal
-> (`07-sidebar.md` §7.2, tab Text/Audio/Image), theo đúng cặp Deck+Model của note đang mở. Bấm nút
+> (`07-sidebar.md` §7.2, tab Text/Image), theo đúng cặp Deck+Model của note đang mở. Bấm nút
 > là generate ngay; không có bước tick checkbox tại thời điểm bấm.
 
 **Sync Button** (icon `refresh-cw`):
@@ -52,19 +51,17 @@ là thiết kế cho lần làm sau. Mỗi nút gồm icon + chữ.
 - Action: Hiển thị confirm modal → Gọi AnkiConnect deleteNotes → Xóa `anki_note_id` khỏi frontmatter
 - Visual feedback: Button ẩn đi sau khi xóa
 
-**Pre-check dùng chung cho 3 nút AI:** mỗi nút, trước khi làm gì, đọc cấu hình đã lưu
+**Pre-check dùng chung cho 2 nút AI:** mỗi nút, trước khi làm gì, đọc cấu hình đã lưu
 cho cặp Deck+Model của note đang mở (`07-sidebar.md` §7.4). Chưa cấu hình (theo định
 nghĩa "chưa cấu hình" ở `07-sidebar.md` §7.4) → hiển thị Notice và **dừng lại, không
 làm gì khác**:
 
 - Generate with AI, chưa tick field nào ở tab Text → "Please configure AI field generation
   for this Deck/Model in the sidebar (Text tab) first."
-- Add Audio, tab Audio chưa có dòng mapping nào → "Please configure Audio field mapping for
-  this Deck/Model in the sidebar (Audio tab) first."
-- Add Image, tab Image chưa chọn Input/Output → "Please configure Image field mapping for
+- Add Image, tab Image chưa chọn field Output → "Please configure Image field mapping for
   this Deck/Model in the sidebar (Image tab) first."
 
-**Generate Button** (icon `sparkles`, tab Text; chỉ áp dụng cho text — Audio/Image có nút riêng).
+**Generate Button** (icon `sparkles`, tab Text; chỉ áp dụng cho text — Image có nút riêng).
 > **Trạng thái hiện tại:** phần gọi AI chưa triển khai. Nút chỉ chạy pre-check: chưa tick
 > field → Notice cấu hình như trên; đã tick → Notice "Generate with AI is not available
 > yet.". Mô tả dưới đây là thiết kế đích:
@@ -85,26 +82,18 @@ làm gì khác**:
 - Visual feedback: Button đổi thành "⏳ Generating..." → "✅ Done!" → quay lại trạng thái
   bình thường sau 2 giây.
 
-**Add Audio Button** (chưa triển khai; tab Audio):
-
-- Qua pre-check ở trên thì với **mỗi dòng** đã cấu hình ở tab Audio (`07-sidebar.md`
-  §7.2.2): đọc nội dung hiện tại của section **Input** làm input → gọi AI Provider
-  `generateAudio(fieldContent, { voice, language })` (voice/language lấy từ tab Audio) →
-  gọi AnkiConnect `storeMediaFile` → ghi tag `[sound:filename.mp3]` vào cuối section
-  **Output** của dòng đó, theo tuỳ chọn Overwrite/Append của tab Audio (xem §3.4).
-  - Section Input đang rỗng → bỏ qua dòng đó (không có gì để đọc), không báo lỗi cả
-    nút.
-- Visual feedback: Button đổi thành "⏳ Generating..." → "✅ Done!" → quay lại trạng thái
-  bình thường.
-
 **Add Image Button** (chưa triển khai; tab Image):
 
-- Qua pre-check ở trên thì đọc nội dung hiện tại của section **Input** (tab Image,
-  `07-sidebar.md` §7.2.3) làm prompt → gọi AI Provider `generateImage(fieldContent,
-  opts)` → gọi AnkiConnect `storeMediaFile` → ghi tag `<img src="filename.png">` vào
-  cuối section **Output**, theo tuỳ chọn Overwrite/Append của tab Image (xem §3.4).
-  - Section Input đang rỗng → không làm gì, hiển thị Notice "Nothing to generate an
-    image from — please fill in the [InputFieldName] section first."
+- Qua pre-check ở trên thì thực hiện 2 bước, cả hai đều qua provider user đã cấu hình:
+  1. Gom nội dung các section **không rỗng** của note (trừ section Output) → gọi **text
+     provider** `processText(fields, 'build-image-prompt', [])` để nó viết prompt tạo ảnh.
+  2. Gọi image provider `generateImage(prompt, opts)` → gọi AnkiConnect `storeMediaFile` →
+     ghi tag `<img src="filename.png">` vào cuối section **Output**, theo tuỳ chọn
+     Overwrite/Append của tab Image (xem §3.4).
+  - Chưa cấu hình text provider → Notice "Set up a text model in settings to generate image
+    prompts." và dừng (không gửi field thô tới image provider).
+  - Không có section nào không rỗng → Notice "Nothing to generate an image from — please
+    fill in at least one field first."
 - Visual feedback: Button đổi thành "⏳ Generating..." → "✅ Done!" → quay lại trạng thái
   bình thường.
 
@@ -117,25 +106,23 @@ Plugin parse content theo cấu trúc heading:
 - Extract data dựa trên section name:
   - "## Word" → text paragraph
   - "## Collocations" → list items (dòng bắt đầu bằng `-`)
-  - "## Audio" → `[sound:filename]` pattern
+  - "## Audio" → `[sound:filename]` pattern (chỉ để đọc thẻ đã có; plugin không tạo audio)
   - "## Image" → `<img src="filename">` pattern
 
 ## 3.4. Content Update Logic
 
-Nguyên tắc chung cho cả 3 nút AI: **không bao giờ phá dữ liệu user đã tự nhập.** Cách áp
-dụng khác nhau đôi chút giữa Audio/Image và Generate with AI. Audio/Image chỉ áp dụng
-cho dòng field-mapping đã cấu hình ở tab Audio/Image (`07-sidebar.md` §7.2.2/§7.2.3) — field
+Nguyên tắc chung cho cả 2 nút AI: **không bao giờ phá dữ liệu user đã tự nhập.** Cách áp
+dụng khác nhau đôi chút giữa Image và Generate with AI. Image chỉ áp dụng
+cho field Output đã cấu hình ở tab Image (`07-sidebar.md` §7.2.2) — field
 Output không nằm trong cấu hình thì không bị đụng tới.
 
-**Audio/Image** (field Input/Output = theo dòng mapping đã cấu hình, không còn cố định
-"## Audio"/"## Image"; hành vi ghi vào section Output phụ thuộc tuỳ chọn **Overwrite /
-Append** của tab Audio/Image):
+**Image** (field Output = theo cấu hình tab Image; hành vi ghi vào section Output phụ thuộc
+tuỳ chọn **Overwrite / Append** của tab Image):
 
-- Section Input đang rỗng → bỏ qua dòng đó (không có input để đọc).
-- Tuỳ chọn **Append** (mặc định): section Output đã có tag `[sound:...]`/
+- Tuỳ chọn **Append** (mặc định): section Output đã có tag
   `<img src="...">` từ trước → giữ nguyên tag cũ, thêm tag mới vào cuối section. Section
   Output chưa có tag nào → thêm tag mới.
-- Tuỳ chọn **Overwrite**: xoá (các) tag `[sound:...]`/`<img src="...">` hiện có trong
+- Tuỳ chọn **Overwrite**: xoá (các) tag `<img src="...">` hiện có trong
   section Output — chỉ xoá tag, giữ nguyên text khác user đã viết thêm trong section đó
   — rồi ghi tag mới vào.
 - Save file → Trigger re-render → Button **không** ẩn (xem §3.2).
@@ -152,7 +139,6 @@ section, append không hợp lý vì sẽ tạo ra 2 đoạn text lẫn lộn d�
 - **Prefix:** `_obsidian_` (để Anki không xóa nhầm khi Check Media)
 - **Format:** `_obsidian_{word}_{type}_{timestamp}.{ext}`
 - **Ví dụ:**
-  - `_obsidian_診察_audio_1698765432.mp3`
   - `_obsidian_apple_image_1698765433.png`
 
 ## 3.6. Auto-generate Content Structure

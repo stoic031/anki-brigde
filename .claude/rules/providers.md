@@ -9,9 +9,9 @@ Spec: `docs/design/02-providers.md`. Interfaces: `docs/contracts.md`.
 
 ## Structure
 
-- **One provider per file.** `providers/text/ollama.ts`, `providers/audio/edgeTts.ts`, etc.
+- **One provider per file.** `providers/text/ollama.ts`, `providers/image/openaiImage.ts`, etc.
 - Every provider implements the shared interface for its task (`processText`,
-  `generateAudio`, `generateImage`). Adding a provider must not require editing
+  `generateImage`). Adding a provider must not require editing
   `providerManager.ts` beyond one registration entry.
 - Normalize at the adapter boundary. The provider returns the shared shape from
   `docs/contracts.md`; nothing downstream should know which vendor answered.

@@ -2,7 +2,7 @@
 
 An [Obsidian](https://obsidian.md) plugin that syncs vocabulary notes from your vault
 to [Anki](https://apps.ankiweb.net/) via [AnkiConnect](https://foosoft.net/projects/anki-connect/),
-and can generate audio/image media for those notes through pluggable AI providers
+and can generate image media for those notes through pluggable AI providers
 (cloud or local).
 
 Anki Bridge is an **orchestrator only** — it calls AnkiConnect and whatever AI
@@ -21,7 +21,7 @@ AI-generated media into your vault (media goes straight to Anki's media folder).
   active note, plus quick Deck/Model editing. Notes stay clean: just properties and
   `## Field` sections.
 - Profiles (Deck + Model + save folder) for creating new notes.
-- Pluggable AI providers for text, audio (TTS), and image generation — bring your
+- Pluggable AI providers for text and image generation — bring your
   own API key, nothing is bundled or hardcoded.
 - Works entirely on your machine: Anki + AnkiConnect must be running locally.
 

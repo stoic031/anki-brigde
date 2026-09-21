@@ -1,4 +1,4 @@
-# 🎛️ Module 7: Sidebar Modal (Deck, Model, Audio & Image Config)
+# 🎛️ Module 7: Sidebar Modal (Deck, Model & Image Config)
 
 > Xem [`README.md`](README.md) cho tổng quan kiến trúc.
 
@@ -25,26 +25,25 @@ chỉ cần mở ra để xem/sửa).
 ```
 Anki Bridge
 Profile [Japanese ▼]          ← luôn hiện, nằm trên các tab (dùng cho note MỚI)
-[ Note | Text | Audio | Image ]
+[ Note | Text | Image ]
 ```
 
 | Tab | Nội dung | Trạng thái |
 | --- | --- | --- |
 | **Note** | Deck/Model của note đang mở; hàng nút **Sync \| Rebuild \| Delete** | Đã có |
 | **Text** | Chọn field cho Generate with AI + nút **Generate** | Đã có (phần gọi AI chưa triển khai) |
-| **Audio** | Voice, Language, Overwrite/Append, dòng mapping field (input → output) + nút **Add Audio** | **Chưa triển khai** — thiết kế ở §7.2.2 |
-| **Image** | Overwrite/Append, 1 dòng mapping field (input → output) cố định + nút **Add Image** | **Chưa triển khai** — thiết kế ở §7.2.3 |
+| **Image** | Overwrite/Append, chọn field Output + nút **Add Image** | **Chưa triển khai** — thiết kế ở §7.2.2 |
 
 - Chỉ hiển thị tab đã triển khai (hiện: Note, Text). Tab đang chọn giữ trong bộ nhớ view,
   mặc định là Note.
-- Trước đây Sidebar chia "Tab 1/2/3" (Note / Audio / Image) và các nút nằm trong note; nay
+- Trước đây Sidebar chia "Tab 1/2/3" (Note / Audio / Image; Audio đã bỏ) và các nút nằm trong note; nay
   nút hành động nằm ở Sidebar (xem `03-note.md` §3.1) và phần chọn field cho AI tách
-  thành tab **Text** riêng, cùng dạng với Audio/Image.
+  thành tab **Text** riêng, cùng dạng với Image.
 
 > **Không nhầm với Settings Tab (`06-settings.md` §6.2).** Settings Tab cấu hình
 > **provider** (chọn dịch vụ AI nào, API key, model) — áp dụng toàn cục. Các tab
-> Text/Audio/Image ở đây cấu hình **field nào map vào field nào** cho từng cặp Deck+Model
-> cụ thể, cộng thêm Voice/Language/Overwrite-Append áp dụng cho lần generate đó. Hai lớp
+> Text/Image ở đây cấu hình **field nào** được dùng/ghi cho từng cặp Deck+Model
+> cụ thể, cộng thêm Overwrite-Append áp dụng cho lần generate đó. Hai lớp
 > độc lập, không field nào trùng nhau; đổi provider ở Settings Tab không ảnh hưởng mapping
 > ở đây và ngược lại.
 
@@ -131,47 +130,22 @@ Fields to generate with AI                [✨ Generate]
   và 03-note.md §3.2). **Hiện chưa gọi AI:** đã tick field thì hiện Notice "Generate with AI
   is not available yet.".
 
-### 7.2.2. Tab Audio (chưa triển khai)
-
-```
-Voice: [Female ▼]      Language: [Japanese ▼]
-On existing tag: [Append ▼]   (hoặc "Overwrite")
-
-Row 1:  Input: [Word ▼]   →   Output: [Audio ▼]      [🗑]
-Row 2:  Input: [Example ▼] →  Output: [Example Audio ▼]  [🗑]
-
-[+ Add row]
-```
-
-- **Voice:** Male / Female — chỉ ảnh hưởng lần generate qua tab này, độc lập với field
-  Voice ở Settings Tab §6.2 (xem lưu ý ở §7.2).
-- **Language:** dropdown, danh sách phụ thuộc provider Audio đang cấu hình ở Settings
-  Tab §6.2.
-- **On existing tag (Overwrite/Append):** áp dụng khi field Output đã có `[sound:...]`
-  từ trước —
-  - **Append:** giữ tag cũ, thêm tag mới vào cuối section (hành vi mặc định trước đây,
-    xem [`03-note.md`](03-note.md) §3.4).
-  - **Overwrite:** xoá tag `[sound:...]` cũ trong section Output trước khi ghi tag mới
-    (chỉ xoá tag, giữ nguyên text khác user đã viết thêm trong section đó).
-- **Rows (Input → Output):** mỗi dòng là 1 cặp field độc lập — Input = field đọc text để
-  chuyển thành audio, Output = field ghi tag `[sound:...]` vào. Input/Output đều là
-  dropdown lấy từ `modelFieldNames(model)` của Deck+Model của note đang mở (tab Note). "+ Add row"
-  thêm dòng mới; 🗑 xoá dòng. Cho phép nhiều dòng vì 1 note có thể cần audio cho nhiều
-  field khác nhau (VD Word và Example câu riêng).
-
-### 7.2.3. Tab Image (chưa triển khai)
+### 7.2.2. Tab Image (chưa triển khai)
 
 ```
 On existing tag: [Append ▼]   (hoặc "Overwrite")
 
-Input: [Word ▼]   →   Output: [Image ▼]
+Output: [Image ▼]
 ```
 
-- Giống tab Audio về khái niệm Overwrite/Append và mapping Input → Output, nhưng **cố định
-  đúng 1 dòng** — không có "+ Add row"/🗑 vì một note thường chỉ cần 1 ảnh minh hoạ.
-  Không có Voice/Language (không áp dụng cho ảnh).
-- Overwrite ở đây nghĩa: xoá tag `<img src="...">` cũ trong section Output trước khi
-  ghi tag mới.
+- **Output:** dropdown lấy từ `modelFieldNames(model)` của Deck+Model của note đang mở —
+  field ghi tag `<img src="...">` vào.
+- **Không có field Input:** prompt tạo ảnh do **text model user đã chọn** viết từ các field
+  không rỗng của note (task `build-image-prompt`, xem `03-note.md` §3.2), rồi mới gửi tới
+  image provider. Cần cấu hình text provider ở Settings Tab §6.2.
+- **On existing tag (Overwrite/Append):** Append = giữ tag cũ, thêm tag mới; Overwrite = xoá
+  tag `<img src="...">` cũ trong section Output trước khi ghi tag mới (chỉ xoá tag, giữ
+  nguyên text khác — xem `03-note.md` §3.4).
 
 ## 7.3. Action: Create New Note
 
@@ -219,13 +193,13 @@ Deck/Model/Folder của note mới lấy từ **profile đang chọn** (§7.2.1;
 
 **Cấu hình field-mapping theo từng cặp Deck+Model:**
 
-- Field khả dụng (`modelFieldNames`) phụ thuộc Model, nên checkbox tab Text, các dòng
-  tab Audio, và dòng tab Image được lưu **riêng theo từng cặp Deck+Model**, không dùng chung 1
+- Field khả dụng (`modelFieldNames`) phụ thuộc Model, nên checkbox tab Text và field
+  Output tab Image được lưu **riêng theo từng cặp Deck+Model**, không dùng chung 1
   cấu hình toàn cục. Khoá lưu theo cặp Deck+Model, không theo profile.
 - Chuyển sang note khác đang mở có `anki_deck`/`anki_model` khác (hoặc đổi Deck/Model của
-  note) → các tab Text/Audio/Image tự hiện lại cấu hình đã lưu cho cặp đó (nếu có), hoặc trống nếu cặp
+  note) → các tab Text/Image tự hiện lại cấu hình đã lưu cho cặp đó (nếu có), hoặc trống nếu cặp
   đó chưa từng được cấu hình.
 - "Chưa cấu hình" (cho mục đích pre-check ở `03-note.md` §3.2) nghĩa là: tab Text chưa
-  tick field nào (với Generate), tab Audio chưa có dòng nào (với Add Audio), hoặc
-  tab Image dòng Input/Output chưa được chọn (với Add Image) — **cho cặp Deck+Model của
+  tick field nào (với Generate), hoặc
+  tab Image chưa chọn field Output (với Add Image) — **cho cặp Deck+Model của
   note đang mở**.

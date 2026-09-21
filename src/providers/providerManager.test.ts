@@ -5,7 +5,7 @@ import {
 	type ProviderConfig,
 	type ProviderManagerOptions,
 } from './providerManager';
-import type { AudioProvider, ImageProvider, TextProvider } from './types';
+import type { ImageProvider, TextProvider } from './types';
 
 function textProvider(
 	id: string,
@@ -20,7 +20,6 @@ function makeManager(
 ): ProviderManager {
 	return new ProviderManager({
 		text: { factories: {}, getConfig: () => null },
-		audio: { factories: {}, getConfig: () => null },
 		image: { factories: {}, getConfig: () => null },
 		...overrides,
 	});
@@ -46,7 +45,6 @@ describe('ProviderManager selection', () => {
 		const manager = makeManager();
 
 		expect(manager.getTextProvider()).toBeNull();
-		expect(manager.getAudioProvider()).toBeNull();
 		expect(manager.getImageProvider()).toBeNull();
 	});
 });
@@ -160,42 +158,22 @@ describe('ProviderManager error normalization', () => {
 		});
 	});
 
-	it.each([
-		[
-			'audio',
-			(m: ProviderManager) =>
-				m
-					.getAudioProvider()
-					?.generateAudio('t', { voice: 'v', language: 'l' }),
-		],
-		[
-			'image',
-			(m: ProviderManager) =>
-				m.getImageProvider()?.generateImage('p', {}),
-		],
-	])('wraps %s provider failures', async (_kind, call) => {
-		const audio: AudioProvider = {
-			id: 'a1',
-			isCloud: false,
-			generateAudio: () => Promise.reject(new Error('down')),
-		};
+	it('wraps image provider failures', async () => {
 		const image: ImageProvider = {
 			id: 'i1',
 			isCloud: false,
 			generateImage: () => Promise.reject(new Error('down')),
 		};
 		const manager = makeManager({
-			audio: {
-				factories: { x: () => audio },
-				getConfig: () => ({ type: 'x' }),
-			},
 			image: {
 				factories: { x: () => image },
 				getConfig: () => ({ type: 'x' }),
 			},
 		});
 
-		await expect(call(manager)).rejects.toBeInstanceOf(ProviderError);
+		await expect(
+			manager.getImageProvider()?.generateImage('p', {}),
+		).rejects.toBeInstanceOf(ProviderError);
 	});
 
 	it('throws ProviderError naming an unknown provider type', () => {

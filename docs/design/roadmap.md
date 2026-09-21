@@ -21,10 +21,10 @@
 
 ## 🚩 Milestone 3: AI Integration (2-3 tuần)
 
-- Module 2: AI Provider Manager (OpenAI + Ollama + Edge TTS)
+- Module 2: AI Provider Manager (OpenAI + Ollama)
 - Module 3: các nút hành động ở Sidebar (thêm Generate with AI); không còn khối trong note
 - Module 6 (Advanced): Settings cho AI providers
-- **Deliverable:** Plugin có thể tạo audio/image và lưu vào Anki
+- **Deliverable:** Plugin có thể tạo image và lưu vào Anki
 
 ## 🚩 Milestone 4: Polish & UX (1-2 tuần)
 

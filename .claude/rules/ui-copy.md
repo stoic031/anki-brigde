@@ -14,7 +14,7 @@ Spec: `docs/design/03-note.md`, `docs/design/05-ui.md`, `docs/design/06-settings
 - **All user-facing strings in English.** This plugin targets the Obsidian community
   store. If the spec quotes a string in another language, translate it and keep it
   consistent with the surrounding copy.
-- Sentence case: "Add audio", not "Add Audio".
+- Sentence case: "Add image", not "Add Image".
 - Bold for literal UI labels; arrow notation for navigation: **Settings → Community plugins**.
 - **Action buttons** (sidebar) are icon + text, using Obsidian's built-in Lucide icons via
   `setIcon` (`refresh-cw` sync, `hammer` rebuild, `trash-2` delete, `sparkles` generate).
@@ -31,7 +31,7 @@ Every action button cycles: normal → `⏳ …` (disabled, opacity 0.6, `cursor
 longer applicable.
 
 Visibility is conditional per `docs/design/03-note.md` §3.2 — e.g. Delete is only shown when
-`anki_note_id` exists, Add Audio only when the content has no `[sound:...]`.
+`anki_note_id` exists, Add Image only when the content has no `<img>`.
 
 ## Long operations
 

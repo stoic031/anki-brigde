@@ -39,32 +39,34 @@ vi.mock('./quickCapture', () => ({
 	openPluginSettings,
 }));
 
-const { NoteNameModal, submitNoteName, resetCapturedSubmit } = vi.hoisted(() => {
-	let capturedSubmit: ((name: string | null) => void) | null = null;
-	class NoteNameModal {
-		constructor(
-			public app: unknown,
-			onSubmit: (name: string | null) => void,
-		) {
-			capturedSubmit = onSubmit;
-		}
-		open() {}
-	}
-	return {
-		NoteNameModal,
-		// runCreateNote may `await` before constructing the modal, so wait for
-		// capturedSubmit to actually exist rather than racing it.
-		submitNoteName: async (name: string | null) => {
-			while (!capturedSubmit) {
-				await new Promise((resolve) => setTimeout(resolve, 0));
+const { NoteNameModal, submitNoteName, resetCapturedSubmit } = vi.hoisted(
+	() => {
+		let capturedSubmit: ((name: string | null) => void) | null = null;
+		class NoteNameModal {
+			constructor(
+				public app: unknown,
+				onSubmit: (name: string | null) => void,
+			) {
+				capturedSubmit = onSubmit;
 			}
-			capturedSubmit(name);
-		},
-		resetCapturedSubmit: () => {
-			capturedSubmit = null;
-		},
-	};
-});
+			open() {}
+		}
+		return {
+			NoteNameModal,
+			// runCreateNote may `await` before constructing the modal, so wait for
+			// capturedSubmit to actually exist rather than racing it.
+			submitNoteName: async (name: string | null) => {
+				while (!capturedSubmit) {
+					await new Promise((resolve) => setTimeout(resolve, 0));
+				}
+				capturedSubmit(name);
+			},
+			resetCapturedSubmit: () => {
+				capturedSubmit = null;
+			},
+		};
+	},
+);
 vi.mock('../ui/modals/noteNameModal', () => ({ NoteNameModal }));
 
 import { runCreateNote } from './createNote';
@@ -131,10 +133,14 @@ describe('runCreateNote', () => {
 			'Vocab/word.md',
 			'## Word\n\n## Meaning\n',
 		);
-		expect(writeAnkiFrontmatter).toHaveBeenCalledWith(plugin.app, createdFile, {
-			anki_deck: 'Japanese',
-			anki_model: 'Basic',
-		});
+		expect(writeAnkiFrontmatter).toHaveBeenCalledWith(
+			plugin.app,
+			createdFile,
+			{
+				anki_deck: 'Japanese',
+				anki_model: 'Basic',
+			},
+		);
 		expect(openFile).toHaveBeenCalledWith(createdFile);
 		expect(revealSidebarView).toHaveBeenCalledWith(plugin.app);
 		expect(saveSettings).not.toHaveBeenCalled();
@@ -149,7 +155,10 @@ describe('runCreateNote', () => {
 		expect(Notice).toHaveBeenCalledWith(
 			'Please set up a profile in Settings first',
 		);
-		expect(openPluginSettings).toHaveBeenCalledWith(plugin.app, 'anki-bridge');
+		expect(openPluginSettings).toHaveBeenCalledWith(
+			plugin.app,
+			'anki-bridge',
+		);
 		expect(vaultCreate).not.toHaveBeenCalled();
 	});
 
