@@ -131,10 +131,10 @@ language, (c) whether to let the user preview/edit the prompt before the image c
 (d) with no text provider configured we currently **stop with a Notice** rather than
 fall back to the raw field text — confirm that is what you want.
 
-### 20. Text provider API key is stored in plain text
+### 20. Text provider API key is stored in plain text — resolved
 
-The API key is saved in the plugin's `data.json` inside the vault's `.obsidian/plugins/`
-folder (Obsidian has no secret store), so it syncs with the vault if the user syncs
-`.obsidian/`. The field is masked in the UI only. Decide whether to document this in the
-README / settings description, or move keys to an env-var or OS-keychain flow later.
-
+Resolved: the API key source can be **Obsidian keychain** (`app.secretStorage`, Obsidian
+≥ 1.11.4, `minAppVersion` raised accordingly), which stores only the secret's name in
+`data.json`. "Enter manually" still writes the key in plain text in the plugin's data file
+(masked in the UI) and says so in its description. Remaining question: whether to make the
+keychain the default for new configs.

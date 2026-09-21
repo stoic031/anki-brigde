@@ -5,11 +5,22 @@ export const TEXT_TIMEOUT_MS = 60_000;
 
 // requestUrl (not fetch) avoids CORS in Obsidian's renderer but has no timeout, so we
 // race one. Errors name the provider and URL; bodies and headers are never included.
-export async function postJson(
+export function postJson(
 	providerId: string,
 	url: string,
 	headers: Record<string, string>,
 	body: unknown,
+	timeoutMs = TEXT_TIMEOUT_MS,
+): Promise<unknown> {
+	return requestJson('POST', providerId, url, headers, body, timeoutMs);
+}
+
+export async function requestJson(
+	method: 'GET' | 'POST',
+	providerId: string,
+	url: string,
+	headers: Record<string, string>,
+	body?: unknown,
 	timeoutMs = TEXT_TIMEOUT_MS,
 ): Promise<unknown> {
 	const timeoutError = new Error('timeout');
@@ -24,10 +35,10 @@ export async function postJson(
 		const response = await Promise.race([
 			requestUrl({
 				url,
-				method: 'POST',
+				method,
 				contentType: 'application/json',
 				headers,
-				body: JSON.stringify(body),
+				body: body === undefined ? undefined : JSON.stringify(body),
 				throw: false,
 			}),
 			timeout,

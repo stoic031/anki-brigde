@@ -81,8 +81,14 @@ cho mọi profile; mặc định chưa có cấu hình nào = không gọi AI). 
 
 - Type: dropdown (openai-compatible, anthropic)
 - Base URL: text field (ví dụ `https://openrouter.ai/api/v1`, `http://localhost:11434/v1`)
-- API Key: text field (tùy chọn với local)
-- Model: text field tự do, kèm `datalist` gợi ý (không giới hạn danh sách)
+- API Key: chọn **nguồn** — *Enter manually* (ô nhập ẩn ký tự, lưu plain text trong `data.json`)
+  hoặc *Obsidian keychain* (`SecretComponent`, chỉ lưu **tên** secret, không lưu key; key được
+  đọc từ `app.secretStorage` mỗi lần gọi nên đổi secret có hiệu lực ngay). Tùy chọn với local.
+  Cấu hình cũ chưa có nguồn = manual
+- Model: dropdown liệt kê model của endpoint (`GET {baseUrl}/models`; Anthropic
+  `GET /v1/models`). Chỉ tải khi user lưu Base URL / đổi Type / đổi key hoặc bấm **Refresh**,
+  không tự tải khi mở Settings. Tải lỗi hoặc rỗng → về ô text tự do kèm gợi ý; model đã lưu
+  mà endpoint không liệt kê vẫn hiển thị
 - Nhãn Cloud / Local: tự suy ra từ Base URL (localhost, 127.0.0.1 = Local, còn lại = Cloud)
 - Dropdown active có mục **None**; Add tạo cấu hình mới và chọn nó làm active; Delete xoá cấu
   hình đang active (active về None). Form sửa hiện bên dưới, chỉ cho cấu hình đang active
@@ -90,8 +96,8 @@ cho mọi profile; mặc định chưa có cấu hình nào = không gọi AI). 
   Notice "❌ Invalid URL. Please check the base URL." và giữ giá trị cũ; Name rỗng bị từ chối
 - Cấu hình active thiếu Base URL hoặc Model được coi như **chưa cấu hình** (không gọi AI)
   — `getActiveTextConfig` trong `src/settings.ts` trả `null`
-- API Key lưu dạng plain text trong `data.json` của plugin (Obsidian không có secret store),
-  ô nhập ẩn ký tự. Chỉ gửi tới Base URL của cấu hình đang active
+- Key (manual hoặc keychain) chỉ gửi tới Base URL của cấu hình đang active — cả khi gọi model
+  lẫn khi liệt kê model. Cần Obsidian ≥ 1.11.4 (`minAppVersion`) vì `SecretStorage`
 
 **Image Generation:**
 
