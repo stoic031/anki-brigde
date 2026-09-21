@@ -12,11 +12,12 @@ const { PluginBase, addCommandSpy } = vi.hoisted(() => {
 });
 vi.mock('obsidian', () => ({ Plugin: PluginBase }));
 
-const { loadSettings, saveSettings } = vi.hoisted(() => ({
+const { loadSettings, saveSettings, getActiveTextConfig } = vi.hoisted(() => ({
 	loadSettings: vi.fn().mockResolvedValue({}),
+	getActiveTextConfig: vi.fn().mockReturnValue(null),
 	saveSettings: vi.fn().mockResolvedValue(undefined),
 }));
-vi.mock('./settings', () => ({ loadSettings, saveSettings }));
+vi.mock('./settings', () => ({ loadSettings, saveSettings, getActiveTextConfig }));
 
 const { runQuickCapture } = vi.hoisted(() => ({
 	runQuickCapture: vi.fn().mockResolvedValue(undefined),
@@ -163,5 +164,22 @@ describe('AnkiBridgePlugin.onload', () => {
 		await plugin.onload();
 
 		expect(registerSidebarView).toHaveBeenCalledWith(plugin);
+	});
+
+	it('exposes a ProviderManager that builds nothing until asked and reads config at call time', async () => {
+		const plugin = new AnkiBridgePlugin({} as App, {} as PluginManifest);
+		await plugin.onload();
+		expect(getActiveTextConfig).not.toHaveBeenCalled();
+
+		expect(plugin.providers.getTextProvider()).toBeNull();
+		expect(getActiveTextConfig).toHaveBeenCalledTimes(1);
+
+		getActiveTextConfig.mockReturnValue({
+			type: 'openai-compatible',
+			baseUrl: 'http://localhost:11434/v1',
+			model: 'm',
+		});
+		expect(plugin.providers.getTextProvider()?.id).toBe('openai-compatible');
+		expect(plugin.providers.getImageProvider()).toBeNull();
 	});
 });

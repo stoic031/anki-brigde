@@ -1,7 +1,10 @@
 import { Plugin } from 'obsidian';
+import { ProviderManager } from './providers/providerManager';
+import { textFactories } from './providers/text';
 import { runQuickCapture } from './note/quickCapture';
 import { runCreateNote } from './note/createNote';
 import {
+	getActiveTextConfig,
 	loadSettings,
 	saveSettings,
 	type AnkiBridgeSettings,
@@ -12,6 +15,16 @@ import { PROFILE_CHANGED_EVENT } from './utils/constants';
 
 export default class AnkiBridgePlugin extends Plugin {
 	settings!: AnkiBridgeSettings;
+
+	// docs/design/02-providers.md §2.3 — providers are built on first use, config read at
+	// call time, so settings edits apply without a reload and nothing runs on load.
+	readonly providers = new ProviderManager({
+		text: {
+			factories: textFactories,
+			getConfig: () => getActiveTextConfig(this.settings),
+		},
+		image: { factories: {}, getConfig: () => null }, // Image providers: not built yet
+	});
 
 	async onload(): Promise<void> {
 		this.settings = await loadSettings(this);

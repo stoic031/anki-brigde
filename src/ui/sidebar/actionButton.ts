@@ -1,5 +1,5 @@
 import { setIcon } from 'obsidian';
-import { SyncError } from '../../types';
+import { ProviderError, SyncError } from '../../types';
 import { toastError } from '../toast';
 
 export interface ActionButton {
@@ -33,6 +33,7 @@ export async function runAction(
 		failure: string;
 		onRestore: () => void;
 		hideOnSuccess?: boolean;
+		busyLabel?: string;
 	},
 ): Promise<void> {
 	const restore = () => {
@@ -44,7 +45,7 @@ export async function runAction(
 
 	button.busy = true;
 	button.el.disabled = true;
-	button.label.setText('⏳ Processing...');
+	button.label.setText(opts.busyLabel ?? '⏳ Processing...');
 	try {
 		await opts.work();
 		if (opts.hideOnSuccess) {
@@ -57,8 +58,12 @@ export async function runAction(
 	} catch (err) {
 		// SyncError already carries a case-specific message (docs/design/01-sync.md §1.6);
 		// show it instead of the generic copy so "model not found" doesn't read as
-		// "Anki is down".
-		toastError(err instanceof SyncError ? `❌ ${err.message}` : opts.failure);
+		// "Anki is down". ProviderError likewise names the provider and URL that failed.
+		toastError(
+			err instanceof SyncError || err instanceof ProviderError
+				? `❌ ${err.message}`
+				: opts.failure,
+		);
 		button.label.setText('❌ Error');
 		window.setTimeout(restore, 3000);
 	}

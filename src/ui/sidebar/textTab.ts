@@ -1,10 +1,11 @@
-import { Notice, Setting } from 'obsidian';
+import { Notice, Setting, type TFile } from 'obsidian';
 import type AnkiBridgePlugin from '../../main';
-import { runAiPreCheck } from '../../note/aiPreCheck';
+import { planGenerate, runGenerate } from '../../note/generateFields';
 import { fieldConfigKey, resolveAnkiConnectUrl } from '../../settings';
 import { AnkiConnectClient } from '../../sync/ankiConnect';
-import { toastError } from '../toast';
-import { createActionButton } from './actionButton';
+import { ProviderError } from '../../types';
+import { toastError, toastSuccess } from '../toast';
+import { createActionButton, runAction } from './actionButton';
 
 export interface TextTab {
 	// Called whenever the active note's Deck+Model may have changed. Only re-fetches the
@@ -14,9 +15,32 @@ export interface TextTab {
 
 // docs/design/07-sidebar.md §7.2.1 — Text tab: which fields "Generate with AI" fills,
 // with the Generate button next to the section title.
+function reportOutcome({
+	filled,
+	skipped,
+}: {
+	filled: string[];
+	skipped: string[];
+}): void {
+	if (filled.length === 0 && skipped.length === 0) {
+		new Notice(
+			'The text model returned nothing to add. Try again or check the model.',
+		);
+		return;
+	}
+	const skippedNote =
+		skipped.length > 0
+			? `, ${skipped.length} skipped (already had content)`
+			: '';
+	toastSuccess(
+		`✅ AI content generated: ${filled.length} filled${skippedNote}.`,
+	);
+}
+
 export function renderTextTab(
 	parent: HTMLElement,
 	plugin: AnkiBridgePlugin,
+	getNote: () => TFile | null,
 ): TextTab {
 	const header = parent.createDiv({ cls: 'anki-bridge-sidebar__section-header' });
 	header.createSpan({
@@ -36,22 +60,52 @@ export function renderTextTab(
 	let current = { deck: '', model: '' };
 	let renderedKey = '';
 
+	// docs/design/03-note.md §3.2 — checks that don't need the model run first and end in a
+	// plain Notice; only the model call + write cycle the button through ⏳/✅/❌.
 	generate.el.addEventListener('click', () => {
-		if (generate.el.disabled) return;
-		// docs/design/03-note.md §3.2 — AI generation itself isn't implemented yet; the
-		// button only runs the shared pre-check.
-		const result = runAiPreCheck(
-			'generate-ai',
-			plugin.settings,
-			current.deck,
-			current.model,
-		);
-		new Notice(
-			result.configured
-				? 'Generate with AI is not available yet.'
-				: result.message,
-		);
+		void onGenerate();
 	});
+
+	const onGenerate = async () => {
+		const note = getNote();
+		if (generate.el.disabled || generate.busy || !note) return;
+		try {
+			const plan = await planGenerate(
+				plugin,
+				note,
+				current.deck,
+				current.model,
+			);
+			if (plan.stop !== undefined) {
+				new Notice(plan.stop);
+				return;
+			}
+			const progress = new Notice('⏳ Asking the text model…', 0);
+			let outcome = { filled: [] as string[], skipped: [] as string[] };
+			try {
+				await runAction(generate, {
+					busyLabel: '⏳ Generating...',
+					failure:
+						'❌ Failed to generate content. Please check your text model settings.',
+					onRestore: () => {
+						generate.el.disabled = !current.deck || !current.model;
+					},
+					work: async () => {
+						outcome = await runGenerate(plugin, note, plan);
+					},
+				});
+			} finally {
+				progress.hide();
+			}
+			reportOutcome(outcome);
+		} catch (err) {
+			toastError(
+				err instanceof ProviderError
+					? `❌ ${err.message}`
+					: '❌ Failed to generate content. Please check Anki connection.',
+			);
+		}
+	};
 
 	const setFieldSelected = async (
 		deck: string,
@@ -70,7 +124,7 @@ export function renderTextTab(
 	return {
 		async sync(deck, model) {
 			current = { deck, model };
-			generate.el.disabled = !deck || !model;
+			if (!generate.busy) generate.el.disabled = !deck || !model;
 
 			const key = fieldConfigKey(deck, model);
 			if (key === renderedKey) return;

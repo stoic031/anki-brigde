@@ -6,6 +6,8 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- **Generate** button now works: the active text model fills the ticked fields of the open note
+  (empty sections only, never overwriting your text) — Anki is updated when you press Sync.
 - Settings: **AI text provider** section — add/delete provider configs (OpenAI-compatible or
   Anthropic; Base URL, API key, Model), pick the active one, Cloud/Local label. None active by
   default, so no AI call is made until you set one up.
