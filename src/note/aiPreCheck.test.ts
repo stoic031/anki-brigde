@@ -38,7 +38,9 @@ describe('runAiPreCheck — generate-ai', () => {
 		const key = fieldConfigKey('Japanese', 'Basic');
 		const settings = fakeSettings({ generateWithAiFields: { [key]: [] } });
 
-		expect(runAiPreCheck('generate-ai', settings, 'Japanese', 'Basic')).toEqual({
+		expect(
+			runAiPreCheck('generate-ai', settings, 'Japanese', 'Basic'),
+		).toEqual({
 			configured: false,
 			message:
 				'Please configure AI field generation for this Deck/Model in the sidebar (Text tab) first.',
@@ -51,7 +53,9 @@ describe('runAiPreCheck — generate-ai', () => {
 			generateWithAiFields: { [key]: ['Meaning'] },
 		});
 
-		expect(runAiPreCheck('generate-ai', settings, 'Japanese', 'Basic')).toEqual({
+		expect(
+			runAiPreCheck('generate-ai', settings, 'Japanese', 'Basic'),
+		).toEqual({
 			configured: true,
 		});
 	});
@@ -72,20 +76,8 @@ describe('runAiPreCheck — generate-ai', () => {
 	});
 });
 
-describe('runAiPreCheck — add-audio', () => {
-	it('is always not configured — Tab 2 does not exist yet', () => {
-		expect(
-			runAiPreCheck('add-audio', fakeSettings(), 'Japanese', 'Basic'),
-		).toEqual({
-			configured: false,
-			message:
-				'Please configure Audio field mapping for this Deck/Model in the sidebar (Audio tab) first.',
-		});
-	});
-});
-
 describe('runAiPreCheck — add-image', () => {
-	it('is always not configured — Tab 3 does not exist yet', () => {
+	it('is always not configured — the Image tab does not exist yet', () => {
 		expect(
 			runAiPreCheck('add-image', fakeSettings(), 'Japanese', 'Basic'),
 		).toEqual({

@@ -104,14 +104,8 @@ interface TextResult {
 
 interface MediaResult {
  base64: string; // raw base64, NO "data:...;base64," prefix
- ext: string; // "mp3" | "png" — no leading dot
+ ext: string; // e.g. "png" — no leading dot
  mimeType: string;
-}
-
-interface AudioOptions {
- voice: string; // Sidebar Modal Tab 2, e.g. "Male" | "Female" — docs/design/07-sidebar.md §7.2.2
- language: string; // Sidebar Modal Tab 2, provider-dependent list — docs/design/07-sidebar.md §7.2.2
- speed?: number; // docs/design/02-providers.md §2.4 mentions this; no UI sets it yet, providers may default it
 }
 
 interface ImageOptions {
@@ -129,18 +123,17 @@ interface TextProvider {
   targetFields: string[], // fields the user ticked in the Generate-with-AI modal
  ): Promise<TextResult>;
 }
-interface AudioProvider {
- id: string;
- isCloud: boolean;
- generateAudio(text: string, opts: AudioOptions): Promise<MediaResult>;
-}
 interface ImageProvider {
  id: string;
  isCloud: boolean;
  generateImage(prompt: string, opts: ImageOptions): Promise<MediaResult>;
 }
 
-type TextTask = 'extract-vocabulary' | 'generate-example' | 'rewrite';
+type TextTask =
+ | 'extract-vocabulary'
+ | 'generate-example'
+ | 'rewrite'
+ | 'build-image-prompt'; // input = the card's fields, result = the prompt for ImageProvider
 ```
 
 `targetFields` comes straight from `modelFieldNames()` for the note's Model — the

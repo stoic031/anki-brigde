@@ -95,7 +95,7 @@ that's a design-doc change first, code change second.
 
 ## Content updates
 
-Adding audio/image **appends into the matching `## Section`**. Never rewrite the whole
+Adding image **appends into the matching `## Section`**. Never rewrite the whole
 file. If the section is absent, create it at the end. Preserve everything else byte
 for byte.
 

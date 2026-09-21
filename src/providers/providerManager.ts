@@ -1,5 +1,5 @@
 import { ProviderError } from '../types';
-import type { AudioProvider, ImageProvider, TextProvider } from './types';
+import type { ImageProvider, TextProvider } from './types';
 
 export interface ProviderConfig {
 	type: string;
@@ -15,7 +15,6 @@ export interface ProviderKind<P> {
 
 export interface ProviderManagerOptions {
 	text: ProviderKind<TextProvider>;
-	audio: ProviderKind<AudioProvider>;
 	image: ProviderKind<ImageProvider>;
 }
 
@@ -27,7 +26,6 @@ interface Cached<P> {
 // docs/design/02-providers.md §2.3 — providers are built on first use, never on load.
 export class ProviderManager {
 	private text: Cached<TextProvider> | null = null;
-	private audio: Cached<AudioProvider> | null = null;
 	private image: Cached<ImageProvider> | null = null;
 
 	constructor(private readonly options: ProviderManagerOptions) {}
@@ -35,13 +33,6 @@ export class ProviderManager {
 	getTextProvider(): TextProvider | null {
 		return (
 			(this.text = this.resolve(this.options.text, this.text))
-				?.provider ?? null
-		);
-	}
-
-	getAudioProvider(): AudioProvider | null {
-		return (
-			(this.audio = this.resolve(this.options.audio, this.audio))
 				?.provider ?? null
 		);
 	}

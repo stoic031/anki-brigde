@@ -4,7 +4,7 @@ export interface TextResult {
 
 export interface MediaResult {
 	base64: string; // raw base64, NO "data:...;base64," prefix
-	ext: string; // "mp3" | "png" — no leading dot
+	ext: string; // e.g. "png" — no leading dot
 	mimeType: string;
 }
 
@@ -18,25 +18,17 @@ export interface TextProvider {
 	): Promise<TextResult>;
 }
 
-export interface AudioProvider {
-	id: string;
-	isCloud: boolean;
-	generateAudio(text: string, opts: AudioOptions): Promise<MediaResult>;
-}
-
 export interface ImageProvider {
 	id: string;
 	isCloud: boolean;
 	generateImage(prompt: string, opts: ImageOptions): Promise<MediaResult>;
 }
 
-export type TextTask = 'extract-vocabulary' | 'generate-example' | 'rewrite';
-
-export interface AudioOptions {
-	voice: string; // Sidebar Modal Tab 2, e.g. "Male" | "Female" — docs/design/07-sidebar.md §7.2.2
-	language: string; // Sidebar Modal Tab 2, provider-dependent list — docs/design/07-sidebar.md §7.2.2
-	speed?: number; // docs/design/02-providers.md §2.4 mentions this; no UI sets it yet, providers may default it
-}
+export type TextTask =
+	| 'extract-vocabulary'
+	| 'generate-example'
+	| 'rewrite'
+	| 'build-image-prompt'; // input = the card's fields, result = the prompt for ImageProvider
 
 export interface ImageOptions {
 	size?: string; // docs/design/02-providers.md §2.4 mentions this; no UI sets it yet, providers may default it

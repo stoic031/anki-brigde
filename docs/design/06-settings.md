@@ -85,14 +85,6 @@ cho mọi profile; mặc định chưa có cấu hình nào = không gọi AI). 
 - Model: text field tự do, kèm `datalist` gợi ý (không giới hạn danh sách)
 - Nhãn Cloud / Local: tự suy ra từ Base URL (localhost, 127.0.0.1 = Local, còn lại = Cloud)
 
-**Audio Generation:**
-
-- Provider: dropdown (openai, azure, elevenlabs, edge, sherpa-onnx)
-- API Key: text field (chỉ hiện khi chọn cloud provider)
-- Model: text field (tts-1-hd, eleven_multilingual_v2)
-- Voice: text field (alloy, nanami)
-- API URL: text field (chỉ hiện khi chọn local provider)
-
 **Image Generation:**
 
 - Provider: dropdown (dalle, stability, replicate, automatic1111, comfyui)

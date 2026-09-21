@@ -49,7 +49,7 @@ All notable changes to this project are documented in this file.
 ### Notes
 
 - **Generate** currently only runs its pre-check; AI generation is not implemented yet.
-  The Audio and Image tabs are planned and not part of this release.
+  The Image tab is planned and not part of this release.
 
 ## [1.0.0]
 

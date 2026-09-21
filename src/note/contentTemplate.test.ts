@@ -10,7 +10,15 @@ describe('generateContentSkeleton', () => {
 	});
 
 	it('matches the docs/design/03-note.md §3.6 5-field example (Japanese Vocabulary)', () => {
-		expect(generateContentSkeleton(['Word', 'Meaning', 'Furigana', 'Audio', 'Image'])).toBe(
+		expect(
+			generateContentSkeleton([
+				'Word',
+				'Meaning',
+				'Furigana',
+				'Audio',
+				'Image',
+			]),
+		).toBe(
 			'## Word\n\n## Meaning\n\n## Furigana\n\n## Audio\n\n## Image\n',
 		);
 	});
@@ -51,7 +59,9 @@ describe('generateContentSkeleton', () => {
 	it('round-trips a pre-filled first field, including multi-line selected text', () => {
 		const fields = ['Word', 'Meaning'];
 		const selectedText = '薬\nくすり (medicine)';
-		const sections = parseSections(generateContentSkeleton(fields, selectedText));
+		const sections = parseSections(
+			generateContentSkeleton(fields, selectedText),
+		);
 
 		expect(sections.get('word')).toBe(selectedText);
 		expect(sections.get('meaning')).toBe('');
@@ -71,7 +81,8 @@ describe('rebuildContent', () => {
 	});
 
 	it('drops a legacy anki-controls block along with the rest of the old body', () => {
-		const content = '---\na: 1\n---\n\n```anki-controls\n```\n\n## Word\n\nold\n';
+		const content =
+			'---\na: 1\n---\n\n```anki-controls\n```\n\n## Word\n\nold\n';
 
 		expect(rebuildContent(content, ['Front', 'Back'])).toBe(
 			`---\na: 1\n---\n\n${skeleton}`,
@@ -79,9 +90,9 @@ describe('rebuildContent', () => {
 	});
 
 	it('handles frontmatter with no trailing newline', () => {
-		expect(rebuildContent('---\nanki_deck: X\n---', ['Front', 'Back'])).toBe(
-			`---\nanki_deck: X\n---\n\n${skeleton}`,
-		);
+		expect(
+			rebuildContent('---\nanki_deck: X\n---', ['Front', 'Back']),
+		).toBe(`---\nanki_deck: X\n---\n\n${skeleton}`);
 	});
 
 	it('returns just the skeleton when there is no frontmatter', () => {
@@ -89,11 +100,16 @@ describe('rebuildContent', () => {
 	});
 
 	it('does not mistake a later --- rule for frontmatter', () => {
-		expect(rebuildContent('intro\n---\nmore', ['Front', 'Back'])).toBe(skeleton);
+		expect(rebuildContent('intro\n---\nmore', ['Front', 'Back'])).toBe(
+			skeleton,
+		);
 	});
 
 	it('is stable when applied twice (idempotent)', () => {
-		const once = rebuildContent('---\na: 1\n---\n\nbody', ['Front', 'Back']);
+		const once = rebuildContent('---\na: 1\n---\n\nbody', [
+			'Front',
+			'Back',
+		]);
 
 		expect(rebuildContent(once, ['Front', 'Back'])).toBe(once);
 	});

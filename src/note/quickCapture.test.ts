@@ -48,9 +48,7 @@ afterEach(() => {
 });
 
 // Settings whose active (and only) profile has the given values.
-function withProfile(
-	profile: Partial<Profile>,
-): Partial<AnkiBridgeSettings> {
+function withProfile(profile: Partial<Profile>): Partial<AnkiBridgeSettings> {
 	return {
 		profiles: [{ ...DEFAULT_SETTINGS.profiles[0]!, ...profile }],
 	};
@@ -91,7 +89,11 @@ function fakePlugin(
 		settings?: Partial<AnkiBridgeSettings>;
 	} = {},
 ) {
-	const { view = null, existingPaths = [], settings: overrides = {} } = options;
+	const {
+		view = null,
+		existingPaths = [],
+		settings: overrides = {},
+	} = options;
 	const settings = fakeSettings(overrides);
 	const saveSettings = vi.fn().mockResolvedValue(undefined);
 	const createdFile = { path: 'created' };
@@ -165,10 +167,16 @@ describe('getQuickCaptureFilename', () => {
 });
 
 describe('resolveQuickCaptureTarget', () => {
-	it('uses the active profile\'s Deck/Model/Folder', () => {
+	it("uses the active profile's Deck/Model/Folder", () => {
 		const settings = fakeSettings({
 			profiles: [
-				{ id: 'a', name: 'A', deck: 'Other', model: 'Other model', folder: '' },
+				{
+					id: 'a',
+					name: 'A',
+					deck: 'Other',
+					model: 'Other model',
+					folder: '',
+				},
 				{
 					id: 'b',
 					name: 'B',
@@ -201,7 +209,9 @@ describe('resolveQuickCaptureTarget', () => {
 
 	it('returns null when the active profile has only a Model', () => {
 		expect(
-			resolveQuickCaptureTarget(fakeSettings(withProfile({ model: 'Basic' }))),
+			resolveQuickCaptureTarget(
+				fakeSettings(withProfile({ model: 'Basic' })),
+			),
 		).toBeNull();
 	});
 });
@@ -210,19 +220,25 @@ describe('getUniqueNotePath', () => {
 	it('returns the original path when there is no collision', () => {
 		const app = fakeVaultApp([]);
 
-		expect(getUniqueNotePath(app, 'Vocab', 'word.md')).toBe('Vocab/word.md');
+		expect(getUniqueNotePath(app, 'Vocab', 'word.md')).toBe(
+			'Vocab/word.md',
+		);
 	});
 
 	it('appends a numeric suffix on a single collision', () => {
 		const app = fakeVaultApp(['Vocab/word.md']);
 
-		expect(getUniqueNotePath(app, 'Vocab', 'word.md')).toBe('Vocab/word 1.md');
+		expect(getUniqueNotePath(app, 'Vocab', 'word.md')).toBe(
+			'Vocab/word 1.md',
+		);
 	});
 
 	it('increments the suffix past multiple collisions', () => {
 		const app = fakeVaultApp(['Vocab/word.md', 'Vocab/word 1.md']);
 
-		expect(getUniqueNotePath(app, 'Vocab', 'word.md')).toBe('Vocab/word 2.md');
+		expect(getUniqueNotePath(app, 'Vocab', 'word.md')).toBe(
+			'Vocab/word 2.md',
+		);
 	});
 
 	it('has no folder prefix when the folder is the vault root', () => {
@@ -251,10 +267,14 @@ describe('runQuickCapture', () => {
 			'Vocab/薬.md',
 			'## Word\n\n薬\n\n## Meaning\n',
 		);
-		expect(writeAnkiFrontmatter).toHaveBeenCalledWith(plugin.app, createdFile, {
-			anki_deck: 'Japanese',
-			anki_model: 'Basic',
-		});
+		expect(writeAnkiFrontmatter).toHaveBeenCalledWith(
+			plugin.app,
+			createdFile,
+			{
+				anki_deck: 'Japanese',
+				anki_model: 'Basic',
+			},
+		);
 		expect(openFile).toHaveBeenCalledWith(createdFile);
 		expect(saveSettings).not.toHaveBeenCalled();
 		expect(revealSidebarView).toHaveBeenCalledWith(plugin.app);
