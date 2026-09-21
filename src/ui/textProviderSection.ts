@@ -1,88 +1,40 @@
-import { Setting } from 'obsidian';
 import type AnkiBridgePlugin from '../main';
+import { listModels } from '../providers/text/listModels';
 import type { TextProviderConfig } from '../settings';
-import { renderEditor } from './textProviderEditor';
+import { renderProviderSection } from './providerSection';
 
-// docs/design/06-settings.md §6.2 — global list of text provider configs + the active one.
-// The active dropdown is also the config being edited below it.
+// docs/design/06-settings.md §6.2 — Text providers.
 export function renderTextProviderSection(
 	containerEl: HTMLElement,
 	plugin: AnkiBridgePlugin,
 ): void {
-	const el = containerEl.createDiv({
-		cls: 'anki-bridge-settings__text-provider',
+	renderProviderSection<TextProviderConfig>(containerEl, plugin, {
+		cssClass: 'anki-bridge-settings__text-provider',
+		heading: 'AI text provider',
+		activeDesc:
+			'Used to fill fields and write image prompts. None means no AI calls.',
+		defaultType: 'openai-compatible',
+		read: (s) => ({
+			list: s.textProviders,
+			activeId: s.activeTextProviderId,
+		}),
+		write: (s, list, activeId) => {
+			s.textProviders = list;
+			s.activeTextProviderId = activeId;
+		},
+		kind: {
+			typeLabels: {
+				'openai-compatible': 'OpenAI-compatible',
+				anthropic: 'Anthropic',
+			},
+			urlHints: {
+				'openai-compatible': 'https://openrouter.ai/api/v1',
+				anthropic: 'https://api.anthropic.com',
+			},
+			urlExtra: 'http://localhost:11434/v1',
+			sends: 'note text',
+			allowEmptyUrl: (type) => type === 'anthropic',
+			listModels,
+		},
 	});
-	const { settings } = plugin;
-
-	const save = () => plugin.saveSettings();
-
-	const render = () => {
-		el.empty();
-		new Setting(el).setName('AI text provider').setHeading();
-		const active = settings.textProviders.find(
-			(p) => p.id === settings.activeTextProviderId,
-		);
-
-		new Setting(el)
-			.setName('Active provider')
-			.setDesc(
-				'Used to fill fields and write image prompts. None means no AI calls.',
-			)
-			.addDropdown((dropdown) => {
-				dropdown.addOption('', 'None');
-				for (const p of settings.textProviders)
-					dropdown.addOption(p.id, p.name);
-				dropdown.setValue(active?.id ?? '').onChange(async (value) => {
-					settings.activeTextProviderId = value;
-					await save();
-					render();
-				});
-			})
-			.addButton((button) =>
-				button.setButtonText('Add').onClick(async () => {
-					const config: TextProviderConfig = {
-						id: crypto.randomUUID(),
-						name: uniqueName(
-							settings.textProviders,
-							'New provider',
-						),
-						type: 'openai-compatible',
-						baseUrl: '',
-						apiKeySource: 'manual',
-						apiKey: '',
-						apiKeySecretId: '',
-						model: '',
-					};
-					settings.textProviders.push(config);
-					settings.activeTextProviderId = config.id;
-					await save();
-					render();
-				}),
-			)
-			.addButton((button) =>
-				button
-					.setButtonText('Delete')
-					.setWarning()
-					.setDisabled(!active)
-					.onClick(async () => {
-						settings.textProviders = settings.textProviders.filter(
-							(p) => p.id !== settings.activeTextProviderId,
-						);
-						settings.activeTextProviderId = '';
-						await save();
-						render();
-					}),
-			);
-
-		if (active) renderEditor(el, plugin, active, save, render);
-	};
-
-	render();
-}
-
-function uniqueName(list: TextProviderConfig[], base: string): string {
-	let name = base;
-	for (let n = 2; list.some((p) => p.name === name); n++)
-		name = `${base} ${n}`;
-	return name;
 }

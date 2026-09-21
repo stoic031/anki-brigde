@@ -177,7 +177,7 @@ const { listModels } = vi.hoisted(() => ({ listModels: vi.fn() }));
 vi.mock('../providers/text/listModels', () => ({ listModels }));
 
 import { ProviderError } from '../types';
-import { clearModelCache } from './textProviderEditor';
+import { clearModelCache } from './providerEditor';
 import { renderTextProviderSection } from './textProviderSection';
 
 const flush = () => new Promise((r) => setTimeout(r, 0));

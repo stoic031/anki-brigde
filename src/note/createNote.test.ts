@@ -86,6 +86,8 @@ function fakeSettings(
 		generateWithAiFields: {},
 		textProviders: [],
 		activeTextProviderId: '',
+		imageProviders: [],
+		activeImageProviderId: '',
 		...overrides,
 	};
 }

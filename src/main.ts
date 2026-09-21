@@ -4,6 +4,7 @@ import { textFactories } from './providers/text';
 import { runQuickCapture } from './note/quickCapture';
 import { runCreateNote } from './note/createNote';
 import {
+	getActiveImageConfig,
 	getActiveTextConfig,
 	loadSettings,
 	saveSettings,
@@ -26,7 +27,15 @@ export default class AnkiBridgePlugin extends Plugin {
 					this.app.secretStorage.getSecret(id),
 				),
 		},
-		image: { factories: {}, getConfig: () => null }, // Image providers: not built yet
+		// No image adapters are registered yet (#17): an active image config makes
+		// getImageProvider() throw 'no adapter for this provider type'.
+		image: {
+			factories: {},
+			getConfig: () =>
+				getActiveImageConfig(this.settings, (id) =>
+					this.app.secretStorage.getSecret(id),
+				),
+		},
 	});
 
 	async onload(): Promise<void> {

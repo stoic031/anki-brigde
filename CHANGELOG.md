@@ -6,6 +6,9 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- Settings: **AI image provider** section — add/delete configs (OpenAI-compatible or Automatic1111
+  local), pick the active one, keychain or manual API key, model list from the endpoint, negative
+  prompt. Configuration only for now: image generation itself arrives with the image adapters.
 - Text provider settings: **API key from the Obsidian keychain** as an alternative to typing
   it, and a **Model dropdown** filled from the endpoint's model list (with Refresh; falls back to a
   text field if the endpoint can't list models). Requires Obsidian 1.11.4 or newer.
