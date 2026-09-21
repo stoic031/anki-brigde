@@ -1,5 +1,5 @@
 {
-  "0": "Create Note From Selection (Hotkey / Quick Capture)",
+  "0": "Common Provider Interface (processText/generateAudio/generateImage)",
   "1": "graphify Skill (/graphify)",
   "2": "devDependencies",
   "3": "compilerOptions",
@@ -82,10 +82,11 @@
   "80": "quickCapture.ts",
   "81": "confirmRebuildFields.test.ts",
   "82": "confirmDelete.test.ts",
-  "83": "Common Provider Interface (processText/generateAudio/generateImage)",
-  "84": "main.test.ts",
-  "85": "Generate with AI Button",
-  "86": "controlsBlock.ts",
-  "87": "Scenario 1: Create Note via Icon/Command",
-  "88": "Sidebar Modal (Right Sidebar View Panel)"
+  "83": "FakeEl",
+  "84": "noteActions.ts",
+  "85": "syncEngine.ts",
+  "86": "syncEngine.test.ts",
+  "87": "AnkiConnectClient",
+  "88": "constants.ts",
+  "89": "ankiConnect.test.ts"
 }

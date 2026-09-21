@@ -34,7 +34,8 @@
 Profile là một bộ **Deck + Model + Save notes to** đặt tên sẵn, dùng để quyết định note
 mới được tạo với Deck/Model nào và lưu ở folder nào — cho cả "Create new note" (xem
 `07-sidebar.md` §7.3) lẫn "Create note from selection" (`03-note.md` §3.7). Thay thế hoàn
-toàn cặp giá trị "mặc định" (Settings) / "hiện tại" (Sidebar) trước đây.
+toàn cặp giá trị "mặc định" (Settings) / "hiện tại" (Sidebar) trước đây. Profile **không**
+chứa provider/model AI — provider Text là cấu hình toàn cục (§6.2).
 
 ```
 Profile: [Japanese ▼]   [Add]  [Delete]
@@ -75,10 +76,14 @@ Save notes to: [/ (vault root) ▼]
 
 **Text Processing:**
 
-- Provider: dropdown (openai, claude, gemini, ollama, lmstudio)
-- API Key: text field (chỉ hiện khi chọn cloud provider)
-- Model: text field (gpt-4, llama3, etc.)
-- API URL: text field (chỉ hiện khi chọn local provider, default localhost:11434)
+Danh sách cấu hình provider (Add / Delete) + dropdown chọn cấu hình **active** (dùng chung
+cho mọi profile; mặc định chưa có cấu hình nào = không gọi AI). Mỗi cấu hình gồm:
+
+- Type: dropdown (openai-compatible, anthropic)
+- Base URL: text field (ví dụ `https://openrouter.ai/api/v1`, `http://localhost:11434/v1`)
+- API Key: text field (tùy chọn với local)
+- Model: text field tự do, kèm `datalist` gợi ý (không giới hạn danh sách)
+- Nhãn Cloud / Local: tự suy ra từ Base URL (localhost, 127.0.0.1 = Local, còn lại = Cloud)
 
 **Audio Generation:**
 

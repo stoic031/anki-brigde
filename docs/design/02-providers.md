@@ -14,8 +14,13 @@ Plugin sử dụng **Abstraction Layer** để dễ dàng chuyển đổi giữa
 
 **Text Processing:**
 
-- Cloud: OpenAI GPT-4/3.5, Claude, Gemini
-- Local: Ollama (localhost:11434), LM Studio
+Không hard-code danh sách model. Plugin chỉ hỗ trợ theo **loại endpoint**; tên model là
+chuỗi user tự nhập:
+
+- **OpenAI-compatible** (`POST {baseUrl}/chat/completions`): OpenAI, OpenRouter, Groq,
+  DeepSeek, Gemini (endpoint compat), và local như Ollama (localhost:11434), LM Studio,
+  vLLM
+- **Anthropic** (`/v1/messages`): format khác OpenAI nên cần adapter riêng
 
 **Audio Generation:**
 
@@ -35,6 +40,12 @@ Quản lý lifecycle của các provider:
 - Cung cấp method để lấy provider theo task (getTextProvider, getAudioProvider, getImageProvider)
 - Xử lý fallback khi provider fail
 
+**Provider Text là toàn cục.** Người dùng lưu nhiều cấu hình provider (ví dụ OpenRouter,
+Ollama) và chọn **một cái active**; `getTextProvider` luôn trả về cái active. Profile
+(Deck + Model + Save notes to, xem `06-settings.md` §6.1) không chứa thông tin AI. Nếu sau
+này cần provider riêng theo profile thì thêm `providerId?` tùy chọn vào profile (để trống =
+dùng active) — thay đổi cộng thêm, không phá dữ liệu cũ.
+
 ## 2.4. Data Format
 
 **Text Processing:**
@@ -46,6 +57,10 @@ Quản lý lifecycle của các provider:
   field đó. Không còn field cố định (word/meaning/furigana/...) — provider tự diễn giải
   ý nghĩa từng tên field để sinh nội dung phù hợp, field nào không suy luận được thì bỏ
   qua (không trả key đó hoặc trả rỗng)
+- Mỗi model tuân thủ JSON khác nhau: prompt yêu cầu JSON, parse chặt, validate key theo
+  `targetFields`, retry tối đa 1 lần khi parse lỗi rồi báo lỗi rõ ràng. Không phụ thuộc
+  `response_format: json_object` vì không phải model nào cũng hỗ trợ
+- Gọi HTTP bằng `requestUrl` của Obsidian (không dùng `fetch`) để tránh CORS
 
 **Audio Generation:**
 
