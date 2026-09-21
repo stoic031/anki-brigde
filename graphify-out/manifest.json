@@ -145,7 +145,7 @@
     "semantic_hash": ""
   },
   "docs/contracts.md": {
-    "mtime": 1789967898.2278464,
+    "mtime": 1789968429.1866648,
     "ast_hash": "db40350b5325840a9ee683dfc5d06f14",
     "semantic_hash": ""
   },
@@ -160,8 +160,8 @@
     "semantic_hash": ""
   },
   "docs/design/02-providers.md": {
-    "mtime": 1789967898.227538,
-    "ast_hash": "c2409c730857834dd22ae2727d4070ec",
+    "mtime": 1789968442.5677924,
+    "ast_hash": "86de2a28f8ce1857e1c35e55cc6df03c",
     "semantic_hash": ""
   },
   "docs/design/03-note.md": {
@@ -220,7 +220,7 @@
     "semantic_hash": ""
   },
   "src/types.ts": {
-    "mtime": 1789967892.167352,
+    "mtime": 1789968429.191648,
     "ast_hash": "54e893ead7d7620756c46a946ba03169",
     "semantic_hash": ""
   },
@@ -520,8 +520,13 @@
     "semantic_hash": ""
   },
   "src/providers/types.ts": {
-    "mtime": 1789967892.1638265,
+    "mtime": 1789968429.1915097,
     "ast_hash": "1185df0eb4732553b1beca1d506c590b",
+    "semantic_hash": ""
+  },
+  "src/providers/providerManager.ts": {
+    "mtime": 1789968447.5946782,
+    "ast_hash": "29b19fdb35b0e686241511d1bece6f80",
     "semantic_hash": ""
   }
 }
