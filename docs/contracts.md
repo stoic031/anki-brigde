@@ -95,6 +95,8 @@ card that displays text instead of playing audio.
 
 ## 4. AI providers
 
+Code: `src/providers/types.ts`.
+
 ```ts
 interface TextResult {
  [fieldName: string]: string; // keyed by exact Anki field name from targetFields
