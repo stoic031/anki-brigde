@@ -4,7 +4,7 @@
   "2": "devDependencies",
   "3": "compilerOptions",
   "4": "Field Mapping Algorithm (3-pass deterministic)",
-  "5": "syncEngine.ts",
+  "5": "AnkiConnectClient",
   "6": "noteNameModal.test.ts",
   "7": "SidebarView",
   "8": "Graphify Full Pipeline",
@@ -13,7 +13,7 @@
   "11": "Milestone 1: Core Sync + Settings",
   "12": "docs/design/01-sync.md",
   "13": "MediaResult interface",
-  "14": "quickCapture.ts",
+  "14": "settingsTab.ts",
   "15": "settingsTab.test.ts",
   "16": "TextProvider interface",
   "17": "graphify.js",
@@ -76,12 +76,12 @@
   "74": "README.md — Obsidian Sample Plugin boilerplate",
   "75": "vitest.config.ts",
   "76": "graphify reference: GitHub clone and cross-repo merge",
-  "77": "sidebarView.ts",
+  "77": "main.test.ts",
   "78": "sidebarView.test.ts",
   "79": "[1.1.0]",
   "81": "confirmRebuildFields.test.ts",
   "82": "confirmDelete.test.ts",
   "83": "FakeEl",
-  "84": "settings.ts",
-  "85": "providerManager.ts"
+  "84": "quickCapture.ts",
+  "85": "src/types.ts"
 }

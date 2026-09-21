@@ -4,6 +4,7 @@ import {
 	DEFAULT_SETTINGS,
 	fieldConfigKey,
 	getActiveProfile,
+	getActiveTextConfig,
 	loadSettings,
 	resolveAnkiConnectUrl,
 	saveSettings,
@@ -144,6 +145,8 @@ describe('saveSettings', () => {
 			profiles: DEFAULT_SETTINGS.profiles,
 			activeProfileId: DEFAULT_SETTINGS.activeProfileId,
 			generateWithAiFields: {},
+			textProviders: [],
+			activeTextProviderId: '',
 		};
 
 		await saveSettings(plugin, settings);
@@ -160,6 +163,8 @@ describe('resolveAnkiConnectUrl', () => {
 				profiles: DEFAULT_SETTINGS.profiles,
 				activeProfileId: DEFAULT_SETTINGS.activeProfileId,
 				generateWithAiFields: {},
+				textProviders: [],
+				activeTextProviderId: '',
 			}),
 		).toBe(DEFAULT_ANKI_CONNECT_URL);
 	});
@@ -171,6 +176,8 @@ describe('resolveAnkiConnectUrl', () => {
 				profiles: DEFAULT_SETTINGS.profiles,
 				activeProfileId: DEFAULT_SETTINGS.activeProfileId,
 				generateWithAiFields: {},
+				textProviders: [],
+				activeTextProviderId: '',
 			}),
 		).toBe(DEFAULT_ANKI_CONNECT_URL);
 	});
@@ -182,6 +189,8 @@ describe('resolveAnkiConnectUrl', () => {
 				profiles: DEFAULT_SETTINGS.profiles,
 				activeProfileId: DEFAULT_SETTINGS.activeProfileId,
 				generateWithAiFields: {},
+				textProviders: [],
+				activeTextProviderId: '',
 			}),
 		).toBe('http://localhost:9999');
 	});
@@ -211,5 +220,84 @@ describe('fieldConfigKey', () => {
 		expect(fieldConfigKey('Japanese::N2', 'Basic')).not.toBe(
 			fieldConfigKey('Japanese', 'N2::Basic'),
 		);
+	});
+});
+
+const textConfig = {
+	id: 't1',
+	name: 'Local',
+	type: 'openai-compatible' as const,
+	baseUrl: ' http://localhost:11434/v1 ',
+	apiKey: '',
+	model: 'llama3.1',
+};
+
+describe('text provider settings', () => {
+	it('defaults to no providers and none active', async () => {
+		const { plugin } = fakePlugin(null);
+		const settings = await loadSettings(plugin);
+
+		expect(settings.textProviders).toEqual([]);
+		expect(settings.activeTextProviderId).toBe('');
+	});
+
+	it('keeps saved providers and the active id', async () => {
+		const { plugin } = fakePlugin({
+			textProviders: [textConfig],
+			activeTextProviderId: 't1',
+		});
+		const settings = await loadSettings(plugin);
+
+		expect(settings.textProviders).toEqual([textConfig]);
+		expect(settings.activeTextProviderId).toBe('t1');
+	});
+
+	it('resets an active id that matches no provider', async () => {
+		const { plugin } = fakePlugin({
+			textProviders: [textConfig],
+			activeTextProviderId: 'gone',
+		});
+
+		expect((await loadSettings(plugin)).activeTextProviderId).toBe('');
+	});
+
+	it('does not share the providers array with DEFAULT_SETTINGS', async () => {
+		const { plugin } = fakePlugin(null);
+		(await loadSettings(plugin)).textProviders.push(textConfig);
+
+		expect(DEFAULT_SETTINGS.textProviders).toEqual([]);
+	});
+
+	describe('getActiveTextConfig', () => {
+		const withActive = (
+			over: Partial<typeof textConfig> = {},
+			active = 't1',
+		) => ({
+			...DEFAULT_SETTINGS,
+			textProviders: [{ ...textConfig, ...over }],
+			activeTextProviderId: active,
+		});
+
+		it('is null when none is active', () => {
+			expect(getActiveTextConfig(withActive({}, ''))).toBeNull();
+		});
+
+		it('is null while Base URL or Model is missing', () => {
+			expect(
+				getActiveTextConfig(withActive({ baseUrl: ' ' })),
+			).toBeNull();
+			expect(getActiveTextConfig(withActive({ model: '' }))).toBeNull();
+		});
+
+		it('returns the trimmed adapter config for the active provider', () => {
+			expect(
+				getActiveTextConfig(withActive({ apiKey: ' test-key ' })),
+			).toEqual({
+				type: 'openai-compatible',
+				baseUrl: 'http://localhost:11434/v1',
+				apiKey: 'test-key',
+				model: 'llama3.1',
+			});
+		});
 	});
 });

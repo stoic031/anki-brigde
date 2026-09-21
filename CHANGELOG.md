@@ -6,6 +6,9 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- Settings: **AI text provider** section — add/delete provider configs (OpenAI-compatible or
+  Anthropic; Base URL, API key, Model), pick the active one, Cloud/Local label. None active by
+  default, so no AI call is made until you set one up.
 - Text providers: OpenAI-compatible (`/chat/completions`, incl. OpenRouter, Groq, Ollama, LM Studio)
   and Anthropic (`/v1/messages`) adapters with JSON validation, one retry on malformed replies,
   and a 60 s timeout. Not yet reachable from the UI — provider settings come next.

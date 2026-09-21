@@ -96,3 +96,14 @@
 	color: var(--text-muted);
 	font-size: var(--font-ui-smaller);
 }
+
+/* docs/design/06-settings.md §6.2 — Cloud/Local label under the text provider fields. */
+.anki-bridge-provider-badge {
+	margin: var(--size-4-2) 0;
+	color: var(--text-muted);
+	font-size: var(--font-ui-smaller);
+}
+
+.anki-bridge-provider-badge.is-cloud {
+	color: var(--text-warning);
+}

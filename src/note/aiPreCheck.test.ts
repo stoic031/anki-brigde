@@ -14,6 +14,8 @@ function fakeSettings(
 		profiles: DEFAULT_SETTINGS.profiles,
 		activeProfileId: DEFAULT_SETTINGS.activeProfileId,
 		generateWithAiFields: {},
+		textProviders: [],
+		activeTextProviderId: '',
 		...overrides,
 	};
 }
