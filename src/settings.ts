@@ -12,16 +12,24 @@ export interface Profile {
 	folder: string;
 }
 
-// docs/design/06-settings.md §6.2 — one saved text-provider endpoint. Global, not per profile.
-export interface TextProviderConfig {
+// docs/design/06-settings.md §6.2 — one saved AI endpoint. Global, not per profile.
+export interface ProviderConfigBase {
 	id: string;
 	name: string;
-	type: 'openai-compatible' | 'anthropic';
 	baseUrl: string;
 	apiKeySource: 'manual' | 'keychain';
 	apiKey: string; // manual source only; user-supplied, sent only to baseUrl; '' is fine for local endpoints
 	apiKeySecretId: string; // keychain source only: the *name* of an Obsidian secret, never the key
 	model: string;
+}
+
+export interface TextProviderConfig extends ProviderConfigBase {
+	type: 'openai-compatible' | 'anthropic';
+}
+
+export interface ImageProviderConfig extends ProviderConfigBase {
+	type: 'openai-compatible' | 'automatic1111';
+	negativePrompt: string; // docs/design/06-settings.md §6.2; '' = none
 }
 
 export interface AnkiBridgeSettings {
@@ -33,6 +41,8 @@ export interface AnkiBridgeSettings {
 	generateWithAiFields: Record<string, string[]>;
 	textProviders: TextProviderConfig[];
 	activeTextProviderId: string; // '' = none configured = no AI calls; else an id in `textProviders`
+	imageProviders: ImageProviderConfig[];
+	activeImageProviderId: string; // '' = none; else an id in `imageProviders`
 }
 
 export const DEFAULT_PROFILE_ID = 'default';
@@ -52,6 +62,8 @@ export const DEFAULT_SETTINGS: AnkiBridgeSettings = {
 	generateWithAiFields: {},
 	textProviders: [],
 	activeTextProviderId: '',
+	imageProviders: [],
+	activeImageProviderId: '',
 };
 
 // Pre-profile data.json shape — migrated into a single "Default" profile on load.
@@ -83,11 +95,8 @@ export async function loadSettings(
 		...rest,
 	};
 	// Configs saved before the keychain option existed have no source: they were manual.
-	settings.textProviders = settings.textProviders.map((p) => ({
-		...p,
-		apiKeySource: p.apiKeySource === 'keychain' ? 'keychain' : 'manual',
-		apiKeySecretId: p.apiKeySecretId ?? '',
-	}));
+	settings.textProviders = settings.textProviders.map(withKeySource);
+	settings.imageProviders = settings.imageProviders.map(withKeySource);
 	if (!rest.profiles?.length) {
 		settings.profiles = [
 			{
@@ -110,7 +119,22 @@ export async function loadSettings(
 	) {
 		settings.activeTextProviderId = '';
 	}
+	if (
+		!settings.imageProviders.some(
+			(p) => p.id === settings.activeImageProviderId,
+		)
+	) {
+		settings.activeImageProviderId = '';
+	}
 	return settings;
+}
+
+function withKeySource<T extends ProviderConfigBase>(p: T): T {
+	return {
+		...p,
+		apiKeySource: p.apiKeySource === 'keychain' ? 'keychain' : 'manual',
+		apiKeySecretId: p.apiKeySecretId ?? '',
+	};
 }
 
 export type SecretLookup = (id: string) => string | null;
@@ -119,7 +143,7 @@ export type SecretLookup = (id: string) => string | null;
 // time, so a rotated secret applies immediately; a missing secret yields '' (local
 // endpoints still work, cloud ones answer 401 with a message naming the provider).
 export function toProviderConfig(
-	p: TextProviderConfig,
+	p: ProviderConfigBase & { type: string },
 	getSecret: SecretLookup,
 ): ProviderConfig {
 	const apiKey =
@@ -145,6 +169,23 @@ export function getActiveTextConfig(
 	);
 	if (!active || !active.baseUrl.trim() || !active.model.trim()) return null;
 	return toProviderConfig(active, getSecret);
+}
+
+// What ProviderManager's `image.getConfig` reads. Automatic1111 picks its own checkpoint, so
+// its Model is optional; every other type needs Base URL and Model.
+export function getActiveImageConfig(
+	settings: AnkiBridgeSettings,
+	getSecret: SecretLookup,
+): ProviderConfig | null {
+	const active = settings.imageProviders.find(
+		(p) => p.id === settings.activeImageProviderId,
+	);
+	if (!active || !active.baseUrl.trim()) return null;
+	if (active.type !== 'automatic1111' && !active.model.trim()) return null;
+	return {
+		...toProviderConfig(active, getSecret),
+		negativePrompt: active.negativePrompt.trim(),
+	};
 }
 
 export function getActiveProfile(settings: AnkiBridgeSettings): Profile {

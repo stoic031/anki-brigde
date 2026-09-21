@@ -26,6 +26,9 @@ chuỗi user tự nhập:
 - Cloud: DALL-E 3, Stability AI, Replicate
 - Local: Automatic1111 (localhost:7860), ComfyUI
 
+Hiện Settings chỉ cấu hình được `openai-compatible` (`/images/generations`) và `automatic1111`;
+Stability AI, Replicate, ComfyUI thêm khi có adapter tương ứng (`06-settings.md` §6.2).
+
 ## 2.3. AI Provider Manager
 
 Quản lý lifecycle của các provider:

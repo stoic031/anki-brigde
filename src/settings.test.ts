@@ -4,11 +4,13 @@ import {
 	DEFAULT_SETTINGS,
 	fieldConfigKey,
 	getActiveProfile,
+	getActiveImageConfig,
 	getActiveTextConfig,
 	loadSettings,
 	resolveAnkiConnectUrl,
 	saveSettings,
 	type AnkiBridgeSettings,
+	type ImageProviderConfig,
 	type TextProviderConfig,
 } from './settings';
 import { DEFAULT_ANKI_CONNECT_URL } from './utils/constants';
@@ -148,6 +150,8 @@ describe('saveSettings', () => {
 			generateWithAiFields: {},
 			textProviders: [],
 			activeTextProviderId: '',
+			imageProviders: [],
+			activeImageProviderId: '',
 		};
 
 		await saveSettings(plugin, settings);
@@ -166,6 +170,8 @@ describe('resolveAnkiConnectUrl', () => {
 				generateWithAiFields: {},
 				textProviders: [],
 				activeTextProviderId: '',
+				imageProviders: [],
+				activeImageProviderId: '',
 			}),
 		).toBe(DEFAULT_ANKI_CONNECT_URL);
 	});
@@ -179,6 +185,8 @@ describe('resolveAnkiConnectUrl', () => {
 				generateWithAiFields: {},
 				textProviders: [],
 				activeTextProviderId: '',
+				imageProviders: [],
+				activeImageProviderId: '',
 			}),
 		).toBe(DEFAULT_ANKI_CONNECT_URL);
 	});
@@ -192,6 +200,8 @@ describe('resolveAnkiConnectUrl', () => {
 				generateWithAiFields: {},
 				textProviders: [],
 				activeTextProviderId: '',
+				imageProviders: [],
+				activeImageProviderId: '',
 			}),
 		).toBe('http://localhost:9999');
 	});
@@ -284,19 +294,26 @@ describe('text provider settings', () => {
 		});
 
 		it('is null when none is active', () => {
-			expect(getActiveTextConfig(withActive({}, ''), noSecrets)).toBeNull();
+			expect(
+				getActiveTextConfig(withActive({}, ''), noSecrets),
+			).toBeNull();
 		});
 
 		it('is null while Base URL or Model is missing', () => {
 			expect(
 				getActiveTextConfig(withActive({ baseUrl: ' ' }), noSecrets),
 			).toBeNull();
-			expect(getActiveTextConfig(withActive({ model: '' }), noSecrets)).toBeNull();
+			expect(
+				getActiveTextConfig(withActive({ model: '' }), noSecrets),
+			).toBeNull();
 		});
 
 		it('returns the trimmed adapter config for the active provider', () => {
 			expect(
-				getActiveTextConfig(withActive({ apiKey: ' test-key ' }), noSecrets),
+				getActiveTextConfig(
+					withActive({ apiKey: ' test-key ' }),
+					noSecrets,
+				),
 			).toEqual({
 				type: 'openai-compatible',
 				baseUrl: 'http://localhost:11434/v1',
@@ -307,7 +324,11 @@ describe('text provider settings', () => {
 	});
 
 	describe('keychain API key', () => {
-		const keychain = { apiKeySource: 'keychain' as const, apiKeySecretId: 'my-key', apiKey: 'ignored' };
+		const keychain = {
+			apiKeySource: 'keychain' as const,
+			apiKeySecretId: 'my-key',
+			apiKey: 'ignored',
+		};
 		const active = (over: Partial<typeof textConfig>) => ({
 			...DEFAULT_SETTINGS,
 			textProviders: [{ ...textConfig, ...over }],
@@ -317,27 +338,145 @@ describe('text provider settings', () => {
 		it('reads the key from the keychain at call time, not the stored one', () => {
 			let secret: string | null = 'first-secret';
 			const get = () => secret;
-			expect(getActiveTextConfig(active(keychain), get)?.apiKey).toBe('first-secret');
+			expect(getActiveTextConfig(active(keychain), get)?.apiKey).toBe(
+				'first-secret',
+			);
 			secret = 'rotated-secret';
-			expect(getActiveTextConfig(active(keychain), get)?.apiKey).toBe('rotated-secret');
+			expect(getActiveTextConfig(active(keychain), get)?.apiKey).toBe(
+				'rotated-secret',
+			);
 		});
 
 		it('uses an empty key when the secret is missing', () => {
-			expect(getActiveTextConfig(active(keychain), noSecrets)?.apiKey).toBe('');
+			expect(
+				getActiveTextConfig(active(keychain), noSecrets)?.apiKey,
+			).toBe('');
 		});
 
 		it('never consults the keychain for a manual key', () => {
 			const get = vi.fn(() => 'nope');
-			expect(getActiveTextConfig(active({ apiKey: 'typed' }), get)?.apiKey).toBe('typed');
+			expect(
+				getActiveTextConfig(active({ apiKey: 'typed' }), get)?.apiKey,
+			).toBe('typed');
 			expect(get).not.toHaveBeenCalled();
 		});
 
 		it('migrates configs saved before the keychain option to manual', async () => {
-			const { apiKeySource: _s, apiKeySecretId: _i, ...legacy } = textConfig;
-			const { plugin } = fakePlugin({ textProviders: [legacy], activeTextProviderId: 't1' });
+			const {
+				apiKeySource: _s,
+				apiKeySecretId: _i,
+				...legacy
+			} = textConfig;
+			const { plugin } = fakePlugin({
+				textProviders: [legacy],
+				activeTextProviderId: 't1',
+			});
 			const loaded = await loadSettings(plugin);
 
-			expect(loaded.textProviders[0]).toMatchObject({ apiKeySource: 'manual', apiKeySecretId: '' });
+			expect(loaded.textProviders[0]).toMatchObject({
+				apiKeySource: 'manual',
+				apiKeySecretId: '',
+			});
+		});
+	});
+});
+const imageConfig: ImageProviderConfig = {
+	id: 'i1',
+	name: 'Local SD',
+	type: 'automatic1111',
+	baseUrl: ' http://localhost:7860 ',
+	apiKeySource: 'manual',
+	apiKey: '',
+	apiKeySecretId: '',
+	model: '',
+	negativePrompt: ' blurry ',
+};
+
+describe('image provider settings', () => {
+	it('defaults to no providers and none active', async () => {
+		const { plugin } = fakePlugin(null);
+		const settings = await loadSettings(plugin);
+
+		expect(settings.imageProviders).toEqual([]);
+		expect(settings.activeImageProviderId).toBe('');
+	});
+
+	it('keeps saved providers, resets a stale active id and migrates a missing key source', async () => {
+		const { apiKeySource: _s, apiKeySecretId: _i, ...legacy } = imageConfig;
+		const kept = await loadSettings(
+			fakePlugin({
+				imageProviders: [legacy],
+				activeImageProviderId: 'i1',
+			}).plugin,
+		).then((s) => s);
+		expect(kept.activeImageProviderId).toBe('i1');
+		expect(kept.imageProviders[0]).toMatchObject({
+			apiKeySource: 'manual',
+			apiKeySecretId: '',
+		});
+
+		const stale = await loadSettings(
+			fakePlugin({
+				imageProviders: [imageConfig],
+				activeImageProviderId: 'gone',
+			}).plugin,
+		);
+		expect(stale.activeImageProviderId).toBe('');
+	});
+
+	it('does not share the providers array with DEFAULT_SETTINGS', async () => {
+		(await loadSettings(fakePlugin(null).plugin)).imageProviders.push(
+			imageConfig,
+		);
+
+		expect(DEFAULT_SETTINGS.imageProviders).toEqual([]);
+	});
+
+	describe('getActiveImageConfig', () => {
+		const active = (over: Partial<ImageProviderConfig>, id = 'i1') => ({
+			...DEFAULT_SETTINGS,
+			imageProviders: [{ ...imageConfig, ...over }],
+			activeImageProviderId: id,
+		});
+
+		it('is null when none is active or the Base URL is missing', () => {
+			expect(getActiveImageConfig(active({}, ''), noSecrets)).toBeNull();
+			expect(
+				getActiveImageConfig(active({ baseUrl: ' ' }), noSecrets),
+			).toBeNull();
+		});
+
+		it('needs a model for OpenAI-compatible but not for Automatic1111', () => {
+			expect(getActiveImageConfig(active({}), noSecrets)).not.toBeNull();
+			expect(
+				getActiveImageConfig(
+					active({ type: 'openai-compatible', model: '' }),
+					noSecrets,
+				),
+			).toBeNull();
+		});
+
+		it('returns trimmed adapter config including the negative prompt', () => {
+			expect(getActiveImageConfig(active({}), noSecrets)).toEqual({
+				type: 'automatic1111',
+				baseUrl: 'http://localhost:7860',
+				apiKey: '',
+				model: '',
+				negativePrompt: 'blurry',
+			});
+		});
+
+		it('reads a keychain key at call time', () => {
+			const cfg = active({
+				type: 'openai-compatible',
+				model: 'm',
+				apiKeySource: 'keychain',
+				apiKeySecretId: 'my-key',
+				apiKey: 'ignored',
+			});
+			expect(getActiveImageConfig(cfg, () => 'test-secret')?.apiKey).toBe(
+				'test-secret',
+			);
 		});
 	});
 });

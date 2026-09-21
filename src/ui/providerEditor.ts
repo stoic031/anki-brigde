@@ -1,19 +1,25 @@
 import { Notice, SecretComponent, Setting } from 'obsidian';
 import type AnkiBridgePlugin from '../main';
-import { listModels } from '../providers/text/listModels';
 import { isLocalUrl } from '../providers/text/openaiCompatible';
-import { toProviderConfig, type TextProviderConfig } from '../settings';
+import type { ProviderConfig } from '../providers/providerManager';
+import { toProviderConfig, type ProviderConfigBase } from '../settings';
 import { ProviderError } from '../types';
 import { isValidUrl } from '../utils/validation';
 
-const TYPE_LABELS: Record<TextProviderConfig['type'], string> = {
-	'openai-compatible': 'OpenAI-compatible',
-	anthropic: 'Anthropic',
-};
-const URL_HINTS: Record<TextProviderConfig['type'], string> = {
-	'openai-compatible': 'https://openrouter.ai/api/v1',
-	anthropic: 'https://api.anthropic.com',
-};
+// What differs between the Text and Image provider lists (docs/design/06-settings.md §6.2).
+export type AnyProviderConfig = ProviderConfigBase & { type: string };
+
+export interface ProviderKindSpec<C extends AnyProviderConfig> {
+	typeLabels: Record<string, string>;
+	urlHints: Record<string, string>; // placeholder + example for the Base URL field
+	sends: string; // what leaves the machine, for the Cloud badge ("note text", "prompts")
+	allowEmptyUrl?: (type: string) => boolean; // type has a built-in default endpoint
+	hasApiKey?: (type: string) => boolean; // default true
+	urlExtra?: string; // second example shown in the Base URL description
+	onTypeChange?: (config: C) => void; // e.g. pre-fill a local default URL
+	listModels: (config: ProviderConfig) => Promise<string[]>;
+	extraRows?: (el: HTMLElement, config: C, save: () => Promise<void>) => void;
+}
 
 // docs/design/06-settings.md §6.2 — models the endpoint reported, kept in memory for the
 // session. Filled only by user actions (edit Base URL/type/key, Refresh), never on open.
@@ -27,17 +33,18 @@ const modelStates = new Map<string, ModelState>();
 // For tests: the cache is module-level, so it would leak between cases.
 export const clearModelCache = (): void => modelStates.clear();
 
-export function renderEditor(
+export function renderEditor<C extends AnyProviderConfig>(
 	el: HTMLElement,
 	plugin: AnkiBridgePlugin,
-	config: TextProviderConfig,
+	spec: ProviderKindSpec<C>,
+	config: C,
 	save: () => Promise<void>,
 	render: () => void,
 ): void {
 	// Saving a connection detail invalidates the model list and refetches it.
 	const commitConnection = async () => {
 		await save();
-		await refreshModels(plugin, config, render);
+		await refreshModels(plugin, spec, config, render);
 	};
 
 	new Setting(el).setName('Name').addText((text) => {
@@ -59,11 +66,12 @@ export function renderEditor(
 	});
 
 	new Setting(el).setName('Type').addDropdown((dropdown) => {
-		for (const [value, label] of Object.entries(TYPE_LABELS)) {
+		for (const [value, label] of Object.entries(spec.typeLabels)) {
 			dropdown.addOption(value, label);
 		}
 		dropdown.setValue(config.type).onChange(async (value) => {
-			config.type = value as TextProviderConfig['type'];
+			config.type = value;
+			spec.onTypeChange?.(config);
 			await commitConnection();
 		});
 	});
@@ -71,10 +79,10 @@ export function renderEditor(
 	new Setting(el)
 		.setName('Base URL')
 		.setDesc(
-			`For example ${URL_HINTS[config.type]} or http://localhost:11434/v1`,
+			`For example ${spec.urlHints[config.type]}${spec.urlExtra ? ` or ${spec.urlExtra}` : ''}`,
 		)
 		.addText((text) => {
-			text.setPlaceholder(URL_HINTS[config.type]).setValue(
+			text.setPlaceholder(spec.urlHints[config.type] ?? '').setValue(
 				config.baseUrl,
 			);
 			text.inputEl.addEventListener('change', () => {
@@ -93,22 +101,34 @@ export function renderEditor(
 			});
 		});
 
-	renderApiKeyRows(el, plugin, config, save, render, commitConnection);
-	renderModelRow(el, plugin, config, save, render);
+	if (spec.hasApiKey?.(config.type) ?? true) {
+		renderApiKeyRows(
+			el,
+			plugin,
+			spec,
+			config,
+			save,
+			render,
+			commitConnection,
+		);
+	}
+	renderModelRow(el, plugin, spec, config, save, render);
+	spec.extraRows?.(el, config, save);
 
 	const local = isLocalUrl(config.baseUrl);
 	el.createDiv({
 		cls: `anki-bridge-provider-badge ${local ? 'is-local' : 'is-cloud'}`,
 		text: local
 			? 'Local: requests stay on your machine.'
-			: 'Cloud: your note text and API key are sent to this URL.',
+			: `Cloud: your ${spec.sends} and API key are sent to this URL.`,
 	});
 }
 
-function renderApiKeyRows(
+function renderApiKeyRows<C extends AnyProviderConfig>(
 	el: HTMLElement,
 	plugin: AnkiBridgePlugin,
-	config: TextProviderConfig,
+	spec: ProviderKindSpec<C>,
+	config: C,
 	save: () => Promise<void>,
 	render: () => void,
 	commitConnection: () => Promise<void>,
@@ -155,15 +175,16 @@ function renderApiKeyRows(
 			});
 			// One fetch when the user finishes typing, not one per keystroke.
 			text.inputEl.addEventListener('change', () => {
-				void refreshModels(plugin, config, render);
+				void refreshModels(plugin, spec, config, render);
 			});
 		});
 }
 
-function renderModelRow(
+function renderModelRow<C extends AnyProviderConfig>(
 	el: HTMLElement,
 	plugin: AnkiBridgePlugin,
-	config: TextProviderConfig,
+	spec: ProviderKindSpec<C>,
+	config: C,
 	save: () => Promise<void>,
 	render: () => void,
 ): void {
@@ -214,16 +235,17 @@ function renderModelRow(
 		button
 			.setButtonText('Refresh')
 			.setDisabled(state.loading === true || config.baseUrl === '')
-			.onClick(() => refreshModels(plugin, config, render)),
+			.onClick(() => refreshModels(plugin, spec, config, render)),
 	);
 }
 
-async function refreshModels(
+async function refreshModels<C extends AnyProviderConfig>(
 	plugin: AnkiBridgePlugin,
-	config: TextProviderConfig,
+	spec: ProviderKindSpec<C>,
+	config: C,
 	render: () => void,
 ): Promise<void> {
-	if (config.baseUrl === '' && config.type !== 'anthropic') {
+	if (config.baseUrl === '' && !spec.allowEmptyUrl?.(config.type)) {
 		modelStates.delete(config.id);
 		render();
 		return;
@@ -231,7 +253,7 @@ async function refreshModels(
 	modelStates.set(config.id, { loading: true });
 	render();
 	try {
-		const models = await listModels(
+		const models = await spec.listModels(
 			toProviderConfig(config, (id) =>
 				plugin.app.secretStorage.getSecret(id),
 			),

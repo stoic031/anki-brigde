@@ -101,11 +101,24 @@ cho mọi profile; mặc định chưa có cấu hình nào = không gọi AI). 
 
 **Image Generation:**
 
-- Provider: dropdown (dalle, stability, replicate, automatic1111, comfyui)
-- API Key: text field (chỉ hiện khi chọn cloud provider)
-- Model: text field (dall-e-3, sd-xl)
-- API URL: text field (chỉ hiện khi chọn local provider, default localhost:7860)
-- Negative Prompt: textarea field
+Cùng cơ chế với Text: danh sách cấu hình (Add / Delete) + dropdown **active** (mặc định None =
+không tạo ảnh), dùng chung cho mọi profile; nguồn API key (manual / Obsidian keychain), dropdown
+Model liệt kê từ endpoint (chỉ tải khi user sửa kết nối hoặc bấm Refresh), nhãn Cloud / Local suy
+từ Base URL. Hiện chỉ cấu hình được 2 loại (các loại khác thêm khi có adapter, xem `02-providers.md`
+§2.2):
+
+- Type: dropdown (`openai-compatible` = `{baseUrl}/images/generations`: DALL-E, gpt-image,
+  OpenRouter...; `automatic1111` = local, mặc định `http://localhost:7860`)
+- Base URL: text field. Chọn `automatic1111` khi Base URL còn trống → tự điền `http://localhost:7860`
+- API Key: chỉ hiện với `openai-compatible` (Automatic1111 là local, không cần key)
+- Model: dropdown từ endpoint (`GET {baseUrl}/models`; Automatic1111 `GET /sdapi/v1/sd-models`,
+  lấy `model_name`). **Bắt buộc** với `openai-compatible`, **tùy chọn** với `automatic1111` (dùng
+  checkpoint đang chọn trong Automatic1111). Tải lỗi → về ô text tự do
+- Negative Prompt: textarea, lưu theo từng cấu hình; chỉ provider hỗ trợ mới dùng (Automatic1111)
+- Cấu hình active thiếu Base URL (hoặc thiếu Model với `openai-compatible`) coi như chưa cấu hình
+  — `getActiveImageConfig` trả `null`
+- Chưa có adapter ảnh: chọn cấu hình active thì `getImageProvider()` báo `ProviderError` "no adapter
+  for this provider type" cho tới khi Feature Image providers (#17) xong
 
 ## 6.3. Sync Settings
 

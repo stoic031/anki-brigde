@@ -12,12 +12,18 @@ const { PluginBase, addCommandSpy } = vi.hoisted(() => {
 });
 vi.mock('obsidian', () => ({ Plugin: PluginBase }));
 
-const { loadSettings, saveSettings, getActiveTextConfig } = vi.hoisted(() => ({
+const { loadSettings, saveSettings, getActiveTextConfig, getActiveImageConfig } = vi.hoisted(() => ({
 	loadSettings: vi.fn().mockResolvedValue({}),
+	getActiveImageConfig: vi.fn().mockReturnValue(null),
 	getActiveTextConfig: vi.fn().mockReturnValue(null),
 	saveSettings: vi.fn().mockResolvedValue(undefined),
 }));
-vi.mock('./settings', () => ({ loadSettings, saveSettings, getActiveTextConfig }));
+vi.mock('./settings', () => ({
+	loadSettings,
+	saveSettings,
+	getActiveTextConfig,
+	getActiveImageConfig,
+}));
 
 const { runQuickCapture } = vi.hoisted(() => ({
 	runQuickCapture: vi.fn().mockResolvedValue(undefined),
@@ -187,5 +193,10 @@ describe('AnkiBridgePlugin.onload', () => {
 		});
 		expect(plugin.providers.getTextProvider()?.id).toBe('openai-compatible');
 		expect(plugin.providers.getImageProvider()).toBeNull();
+		expect(getActiveImageConfig).toHaveBeenCalled();
+
+		// No image adapter is registered yet (#17), so an active image config is a clear error.
+		getActiveImageConfig.mockReturnValue({ type: 'openai-compatible', baseUrl: 'https://x', model: 'm' });
+		expect(() => plugin.providers.getImageProvider()).toThrow('no adapter for this provider type');
 	});
 });

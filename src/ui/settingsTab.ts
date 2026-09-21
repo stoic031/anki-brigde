@@ -6,6 +6,7 @@ import { isValidUrl } from '../utils/validation';
 import { resolveAnkiConnectUrl } from '../settings';
 import { AnkiConnectClient } from '../sync/ankiConnect';
 import { renderProfilesSection, type ProfilesSection } from './profilesSection';
+import { renderImageProviderSection } from './imageProviderSection';
 import { renderTextProviderSection } from './textProviderSection';
 import { toastError, toastSuccess } from './toast';
 
@@ -23,6 +24,7 @@ export class AnkiBridgeSettingTab extends PluginSettingTab {
 		this.containerEl.empty();
 		this.profiles = renderConnectionSection(this.containerEl, this.plugin);
 		renderTextProviderSection(this.containerEl, this.plugin);
+		renderImageProviderSection(this.containerEl, this.plugin);
 	}
 
 	hide(): void {
