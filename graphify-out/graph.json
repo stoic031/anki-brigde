@@ -816,8 +816,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_main_test",
-      "community": 14,
-      "community_name": "profilesSection.ts",
+      "community": 80,
+      "community_name": "main.test.ts",
       "norm_label": "main.test.ts"
     },
     {
@@ -827,8 +827,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "src_main_test_pluginbase_addcommandspy",
-      "community": 14,
-      "community_name": "profilesSection.ts",
+      "community": 80,
+      "community_name": "main.test.ts",
       "norm_label": "{ pluginbase, addcommandspy }"
     },
     {
@@ -838,8 +838,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_main_test_loadsettings_savesettings",
-      "community": 14,
-      "community_name": "profilesSection.ts",
+      "community": 80,
+      "community_name": "main.test.ts",
       "norm_label": "{ loadsettings, savesettings }"
     },
     {
@@ -849,8 +849,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "src_main_test_runquickcapture",
-      "community": 14,
-      "community_name": "profilesSection.ts",
+      "community": 80,
+      "community_name": "main.test.ts",
       "norm_label": "{ runquickcapture }"
     },
     {
@@ -860,8 +860,8 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "src_main_test_runcreatenote",
-      "community": 14,
-      "community_name": "profilesSection.ts",
+      "community": 80,
+      "community_name": "main.test.ts",
       "norm_label": "{ runcreatenote }"
     },
     {
@@ -871,8 +871,8 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "src_main_test_registersidebarview_revealsidebarview",
-      "community": 14,
-      "community_name": "profilesSection.ts",
+      "community": 80,
+      "community_name": "main.test.ts",
       "norm_label": "{ registersidebarview, revealsidebarview }"
     },
     {
@@ -915,8 +915,8 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "src_main_ankibridgeplugin_savesettings",
-      "community": 77,
-      "community_name": "quickCapture.ts",
+      "community": 14,
+      "community_name": "profilesSection.ts",
       "norm_label": ".savesettings()"
     },
     {
@@ -926,8 +926,8 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "src_main_ankibridgeplugin_setactiveprofile",
-      "community": 77,
-      "community_name": "quickCapture.ts",
+      "community": 14,
+      "community_name": "profilesSection.ts",
       "norm_label": ".setactiveprofile()"
     },
     {
@@ -1435,6 +1435,50 @@
       "community": 77,
       "community_name": "quickCapture.ts",
       "norm_label": "runquickcapture()"
+    },
+    {
+      "label": "providerManager.test.ts",
+      "file_type": "code",
+      "source_file": "src/providers/providerManager.test.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_providers_providermanager_test",
+      "community": 85,
+      "community_name": "providerManager.ts",
+      "norm_label": "providermanager.test.ts"
+    },
+    {
+      "label": "textProvider()",
+      "file_type": "code",
+      "source_file": "src/providers/providerManager.test.ts",
+      "source_location": "L10",
+      "_origin": "ast",
+      "id": "src_providers_providermanager_test_textprovider",
+      "community": 85,
+      "community_name": "providerManager.ts",
+      "norm_label": "textprovider()"
+    },
+    {
+      "label": "makeManager()",
+      "file_type": "code",
+      "source_file": "src/providers/providerManager.test.ts",
+      "source_location": "L18",
+      "_origin": "ast",
+      "id": "src_providers_providermanager_test_makemanager",
+      "community": 85,
+      "community_name": "providerManager.ts",
+      "norm_label": "makemanager()"
+    },
+    {
+      "label": "textManager()",
+      "file_type": "code",
+      "source_file": "src/providers/providerManager.test.ts",
+      "source_location": "L97",
+      "_origin": "ast",
+      "id": "src_providers_providermanager_test_textmanager",
+      "community": 85,
+      "community_name": "providerManager.ts",
+      "norm_label": "textmanager()"
     },
     {
       "label": "providerManager.ts",
@@ -1993,8 +2037,8 @@
       "source_location": "L73",
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectclient_updatenotefields",
-      "community": 5,
-      "community_name": "syncEngine.ts",
+      "community": 77,
+      "community_name": "quickCapture.ts",
       "norm_label": ".updatenotefields()"
     },
     {
@@ -2004,8 +2048,8 @@
       "source_location": "L77",
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectclient_deletenotes",
-      "community": 5,
-      "community_name": "syncEngine.ts",
+      "community": 77,
+      "community_name": "quickCapture.ts",
       "norm_label": ".deletenotes()"
     },
     {
@@ -4633,8 +4677,8 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "src_ui_sidebar_texttab_rendertexttab",
-      "community": 77,
-      "community_name": "quickCapture.ts",
+      "community": 84,
+      "community_name": "settings.ts",
       "norm_label": "rendertexttab()"
     },
     {
@@ -5172,8 +5216,8 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "src_ui_sidebarview_sidebarview_constructor",
-      "community": 77,
-      "community_name": "quickCapture.ts",
+      "community": 7,
+      "community_name": "SidebarView",
       "norm_label": ".constructor()"
     },
     {
@@ -11827,6 +11871,183 @@
       "_origin": "ast",
       "source": "src_note_quickcapture_runquickcapture",
       "target": "src_ui_toast_toasterror"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/providers/providerManager.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_providers_providermanager_test",
+      "target": "src_providers_providermanager",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/providers/providerManager.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_providers_providermanager_test",
+      "target": "src_providers_providermanager_providerconfig",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/providers/providerManager.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_providers_providermanager_test",
+      "target": "src_providers_providermanager_providermanager",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/providers/providerManager.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_providers_providermanager_test",
+      "target": "src_providers_providermanager_providermanageroptions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/providers/providerManager.test.ts",
+      "source_location": "L18",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_providers_providermanager_test",
+      "target": "src_providers_providermanager_test_makemanager",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/providers/providerManager.test.ts",
+      "source_location": "L97",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_providers_providermanager_test",
+      "target": "src_providers_providermanager_test_textmanager",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/providers/providerManager.test.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_providers_providermanager_test",
+      "target": "src_providers_providermanager_test_textprovider",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/providers/providerManager.test.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_providers_providermanager_test",
+      "target": "src_providers_types",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/providers/providerManager.test.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_providers_providermanager_test",
+      "target": "src_providers_types_audioprovider",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/providers/providerManager.test.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_providers_providermanager_test",
+      "target": "src_providers_types_imageprovider",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/providers/providerManager.test.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_providers_providermanager_test",
+      "target": "src_providers_types_textprovider",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/providers/providerManager.test.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_providers_providermanager_test",
+      "target": "src_types",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/providers/providerManager.test.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_providers_providermanager_test",
+      "target": "src_types_providererror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/providers/providerManager.test.ts",
+      "source_location": "L102",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_providers_providermanager_test_textmanager",
+      "target": "src_providers_providermanager_test_textprovider",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/providers/providerManager.test.ts",
+      "source_location": "L100",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_providers_providermanager_test_textmanager",
+      "target": "src_providers_providermanager_test_makemanager",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -21590,5 +21811,5 @@
       "source_file": ".opencode/skills/graphify/SKILL.md"
     }
   ],
-  "built_at_commit": "33ca59de59247fce846e1b9f42c82bf26c414a19"
+  "built_at_commit": "5bf26da442ec4621d8268f4f6cb85b0e532b8b3b"
 }
