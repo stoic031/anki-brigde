@@ -147,15 +147,19 @@ vi.mock('obsidian', async () => {
 
 // The action row and Text tab have their own tests; here they're spies so the view's
 // wiring (what it passes them, and when) can be asserted directly.
-const { noteActionsUpdate, textTabSync } = vi.hoisted(() => ({
+const { noteActionsUpdate, textTabSync, imageTabSync } = vi.hoisted(() => ({
 	noteActionsUpdate: vi.fn(),
 	textTabSync: vi.fn().mockResolvedValue(undefined),
+	imageTabSync: vi.fn().mockResolvedValue(undefined),
 }));
 vi.mock('./sidebar/noteActions', () => ({
 	renderNoteActions: vi.fn(() => ({ update: noteActionsUpdate })),
 }));
 vi.mock('./sidebar/textTab', () => ({
 	renderTextTab: vi.fn(() => ({ sync: textTabSync })),
+}));
+vi.mock('./sidebar/imageTab', () => ({
+	renderImageTab: vi.fn(() => ({ sync: imageTabSync })),
 }));
 
 const { deckNamesMock, modelNamesMock, AnkiConnectClient } = vi.hoisted(() => {
@@ -205,6 +209,7 @@ afterEach(() => {
 	vi.clearAllMocks();
 	settings.length = 0;
 	textTabSync.mockResolvedValue(undefined);
+	imageTabSync.mockResolvedValue(undefined);
 	deckModelWarningCapture.onKeepOld = undefined;
 	deckModelWarningCapture.onUpdate = undefined;
 });
@@ -351,6 +356,7 @@ describe('SidebarView', () => {
 		expect(contentEl.byClass('anki-bridge-sidebar__tab').map((t) => t.text)).toEqual([
 			'Note',
 			'Text',
+			'Image',
 		]);
 		expect(settings.map((s) => s.name)).toEqual(['Profile', 'Deck', 'Model']);
 		// Deck and Model live in the Note panel, not above the tabs.
@@ -576,6 +582,7 @@ describe('SidebarView', () => {
 			await openView(plugin).opened;
 
 			expect(textTabSync).toHaveBeenLastCalledWith('Japanese', 'Basic');
+			expect(imageTabSync).toHaveBeenLastCalledWith('Japanese', 'Basic');
 		});
 
 		it('hands empty Deck/Model to the Text tab when no note is open', async () => {

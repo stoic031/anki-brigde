@@ -16,6 +16,7 @@ import { toastError } from './toast';
 import { DeckModelChangeWarningModal } from './modals/deckModelChangeWarning';
 import { renderNoteActions, type NoteActions } from './sidebar/noteActions';
 import { renderTabs } from './sidebar/tabs';
+import { renderImageTab, type ImageTab } from './sidebar/imageTab';
 import { renderTextTab, type TextTab } from './sidebar/textTab';
 
 export const VIEW_TYPE_SIDEBAR = 'anki-bridge-sidebar';
@@ -32,6 +33,7 @@ export class SidebarView extends ItemView {
 	private modelNames: string[] = [];
 	private noteActions?: NoteActions;
 	private textTab?: TextTab;
+	private imageTab?: ImageTab;
 
 	constructor(
 		leaf: WorkspaceLeaf,
@@ -62,14 +64,17 @@ export class SidebarView extends ItemView {
 		const panels = renderTabs(this.contentEl, [
 			{ id: 'note', label: 'Note' },
 			{ id: 'text', label: 'Text' },
+		{ id: 'image', label: 'Image' },
 		]);
 		const notePanel = panels.note;
 		const textPanel = panels.text;
-		if (!notePanel || !textPanel) return;
+		const imagePanel = panels.image;
+		if (!notePanel || !textPanel || !imagePanel) return;
 		this.renderDeckDropdown(notePanel);
 		this.renderModelDropdown(notePanel);
 		this.noteActions = renderNoteActions(notePanel, this.plugin);
 		this.textTab = renderTextTab(textPanel, this.plugin, () => this.getActiveNote());
+		this.imageTab = renderImageTab(imagePanel, this.plugin);
 
 		// docs/design/07-sidebar.md §7.2.1 — everything below mirrors the active note's
 		// frontmatter, so it re-syncs on every note switch and whenever its metadata
@@ -226,11 +231,12 @@ export class SidebarView extends ItemView {
 	}
 
 	// Re-reads everything that mirrors the active note: dropdown values, action-row
-	// state, and the Text tab's field list.
+	// state, and the Text and Image tabs' field lists.
 	private async syncFromNote(): Promise<void> {
 		this.renderDropdownValues();
 		const { deck, model } = this.getNoteDeckModel();
 		await this.textTab?.sync(deck, model);
+		await this.imageTab?.sync(deck, model);
 	}
 
 	// docs/design/scenarios.md Scenario 4 / docs/design/07-sidebar.md §7.3 — changing

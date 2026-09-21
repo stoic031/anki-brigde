@@ -14,6 +14,7 @@ function fakeSettings(
 		profiles: DEFAULT_SETTINGS.profiles,
 		activeProfileId: DEFAULT_SETTINGS.activeProfileId,
 		generateWithAiFields: {},
+		imageConfigs: {},
 		textProviders: [],
 		activeTextProviderId: '',
 		imageProviders: [],
@@ -81,13 +82,55 @@ describe('runAiPreCheck — generate-ai', () => {
 });
 
 describe('runAiPreCheck — add-image', () => {
-	it('is always not configured — the Image tab does not exist yet', () => {
+	const notConfigured = {
+		configured: false,
+		message:
+			'Please configure Image field mapping for this Deck/Model in the sidebar (Image tab) first.',
+	};
+	const key = fieldConfigKey('Japanese', 'Basic');
+
+	it('is not configured when nothing is saved for this pair', () => {
 		expect(
 			runAiPreCheck('add-image', fakeSettings(), 'Japanese', 'Basic'),
-		).toEqual({
-			configured: false,
-			message:
-				'Please configure Image field mapping for this Deck/Model in the sidebar (Image tab) first.',
+		).toEqual(notConfigured);
+	});
+
+	it('is not configured when no Output field has been chosen', () => {
+		const settings = fakeSettings({
+			imageConfigs: { [key]: { outputField: '', onExisting: 'append' } },
 		});
+
+		expect(
+			runAiPreCheck('add-image', settings, 'Japanese', 'Basic'),
+		).toEqual(notConfigured);
+	});
+
+	it('is configured once an Output field is chosen for this pair', () => {
+		const settings = fakeSettings({
+			imageConfigs: {
+				[key]: { outputField: 'Image', onExisting: 'append' },
+			},
+		});
+
+		expect(
+			runAiPreCheck('add-image', settings, 'Japanese', 'Basic'),
+		).toEqual({
+			configured: true,
+		});
+	});
+
+	it('does not leak configuration from a different Deck+Model pair', () => {
+		const settings = fakeSettings({
+			imageConfigs: {
+				[fieldConfigKey('Spanish', 'Cloze')]: {
+					outputField: 'Image',
+					onExisting: 'append',
+				},
+			},
+		});
+
+		expect(
+			runAiPreCheck('add-image', settings, 'Japanese', 'Basic'),
+		).toEqual(notConfigured);
 	});
 });

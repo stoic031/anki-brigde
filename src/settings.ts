@@ -40,6 +40,12 @@ export interface ImageProviderConfig extends ProviderConfigBase {
 	workflow: string; // ComfyUI only: a saved workflow's path under its workflows/ folder; '' = none
 }
 
+// Image tab config for one Deck+Model pair. docs/design/07-sidebar.md §7.2.2.
+export interface ImageFieldConfig {
+	outputField: string; // '' = not chosen yet
+	onExisting: 'append' | 'overwrite';
+}
+
 export interface AnkiBridgeSettings {
 	ankiConnectUrl: string; // '' = unset — resolves to DEFAULT_ANKI_CONNECT_URL at use time, docs/design/06-settings.md §6.1
 	profiles: Profile[]; // always >= 1 after loadSettings
@@ -47,6 +53,8 @@ export interface AnkiBridgeSettings {
 	// Tab 1 "Generate with AI" field checkboxes, keyed by fieldConfigKey(deck, model) —
 	// saved per Deck+Model pair, not globally. docs/design/07-sidebar.md §7.2.1/§7.4.
 	generateWithAiFields: Record<string, string[]>;
+	// Tab 3 Image config, same fieldConfigKey(deck, model) keying. docs/design/07-sidebar.md §7.4.
+	imageConfigs: Record<string, ImageFieldConfig>;
 	textProviders: TextProviderConfig[];
 	activeTextProviderId: string; // '' = none configured = no AI calls; else an id in `textProviders`
 	imageProviders: ImageProviderConfig[];
@@ -68,6 +76,7 @@ export const DEFAULT_SETTINGS: AnkiBridgeSettings = {
 	profiles: [DEFAULT_PROFILE],
 	activeProfileId: DEFAULT_PROFILE_ID,
 	generateWithAiFields: {},
+	imageConfigs: {},
 	textProviders: [],
 	activeTextProviderId: '',
 	imageProviders: [],
