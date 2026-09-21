@@ -1,3 +1,4 @@
+import { ProviderError } from '../types';
 import type { AudioProvider, ImageProvider, TextProvider } from './types';
 
 export interface ProviderConfig {
@@ -53,7 +54,7 @@ export class ProviderManager {
 	}
 
 	// Rebuilds only when the config changed since the cached instance was made.
-	private resolve<P>(
+	private resolve<P extends { id: string }>(
 		kind: ProviderKind<P>,
 		cached: Cached<P> | null,
 	): Cached<P> | null {
@@ -63,8 +64,44 @@ export class ProviderManager {
 		if (cached?.key === key) return cached;
 		const factory = kind.factories[config.type];
 		if (!factory) {
-			throw new Error(`Unknown AI provider type "${config.type}"`);
+			throw new ProviderError(
+				config.type,
+				'no adapter for this provider type',
+			);
 		}
-		return { key, provider: factory(config) };
+		try {
+			return { key, provider: normalizeErrors(factory(config)) };
+		} catch (err) {
+			throw toProviderError(config.type, err);
+		}
 	}
+}
+
+function toProviderError(providerId: string, err: unknown): ProviderError {
+	if (err instanceof ProviderError) return err;
+	return new ProviderError(
+		providerId,
+		err instanceof Error ? err.message : String(err),
+	);
+}
+
+// docs/design/02-providers.md §2.3 — every failure reaches callers as a ProviderError.
+// Errors are normalized only, the manager never switches to another provider.
+function normalizeErrors<P extends { id: string }>(provider: P): P {
+	return new Proxy(provider, {
+		get(target, prop) {
+			const value: unknown = Reflect.get(target, prop);
+			if (typeof value !== 'function') return value;
+			return async (...args: unknown[]) => {
+				try {
+					return await (value as (...a: unknown[]) => unknown).apply(
+						target,
+						args,
+					);
+				} catch (err) {
+					throw toProviderError(target.id, err);
+				}
+			};
+		},
+	});
 }

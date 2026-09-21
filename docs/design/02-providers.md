@@ -38,11 +38,13 @@ Quản lý lifecycle của các provider:
 
 - Khởi tạo provider dựa trên settings
 - Cung cấp method để lấy provider theo task (getTextProvider, getAudioProvider, getImageProvider)
-- Xử lý fallback khi provider fail
+- Chuẩn hóa lỗi: mọi lỗi từ provider (kể cả lỗi dựng provider) được bọc thành `ProviderError`
+  (`contracts.md` §6). Manager **không** tự chuyển sang provider khác — mỗi loại chỉ có một
+  provider user đã chọn, đổi sang provider khác sẽ gửi nội dung tới endpoint user chưa chọn
 - Factory theo `type` và hàm đọc config được inject vào manager (`src/providers/providerManager.ts`);
   thêm provider = thêm một entry factory. Provider chỉ được dựng ở lần `getXProvider()` đầu
   tiên (không dựng lúc `onload`) và được cache theo config — đổi config thì dựng lại
-- Chưa cấu hình provider (mặc định) → `getXProvider()` trả `null`; `type` không có factory → throw
+- Chưa cấu hình provider (mặc định) → `getXProvider()` trả `null`; `type` không có factory → throw `ProviderError`
 
 **Provider Text là toàn cục.** Người dùng lưu nhiều cấu hình provider (ví dụ OpenRouter,
 Ollama) và chọn **một cái active**; `getTextProvider` luôn trả về cái active. Profile
