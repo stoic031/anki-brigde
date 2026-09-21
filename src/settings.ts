@@ -18,7 +18,9 @@ export interface TextProviderConfig {
 	name: string;
 	type: 'openai-compatible' | 'anthropic';
 	baseUrl: string;
-	apiKey: string; // user-supplied, sent only to baseUrl; '' is fine for local endpoints
+	apiKeySource: 'manual' | 'keychain';
+	apiKey: string; // manual source only; user-supplied, sent only to baseUrl; '' is fine for local endpoints
+	apiKeySecretId: string; // keychain source only: the *name* of an Obsidian secret, never the key
 	model: string;
 }
 
@@ -80,6 +82,12 @@ export async function loadSettings(
 		...structuredClone(DEFAULT_SETTINGS),
 		...rest,
 	};
+	// Configs saved before the keychain option existed have no source: they were manual.
+	settings.textProviders = settings.textProviders.map((p) => ({
+		...p,
+		apiKeySource: p.apiKeySource === 'keychain' ? 'keychain' : 'manual',
+		apiKeySecretId: p.apiKeySecretId ?? '',
+	}));
 	if (!rest.profiles?.length) {
 		settings.profiles = [
 			{
@@ -105,21 +113,38 @@ export async function loadSettings(
 	return settings;
 }
 
+export type SecretLookup = (id: string) => string | null;
+
+// The adapter config for one saved provider. A keychain key is looked up now, not at save
+// time, so a rotated secret applies immediately; a missing secret yields '' (local
+// endpoints still work, cloud ones answer 401 with a message naming the provider).
+export function toProviderConfig(
+	p: TextProviderConfig,
+	getSecret: SecretLookup,
+): ProviderConfig {
+	const apiKey =
+		p.apiKeySource === 'keychain'
+			? (getSecret(p.apiKeySecretId) ?? '')
+			: p.apiKey;
+	return {
+		type: p.type,
+		baseUrl: p.baseUrl.trim(),
+		apiKey: apiKey.trim(),
+		model: p.model.trim(),
+	};
+}
+
 // What ProviderManager's `text.getConfig` reads. An active config missing its Base URL or
 // Model is treated as not configured, so nothing is called until it is complete.
 export function getActiveTextConfig(
 	settings: AnkiBridgeSettings,
+	getSecret: SecretLookup,
 ): ProviderConfig | null {
 	const active = settings.textProviders.find(
 		(p) => p.id === settings.activeTextProviderId,
 	);
 	if (!active || !active.baseUrl.trim() || !active.model.trim()) return null;
-	return {
-		type: active.type,
-		baseUrl: active.baseUrl.trim(),
-		apiKey: active.apiKey.trim(),
-		model: active.model.trim(),
-	};
+	return toProviderConfig(active, getSecret);
 }
 
 export function getActiveProfile(settings: AnkiBridgeSettings): Profile {

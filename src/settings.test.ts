@@ -9,6 +9,7 @@ import {
 	resolveAnkiConnectUrl,
 	saveSettings,
 	type AnkiBridgeSettings,
+	type TextProviderConfig,
 } from './settings';
 import { DEFAULT_ANKI_CONNECT_URL } from './utils/constants';
 
@@ -223,12 +224,16 @@ describe('fieldConfigKey', () => {
 	});
 });
 
-const textConfig = {
+const noSecrets = () => null;
+
+const textConfig: TextProviderConfig = {
 	id: 't1',
 	name: 'Local',
 	type: 'openai-compatible' as const,
 	baseUrl: ' http://localhost:11434/v1 ',
+	apiKeySource: 'manual' as const,
 	apiKey: '',
+	apiKeySecretId: '',
 	model: 'llama3.1',
 };
 
@@ -279,25 +284,60 @@ describe('text provider settings', () => {
 		});
 
 		it('is null when none is active', () => {
-			expect(getActiveTextConfig(withActive({}, ''))).toBeNull();
+			expect(getActiveTextConfig(withActive({}, ''), noSecrets)).toBeNull();
 		});
 
 		it('is null while Base URL or Model is missing', () => {
 			expect(
-				getActiveTextConfig(withActive({ baseUrl: ' ' })),
+				getActiveTextConfig(withActive({ baseUrl: ' ' }), noSecrets),
 			).toBeNull();
-			expect(getActiveTextConfig(withActive({ model: '' }))).toBeNull();
+			expect(getActiveTextConfig(withActive({ model: '' }), noSecrets)).toBeNull();
 		});
 
 		it('returns the trimmed adapter config for the active provider', () => {
 			expect(
-				getActiveTextConfig(withActive({ apiKey: ' test-key ' })),
+				getActiveTextConfig(withActive({ apiKey: ' test-key ' }), noSecrets),
 			).toEqual({
 				type: 'openai-compatible',
 				baseUrl: 'http://localhost:11434/v1',
 				apiKey: 'test-key',
 				model: 'llama3.1',
 			});
+		});
+	});
+
+	describe('keychain API key', () => {
+		const keychain = { apiKeySource: 'keychain' as const, apiKeySecretId: 'my-key', apiKey: 'ignored' };
+		const active = (over: Partial<typeof textConfig>) => ({
+			...DEFAULT_SETTINGS,
+			textProviders: [{ ...textConfig, ...over }],
+			activeTextProviderId: 't1',
+		});
+
+		it('reads the key from the keychain at call time, not the stored one', () => {
+			let secret: string | null = 'first-secret';
+			const get = () => secret;
+			expect(getActiveTextConfig(active(keychain), get)?.apiKey).toBe('first-secret');
+			secret = 'rotated-secret';
+			expect(getActiveTextConfig(active(keychain), get)?.apiKey).toBe('rotated-secret');
+		});
+
+		it('uses an empty key when the secret is missing', () => {
+			expect(getActiveTextConfig(active(keychain), noSecrets)?.apiKey).toBe('');
+		});
+
+		it('never consults the keychain for a manual key', () => {
+			const get = vi.fn(() => 'nope');
+			expect(getActiveTextConfig(active({ apiKey: 'typed' }), get)?.apiKey).toBe('typed');
+			expect(get).not.toHaveBeenCalled();
+		});
+
+		it('migrates configs saved before the keychain option to manual', async () => {
+			const { apiKeySource: _s, apiKeySecretId: _i, ...legacy } = textConfig;
+			const { plugin } = fakePlugin({ textProviders: [legacy], activeTextProviderId: 't1' });
+			const loaded = await loadSettings(plugin);
+
+			expect(loaded.textProviders[0]).toMatchObject({ apiKeySource: 'manual', apiKeySecretId: '' });
 		});
 	});
 });

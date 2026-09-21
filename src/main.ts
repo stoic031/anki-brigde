@@ -21,7 +21,10 @@ export default class AnkiBridgePlugin extends Plugin {
 	readonly providers = new ProviderManager({
 		text: {
 			factories: textFactories,
-			getConfig: () => getActiveTextConfig(this.settings),
+			getConfig: () =>
+				getActiveTextConfig(this.settings, (id) =>
+					this.app.secretStorage.getSecret(id),
+				),
 		},
 		image: { factories: {}, getConfig: () => null }, // Image providers: not built yet
 	});

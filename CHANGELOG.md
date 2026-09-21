@@ -6,6 +6,9 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- Text provider settings: **API key from the Obsidian keychain** as an alternative to typing
+  it, and a **Model dropdown** filled from the endpoint's model list (with Refresh; falls back to a
+  text field if the endpoint can't list models). Requires Obsidian 1.11.4 or newer.
 - **Generate** button now works: the active text model fills the ticked fields of the open note
   (empty sections only, never overwriting your text) — Anki is updated when you press Sync.
 - Settings: **AI text provider** section — add/delete provider configs (OpenAI-compatible or

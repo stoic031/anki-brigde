@@ -168,11 +168,17 @@ describe('AnkiBridgePlugin.onload', () => {
 
 	it('exposes a ProviderManager that builds nothing until asked and reads config at call time', async () => {
 		const plugin = new AnkiBridgePlugin({} as App, {} as PluginManifest);
+		plugin.app = {
+			secretStorage: { getSecret: (id: string) => (id === 'my-key' ? 'test-secret' : null) },
+		} as unknown as App;
 		await plugin.onload();
 		expect(getActiveTextConfig).not.toHaveBeenCalled();
 
 		expect(plugin.providers.getTextProvider()).toBeNull();
 		expect(getActiveTextConfig).toHaveBeenCalledTimes(1);
+		// The lookup handed to settings reads Obsidian's keychain.
+		const getSecret = getActiveTextConfig.mock.calls[0]?.[1] as (id: string) => string | null;
+		expect(getSecret('my-key')).toBe('test-secret');
 
 		getActiveTextConfig.mockReturnValue({
 			type: 'openai-compatible',
