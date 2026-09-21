@@ -239,8 +239,8 @@ const noSecrets = () => null;
 const textConfig: TextProviderConfig = {
 	id: 't1',
 	name: 'Local',
-	type: 'openai-compatible' as const,
-	baseUrl: ' http://localhost:11434/v1 ',
+	type: 'ollama',
+	baseUrl: ' http://localhost:11434 ',
 	apiKeySource: 'manual' as const,
 	apiKey: '',
 	apiKeySecretId: '',
@@ -265,6 +265,20 @@ describe('text provider settings', () => {
 
 		expect(settings.textProviders).toEqual([textConfig]);
 		expect(settings.activeTextProviderId).toBe('t1');
+	});
+
+	it('drops configs whose provider is no longer in the fixed list', async () => {
+		const { plugin } = fakePlugin({
+			textProviders: [
+				{ ...textConfig, id: 'old', type: 'openai-compatible' },
+				textConfig,
+			],
+			activeTextProviderId: 'old',
+		});
+		const settings = await loadSettings(plugin);
+
+		expect(settings.textProviders.map((p) => p.id)).toEqual(['t1']);
+		expect(settings.activeTextProviderId).toBe('');
 	});
 
 	it('resets an active id that matches no provider', async () => {
@@ -299,13 +313,57 @@ describe('text provider settings', () => {
 			).toBeNull();
 		});
 
-		it('is null while Base URL or Model is missing', () => {
+		it('is null while the Model is missing, or the Base URL of a local provider', () => {
 			expect(
 				getActiveTextConfig(withActive({ baseUrl: ' ' }), noSecrets),
 			).toBeNull();
 			expect(
 				getActiveTextConfig(withActive({ model: '' }), noSecrets),
 			).toBeNull();
+		});
+
+		it('maps each provider to its adapter and fixed endpoint, ignoring a stored Base URL', () => {
+			const cloud = (type: TextProviderConfig['type']) =>
+				getActiveTextConfig(
+					withActive({
+						type,
+						baseUrl: 'https://ignored.example',
+						model: 'm',
+					}),
+					noSecrets,
+				);
+
+			expect(cloud('openai')).toMatchObject({
+				type: 'openai-compatible',
+				baseUrl: 'https://api.openai.com/v1',
+			});
+			expect(cloud('gemini')).toMatchObject({
+				type: 'openai-compatible',
+				baseUrl:
+					'https://generativelanguage.googleapis.com/v1beta/openai',
+			});
+			expect(cloud('anthropic')).toMatchObject({
+				type: 'anthropic',
+				baseUrl: 'https://api.anthropic.com',
+			});
+			expect(cloud('groq')?.baseUrl).toBe(
+				'https://api.groq.com/openai/v1',
+			);
+			expect(cloud('openrouter')?.baseUrl).toBe(
+				'https://openrouter.ai/api/v1',
+			);
+			expect(cloud('together')?.baseUrl).toBe(
+				'https://api.together.xyz/v1',
+			);
+		});
+
+		it('gives Ollama its own address with /v1 appended', () => {
+			expect(
+				getActiveTextConfig(withActive({}), noSecrets),
+			).toMatchObject({
+				type: 'openai-compatible',
+				baseUrl: 'http://localhost:11434/v1',
+			});
 		});
 
 		it('returns the trimmed adapter config for the active provider', () => {
@@ -390,6 +448,7 @@ const imageConfig: ImageProviderConfig = {
 	apiKeySecretId: '',
 	model: '',
 	negativePrompt: ' blurry ',
+	workflow: '',
 };
 
 describe('image provider settings', () => {
@@ -439,21 +498,85 @@ describe('image provider settings', () => {
 			activeImageProviderId: id,
 		});
 
-		it('is null when none is active or the Base URL is missing', () => {
+		it('is null when none is active or a local provider has no Base URL', () => {
 			expect(getActiveImageConfig(active({}, ''), noSecrets)).toBeNull();
 			expect(
 				getActiveImageConfig(active({ baseUrl: ' ' }), noSecrets),
 			).toBeNull();
 		});
 
-		it('needs a model for OpenAI-compatible but not for Automatic1111', () => {
-			expect(getActiveImageConfig(active({}), noSecrets)).not.toBeNull();
+		it('needs a model for OpenAI but not for providers with their own default', () => {
+			for (const type of ['automatic1111', 'pollinations'] as const) {
+				expect(
+					getActiveImageConfig(active({ type }), noSecrets),
+					type,
+				).not.toBeNull();
+			}
 			expect(
 				getActiveImageConfig(
-					active({ type: 'openai-compatible', model: '' }),
+					active({ type: 'openai', model: '' }),
 					noSecrets,
 				),
 			).toBeNull();
+			expect(
+				getActiveImageConfig(
+					active({ type: 'openai', model: 'dall-e-3' }),
+					noSecrets,
+				),
+			).toMatchObject({
+				baseUrl: 'https://api.openai.com/v1',
+				model: 'dall-e-3',
+			});
+		});
+
+		it('drops image configs whose provider is not in the fixed list', async () => {
+			const loaded = await loadSettings(
+				fakePlugin({
+					imageProviders: [
+						{ ...imageConfig, type: 'openai-compatible' },
+					],
+					activeImageProviderId: 'i1',
+				}).plugin,
+			);
+
+			expect(loaded.imageProviders).toEqual([]);
+			expect(loaded.activeImageProviderId).toBe('');
+		});
+
+		it('configures ComfyUI by workflow: no model or key, but a workflow is required', () => {
+			const comfy = {
+				type: 'comfyui' as const,
+				baseUrl: ' http://localhost:8188 ',
+			};
+
+			expect(
+				getActiveImageConfig(active({ ...comfy }), noSecrets),
+			).toBeNull();
+			expect(
+				getActiveImageConfig(
+					active({ ...comfy, workflow: '  ' }),
+					noSecrets,
+				),
+			).toBeNull();
+			expect(
+				getActiveImageConfig(
+					active({ ...comfy, workflow: ' sdxl/icons.json ' }),
+					noSecrets,
+				),
+			).toMatchObject({
+				type: 'comfyui',
+				baseUrl: 'http://localhost:8188',
+				workflow: 'sdxl/icons.json',
+			});
+		});
+
+		it('loads older image configs with no workflow as an empty workflow', async () => {
+			const { workflow: _w, ...legacy } = imageConfig;
+			const loaded = await loadSettings(
+				fakePlugin({ imageProviders: [legacy] }).plugin,
+			);
+
+			expect(loaded.imageProviders[0]?.workflow).toBe('');
 		});
 
 		it('returns trimmed adapter config including the negative prompt', () => {
@@ -463,12 +586,13 @@ describe('image provider settings', () => {
 				apiKey: '',
 				model: '',
 				negativePrompt: 'blurry',
+				workflow: '',
 			});
 		});
 
 		it('reads a keychain key at call time', () => {
 			const cfg = active({
-				type: 'openai-compatible',
+				type: 'openai',
 				model: 'm',
 				apiKeySource: 'keychain',
 				apiKeySecretId: 'my-key',

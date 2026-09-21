@@ -55,14 +55,16 @@ export function renderProviderSection<C extends AnyProviderConfig>(
 						id: crypto.randomUUID(),
 						name: uniqueName(list, 'New provider'),
 						type: spec.defaultType,
-						baseUrl: '',
+						baseUrl: spec.kind.presets[spec.defaultType]
+							?.editableUrl
+							? spec.kind.presets[spec.defaultType]?.baseUrl
+							: '',
 						apiKeySource: 'manual',
 						apiKey: '',
 						apiKeySecretId: '',
 						model: '',
 						...spec.extraDefaults,
 					} as unknown as C;
-					spec.kind.onTypeChange?.(config);
 					spec.write(settings, [...list, config], config.id);
 					await save();
 					render();

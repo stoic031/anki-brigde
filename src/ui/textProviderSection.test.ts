@@ -1,5 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { DEFAULT_SETTINGS, type AnkiBridgeSettings, type TextProviderConfig } from '../settings';
+import {
+	DEFAULT_SETTINGS,
+	type AnkiBridgeSettings,
+	type TextProviderConfig,
+} from '../settings';
 
 class FakeEl {
 	children: FakeEl[] = [];
@@ -174,7 +178,7 @@ vi.mock('obsidian', () => ({
 }));
 
 const { listModels } = vi.hoisted(() => ({ listModels: vi.fn() }));
-vi.mock('../providers/text/listModels', () => ({ listModels }));
+vi.mock('../providers/modelLists', () => ({ listModels }));
 
 import { ProviderError } from '../types';
 import { clearModelCache } from './providerEditor';
@@ -198,29 +202,45 @@ function setup(overrides: Partial<AnkiBridgeSettings> = {}) {
 		{
 			settings,
 			saveSettings,
-			app: { secretStorage: { getSecret: (id: string) => (id === 'my-key' ? 'test-secret' : null) } },
+			app: {
+				secretStorage: {
+					getSecret: (id: string) =>
+						id === 'my-key' ? 'test-secret' : null,
+				},
+			},
 		} as never,
 	);
 	return { settings, saveSettings, root };
 }
 
-const config: TextProviderConfig = {
+// A local provider (editable Base URL, no API key) and a cloud one (fixed URL, API key).
+const local: TextProviderConfig = {
 	id: 'p1',
 	name: 'Local',
-	type: 'openai-compatible' as const,
-	baseUrl: 'http://localhost:11434/v1',
-	apiKeySource: 'manual' as const,
+	type: 'ollama',
+	baseUrl: 'http://localhost:11434',
+	apiKeySource: 'manual',
 	apiKey: '',
 	apiKeySecretId: '',
 	model: 'llama3.1',
 };
+const cloud: TextProviderConfig = {
+	...local,
+	id: 'p2',
+	name: 'OpenAI',
+	type: 'openai',
+	baseUrl: '',
+	model: 'gpt-4o',
+};
+
+const models = (...ids: string[]) => ({ models: ids, fellBack: false });
 
 beforeEach(() => {
 	Notice.mockClear();
 	rendered.length = 0;
 	secrets.length = 0;
 	clearModelCache();
-	listModels.mockReset().mockResolvedValue([]);
+	listModels.mockReset().mockResolvedValue(models());
 	vi.stubGlobal('crypto', { randomUUID: () => 'new-id' });
 });
 
@@ -230,29 +250,29 @@ describe('renderTextProviderSection', () => {
 		const active = latest('Active provider');
 		expect(active?.dropdowns[0]?.options).toEqual({ '': 'None' });
 		expect(active?.buttons[1]?.disabled).toBe(true);
-		expect(latest('Base URL')).toBeUndefined();
+		expect(latest('Provider')).toBeUndefined();
 	});
 
-	it('Add creates an incomplete config, activates it and saves', async () => {
+	it('Add creates an OpenAI config (fixed URL, no Base URL row), activates it and saves', async () => {
 		const { settings, saveSettings } = setup();
 		await latest('Active provider')?.buttons[0]?.clickCb();
 
-		expect(settings.textProviders).toHaveLength(1);
 		expect(settings.textProviders[0]).toMatchObject({
 			id: 'new-id',
 			name: 'New provider',
-			type: 'openai-compatible',
+			type: 'openai',
 			baseUrl: '',
 			model: '',
 		});
 		expect(settings.activeTextProviderId).toBe('new-id');
 		expect(saveSettings).toHaveBeenCalled();
-		expect(latest('Base URL')).toBeDefined();
+		expect(latest('Provider')).toBeDefined();
+		expect(latest('Base URL')).toBeUndefined();
 	});
 
 	it('Delete removes the active config and clears the active id', async () => {
 		const { settings } = setup({
-			textProviders: [config],
+			textProviders: [local],
 			activeTextProviderId: 'p1',
 		});
 		await latest('Active provider')?.buttons[1]?.clickCb();
@@ -263,7 +283,7 @@ describe('renderTextProviderSection', () => {
 
 	it('choosing None keeps the config but deactivates it', async () => {
 		const { settings } = setup({
-			textProviders: [config],
+			textProviders: [local],
 			activeTextProviderId: 'p1',
 		});
 		await latest('Active provider')?.dropdowns[0]?.changeCb('');
@@ -272,9 +292,55 @@ describe('renderTextProviderSection', () => {
 		expect(settings.activeTextProviderId).toBe('');
 	});
 
+	it('lists exactly the fixed text providers, labelled cloud or local', () => {
+		setup({ textProviders: [local], activeTextProviderId: 'p1' });
+
+		expect(latest('Provider')?.dropdowns[0]?.options).toEqual({
+			openai: 'OpenAI (cloud)',
+			gemini: 'Gemini (cloud)',
+			anthropic: 'Anthropic (cloud)',
+			groq: 'Groq (cloud)',
+			openrouter: 'OpenRouter (cloud)',
+			together: 'Together (cloud)',
+			ollama: 'Ollama (local)',
+		});
+	});
+
+	it('shows the Base URL only for local providers, and no API key rows for them', () => {
+		setup({ textProviders: [local], activeTextProviderId: 'p1' });
+		expect(latest('Base URL')).toBeDefined();
+		expect(latest('API key source')).toBeUndefined();
+		expect(latest('API key')).toBeUndefined();
+
+		rendered.length = 0;
+		setup({ textProviders: [cloud], activeTextProviderId: 'p2' });
+		expect(latest('Base URL')).toBeUndefined();
+		expect(latest('API key source')).toBeDefined();
+	});
+
+	it('switching to a cloud provider clears the URL and model; back to Ollama restores its default', async () => {
+		const { settings } = setup({
+			textProviders: [{ ...local }],
+			activeTextProviderId: 'p1',
+		});
+
+		await latest('Provider')?.dropdowns[0]?.changeCb('anthropic');
+		expect(settings.textProviders[0]).toMatchObject({
+			type: 'anthropic',
+			baseUrl: '',
+			model: '',
+		});
+
+		await latest('Provider')?.dropdowns[0]?.changeCb('ollama');
+		expect(settings.textProviders[0]).toMatchObject({
+			type: 'ollama',
+			baseUrl: 'http://localhost:11434',
+		});
+	});
+
 	it('rejects an invalid Base URL with a notice and does not save it', async () => {
 		const { settings, saveSettings } = setup({
-			textProviders: [{ ...config }],
+			textProviders: [{ ...local }],
 			activeTextProviderId: 'p1',
 		});
 		saveSettings.mockClear();
@@ -284,28 +350,34 @@ describe('renderTextProviderSection', () => {
 		expect(Notice).toHaveBeenCalledWith(
 			'❌ Invalid URL. Please check the base URL.',
 		);
-		expect(settings.textProviders[0]?.baseUrl).toBe(config.baseUrl);
-		expect(field?.value).toBe(config.baseUrl);
+		expect(settings.textProviders[0]?.baseUrl).toBe(local.baseUrl);
+		expect(field?.value).toBe(local.baseUrl);
 		expect(saveSettings).not.toHaveBeenCalled();
 	});
 
-	it('saves a valid Base URL and trims it', async () => {
+	it('saves a valid Base URL trimmed and refetches models', async () => {
 		const { settings } = setup({
-			textProviders: [{ ...config }],
+			textProviders: [{ ...local }],
 			activeTextProviderId: 'p1',
 		});
 		await latest('Base URL')?.texts[0]?.commit(
-			'  https://openrouter.ai/api/v1 ',
+			'  http://192.168.1.5:11434 ',
 		);
 
 		expect(settings.textProviders[0]?.baseUrl).toBe(
-			'https://openrouter.ai/api/v1',
+			'http://192.168.1.5:11434',
+		);
+		expect(listModels).toHaveBeenCalledWith(
+			'text',
+			'ollama',
+			'http://192.168.1.5:11434',
+			'',
 		);
 	});
 
 	it('rejects an empty name', async () => {
 		const { settings } = setup({
-			textProviders: [{ ...config }],
+			textProviders: [{ ...local }],
 			activeTextProviderId: 'p1',
 		});
 		await latest('Name')?.texts[0]?.commit('   ');
@@ -316,8 +388,8 @@ describe('renderTextProviderSection', () => {
 
 	it('stores the API key and model as typed, masks the key field', async () => {
 		const { settings } = setup({
-			textProviders: [{ ...config }],
-			activeTextProviderId: 'p1',
+			textProviders: [{ ...cloud }],
+			activeTextProviderId: 'p2',
 		});
 		const key = latest('API key')?.texts[0];
 		expect(key?.inputEl.type).toBe('password');
@@ -330,43 +402,43 @@ describe('renderTextProviderSection', () => {
 		});
 	});
 
-	it('changing the type saves it', async () => {
-		const { settings } = setup({
-			textProviders: [{ ...config }],
+	it('labels local providers as Local and cloud ones as Cloud, naming the provider', () => {
+		const a = setup({
+			textProviders: [{ ...local }],
 			activeTextProviderId: 'p1',
 		});
-		await latest('Type')?.dropdowns[0]?.changeCb('anthropic');
-
-		expect(settings.textProviders[0]?.type).toBe('anthropic');
-	});
-
-	it('labels localhost as Local and other hosts as Cloud', () => {
-		const local = setup({
-			textProviders: [{ ...config }],
-			activeTextProviderId: 'p1',
-		});
-		expect(local.root.all().some((e) => e.text.startsWith('Local:'))).toBe(
+		expect(a.root.all().some((e) => e.text.startsWith('Local:'))).toBe(
 			true,
 		);
 
-		const cloud = setup({
-			textProviders: [
-				{ ...config, baseUrl: 'https://openrouter.ai/api/v1' },
-			],
-			activeTextProviderId: 'p1',
+		const b = setup({
+			textProviders: [{ ...cloud }],
+			activeTextProviderId: 'p2',
 		});
-		expect(cloud.root.all().some((e) => e.text.startsWith('Cloud:'))).toBe(
-			true,
-		);
+		expect(
+			b.root
+				.all()
+				.some(
+					(e) =>
+						e.text ===
+						'Cloud: your note text and API key are sent to OpenAI.',
+				),
+		).toBe(true);
 	});
 
 	describe('API key source', () => {
 		it('offers manual and keychain, and switching to keychain shows the secret picker', async () => {
-			const { settings } = setup({ textProviders: [{ ...config }], activeTextProviderId: 'p1' });
+			const { settings } = setup({
+				textProviders: [{ ...cloud }],
+				activeTextProviderId: 'p2',
+			});
 			expect(latest('API key')?.texts).toHaveLength(1);
 
 			const source = latest('API key source')?.dropdowns[0];
-			expect(source?.options).toEqual({ manual: 'Enter manually', keychain: 'Obsidian keychain' });
+			expect(source?.options).toEqual({
+				manual: 'Enter manually',
+				keychain: 'Obsidian keychain',
+			});
 			await source?.changeCb('keychain');
 
 			expect(settings.textProviders[0]?.apiKeySource).toBe('keychain');
@@ -376,8 +448,8 @@ describe('renderTextProviderSection', () => {
 
 		it('stores only the secret name, never the key value', async () => {
 			const { settings } = setup({
-				textProviders: [{ ...config, apiKeySource: 'keychain' }],
-				activeTextProviderId: 'p1',
+				textProviders: [{ ...cloud, apiKeySource: 'keychain' }],
+				activeTextProviderId: 'p2',
 			});
 			const secret = secrets[secrets.length - 1] as FakeSecret;
 			await secret.changeCb('my-key');
@@ -385,76 +457,163 @@ describe('renderTextProviderSection', () => {
 			expect(settings.textProviders[0]?.apiKeySecretId).toBe('my-key');
 			expect(JSON.stringify(settings)).not.toContain('test-secret');
 			// The lookup used for the model listing resolves the secret from the keychain.
-			expect(listModels).toHaveBeenLastCalledWith(expect.objectContaining({ apiKey: 'test-secret' }));
+			expect(listModels).toHaveBeenLastCalledWith(
+				'text',
+				'openai',
+				'https://api.openai.com/v1',
+				'test-secret',
+			);
 		});
 	});
 
 	describe('model list', () => {
-		const withUrl = { ...config, model: '' };
-
 		it('does not touch the network just by rendering', () => {
-			setup({ textProviders: [{ ...config }], activeTextProviderId: 'p1' });
+			setup({
+				textProviders: [{ ...cloud }],
+				activeTextProviderId: 'p2',
+			});
 
 			expect(listModels).not.toHaveBeenCalled();
 			expect(latest('Model')?.texts).toHaveLength(1); // free text until models are known
 		});
 
-		it('fetches after the Base URL is saved and shows a select of the models', async () => {
-			listModels.mockResolvedValue(['llama3.1', 'qwen2.5']);
-			const { settings } = setup({ textProviders: [{ ...withUrl }], activeTextProviderId: 'p1' });
-
-			await latest('Base URL')?.texts[0]?.commit('http://localhost:11434/v1');
+		it('Refresh fetches from the provider’s fixed endpoint and shows a select of the models', async () => {
+			listModels.mockResolvedValue(models('gpt-4o', 'gpt-4o-mini'));
+			const { settings } = setup({
+				textProviders: [{ ...cloud, model: '' }],
+				activeTextProviderId: 'p2',
+			});
+			await latest('Model')?.buttons[0]?.clickCb();
 
 			expect(listModels).toHaveBeenCalledWith(
-				expect.objectContaining({ baseUrl: 'http://localhost:11434/v1', type: 'openai-compatible' }),
+				'text',
+				'openai',
+				'https://api.openai.com/v1',
+				'',
 			);
 			const model = latest('Model');
 			expect(model?.texts).toHaveLength(0);
-			expect(model?.dropdowns[0]?.options).toEqual({ '': 'Select a model…', 'llama3.1': 'llama3.1', 'qwen2.5': 'qwen2.5' });
+			expect(model?.dropdowns[0]?.options).toEqual({
+				'': 'Select a model…',
+				'gpt-4o': 'gpt-4o',
+				'gpt-4o-mini': 'gpt-4o-mini',
+			});
 
-			await model?.dropdowns[0]?.changeCb('qwen2.5');
-			expect(settings.textProviders[0]?.model).toBe('qwen2.5');
+			await model?.dropdowns[0]?.changeCb('gpt-4o-mini');
+			expect(settings.textProviders[0]?.model).toBe('gpt-4o-mini');
 		});
 
-		it('keeps a saved model the endpoint does not list', async () => {
-			listModels.mockResolvedValue(['a']);
-			setup({ textProviders: [{ ...config, model: 'old-model' }], activeTextProviderId: 'p1' });
-			const refresh = [...(rendered as FakeSetting[])].reverse().find((s) => s.name === 'Model')?.buttons[0];
-			await refresh?.clickCb();
+		it('says how many of the provider’s models the filter kept', async () => {
+			listModels.mockResolvedValue({
+				models: ['a', 'b'],
+				total: 5,
+				fellBack: false,
+			});
+			setup({
+				textProviders: [{ ...cloud }],
+				activeTextProviderId: 'p2',
+			});
+			await latest('Model')?.buttons[0]?.clickCb();
+			expect(latest('Model')?.desc).toBe(
+				'2 text models available (of 5 the provider reports).',
+			);
 
-			expect(latest('Model')?.dropdowns[0]?.options).toHaveProperty('old-model');
+			rendered.length = 0;
+			clearModelCache();
+			listModels.mockResolvedValue({
+				models: ['a', 'b'],
+				total: 2,
+				fellBack: false,
+			});
+			setup({
+				textProviders: [{ ...cloud, id: 'p9' }],
+				activeTextProviderId: 'p9',
+			});
+			await latest('Model')?.buttons[0]?.clickCb();
+			expect(latest('Model')?.desc).toBe('2 text models available.');
+		});
+
+		it('keeps a saved model the provider does not list', async () => {
+			listModels.mockResolvedValue(models('a'));
+			setup({
+				textProviders: [{ ...cloud, model: 'old-model' }],
+				activeTextProviderId: 'p2',
+			});
+			await latest('Model')?.buttons[0]?.clickCb();
+
+			expect(latest('Model')?.dropdowns[0]?.options).toHaveProperty(
+				'old-model',
+			);
+		});
+
+		it('says so when the filter matched nothing and every model is shown', async () => {
+			listModels.mockResolvedValue({
+				models: ['x', 'y'],
+				fellBack: true,
+			});
+			setup({
+				textProviders: [{ ...cloud }],
+				activeTextProviderId: 'p2',
+			});
+			await latest('Model')?.buttons[0]?.clickCb();
+
+			expect(latest('Model')?.desc).toBe(
+				'No text models recognised, so all 2 models from this provider are shown.',
+			);
 		});
 
 		it('falls back to a text field with a hint when listing fails', async () => {
-			listModels.mockRejectedValue(new ProviderError('openai-compatible', 'HTTP 404 from https://x/v1/models'));
-			setup({ textProviders: [{ ...config }], activeTextProviderId: 'p1' });
+			listModels.mockRejectedValue(
+				new ProviderError(
+					'openai',
+					'HTTP 401 from https://api.openai.com/v1/models',
+				),
+			);
+			setup({
+				textProviders: [{ ...cloud }],
+				activeTextProviderId: 'p2',
+			});
 			await latest('Model')?.buttons[0]?.clickCb();
 
 			const model = latest('Model');
 			expect(model?.texts).toHaveLength(1);
 			expect(model?.desc).toBe(
-				"Couldn't load models: openai-compatible: HTTP 404 from https://x/v1/models. Type the model name instead.",
+				"Couldn't load models: openai: HTTP 401 from https://api.openai.com/v1/models. Type the model name instead.",
 			);
 		});
 
-		it('Refresh refetches, and is disabled while there is no Base URL', async () => {
-			listModels.mockResolvedValue(['a']);
-			setup({ textProviders: [{ ...config }], activeTextProviderId: 'p1' });
+		it('Refresh refetches, and is disabled for a local provider with no Base URL', async () => {
+			listModels.mockResolvedValue(models('a'));
+			setup({
+				textProviders: [{ ...cloud }],
+				activeTextProviderId: 'p2',
+			});
 			await latest('Model')?.buttons[0]?.clickCb();
 			await latest('Model')?.buttons[0]?.clickCb();
 			expect(listModels).toHaveBeenCalledTimes(2);
 
 			rendered.length = 0;
-			setup({ textProviders: [{ ...config, id: 'p2', baseUrl: '' }], activeTextProviderId: 'p2' });
+			setup({
+				textProviders: [{ ...local, id: 'p3', baseUrl: '' }],
+				activeTextProviderId: 'p3',
+			});
 			expect(latest('Model')?.buttons[0]?.disabled).toBe(true);
 		});
 
-		it('changing the type refetches', async () => {
-			listModels.mockResolvedValue(['claude-x']);
-			setup({ textProviders: [{ ...config }], activeTextProviderId: 'p1' });
-			await latest('Type')?.dropdowns[0]?.changeCb('anthropic');
+		it('changing the provider refetches for the new one', async () => {
+			listModels.mockResolvedValue(models('claude-x'));
+			setup({
+				textProviders: [{ ...cloud }],
+				activeTextProviderId: 'p2',
+			});
+			await latest('Provider')?.dropdowns[0]?.changeCb('anthropic');
 
-			expect(listModels).toHaveBeenCalledWith(expect.objectContaining({ type: 'anthropic' }));
+			expect(listModels).toHaveBeenCalledWith(
+				'text',
+				'anthropic',
+				'https://api.anthropic.com',
+				'',
+			);
 		});
 	});
 });

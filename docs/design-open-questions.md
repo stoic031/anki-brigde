@@ -138,3 +138,14 @@ Resolved: the API key source can be **Obsidian keychain** (`app.secretStorage`, 
 `data.json`. "Enter manually" still writes the key in plain text in the plugin's data file
 (masked in the UI) and says so in its description. Remaining question: whether to make the
 keychain the default for new configs.
+
+### 21. How the AI image prompt combines with a ComfyUI workflow's own prompt
+
+Settings now let the user pick a ComfyUI workflow and show which CLIPTextEncode node feeds the
+sampler's `positive` input. The adapter (Feature #17) still has to decide what to write there when a
+workflow already has positive text (a saved workflow can hold a long style prompt such as "simple flat
+vector illustration ... educational icon style"): **replace** it with the AI-written prompt, **prepend**
+the AI prompt to it, or substitute a `{prompt}` placeholder. Related: how the settings negative prompt
+combines with the workflow's negative node, and UI→API conversion limits (reroutes, subgraphs,
+primitive nodes) when converting a saved workflow for `POST /prompt`.
+
