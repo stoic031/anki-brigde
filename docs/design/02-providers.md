@@ -64,10 +64,11 @@ dùng active) — thay đổi cộng thêm, không phá dữ liệu cũ.
 
 **Audio Generation:**
 
-- Input: text string + options (voice, speed)
-- Output: base64 string + filename
+- Input: text string + `AudioOptions` (`voice`, `language`, `speed?`)
+- Output: `MediaResult` (`base64`, `ext`, `mimeType`). Provider không đặt tên file và không
+  gọi `storeMediaFile` — đặt tên thuộc `note/mediaNaming.ts`, lưu thuộc `sync/ankiConnect.ts`
 
 **Image Generation:**
 
-- Input: prompt string + options (size, steps)
-- Output: base64 string + filename
+- Input: prompt string + `ImageOptions` (`size?`, `steps?`, `negativePrompt?`)
+- Output: `MediaResult` (như Audio)
