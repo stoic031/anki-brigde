@@ -1,5 +1,12 @@
 import type { Plugin } from 'obsidian';
 import type { ProviderConfig } from './providers/providerManager';
+import {
+	IMAGE_PRESETS,
+	TEXT_PRESETS,
+	type ImageProviderId,
+	type ProviderPreset,
+	type TextProviderId,
+} from './providers/presets';
 import { DEFAULT_ANKI_CONNECT_URL } from './utils/constants';
 
 // docs/design/06-settings.md §6.1 — a named Deck + Model + "Save notes to" bundle used when
@@ -16,7 +23,7 @@ export interface Profile {
 export interface ProviderConfigBase {
 	id: string;
 	name: string;
-	baseUrl: string;
+	baseUrl: string; // only kept for editable (local) presets; cloud providers use the preset's fixed URL
 	apiKeySource: 'manual' | 'keychain';
 	apiKey: string; // manual source only; user-supplied, sent only to baseUrl; '' is fine for local endpoints
 	apiKeySecretId: string; // keychain source only: the *name* of an Obsidian secret, never the key
@@ -24,12 +31,13 @@ export interface ProviderConfigBase {
 }
 
 export interface TextProviderConfig extends ProviderConfigBase {
-	type: 'openai-compatible' | 'anthropic';
+	type: TextProviderId; // a key of TEXT_PRESETS
 }
 
 export interface ImageProviderConfig extends ProviderConfigBase {
-	type: 'openai-compatible' | 'automatic1111';
+	type: ImageProviderId; // a key of IMAGE_PRESETS
 	negativePrompt: string; // docs/design/06-settings.md §6.2; '' = none
+	workflow: string; // ComfyUI only: a saved workflow's path under its workflows/ folder; '' = none
 }
 
 export interface AnkiBridgeSettings {
@@ -94,9 +102,15 @@ export async function loadSettings(
 		...structuredClone(DEFAULT_SETTINGS),
 		...rest,
 	};
-	// Configs saved before the keychain option existed have no source: they were manual.
-	settings.textProviders = settings.textProviders.map(withKeySource);
-	settings.imageProviders = settings.imageProviders.map(withKeySource);
+	// The provider lists are fixed now: a config whose provider isn't in them (saved by the
+	// earlier custom-endpoint build, never released) can't be used, so it is dropped.
+	settings.textProviders = settings.textProviders
+		.filter((p) => p.type in TEXT_PRESETS)
+		.map(withKeySource);
+	settings.imageProviders = settings.imageProviders
+		.filter((p) => p.type in IMAGE_PRESETS)
+		.map(withKeySource)
+		.map((p) => ({ ...p, workflow: p.workflow ?? '' }));
 	if (!rest.profiles?.length) {
 		settings.profiles = [
 			{
@@ -139,27 +153,41 @@ function withKeySource<T extends ProviderConfigBase>(p: T): T {
 
 export type SecretLookup = (id: string) => string | null;
 
-// The adapter config for one saved provider. A keychain key is looked up now, not at save
-// time, so a rotated secret applies immediately; a missing secret yields '' (local
-// endpoints still work, cloud ones answer 401 with a message naming the provider).
-export function toProviderConfig(
-	p: ProviderConfigBase & { type: string },
+// A keychain key is looked up now, not at save time, so a rotated secret applies
+// immediately; a missing secret yields '' (local endpoints still work, cloud ones answer
+// 401 with a message naming the provider).
+export function resolveApiKey(
+	p: ProviderConfigBase,
 	getSecret: SecretLookup,
-): ProviderConfig {
-	const apiKey =
+): string {
+	const key =
 		p.apiKeySource === 'keychain'
 			? (getSecret(p.apiKeySecretId) ?? '')
 			: p.apiKey;
-	return {
-		type: p.type,
-		baseUrl: p.baseUrl.trim(),
-		apiKey: apiKey.trim(),
-		model: p.model.trim(),
-	};
+	return key.trim();
 }
 
-// What ProviderManager's `text.getConfig` reads. An active config missing its Base URL or
-// Model is treated as not configured, so nothing is called until it is complete.
+// Cloud presets have one fixed endpoint; local ones use what the user saved.
+export function endpointUrl(
+	preset: ProviderPreset,
+	p: ProviderConfigBase,
+): string {
+	return preset.editableUrl ? p.baseUrl.trim() : preset.baseUrl;
+}
+
+// A preset that has its own default model needs none; every other needs one.
+function isComplete(
+	preset: ProviderPreset,
+	p: ProviderConfigBase & { workflow?: string },
+): boolean {
+	if (!endpointUrl(preset, p)) return false;
+	// A workflow provider is configured by its workflow, not by a model.
+	if (preset.workflow) return !!p.workflow?.trim();
+	return !!preset.modelOptional || !!p.model.trim();
+}
+
+// What ProviderManager's `text.getConfig` reads: the adapter type + endpoint for the chosen
+// provider. An incomplete active config counts as not configured, so nothing is called.
 export function getActiveTextConfig(
 	settings: AnkiBridgeSettings,
 	getSecret: SecretLookup,
@@ -167,12 +195,17 @@ export function getActiveTextConfig(
 	const active = settings.textProviders.find(
 		(p) => p.id === settings.activeTextProviderId,
 	);
-	if (!active || !active.baseUrl.trim() || !active.model.trim()) return null;
-	return toProviderConfig(active, getSecret);
+	const preset = active && TEXT_PRESETS[active.type];
+	if (!active || !preset || !isComplete(preset, active)) return null;
+	return {
+		type: preset.adapter,
+		baseUrl: preset.apiBase(endpointUrl(preset, active)),
+		apiKey: resolveApiKey(active, getSecret),
+		model: active.model.trim(),
+	};
 }
 
-// What ProviderManager's `image.getConfig` reads. Automatic1111 picks its own checkpoint, so
-// its Model is optional; every other type needs Base URL and Model.
+// What ProviderManager's `image.getConfig` reads. No image adapter exists yet (#17).
 export function getActiveImageConfig(
 	settings: AnkiBridgeSettings,
 	getSecret: SecretLookup,
@@ -180,11 +213,15 @@ export function getActiveImageConfig(
 	const active = settings.imageProviders.find(
 		(p) => p.id === settings.activeImageProviderId,
 	);
-	if (!active || !active.baseUrl.trim()) return null;
-	if (active.type !== 'automatic1111' && !active.model.trim()) return null;
+	const preset = active && IMAGE_PRESETS[active.type];
+	if (!active || !preset || !isComplete(preset, active)) return null;
 	return {
-		...toProviderConfig(active, getSecret),
+		type: preset.adapter,
+		baseUrl: preset.apiBase(endpointUrl(preset, active)),
+		apiKey: resolveApiKey(active, getSecret),
+		model: active.model.trim(),
 		negativePrompt: active.negativePrompt.trim(),
+		workflow: active.workflow.trim(),
 	};
 }
 

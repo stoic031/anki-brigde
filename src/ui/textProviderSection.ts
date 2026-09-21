@@ -1,5 +1,5 @@
 import type AnkiBridgePlugin from '../main';
-import { listModels } from '../providers/text/listModels';
+import { TEXT_PRESETS } from '../providers/presets';
 import type { TextProviderConfig } from '../settings';
 import { renderProviderSection } from './providerSection';
 
@@ -13,7 +13,7 @@ export function renderTextProviderSection(
 		heading: 'AI text provider',
 		activeDesc:
 			'Used to fill fields and write image prompts. None means no AI calls.',
-		defaultType: 'openai-compatible',
+		defaultType: 'openai',
 		read: (s) => ({
 			list: s.textProviders,
 			activeId: s.activeTextProviderId,
@@ -22,19 +22,6 @@ export function renderTextProviderSection(
 			s.textProviders = list;
 			s.activeTextProviderId = activeId;
 		},
-		kind: {
-			typeLabels: {
-				'openai-compatible': 'OpenAI-compatible',
-				anthropic: 'Anthropic',
-			},
-			urlHints: {
-				'openai-compatible': 'https://openrouter.ai/api/v1',
-				anthropic: 'https://api.anthropic.com',
-			},
-			urlExtra: 'http://localhost:11434/v1',
-			sends: 'note text',
-			allowEmptyUrl: (type) => type === 'anthropic',
-			listModels,
-		},
+		kind: { kind: 'text', presets: TEXT_PRESETS, sends: 'note text' },
 	});
 }

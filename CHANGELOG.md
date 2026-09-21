@@ -6,20 +6,24 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
-- Settings: **AI image provider** section — add/delete configs (OpenAI-compatible or Automatic1111
-  local), pick the active one, keychain or manual API key, model list from the endpoint, negative
-  prompt. Configuration only for now: image generation itself arrives with the image adapters.
-- Text provider settings: **API key from the Obsidian keychain** as an alternative to typing
-  it, and a **Model dropdown** filled from the endpoint's model list (with Refresh; falls back to a
-  text field if the endpoint can't list models). Requires Obsidian 1.11.4 or newer.
+- Settings: **AI text provider** and **AI image provider** sections. Pick a provider from a fixed
+  list — text: OpenAI, Gemini, Anthropic, Groq, OpenRouter, Together (cloud) and Ollama (local);
+  image: Pollinations, Gemini, OpenAI, OpenRouter (cloud) and Automatic1111, ComfyUI (local). Add
+  several configs and choose the active one; None is active by default, so nothing calls an AI until
+  you set one up.
+- The Model dropdown lists only the right kind of model for the provider (text models for text, text-
+  to-image models for image), loaded on Refresh or when you change the provider. API keys can come from
+  the Obsidian keychain instead of being typed. Requires Obsidian 1.11.4 or newer.
 - **Generate** button now works: the active text model fills the ticked fields of the open note
   (empty sections only, never overwriting your text) — Anki is updated when you press Sync.
-- Settings: **AI text provider** section — add/delete provider configs (OpenAI-compatible or
-  Anthropic; Base URL, API key, Model), pick the active one, Cloud/Local label. None active by
-  default, so no AI call is made until you set one up.
-- Text providers: OpenAI-compatible (`/chat/completions`, incl. OpenRouter, Groq, Ollama, LM Studio)
-  and Anthropic (`/v1/messages`) adapters with JSON validation, one retry on malformed replies,
-  and a 60 s timeout. Not yet reachable from the UI — provider settings come next.
+- Text providers: OpenAI-compatible (`/chat/completions`; serves OpenAI, Groq, OpenRouter, Together,
+  Ollama, Gemini) and Anthropic (`/v1/messages`) adapters with JSON validation, one retry on
+  malformed replies, and a 60 s timeout.
+- ComfyUI image provider is configured by **workflow**: pick one of the workflows saved in your ComfyUI
+  (listed from the server) and the settings show which nodes take the prompt, warning when the
+  workflow has none.
+- Image provider settings are configuration only for now: image generation itself arrives with the
+  image adapters.
 
 ### Removed
 

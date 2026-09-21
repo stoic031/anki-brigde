@@ -11,23 +11,28 @@ Plugin sử dụng **Abstraction Layer** để dễ dàng chuyển đổi giữa
 
 ## 2.2. Supported Providers
 
+Danh sách provider là **cố định** (chọn từ dropdown, không nhập endpoint tùy ý); thêm provider mới
+khi có người dùng yêu cầu. Lý do: mỗi nhà cung cấp báo model theo một kiểu khác nhau, cần biết chính
+xác provider mới lọc đúng loại model (`06-settings.md` §6.2). Tên model do user chọn từ danh sách
+lấy từ chính provider (hoặc tự nhập khi không tải được).
+
 **Text Processing:**
 
-Không hard-code danh sách model. Plugin chỉ hỗ trợ theo **loại endpoint**; tên model là
-chuỗi user tự nhập:
-
-- **OpenAI-compatible** (`POST {baseUrl}/chat/completions`): OpenAI, OpenRouter, Groq,
-  DeepSeek, Gemini (endpoint compat), và local như Ollama (localhost:11434), LM Studio,
-  vLLM
-- **Anthropic** (`/v1/messages`): format khác OpenAI nên cần adapter riêng
+- Cloud: OpenAI, Gemini, Anthropic, Groq, OpenRouter, Together. Local: Ollama.
+- Adapter: `openai-compatible` (`POST {baseUrl}/chat/completions`) phục vụ OpenAI, Groq, OpenRouter,
+  Together, Ollama (`{host}/v1`) và Gemini (endpoint OpenAI-compatible
+  `https://generativelanguage.googleapis.com/v1beta/openai`); `anthropic` (`/v1/messages`) riêng
+  vì format khác. Bảng provider → adapter → endpoint nằm ở `src/providers/presets.ts`.
 
 **Image Generation:**
 
-- Cloud: DALL-E 3, Stability AI, Replicate
-- Local: Automatic1111 (localhost:7860), ComfyUI
-
-Hiện Settings chỉ cấu hình được `openai-compatible` (`/images/generations`) và `automatic1111`;
-Stability AI, Replicate, ComfyUI thêm khi có adapter tương ứng (`06-settings.md` §6.2).
+- Cloud: Pollinations (`gen.pollinations.ai`, có `/v1/images/generations`), Gemini, OpenAI, OpenRouter. Local: Automatic1111 (localhost:7860), ComfyUI
+  (localhost:8188).
+- Chưa có adapter ảnh (Feature #17): Settings chỉ lưu cấu hình. Lưu ý cho adapter: model ảnh của
+  OpenRouter và Gemini sinh ảnh qua `chat/completions`, không phải `/images/generations` như OpenAI;
+  ComfyUI chạy theo **workflow** đã lưu trong ComfyUI (Settings đã chọn được workflow): workflow lưu ở
+  định dạng UI (`nodes`/`links`) nên adapter phải đổi sang API format bằng `/object_info` rồi
+  `POST /prompt`, gán prompt vào node prompt dương của KSampler.
 
 ## 2.3. AI Provider Manager
 

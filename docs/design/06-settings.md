@@ -74,51 +74,66 @@ Save notes to: [/ (vault root) ▼]
 
 ## 6.2. AI Provider Settings
 
-**Text Processing:**
+Provider là danh sách **cố định** (xem `02-providers.md` §2.2); thêm provider khi có người dùng
+yêu cầu. Cả Text và Image cùng cơ chế: danh sách cấu hình (Add / Delete) + dropdown **active**
+(mặc định None = không gọi AI / không tạo ảnh), dùng chung cho mọi profile. Mỗi cấu hình:
 
-Danh sách cấu hình provider (Add / Delete) + dropdown chọn cấu hình **active** (dùng chung
-cho mọi profile; mặc định chưa có cấu hình nào = không gọi AI). Mỗi cấu hình gồm:
+- Name: text field (không rỗng)
+- Provider: dropdown chọn từ danh sách cố định, nhãn `(cloud)` / `(local)`. Đổi provider thì xóa
+  Model đã chọn và đặt lại Base URL về mặc định của provider mới
+- Base URL: **chỉ hiện với provider local** (Ollama `http://localhost:11434`, Automatic1111
+  `http://localhost:7860`, ComfyUI `http://localhost:8188`, có sẵn mặc định); provider cloud dùng
+  endpoint cố định nên không hiện. Sai định dạng → Notice "❌ Invalid URL. Please check the base
+  URL." và giữ giá trị cũ
+- API Key: ẩn với provider không cần key (Ollama, Automatic1111, ComfyUI); bắt buộc với cloud, riêng
+  Pollinations là tùy chọn. Chọn **nguồn** — *Enter manually* (ô nhập ẩn ký tự, lưu plain text trong
+  `data.json`) hoặc *Obsidian keychain* (`SecretComponent`, chỉ lưu **tên** secret; key đọc từ
+  `app.secretStorage` mỗi lần gọi nên đổi secret có hiệu lực ngay). Cần Obsidian ≥ 1.11.4
+  (`minAppVersion`). Key chỉ gửi tới endpoint của provider đang chọn (gọi model lẫn liệt kê model)
+- Model: dropdown model do chính provider báo, **chỉ gồm đúng loại** (Text: model sinh text; Image:
+  model text-to-image). Chỉ tải khi user đổi provider / Base URL / key hoặc bấm **Refresh**, không tự
+  tải khi mở Settings. Tải lỗi hoặc rỗng → ô text tự do kèm gợi ý; model đã lưu mà danh sách không có
+  (hoặc bị lọc) vẫn hiển thị; dòng mô tả cho biết đã lọc còn bao nhiêu trên tổng số provider báo ("2 text models available (of 5 the provider reports)"); nếu bộ lọc loại hết thì hiện toàn bộ model kèm ghi chú
+- Nhãn Cloud / Local: theo provider (không suy từ URL)
+- Dropdown active có mục **None**; Add tạo cấu hình mới (Text mặc định OpenAI, Image mặc định
+  Pollinations) và chọn nó làm active; Delete xoá cấu hình đang active (active về None). Form sửa hiện
+  bên dưới, chỉ cho cấu hình đang active. Lưu khi rời ô nhập (Name, Base URL) hoặc khi gõ (API Key, Model)
+- Cấu hình thiếu Base URL (provider local) hoặc thiếu Model (trừ provider có model mặc định:
+  Pollinations, Automatic1111, ComfyUI) coi như **chưa cấu hình** — `getActiveTextConfig` /
+  `getActiveImageConfig` trả `null`
+- Cấu hình lưu bởi bản cũ có provider không còn trong danh sách bị bỏ khi tải settings
 
-- Type: dropdown (openai-compatible, anthropic)
-- Base URL: text field (ví dụ `https://openrouter.ai/api/v1`, `http://localhost:11434/v1`)
-- API Key: chọn **nguồn** — *Enter manually* (ô nhập ẩn ký tự, lưu plain text trong `data.json`)
-  hoặc *Obsidian keychain* (`SecretComponent`, chỉ lưu **tên** secret, không lưu key; key được
-  đọc từ `app.secretStorage` mỗi lần gọi nên đổi secret có hiệu lực ngay). Tùy chọn với local.
-  Cấu hình cũ chưa có nguồn = manual
-- Model: dropdown liệt kê model của endpoint (`GET {baseUrl}/models`; Anthropic
-  `GET /v1/models`). Chỉ tải khi user lưu Base URL / đổi Type / đổi key hoặc bấm **Refresh**,
-  không tự tải khi mở Settings. Tải lỗi hoặc rỗng → về ô text tự do kèm gợi ý; model đã lưu
-  mà endpoint không liệt kê vẫn hiển thị
-- Nhãn Cloud / Local: tự suy ra từ Base URL (localhost, 127.0.0.1 = Local, còn lại = Cloud)
-- Dropdown active có mục **None**; Add tạo cấu hình mới và chọn nó làm active; Delete xoá cấu
-  hình đang active (active về None). Form sửa hiện bên dưới, chỉ cho cấu hình đang active
-- Lưu khi rời ô nhập (Name, Base URL) hoặc khi gõ (API Key, Model). Base URL sai định dạng →
-  Notice "❌ Invalid URL. Please check the base URL." và giữ giá trị cũ; Name rỗng bị từ chối
-- Cấu hình active thiếu Base URL hoặc Model được coi như **chưa cấu hình** (không gọi AI)
-  — `getActiveTextConfig` trong `src/settings.ts` trả `null`
-- Key (manual hoặc keychain) chỉ gửi tới Base URL của cấu hình đang active — cả khi gọi model
-  lẫn khi liệt kê model. Cần Obsidian ≥ 1.11.4 (`minAppVersion`) vì `SecretStorage`
+**Cách lọc model theo provider** (`src/providers/modelLists.ts`; lọc theo metadata khi provider có,
+theo tên khi không — lọc theo tên là best effort):
 
-**Image Generation:**
+| Provider | Nguồn | Text | Image |
+| --- | --- | --- | --- |
+| OpenRouter | `/models` → `architecture.output_modalities` | output chỉ có `text` (bỏ model xuất audio/ảnh như lyria, gpt-audio) | output có `image`, bỏ `openrouter/auto*` |
+| Together | `/v1/models` → `type` | `chat`/`language`/`code` | `image` |
+| OpenAI | `/models` | `gpt-*`/`chatgpt-*`/`o<số>`, bỏ audio/realtime/embedding/... | `dall-e*`, `gpt-image*` |
+| Gemini | `/v1beta/openai/models` cho cả Text lẫn Image (bỏ tiền tố `models/`) | chỉ `gemini-*`/`gemma-*`, bỏ image/tts/live/audio/embedding/robotics/... (lyria, nano-banana, veo tự loại) | `imagen`, `*-image`, `nano-banana` |
+| Groq | `/models` | mọi model text-to-text (chỉ bỏ whisper, tts, orpheus) | — |
+| Anthropic | `/v1/models` | tất cả | — |
+| Ollama | `{host}/api/tags` | bỏ embedding | — |
+| Pollinations | `gen.pollinations.ai/image/models` → `category`, `output_modalities` | — | tất cả trừ video (gồm cả model cộng đồng, trả phí, đang `down`) |
+| Automatic1111 | `/sdapi/v1/sd-models` | — | tất cả checkpoint |
+| ComfyUI | không liệt kê model: cấu hình bằng **workflow** (bên dưới) | — | — |
 
-Cùng cơ chế với Text: danh sách cấu hình (Add / Delete) + dropdown **active** (mặc định None =
-không tạo ảnh), dùng chung cho mọi profile; nguồn API key (manual / Obsidian keychain), dropdown
-Model liệt kê từ endpoint (chỉ tải khi user sửa kết nối hoặc bấm Refresh), nhãn Cloud / Local suy
-từ Base URL. Hiện chỉ cấu hình được 2 loại (các loại khác thêm khi có adapter, xem `02-providers.md`
-§2.2):
+**ComfyUI (Image)** cấu hình bằng **workflow** thay vì Model: chỉ có Base URL (mặc định
+`http://localhost:8188`) và **Workflow**, không có API Key/Model.
+- Workflow: dropdown các workflow đã lưu trong ComfyUI (`GET /api/userdata?dir=workflows&recurse=true`,
+  bản cũ `/userdata`), lưu **đường dẫn** (VD `icons.json`, `sub/a.json`). Chỉ tải khi đổi Provider /
+  Base URL hoặc bấm **Refresh**, không tự tải khi mở Settings. Tải lỗi → ô text nhập đường dẫn kèm gợi ý
+- Chọn workflow → plugin đọc nó (`GET /api/userdata/workflows%2F<path>`, định dạng UI hoặc API) và hiện
+  tóm tắt: node prompt dương/âm (nối vào `positive`/`negative` của KSampler) và checkpoint; thiếu
+  KSampler / node prompt / SaveImage thì cảnh báo "image prompts can't be injected". Node prompt chỉ
+  đi qua reroute/combine/subgraph thì chưa được theo dõi
+- Cấu hình chưa chọn workflow coi như **chưa cấu hình** (`getActiveImageConfig` = `null`)
+- Chạy workflow (đổi UI→API bằng `/object_info`, `POST /prompt`, lấy ảnh) làm cùng adapter ComfyUI
 
-- Type: dropdown (`openai-compatible` = `{baseUrl}/images/generations`: DALL-E, gpt-image,
-  OpenRouter...; `automatic1111` = local, mặc định `http://localhost:7860`)
-- Base URL: text field. Chọn `automatic1111` khi Base URL còn trống → tự điền `http://localhost:7860`
-- API Key: chỉ hiện với `openai-compatible` (Automatic1111 là local, không cần key)
-- Model: dropdown từ endpoint (`GET {baseUrl}/models`; Automatic1111 `GET /sdapi/v1/sd-models`,
-  lấy `model_name`). **Bắt buộc** với `openai-compatible`, **tùy chọn** với `automatic1111` (dùng
-  checkpoint đang chọn trong Automatic1111). Tải lỗi → về ô text tự do
-- Negative Prompt: textarea, lưu theo từng cấu hình; chỉ provider hỗ trợ mới dùng (Automatic1111)
-- Cấu hình active thiếu Base URL (hoặc thiếu Model với `openai-compatible`) coi như chưa cấu hình
-  — `getActiveImageConfig` trả `null`
-- Chưa có adapter ảnh: chọn cấu hình active thì `getImageProvider()` báo `ProviderError` "no adapter
-  for this provider type" cho tới khi Feature Image providers (#17) xong
+Riêng **Image**: Negative Prompt (textarea, lưu theo từng cấu hình; chỉ provider hỗ trợ mới dùng, VD
+Automatic1111). Chưa có adapter ảnh (#17) nên chọn cấu hình active thì `getImageProvider()` báo
+`ProviderError` "no adapter for this provider type" cho tới khi #17 xong.
 
 ## 6.3. Sync Settings
 

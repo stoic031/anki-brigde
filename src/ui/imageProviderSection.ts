@@ -1,14 +1,11 @@
 import { Setting } from 'obsidian';
 import type AnkiBridgePlugin from '../main';
-import {
-	AUTOMATIC1111_DEFAULT_URL,
-	listImageModels,
-} from '../providers/image/listModels';
+import { IMAGE_PRESETS } from '../providers/presets';
 import type { ImageProviderConfig } from '../settings';
 import { renderProviderSection } from './providerSection';
 
 // docs/design/06-settings.md §6.2 — Image providers. Same list/active/keychain/model-list
-// behavior as Text; Automatic1111 is local, keyless, and picks its own checkpoint.
+// behavior as Text, over the fixed image provider list.
 export function renderImageProviderSection(
 	containerEl: HTMLElement,
 	plugin: AnkiBridgePlugin,
@@ -18,8 +15,8 @@ export function renderImageProviderSection(
 		heading: 'AI image provider',
 		activeDesc:
 			'Used to generate images for your cards. None means no image generation.',
-		defaultType: 'openai-compatible',
-		extraDefaults: { negativePrompt: '' },
+		defaultType: 'pollinations',
+		extraDefaults: { negativePrompt: '', workflow: '' },
 		read: (s) => ({
 			list: s.imageProviders,
 			activeId: s.activeImageProviderId,
@@ -29,33 +26,14 @@ export function renderImageProviderSection(
 			s.activeImageProviderId = activeId;
 		},
 		kind: {
-			typeLabels: {
-				'openai-compatible': 'OpenAI-compatible',
-				automatic1111: 'Automatic1111 (local)',
-			},
-			urlHints: {
-				'openai-compatible': 'https://api.openai.com/v1',
-				automatic1111: AUTOMATIC1111_DEFAULT_URL,
-			},
+			kind: 'image',
+			presets: IMAGE_PRESETS,
 			sends: 'prompts',
-			hasApiKey: (type) => type !== 'automatic1111',
-			// Pre-fill the local default when switching to Automatic1111; drop it when leaving.
-			onTypeChange: (config) => {
-				if (config.type === 'automatic1111' && config.baseUrl === '') {
-					config.baseUrl = AUTOMATIC1111_DEFAULT_URL;
-				} else if (
-					config.type !== 'automatic1111' &&
-					config.baseUrl === AUTOMATIC1111_DEFAULT_URL
-				) {
-					config.baseUrl = '';
-				}
-			},
-			listModels: listImageModels,
 			extraRows: (el, config, save) => {
 				new Setting(el)
 					.setName('Negative prompt')
 					.setDesc(
-						'Things to keep out of the image. Used by providers that support it, such as Automatic1111.',
+						'Things to keep out of the image. Used by providers that support it, such as Automatic1111. ComfyUI workflows have their own negative prompt node.',
 					)
 					.addTextArea((area) => {
 						area.setValue(config.negativePrompt);

@@ -1,31 +1,37 @@
 import { Notice, SecretComponent, Setting } from 'obsidian';
 import type AnkiBridgePlugin from '../main';
-import { isLocalUrl } from '../providers/text/openaiCompatible';
-import type { ProviderConfig } from '../providers/providerManager';
-import { toProviderConfig, type ProviderConfigBase } from '../settings';
+import { listModels, type ModelKind } from '../providers/modelLists';
+import { presetLabel, type ProviderPreset } from '../providers/presets';
+import {
+	endpointUrl,
+	resolveApiKey,
+	type ProviderConfigBase,
+} from '../settings';
 import { ProviderError } from '../types';
 import { isValidUrl } from '../utils/validation';
+import {
+	refreshWorkflows,
+	renderWorkflowRow,
+	type WorkflowHolder,
+} from './comfyWorkflowRow';
 
 // What differs between the Text and Image provider lists (docs/design/06-settings.md §6.2).
 export type AnyProviderConfig = ProviderConfigBase & { type: string };
 
 export interface ProviderKindSpec<C extends AnyProviderConfig> {
-	typeLabels: Record<string, string>;
-	urlHints: Record<string, string>; // placeholder + example for the Base URL field
+	kind: ModelKind;
+	presets: Record<string, ProviderPreset>; // the fixed provider list for this kind
 	sends: string; // what leaves the machine, for the Cloud badge ("note text", "prompts")
-	allowEmptyUrl?: (type: string) => boolean; // type has a built-in default endpoint
-	hasApiKey?: (type: string) => boolean; // default true
-	urlExtra?: string; // second example shown in the Base URL description
-	onTypeChange?: (config: C) => void; // e.g. pre-fill a local default URL
-	listModels: (config: ProviderConfig) => Promise<string[]>;
 	extraRows?: (el: HTMLElement, config: C, save: () => Promise<void>) => void;
 }
 
-// docs/design/06-settings.md §6.2 — models the endpoint reported, kept in memory for the
-// session. Filled only by user actions (edit Base URL/type/key, Refresh), never on open.
+// docs/design/06-settings.md §6.2 — models the provider reported, kept in memory for the
+// session. Filled only by user actions (edit URL/provider/key, Refresh), never on open.
 interface ModelState {
 	loading?: boolean;
 	models?: string[];
+	total?: number;
+	fellBack?: boolean;
 	error?: string;
 }
 const modelStates = new Map<string, ModelState>();
@@ -41,6 +47,9 @@ export function renderEditor<C extends AnyProviderConfig>(
 	save: () => Promise<void>,
 	render: () => void,
 ): void {
+	const preset = spec.presets[config.type];
+	if (!preset) return;
+
 	// Saving a connection detail invalidates the model list and refetches it.
 	const commitConnection = async () => {
 		await save();
@@ -65,62 +74,75 @@ export function renderEditor<C extends AnyProviderConfig>(
 		});
 	});
 
-	new Setting(el).setName('Type').addDropdown((dropdown) => {
-		for (const [value, label] of Object.entries(spec.typeLabels)) {
-			dropdown.addOption(value, label);
+	new Setting(el).setName('Provider').addDropdown((dropdown) => {
+		for (const p of Object.values(spec.presets)) {
+			dropdown.addOption(p.id, presetLabel(p));
 		}
 		dropdown.setValue(config.type).onChange(async (value) => {
 			config.type = value;
-			spec.onTypeChange?.(config);
+			// Local providers start from their default address; cloud ones have a fixed one.
+			const next = spec.presets[value];
+			config.baseUrl = next?.editableUrl ? next.baseUrl : '';
+			config.model = '';
+			if ('workflow' in config) config.workflow = '';
 			await commitConnection();
 		});
 	});
 
-	new Setting(el)
-		.setName('Base URL')
-		.setDesc(
-			`For example ${spec.urlHints[config.type]}${spec.urlExtra ? ` or ${spec.urlExtra}` : ''}`,
-		)
-		.addText((text) => {
-			text.setPlaceholder(spec.urlHints[config.type] ?? '').setValue(
-				config.baseUrl,
-			);
-			text.inputEl.addEventListener('change', () => {
-				void (async () => {
-					const url = text.getValue().trim();
-					if (url !== '' && !isValidUrl(url)) {
-						new Notice(
-							'❌ Invalid URL. Please check the base URL.',
-						);
-						text.setValue(config.baseUrl);
-						return;
-					}
-					config.baseUrl = url;
-					await commitConnection();
-				})();
+	if (preset.editableUrl) {
+		new Setting(el)
+			.setName('Base URL')
+			.setDesc(
+				`Where ${preset.label} is running. Default ${preset.baseUrl}`,
+			)
+			.addText((text) => {
+				text.setPlaceholder(preset.baseUrl).setValue(config.baseUrl);
+				text.inputEl.addEventListener('change', () => {
+					void (async () => {
+						const url = text.getValue().trim();
+						if (url !== '' && !isValidUrl(url)) {
+							new Notice(
+								'❌ Invalid URL. Please check the base URL.',
+							);
+							text.setValue(config.baseUrl);
+							return;
+						}
+						config.baseUrl = url;
+						await commitConnection();
+					})();
+				});
 			});
-		});
+	}
 
-	if (spec.hasApiKey?.(config.type) ?? true) {
+	if (preset.key !== 'none') {
 		renderApiKeyRows(
 			el,
 			plugin,
 			spec,
 			config,
+			preset,
 			save,
 			render,
 			commitConnection,
 		);
 	}
-	renderModelRow(el, plugin, spec, config, save, render);
+	if (preset.workflow) {
+		renderWorkflowRow(
+			el,
+			config as unknown as WorkflowHolder,
+			save,
+			render,
+		);
+	} else {
+		renderModelRow(el, plugin, spec, config, preset, save, render);
+	}
 	spec.extraRows?.(el, config, save);
 
-	const local = isLocalUrl(config.baseUrl);
 	el.createDiv({
-		cls: `anki-bridge-provider-badge ${local ? 'is-local' : 'is-cloud'}`,
-		text: local
-			? 'Local: requests stay on your machine.'
-			: `Cloud: your ${spec.sends} and API key are sent to this URL.`,
+		cls: `anki-bridge-provider-badge ${preset.cloud ? 'is-cloud' : 'is-local'}`,
+		text: preset.cloud
+			? `Cloud: your ${spec.sends} and API key are sent to ${preset.label}.`
+			: 'Local: requests stay on your machine.',
 	});
 }
 
@@ -129,10 +151,12 @@ function renderApiKeyRows<C extends AnyProviderConfig>(
 	plugin: AnkiBridgePlugin,
 	spec: ProviderKindSpec<C>,
 	config: C,
+	preset: ProviderPreset,
 	save: () => Promise<void>,
 	render: () => void,
 	commitConnection: () => Promise<void>,
 ): void {
+	const need = preset.key === 'optional' ? 'Optional.' : 'Required.';
 	new Setting(el)
 		.setName('API key source')
 		.setDesc('The keychain keeps the key out of this plugin’s data file.')
@@ -151,7 +175,7 @@ function renderApiKeyRows<C extends AnyProviderConfig>(
 	if (config.apiKeySource === 'keychain') {
 		new Setting(el)
 			.setName('API key')
-			.setDesc('Choose or create a secret. Optional for local endpoints.')
+			.setDesc(`Choose or create a secret. ${need}`)
 			.addComponent((controlEl) =>
 				new SecretComponent(plugin.app, controlEl)
 					.setValue(config.apiKeySecretId)
@@ -164,9 +188,7 @@ function renderApiKeyRows<C extends AnyProviderConfig>(
 	}
 	new Setting(el)
 		.setName('API key')
-		.setDesc(
-			'Optional for local endpoints. Stored in this plugin’s data file.',
-		)
+		.setDesc(`${need} Stored in this plugin’s data file.`)
 		.addText((text) => {
 			text.inputEl.type = 'password';
 			text.setValue(config.apiKey).onChange(async (value) => {
@@ -185,12 +207,16 @@ function renderModelRow<C extends AnyProviderConfig>(
 	plugin: AnkiBridgePlugin,
 	spec: ProviderKindSpec<C>,
 	config: C,
+	preset: ProviderPreset,
 	save: () => Promise<void>,
 	render: () => void,
 ): void {
 	const state = modelStates.get(config.id) ?? {};
 	const models = state.models ?? [];
 	const setting = new Setting(el).setName('Model');
+	const optional = preset.modelOptional
+		? ' Optional: the provider has its own default.'
+		: '';
 
 	if (state.loading) {
 		setting.setDesc('Loading models…');
@@ -198,20 +224,33 @@ function renderModelRow<C extends AnyProviderConfig>(
 		setting.setDesc(
 			`Couldn't load models: ${state.error} Type the model name instead.`,
 		);
-	} else if (models.length > 0) {
+	} else if (state.fellBack) {
 		setting.setDesc(
-			`${models.length} models available from this endpoint.`,
+			`No ${spec.kind} models recognised, so all ${models.length} models from this provider are shown.`,
+		);
+	} else if (models.length > 0) {
+		// Say how many the provider reported, so a filter hiding too much is visible.
+		const of =
+			state.total !== undefined && state.total > models.length
+				? ` (of ${state.total} the provider reports)`
+				: '';
+		setting.setDesc(
+			`${models.length} ${spec.kind} models available${of}.${optional}`,
 		);
 	} else {
-		setting.setDesc(
-			'Enter a base URL, then refresh to list the available models.',
-		);
+		setting.setDesc(`Refresh to list the available models.${optional}`);
 	}
 
 	if (models.length > 0) {
 		setting.addDropdown((dropdown) => {
-			if (config.model === '') dropdown.addOption('', 'Select a model…');
-			// A saved model the endpoint no longer lists still shows.
+			if (config.model === '')
+				dropdown.addOption(
+					'',
+					preset.modelOptional
+						? 'Provider default'
+						: 'Select a model…',
+				);
+			// A saved model the provider no longer lists (or the filter hides) still shows.
 			const options =
 				models.includes(config.model) || config.model === ''
 					? models
@@ -234,7 +273,10 @@ function renderModelRow<C extends AnyProviderConfig>(
 	setting.addButton((button) =>
 		button
 			.setButtonText('Refresh')
-			.setDisabled(state.loading === true || config.baseUrl === '')
+			.setDisabled(
+				state.loading === true ||
+					(preset.editableUrl && config.baseUrl === ''),
+			)
 			.onClick(() => refreshModels(plugin, spec, config, render)),
 	);
 }
@@ -245,7 +287,12 @@ async function refreshModels<C extends AnyProviderConfig>(
 	config: C,
 	render: () => void,
 ): Promise<void> {
-	if (config.baseUrl === '' && !spec.allowEmptyUrl?.(config.type)) {
+	const preset = spec.presets[config.type];
+	if (preset?.workflow) {
+		await refreshWorkflows(config as unknown as WorkflowHolder, render);
+		return;
+	}
+	if (!preset || (preset.editableUrl && config.baseUrl === '')) {
 		modelStates.delete(config.id);
 		render();
 		return;
@@ -253,12 +300,15 @@ async function refreshModels<C extends AnyProviderConfig>(
 	modelStates.set(config.id, { loading: true });
 	render();
 	try {
-		const models = await spec.listModels(
-			toProviderConfig(config, (id) =>
+		const { models, total, fellBack } = await listModels(
+			spec.kind,
+			preset.id,
+			endpointUrl(preset, config),
+			resolveApiKey(config, (id) =>
 				plugin.app.secretStorage.getSecret(id),
 			),
 		);
-		modelStates.set(config.id, { models });
+		modelStates.set(config.id, { models, total, fellBack });
 	} catch (err) {
 		const reason =
 			err instanceof ProviderError ? err.message : 'unexpected error.';
