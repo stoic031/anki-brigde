@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type AnkiBridgePlugin from '../../main';
 import { fieldConfigKey, type AnkiBridgeSettings } from '../../settings';
 import { FakeEl } from '../../test/fakeDom';
@@ -34,7 +34,9 @@ class FakeSetting {
 }
 
 const { Notice, setIcon, settings } = vi.hoisted(() => ({
-	Notice: vi.fn(),
+	Notice: vi.fn(function () {
+		return { hide: vi.fn() };
+	}),
 	setIcon: vi.fn(),
 	settings: [] as unknown[],
 }));
@@ -59,12 +61,30 @@ const { modelFieldNames, AnkiConnectClient } = vi.hoisted(() => {
 });
 vi.mock('../../sync/ankiConnect', () => ({ AnkiConnectClient }));
 
-const { toastError } = vi.hoisted(() => ({ toastError: vi.fn() }));
-vi.mock('../toast', () => ({ toastError }));
+const { toastError, toastSuccess } = vi.hoisted(() => ({
+	toastError: vi.fn(),
+	toastSuccess: vi.fn(),
+}));
+vi.mock('../toast', () => ({ toastError, toastSuccess }));
+
+const { planGenerate, runGenerate } = vi.hoisted(() => ({
+	planGenerate: vi.fn(),
+	runGenerate: vi.fn(),
+}));
+vi.mock('../../note/generateFields', () => ({ planGenerate, runGenerate }));
+
+const note = { path: 'a.md' };
+const flush = () => new Promise((r) => setTimeout(r, 0));
 
 import { renderTextTab } from './textTab';
 
+beforeEach(() => {
+	// runAction schedules its restore with window.setTimeout; Node has no `window`.
+	vi.stubGlobal('window', globalThis);
+});
+
 afterEach(() => {
+	vi.unstubAllGlobals();
 	vi.clearAllMocks();
 	settings.length = 0;
 });
@@ -73,15 +93,34 @@ function setup(overrides: Partial<AnkiBridgeSettings> = {}) {
 	const parent = new FakeEl();
 	const saveSettings = vi.fn().mockResolvedValue(undefined);
 	const plugin = {
-		settings: { ankiConnectUrl: '', generateWithAiFields: {}, ...overrides },
+		settings: {
+			ankiConnectUrl: '',
+			generateWithAiFields: {},
+			...overrides,
+		},
 		saveSettings,
 	} as unknown as AnkiBridgePlugin;
-	const tab = renderTextTab(parent as unknown as HTMLElement, plugin);
+	const tab = renderTextTab(
+		parent as unknown as HTMLElement,
+		plugin,
+		() => note as never,
+	);
 	const generate = parent.byClass('anki-bridge-sidebar__action')[0] as FakeEl;
-	const fieldsEl = parent.byClass('anki-bridge-sidebar__field-checkboxes')[0] as FakeEl;
+	const fieldsEl = parent.byClass(
+		'anki-bridge-sidebar__field-checkboxes',
+	)[0] as FakeEl;
 	const toggles = () => (settings as FakeSetting[]).map((s) => s.toggle);
 	const names = () => (settings as FakeSetting[]).map((s) => s.name);
-	return { parent, tab, plugin, saveSettings, generate, fieldsEl, toggles, names };
+	return {
+		parent,
+		tab,
+		plugin,
+		saveSettings,
+		generate,
+		fieldsEl,
+		toggles,
+		names,
+	};
 }
 
 describe('renderTextTab', () => {
@@ -143,7 +182,10 @@ describe('renderTextTab', () => {
 
 		await toggles()[0]?.trigger(true);
 		await toggles()[1]?.trigger(true);
-		expect(plugin.settings.generateWithAiFields[key]).toEqual(['Meaning', 'Furigana']);
+		expect(plugin.settings.generateWithAiFields[key]).toEqual([
+			'Meaning',
+			'Furigana',
+		]);
 
 		await toggles()[0]?.trigger(false);
 		expect(plugin.settings.generateWithAiFields[key]).toEqual(['Furigana']);
@@ -170,16 +212,17 @@ describe('renderTextTab', () => {
 
 		expect(modelFieldNames).toHaveBeenLastCalledWith('Cloze');
 		expect(fieldsEl.children).toHaveLength(0); // Setting rows live on the fake, not the el
-		expect((settings as FakeSetting[]).slice(-2).map((s) => s.name)).toEqual([
-			'Front',
-			'Back',
-		]);
+		expect(
+			(settings as FakeSetting[]).slice(-2).map((s) => s.name),
+		).toEqual(['Front', 'Back']);
 	});
 
 	it('drops a slow response for a pair that is no longer current', async () => {
 		let resolveSlow!: (v: string[]) => void;
 		modelFieldNames
-			.mockReturnValueOnce(new Promise<string[]>((r) => (resolveSlow = r)))
+			.mockReturnValueOnce(
+				new Promise<string[]>((r) => (resolveSlow = r)),
+			)
 			.mockResolvedValueOnce(['Front']);
 		const { tab, names } = setup();
 
@@ -203,38 +246,105 @@ describe('renderTextTab', () => {
 	});
 
 	describe('Generate button', () => {
-		it('says to configure fields when none are ticked for the pair', async () => {
-			modelFieldNames.mockResolvedValue(['Meaning']);
-			const { tab, generate } = setup();
-			await tab.sync('Japanese', 'Basic');
+		const plan = { provider: {}, word: 'w', targetFields: ['Meaning'] };
+
+		async function ready() {
+			modelFieldNames.mockResolvedValue(['Word', 'Meaning']);
+			const ctx = setup();
+			await ctx.tab.sync('Japanese', 'Basic');
+			return ctx;
+		}
+
+		it('shows the reason as a Notice when the plan says stop, and never calls the model', async () => {
+			planGenerate.mockResolvedValue({
+				stop: 'Set up a text model in settings first.',
+			});
+			const { generate } = await ready();
 
 			await generate.click();
+			await flush();
 
 			expect(Notice).toHaveBeenCalledWith(
-				'Please configure AI field generation for this Deck/Model in the sidebar (Text tab) first.',
+				'Set up a text model in settings first.',
+			);
+			expect(runGenerate).not.toHaveBeenCalled();
+		});
+
+		it('runs the model, cycles the button, and toasts the counts', async () => {
+			planGenerate.mockResolvedValue(plan);
+			runGenerate.mockResolvedValue({
+				filled: ['Meaning'],
+				skipped: ['Furigana'],
+			});
+			const { generate } = await ready();
+
+			await generate.click();
+			await flush();
+
+			expect(runGenerate).toHaveBeenCalledWith(
+				expect.anything(),
+				note,
+				plan,
+			);
+			expect(generate.children[1]?.text).toBe('✅ Done!');
+			expect(toastSuccess).toHaveBeenCalledWith(
+				'✅ AI content generated: 1 filled, 1 skipped (already had content).',
 			);
 		});
 
-		it('says generation is not available yet once fields are ticked', async () => {
-			modelFieldNames.mockResolvedValue(['Meaning']);
-			const { tab, generate } = setup({
-				generateWithAiFields: {
-					[fieldConfigKey('Japanese', 'Basic')]: ['Meaning'],
-				},
-			});
-			await tab.sync('Japanese', 'Basic');
+		it('is not re-enabled by sync() while a generation is running', async () => {
+			planGenerate.mockResolvedValue(plan);
+			let finish: (v: unknown) => void = () => {};
+			runGenerate.mockReturnValue(new Promise((r) => (finish = r)));
+			const { generate, tab } = await ready();
 
 			await generate.click();
+			await flush();
+			expect(generate.children[1]?.text).toBe('⏳ Generating...');
+			await tab.sync('Japanese', 'Basic');
+			expect(generate.disabled).toBe(true);
 
-			expect(Notice).toHaveBeenCalledWith('Generate with AI is not available yet.');
+			finish({ filled: [], skipped: [] });
+			await flush();
+		});
+
+		it('surfaces a ProviderError message', async () => {
+			const { ProviderError } = await import('../../types');
+			planGenerate.mockResolvedValue(plan);
+			runGenerate.mockRejectedValue(
+				new ProviderError('anthropic', 'HTTP 401 from https://x'),
+			);
+			const { generate } = await ready();
+
+			await generate.click();
+			await flush();
+
+			expect(toastError).toHaveBeenCalledWith(
+				'❌ anthropic: HTTP 401 from https://x',
+			);
+		});
+
+		it('tells the user when the model returned nothing', async () => {
+			planGenerate.mockResolvedValue(plan);
+			runGenerate.mockResolvedValue({ filled: [], skipped: [] });
+			const { generate } = await ready();
+
+			await generate.click();
+			await flush();
+
+			expect(toastSuccess).not.toHaveBeenCalled();
+			expect(Notice).toHaveBeenCalledWith(
+				'The text model returned nothing to add. Try again or check the model.',
+			);
 		});
 
 		it('does nothing while disabled', async () => {
 			const { generate } = setup();
 
 			await generate.click();
+			await flush();
 
-			expect(Notice).not.toHaveBeenCalled();
+			expect(planGenerate).not.toHaveBeenCalled();
 		});
 	});
 });

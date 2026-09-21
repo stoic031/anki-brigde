@@ -62,23 +62,29 @@ làm gì khác**:
   this Deck/Model in the sidebar (Image tab) first."
 
 **Generate Button** (icon `sparkles`, tab Text; chỉ áp dụng cho text — Image có nút riêng).
-> **Trạng thái hiện tại:** phần gọi AI chưa triển khai. Nút chỉ chạy pre-check: chưa tick
-> field → Notice cấu hình như trên; đã tick → Notice "Generate with AI is not available
-> yet.". Mô tả dưới đây là thiết kế đích:
 
 - Qua pre-check ở trên (tab Text đã tick ít nhất 1 field) thì đọc word từ section của
   **field đầu tiên** trong Model — tức `fields[0]` lấy từ `modelFieldNames(anki_model)`,
   tìm section khớp tên theo đúng quy tắc normalize/lookup ở `../contracts.md` §2/§3.
   Không hard-code `"## Word"` — Model khác có thể đặt tên field đầu tiên khác (VD
   "Front"). Section đó đang rỗng → hiển thị Notice lỗi "Please fill in the [FieldName]
-  section first.", dừng lại.
-- `targetFields` = các field đã tick ở tab Text cho Deck+Model này → gọi AI Provider
+  section first.", dừng lại. Chưa có text provider hợp lệ (`getTextProvider()` = null) →
+  Notice "Set up a text model in settings first.", dừng lại (chưa gọi mạng).
+- `targetFields` = các field đã tick ở tab Text cho Deck+Model này, **bỏ field đầu tiên**
+  (chính là input; không có gì để sinh) → gọi AI Provider
   `processText(word, 'extract-vocabulary', targetFields)` (`../contracts.md` §4) →
   nhận `TextResult` (key = đúng tên field trong `targetFields`) → với mỗi key không
-  rỗng trả về, tìm section `## FieldName` khớp **chính xác** tên đó (không cần alias vì
-  key đã đúng tên Model):
+  rỗng trả về, tìm section `## FieldName` khớp tên field (không phân biệt hoa/thường; nếu
+  không có thì thử alias như sync, để `Back` dùng lại `## Meaning` thay vì tạo trùng):
   - Section đang rỗng → điền vào.
   - Section đã có nội dung → **bỏ qua**, không ghi đè dữ liệu user đã nhập.
+  - Chưa có section → thêm `## FieldName` ở cuối note.
+  - Ghi bằng một lần `vault.process`; chỉ đụng phần section, frontmatter và text khác giữ
+    nguyên từng byte. Không gọi `updateNoteFields` — Anki chỉ cập nhật khi user bấm Sync.
+- Kết quả: toast "✅ AI content generated: N filled[, M skipped (already had content)]."
+  Model không trả gì dùng được → Notice "The text model returned nothing to add. Try again
+  or check the model." Lỗi provider → toast "❌ {provider}: {lý do} ({URL})". Trong lúc chờ có
+  Notice "⏳ Asking the text model…" (ẩn khi xong).
 - Visual feedback: Button đổi thành "⏳ Generating..." → "✅ Done!" → quay lại trạng thái
   bình thường sau 2 giây.
 

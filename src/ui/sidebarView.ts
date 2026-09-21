@@ -69,7 +69,7 @@ export class SidebarView extends ItemView {
 		this.renderDeckDropdown(notePanel);
 		this.renderModelDropdown(notePanel);
 		this.noteActions = renderNoteActions(notePanel, this.plugin);
-		this.textTab = renderTextTab(textPanel, this.plugin);
+		this.textTab = renderTextTab(textPanel, this.plugin, () => this.getActiveNote());
 
 		// docs/design/07-sidebar.md §7.2.1 — everything below mirrors the active note's
 		// frontmatter, so it re-syncs on every note switch and whenever its metadata
