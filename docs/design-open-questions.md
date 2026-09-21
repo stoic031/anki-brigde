@@ -22,20 +22,11 @@ naming one provider in roadmap.md's Milestone 3 bullet (DALL-E 3 pairs naturally
 the OpenAI text provider already in M3, same API key), or explicitly moving Add Image
 to a later milestone and dropping "image" from M3's deliverable line.
 
-### 18. Image-tab field persistence blocked on unbuilt Feature #41 (Audio tab dropped)
+### 18. Image-tab field persistence blocked on unbuilt Feature #41 — resolved
 
-Task #147 ("Persist field-mapping config per Deck+Model pair") covers Tab 1 checkboxes
-and the Image tab's Output field (the Audio tab was dropped). Tab 1's share is done (`generateWithAiFields`
-in `settings.ts`, task #140). The Image tab has no UI, no types, nothing to persist yet:
-Feature #41 ("6.4-Tab 3 — Image") are open with **zero**
-sub-tasks and aren't attached to any milestone — even though Milestone 2's own
-description lists Tab 2/3 scaffolding as a deliverable. Same blocker applies to task
-#149 ("Reload Tab 2/3 UI when Tab 1's Deck/Model changes"): nothing to reload.
-
-Resolve by either breaking #40/#41 into tasks and attaching them to Milestone 2 (matching
-the milestone's stated deliverable), or explicitly moving them to a later milestone and
-updating Milestone 2's description to drop the Tab 2/3 scaffolding line. Until then, don't
-invent a settings shape for Tab 2/3 rows ahead of the UI that would define it.
+Resolved by Feature #41: the Image tab now persists Output field + On existing tag per
+Deck+Model pair in `settings.imageConfigs` (`ImageFieldConfig`), and the `add-image`
+pre-check reads it. The Add Image button itself is still Feature #23.
 
 ### 20. Text provider v1: Anthropic native hay OpenAI-compatible trước?
 

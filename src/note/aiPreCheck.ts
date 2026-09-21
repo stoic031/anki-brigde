@@ -25,13 +25,15 @@ export function runAiPreCheck(
 					'Please configure AI field generation for this Deck/Model in the sidebar (Text tab) first.',
 			};
 		}
-		// The Image tab has no settings shape yet — its feature hasn't been built, so
-		// every Deck+Model pair is genuinely unconfigured for this action. See docs/design-open-questions.md #18.
-		case 'add-image':
+		case 'add-image': {
+			const config = settings.imageConfigs[fieldConfigKey(deck, model)];
+			if (config && config.outputField !== '')
+				return { configured: true };
 			return {
 				configured: false,
 				message:
 					'Please configure Image field mapping for this Deck/Model in the sidebar (Image tab) first.',
 			};
+		}
 	}
 }
