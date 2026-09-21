@@ -142,6 +142,8 @@ provider is told exactly which fields exist (e.g. "Meaning", "Furigana", "Pinyin
 field it can't or doesn't know how to fill is simply omitted/empty from the result,
 same as the existing "field không rỗng" rule for consuming it.
 
+For task `build-image-prompt`, `targetFields` is `[]` and the result is always `{ prompt: string }`.
+
 A provider **returns a `MediaResult`. It does not name files and does not call
 `storeMediaFile`.** Naming belongs to `note/mediaNaming.ts`; storage belongs to
 `sync/ankiConnect.ts`. Keeping that boundary means swapping providers never touches

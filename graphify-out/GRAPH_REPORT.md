@@ -1,16 +1,16 @@
 # Graph Report - anki-bridge  (2026-09-21)
 
 ## Corpus Check
-- 104 files · ~61,902 words
+- 112 files · ~63,826 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 732 nodes · 1124 edges · 85 communities (28 shown, 57 thin omitted)
-- Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 15 edges (avg confidence: 0.86)
+- 759 nodes · 1210 edges · 85 communities (28 shown, 57 thin omitted)
+- Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 19 edges (avg confidence: 0.81)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `4624c88c`
+- Built from commit: `60008702`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -20,7 +20,7 @@
 - devDependencies
 - compilerOptions
 - Field Mapping Algorithm (3-pass deterministic)
-- syncEngine.ts
+- AnkiConnectClient
 - noteNameModal.test.ts
 - SidebarView
 - Graphify Full Pipeline
@@ -29,7 +29,7 @@
 - Milestone 1: Core Sync + Settings
 - docs/design/01-sync.md
 - MediaResult interface
-- quickCapture.ts
+- settingsTab.ts
 - settingsTab.test.ts
 - TextProvider interface
 - graphify.js
@@ -89,14 +89,14 @@
 - roadmap.md — development roadmap
 - README.md — Obsidian Sample Plugin boilerplate
 - graphify reference: GitHub clone and cross-repo merge
-- sidebarView.ts
+- main.test.ts
 - sidebarView.test.ts
 - [1.1.0]
 - confirmRebuildFields.test.ts
 - confirmDelete.test.ts
 - FakeEl
-- settings.ts
-- providerManager.ts
+- quickCapture.ts
+- src/types.ts
 
 ## God Nodes (most connected - your core abstractions)
 1. `AnkiBridgePlugin` - 23 edges
@@ -166,9 +166,9 @@ Nodes (20): DOM, ES2021, src/**/*.ts, compilerOptions, allowSyntheticDefaultImpo
 Cohesion: 0.33
 Nodes (7): Repo Layout (src/ module organization), AnkiFrontmatter interface, FIELD_ALIASES map, Field Mapping Algorithm (3-pass deterministic), ParsedNote interface, Dynamic Field Mapping (§1.5), Q10: Milestone 1 acceptance criteria checklist
 
-### Community 5 - "syncEngine.ts"
-Cohesion: 0.10
-Nodes (21): { requestUrl }, mapContentToFields(), stringifySectionValue(), extractSectionValue(), parseSections(), readAnkiFrontmatter(), file, writeAnkiFrontmatter() (+13 more)
+### Community 5 - "AnkiConnectClient"
+Cohesion: 0.07
+Nodes (21): AnkiConnectClient, { requestUrl }, mapContentToFields(), stringifySectionValue(), extractSectionValue(), parseSections(), readAnkiFrontmatter(), file (+13 more)
 
 ### Community 6 - "noteNameModal.test.ts"
 Cohesion: 0.09
@@ -198,9 +198,9 @@ Nodes (6): Heading-Based Content Parsing, Sync Error Path Coverage, Idempotent S
 Cohesion: 0.50
 Nodes (5): AGENTS.md Non-Negotiables (9 rules), AudioProvider interface, ImageProvider interface, MediaResult interface, Q14: AudioOptions/ImageOptions shape undefined
 
-### Community 14 - "quickCapture.ts"
-Cohesion: 0.07
-Nodes (37): AnkiBridgePlugin, { loadSettings, saveSettings }, { PluginBase, addCommandSpy }, { registerSidebarView, revealSidebarView }, { runCreateNote }, { runQuickCapture }, generateContentSkeleton(), rebuildContent() (+29 more)
+### Community 14 - "settingsTab.ts"
+Cohesion: 0.13
+Nodes (15): getActiveProfile(), ProfilesSection, renderFolderPicker(), renderPicker(), renderProfilesSection(), uniqueName(), AnkiBridgeSettingTab, handleConnect() (+7 more)
 
 ### Community 15 - "settingsTab.test.ts"
 Cohesion: 0.05
@@ -214,17 +214,17 @@ Nodes (3): TextProvider interface, TextResult interface, TextTask type
 Cohesion: 0.12
 Nodes (5): DeckModelChangeWarningModal, FakeButtonComponent, FakeSetting, openModal(), { settings, modalState }
 
-### Community 77 - "sidebarView.ts"
-Cohesion: 0.11
-Nodes (19): resolveAnkiConnectUrl(), AnkiConnectClient, AnkiConnectResponse, ProfilesSection, AnkiBridgeSettingTab, handleConnect(), loadAnkiNames(), renderConnectionSection() (+11 more)
+### Community 77 - "main.test.ts"
+Cohesion: 0.33
+Nodes (5): { loadSettings, saveSettings }, { PluginBase, addCommandSpy }, { registerSidebarView, revealSidebarView }, { runCreateNote }, { runQuickCapture }
 
 ### Community 78 - "sidebarView.test.ts"
 Cohesion: 0.05
 Nodes (20): Case, { deckModelWarningOpen, deckModelWarningCapture }, { deckNamesMock, modelNamesMock, AnkiConnectClient }, fakeApp(), FakeButtonComponent, FakeDropdownComponent, fakePlugin(), FakeSetting (+12 more)
 
 ### Community 79 - "[1.1.0]"
-Cohesion: 0.18
-Nodes (10): [1.0.0], [1.1.0], Added, Added, Changed, Changelog, Fixed, Fixed (+2 more)
+Cohesion: 0.14
+Nodes (13): [1.0.0], [1.1.0], Added, Added, Added, Changed, Changelog, Fixed (+5 more)
 
 ### Community 81 - "confirmRebuildFields.test.ts"
 Cohesion: 0.12
@@ -238,30 +238,30 @@ Nodes (5): ConfirmDeleteModal, FakeButtonComponent, FakeSetting, openModal(), { 
 Cohesion: 0.08
 Nodes (15): CreateOpts, FakeEl, ActionState, { deleteModal, rebuildModal }, { modelFieldNames, AnkiConnectClient }, note, process, { setIcon } (+7 more)
 
-### Community 84 - "settings.ts"
-Cohesion: 0.06
-Nodes (29): plugin, $schema, .opencode/plugins/graphify.js, AiButtonAction, AiPreCheckResult, runAiPreCheck(), fakePlugin(), fakeSettings() (+21 more)
+### Community 84 - "quickCapture.ts"
+Cohesion: 0.05
+Nodes (64): plugin, $schema, .opencode/plugins/graphify.js, AnkiBridgePlugin, AiButtonAction, AiPreCheckResult, runAiPreCheck(), generateContentSkeleton() (+56 more)
 
-### Community 85 - "providerManager.ts"
-Cohesion: 0.13
-Nodes (18): Cached, Factory, normalizeErrors(), ProviderConfig, ProviderKind, ProviderManager, ProviderManagerOptions, makeManager() (+10 more)
+### Community 85 - "src/types.ts"
+Cohesion: 0.09
+Nodes (33): Cached, Factory, normalizeErrors(), ProviderConfig, ProviderKind, ProviderManager, ProviderManagerOptions, makeManager() (+25 more)
 
 ## Knowledge Gaps
-- **216 isolated node(s):** `$schema`, `.opencode/plugins/graphify.js`, `id`, `name`, `version` (+211 more)
+- **220 isolated node(s):** `$schema`, `.opencode/plugins/graphify.js`, `id`, `name`, `version` (+215 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **57 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `AnkiBridgePlugin` connect `quickCapture.ts` to `sidebarView.ts`, `sidebarView.test.ts`, `settingsTab.test.ts`, `FakeEl`, `settings.ts`?**
+- **Why does `AnkiBridgePlugin` connect `quickCapture.ts` to `SidebarView`, `main.test.ts`, `settingsTab.ts`, `settingsTab.test.ts`, `sidebarView.test.ts`, `FakeEl`?**
   _High betweenness centrality (0.045) - this node is a cross-community bridge._
-- **Why does `FakeEl` connect `FakeEl` to `settings.ts`, `sidebarView.test.ts`?**
+- **Why does `FakeEl` connect `FakeEl` to `quickCapture.ts`, `sidebarView.test.ts`?**
   _High betweenness centrality (0.024) - this node is a cross-community bridge._
 - **Why does `NoteNameModal` connect `noteNameModal.test.ts` to `quickCapture.ts`?**
-  _High betweenness centrality (0.021) - this node is a cross-community bridge._
+  _High betweenness centrality (0.020) - this node is a cross-community bridge._
 - **What connects `$schema`, `.opencode/plugins/graphify.js`, `id` to the rest of the system?**
-  _216 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _220 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Common Provider Interface (processText/generateAudio/generateImage)` be split into smaller, more focused modules?**
   _Cohesion score 0.0523532522474881 - nodes in this community are weakly interconnected._
 - **Should `graphify Skill (/graphify)` be split into smaller, more focused modules?**
