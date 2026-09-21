@@ -61,6 +61,13 @@ dùng active) — thay đổi cộng thêm, không phá dữ liệu cũ.
   `targetFields`, retry tối đa 1 lần khi parse lỗi rồi báo lỗi rõ ràng. Không phụ thuộc
   `response_format: json_object` vì không phải model nào cũng hỗ trợ
 - Gọi HTTP bằng `requestUrl` của Obsidian (không dùng `fetch`) để tránh CORS
+- Timeout 60 giây mỗi request (`requestUrl` không có timeout sẵn nên tự `Promise.race`). Chỉ
+  retry khi **reply sai JSON** (1 lần); lỗi mạng/HTTP không retry. Thông báo lỗi nêu tên
+  provider + URL, không kèm body/key
+- Task `build-image-prompt`: `targetFields` rỗng, input là nội dung các field của thẻ; kết quả
+  luôn là `{ prompt: string }` (1 prompt tiếng Anh cho image model)
+- Adapter nằm ở `src/providers/text/` (`openaiCompatible.ts`, `anthropic.ts`), đăng ký qua
+  `textFactories` (`index.ts`). Nhãn Cloud/Local suy từ Base URL (localhost/127.0.0.1 = Local)
 
 **Image Generation:**
 
