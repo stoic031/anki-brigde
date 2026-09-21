@@ -160,7 +160,7 @@
     "semantic_hash": ""
   },
   "docs/design/02-providers.md": {
-    "mtime": 1789969156.802855,
+    "mtime": 1789968937.9135256,
     "ast_hash": "3fe4e265b16b5fedd9ff15439c1f383b",
     "semantic_hash": ""
   },
@@ -525,13 +525,8 @@
     "semantic_hash": ""
   },
   "src/providers/providerManager.ts": {
-    "mtime": 1789969156.8073316,
+    "mtime": 1789968948.350225,
     "ast_hash": "cbab3004b99f5e0ae9507a1d5a2ff8cc",
-    "semantic_hash": ""
-  },
-  "src/providers/providerManager.test.ts": {
-    "mtime": 1789969288.063293,
-    "ast_hash": "d18310a4a9fea34c9b7ad47a54adecdb",
     "semantic_hash": ""
   }
 }
