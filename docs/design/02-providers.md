@@ -32,7 +32,13 @@ lấy từ chính provider (hoặc tự nhập khi không tải được).
   OpenRouter và Gemini sinh ảnh qua `chat/completions`, không phải `/images/generations` như OpenAI;
   ComfyUI chạy theo **workflow** đã lưu trong ComfyUI (Settings đã chọn được workflow): workflow lưu ở
   định dạng UI (`nodes`/`links`) nên adapter phải đổi sang API format bằng `/object_info` rồi
-  `POST /prompt`, gán prompt vào node prompt dương của KSampler.
+  `POST /prompt`, gán prompt vào node prompt dương của KSampler. Prompt do AI viết
+  **thay thế hoàn toàn** text đã lưu sẵn trong node dương (không prepend, không dùng
+  placeholder `{prompt}`); node prompt âm giữ nguyên như đã lưu — field Negative prompt
+  ở Settings chỉ áp dụng cho provider nhận tham số negative-prompt trực tiếp
+  (Automatic1111, Pollinations), không áp dụng cho ComfyUI (`design-open-questions.md`
+  #21). Node chỉ tới được qua reroute/subgraph/primitive không được adapter theo dõi —
+  báo qua `problems` của `analyzeWorkflow` (`src/providers/image/comfyWorkflow.ts`).
 
 ## 2.3. AI Provider Manager
 
