@@ -1,12 +1,15 @@
-import { Setting } from 'obsidian';
+import { Notice, Setting, type TFile } from 'obsidian';
 import type AnkiBridgePlugin from '../../main';
+import { planAddImage, runAddImage } from '../../note/addImage';
 import {
 	fieldConfigKey,
 	resolveAnkiConnectUrl,
 	type ImageFieldConfig,
 } from '../../settings';
 import { AnkiConnectClient } from '../../sync/ankiConnect';
+import { ProviderError } from '../../types';
 import { toastError } from '../toast';
+import { createActionButton, runAction } from './actionButton';
 
 export interface ImageTab {
 	// Called whenever the active note's Deck+Model may have changed. Only re-fetches the
@@ -15,15 +18,79 @@ export interface ImageTab {
 }
 
 // docs/design/07-sidebar.md §7.2.2 — Image tab: which field receives the generated
-// <img> tag and what to do when it already has one, saved per Deck+Model pair.
+// <img> tag and what to do when it already has one, saved per Deck+Model pair, plus
+// the Add image button (docs/design/03-note.md §3.2).
 export function renderImageTab(
 	parent: HTMLElement,
 	plugin: AnkiBridgePlugin,
+	getNote: () => TFile | null,
 ): ImageTab {
+	const header = parent.createDiv({
+		cls: 'anki-bridge-sidebar__section-header',
+	});
+	header.createSpan({
+		cls: 'anki-bridge-sidebar__section-title',
+		text: 'Image field mapping',
+	});
+	const addImage = createActionButton(header, {
+		icon: 'image',
+		label: 'Add image',
+		variant: 'primary',
+	});
+	addImage.el.disabled = true;
 	const configEl = parent.createDiv({
 		cls: 'anki-bridge-sidebar__image-config',
 	});
+
+	let current = { deck: '', model: '' };
 	let renderedKey = '';
+
+	addImage.el.addEventListener('click', () => {
+		void onAddImage();
+	});
+
+	// docs/design/03-note.md §3.2 — checks that don't need any model call and end in a
+	// plain Notice; only the model + Anki write cycle the button through ⏳/✅/❌.
+	const onAddImage = async () => {
+		const note = getNote();
+		if (addImage.el.disabled || addImage.busy || !note) return;
+		try {
+			const plan = await planAddImage(
+				plugin,
+				note,
+				current.deck,
+				current.model,
+			);
+			if (plan.stop !== undefined) {
+				new Notice(plan.stop);
+				return;
+			}
+			const progress = new Notice('⏳ Asking the text model…', 0);
+			try {
+				await runAction(addImage, {
+					busyLabel: '⏳ Generating...',
+					failure:
+						'❌ Failed to add image. Please check Anki connection.',
+					onRestore: () => {
+						addImage.el.disabled = !current.deck || !current.model;
+					},
+					work: async () => {
+						await runAddImage(plugin, note, plan, () =>
+							progress.setMessage('⏳ Generating the image…'),
+						);
+					},
+				});
+			} finally {
+				progress.hide();
+			}
+		} catch (err) {
+			toastError(
+				err instanceof ProviderError
+					? `❌ ${err.message}`
+					: '❌ Failed to add image. Please check Anki connection.',
+			);
+		}
+	};
 
 	const saveConfig = async (
 		key: string,
@@ -40,6 +107,9 @@ export function renderImageTab(
 
 	return {
 		async sync(deck, model) {
+			current = { deck, model };
+			if (!addImage.busy) addImage.el.disabled = !deck || !model;
+
 			const key = fieldConfigKey(deck, model);
 			if (key === renderedKey) return;
 			renderedKey = key;

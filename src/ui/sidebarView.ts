@@ -64,7 +64,7 @@ export class SidebarView extends ItemView {
 		const panels = renderTabs(this.contentEl, [
 			{ id: 'note', label: 'Note' },
 			{ id: 'text', label: 'Text' },
-		{ id: 'image', label: 'Image' },
+			{ id: 'image', label: 'Image' },
 		]);
 		const notePanel = panels.note;
 		const textPanel = panels.text;
@@ -73,8 +73,12 @@ export class SidebarView extends ItemView {
 		this.renderDeckDropdown(notePanel);
 		this.renderModelDropdown(notePanel);
 		this.noteActions = renderNoteActions(notePanel, this.plugin);
-		this.textTab = renderTextTab(textPanel, this.plugin, () => this.getActiveNote());
-		this.imageTab = renderImageTab(imagePanel, this.plugin);
+		this.textTab = renderTextTab(textPanel, this.plugin, () =>
+			this.getActiveNote(),
+		);
+		this.imageTab = renderImageTab(imagePanel, this.plugin, () =>
+			this.getActiveNote(),
+		);
 
 		// docs/design/07-sidebar.md §7.2.1 — everything below mirrors the active note's
 		// frontmatter, so it re-syncs on every note switch and whenever its metadata
@@ -108,13 +112,15 @@ export class SidebarView extends ItemView {
 	// docs/design/07-sidebar.md §7.2.1 — Profile select. Picks the Deck/Model/folder used
 	// for *new* notes (Create note, Create note from selection); synced with Settings tab.
 	private renderProfileDropdown(): void {
-		new Setting(this.contentEl).setName('Profile').addDropdown((dropdown) => {
-			this.profileDropdown = dropdown;
-			dropdown.onChange(
-				(id) => void this.plugin.setActiveProfile(id),
-			);
-			this.renderProfileDropdownOptions();
-		});
+		new Setting(this.contentEl)
+			.setName('Profile')
+			.addDropdown((dropdown) => {
+				this.profileDropdown = dropdown;
+				dropdown.onChange(
+					(id) => void this.plugin.setActiveProfile(id),
+				);
+				this.renderProfileDropdownOptions();
+			});
 	}
 
 	private renderProfileDropdownOptions(): void {
@@ -129,14 +135,12 @@ export class SidebarView extends ItemView {
 	// docs/design/07-sidebar.md §7.2.1 — Deck dropdown. Shows/edits the active note's
 	// anki_deck; disabled with no active note. Lists load when the sidebar opens.
 	private renderDeckDropdown(parent: HTMLElement): void {
-		new Setting(parent)
-			.setName('Deck')
-			.addDropdown((dropdown) => {
-				this.deckDropdown = dropdown;
-				dropdown.onChange(async (value) => {
-					await this.handleSelectionChange('anki_deck', value);
-				});
+		new Setting(parent).setName('Deck').addDropdown((dropdown) => {
+			this.deckDropdown = dropdown;
+			dropdown.onChange(async (value) => {
+				await this.handleSelectionChange('anki_deck', value);
 			});
+		});
 	}
 
 	private async refreshDecks(): Promise<void> {
@@ -155,14 +159,12 @@ export class SidebarView extends ItemView {
 
 	// docs/design/07-sidebar.md §7.2.1 — Model dropdown; same rules as Deck above.
 	private renderModelDropdown(parent: HTMLElement): void {
-		new Setting(parent)
-			.setName('Model')
-			.addDropdown((dropdown) => {
-				this.modelDropdown = dropdown;
-				dropdown.onChange(async (value) => {
-					await this.handleSelectionChange('anki_model', value);
-				});
+		new Setting(parent).setName('Model').addDropdown((dropdown) => {
+			this.modelDropdown = dropdown;
+			dropdown.onChange(async (value) => {
+				await this.handleSelectionChange('anki_model', value);
 			});
+		});
 	}
 
 	private async refreshModels(): Promise<void> {
@@ -188,7 +190,9 @@ export class SidebarView extends ItemView {
 
 	private getNoteDeckModel(): { deck: string; model: string } {
 		const note = this.getActiveNote();
-		const fm = note ? readAnkiFrontmatter(this.plugin.app, note) : undefined;
+		const fm = note
+			? readAnkiFrontmatter(this.plugin.app, note)
+			: undefined;
 		return { deck: fm?.anki_deck ?? '', model: fm?.anki_model ?? '' };
 	}
 
@@ -226,7 +230,8 @@ export class SidebarView extends ItemView {
 		const note = this.getActiveNote();
 		return (
 			note !== null &&
-			readAnkiFrontmatter(this.plugin.app, note)?.anki_note_id !== undefined
+			readAnkiFrontmatter(this.plugin.app, note)?.anki_note_id !==
+				undefined
 		);
 	}
 
