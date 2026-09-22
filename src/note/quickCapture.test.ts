@@ -5,6 +5,7 @@ import {
 	type AnkiBridgeSettings,
 	type Profile,
 } from '../settings';
+import { DEFAULT_MEDIA_PREFIX } from '../utils/constants';
 import type AnkiBridgePlugin from '../main';
 
 const { MarkdownView, Notice } = vi.hoisted(() => ({
@@ -67,6 +68,7 @@ function fakeSettings(
 		activeTextProviderId: '',
 		imageProviders: [],
 		activeImageProviderId: '',
+		mediaPrefix: DEFAULT_MEDIA_PREFIX,
 		...overrides,
 	};
 }

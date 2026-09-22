@@ -4,6 +4,7 @@ import {
 	fieldConfigKey,
 	type AnkiBridgeSettings,
 } from '../settings';
+import { DEFAULT_MEDIA_PREFIX } from '../utils/constants';
 import { runAiPreCheck } from './aiPreCheck';
 
 function fakeSettings(
@@ -19,6 +20,7 @@ function fakeSettings(
 		activeTextProviderId: '',
 		imageProviders: [],
 		activeImageProviderId: '',
+		mediaPrefix: DEFAULT_MEDIA_PREFIX,
 		...overrides,
 	};
 }

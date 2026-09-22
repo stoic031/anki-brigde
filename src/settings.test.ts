@@ -8,12 +8,16 @@ import {
 	getActiveTextConfig,
 	loadSettings,
 	resolveAnkiConnectUrl,
+	resolveMediaPrefix,
 	saveSettings,
 	type AnkiBridgeSettings,
 	type ImageProviderConfig,
 	type TextProviderConfig,
 } from './settings';
-import { DEFAULT_ANKI_CONNECT_URL } from './utils/constants';
+import {
+	DEFAULT_ANKI_CONNECT_URL,
+	DEFAULT_MEDIA_PREFIX,
+} from './utils/constants';
 
 // Returns the spies as plain locals (not read back off `plugin`) so assertions like
 // `expect(saveData).toHaveBeenCalledWith(...)` don't trip @typescript-eslint/unbound-method.
@@ -153,6 +157,7 @@ describe('saveSettings', () => {
 			activeTextProviderId: '',
 			imageProviders: [],
 			activeImageProviderId: '',
+			mediaPrefix: DEFAULT_MEDIA_PREFIX,
 		};
 
 		await saveSettings(plugin, settings);
@@ -174,6 +179,7 @@ describe('resolveAnkiConnectUrl', () => {
 				activeTextProviderId: '',
 				imageProviders: [],
 				activeImageProviderId: '',
+				mediaPrefix: DEFAULT_MEDIA_PREFIX,
 			}),
 		).toBe(DEFAULT_ANKI_CONNECT_URL);
 	});
@@ -190,6 +196,7 @@ describe('resolveAnkiConnectUrl', () => {
 				activeTextProviderId: '',
 				imageProviders: [],
 				activeImageProviderId: '',
+				mediaPrefix: DEFAULT_MEDIA_PREFIX,
 			}),
 		).toBe(DEFAULT_ANKI_CONNECT_URL);
 	});
@@ -206,8 +213,32 @@ describe('resolveAnkiConnectUrl', () => {
 				activeTextProviderId: '',
 				imageProviders: [],
 				activeImageProviderId: '',
+				mediaPrefix: DEFAULT_MEDIA_PREFIX,
 			}),
 		).toBe('http://localhost:9999');
+	});
+});
+
+describe('resolveMediaPrefix', () => {
+	it('returns the default when the setting is blank', () => {
+		expect(
+			resolveMediaPrefix({ ...DEFAULT_SETTINGS, mediaPrefix: '' }),
+		).toBe(DEFAULT_MEDIA_PREFIX);
+	});
+
+	it('returns the default when the setting is whitespace only', () => {
+		expect(
+			resolveMediaPrefix({ ...DEFAULT_SETTINGS, mediaPrefix: '   ' }),
+		).toBe(DEFAULT_MEDIA_PREFIX);
+	});
+
+	it('returns the trimmed value when set', () => {
+		expect(
+			resolveMediaPrefix({
+				...DEFAULT_SETTINGS,
+				mediaPrefix: '  _custom_  ',
+			}),
+		).toBe('_custom_');
 	});
 });
 

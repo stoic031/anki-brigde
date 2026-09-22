@@ -7,7 +7,7 @@ import {
 	type ProviderPreset,
 	type TextProviderId,
 } from './providers/presets';
-import { DEFAULT_ANKI_CONNECT_URL } from './utils/constants';
+import { DEFAULT_ANKI_CONNECT_URL, DEFAULT_MEDIA_PREFIX } from './utils/constants';
 
 // docs/design/06-settings.md §6.1 — a named Deck + Model + "Save notes to" bundle used when
 // creating notes. '' = unset (folder '' = vault root).
@@ -59,6 +59,9 @@ export interface AnkiBridgeSettings {
 	activeTextProviderId: string; // '' = none configured = no AI calls; else an id in `textProviders`
 	imageProviders: ImageProviderConfig[];
 	activeImageProviderId: string; // '' = none; else an id in `imageProviders`
+	// docs/design/06-settings.md §6.4 — media filename prefix; never empty, see
+	// resolveMediaPrefix.
+	mediaPrefix: string;
 }
 
 export const DEFAULT_PROFILE_ID = 'default';
@@ -81,6 +84,7 @@ export const DEFAULT_SETTINGS: AnkiBridgeSettings = {
 	activeTextProviderId: '',
 	imageProviders: [],
 	activeImageProviderId: '',
+	mediaPrefix: DEFAULT_MEDIA_PREFIX,
 };
 
 // Pre-profile data.json shape — migrated into a single "Default" profile on load.
@@ -252,6 +256,13 @@ export async function saveSettings(
 export function resolveAnkiConnectUrl(settings: AnkiBridgeSettings): string {
 	const trimmed = settings.ankiConnectUrl.trim();
 	return trimmed === '' ? DEFAULT_ANKI_CONNECT_URL : trimmed;
+}
+
+// docs/contracts.md §5 — the prefix is never empty. Settings Tab already rejects an
+// empty/invalid value before save (isValidMediaPrefix); this is defense-in-depth against
+// a hand-edited data.json.
+export function resolveMediaPrefix(settings: AnkiBridgeSettings): string {
+	return settings.mediaPrefix.trim() || DEFAULT_MEDIA_PREFIX;
 }
 
 // docs/design/07-sidebar.md §7.4 — per-Deck+Model persistence key for Tab 1/2/3 config.

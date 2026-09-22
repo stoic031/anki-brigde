@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { DEFAULT_SETTINGS, type AnkiBridgeSettings } from '../settings';
+import { DEFAULT_MEDIA_PREFIX } from '../utils/constants';
 import type AnkiBridgePlugin from '../main';
 
 const { Notice } = vi.hoisted(() => ({ Notice: vi.fn() }));
@@ -89,6 +90,7 @@ function fakeSettings(
 		activeTextProviderId: '',
 		imageProviders: [],
 		activeImageProviderId: '',
+		mediaPrefix: DEFAULT_MEDIA_PREFIX,
 		...overrides,
 	};
 }
