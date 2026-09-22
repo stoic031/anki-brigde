@@ -145,7 +145,8 @@ section, append không hợp lý vì sẽ tạo ra 2 đoạn text lẫn lộn d�
 ## 3.5. Media File Naming Convention
 
 - **Prefix:** `_obsidian_` (để Anki không xóa nhầm khi Check Media)
-- **Format:** `_obsidian_{word}_{type}_{timestamp}.{ext}`
+- **Format:** `_obsidian_{word}_image_{timestamp}.{ext}` (audio was dropped — `image` is
+  the only media type this ever names)
 - **Ví dụ:**
   - `_obsidian_apple_image_1698765433.png`
 
