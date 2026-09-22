@@ -6,6 +6,7 @@ import { AnkiConnectClient } from '../../sync/ankiConnect';
 import { ProviderError } from '../../types';
 import { toastError, toastSuccess } from '../toast';
 import { createActionButton, runAction } from './actionButton';
+import { startProgressNotice } from './progressNotice';
 
 export interface TextTab {
 	// Called whenever the active note's Deck+Model may have changed. Only re-fetches the
@@ -80,8 +81,10 @@ export function renderTextTab(
 				new Notice(plan.stop);
 				return;
 			}
-			const progress = new Notice('⏳ Asking the text model…', 0);
-			let outcome = { filled: [] as string[], skipped: [] as string[] };
+			const progress = startProgressNotice('⏳ Asking the text model…');
+			let outcome:
+				| { filled: string[]; skipped: string[] }
+				| undefined;
 			try {
 				await runAction(generate, {
 					busyLabel: '⏳ Generating...',
@@ -95,9 +98,12 @@ export function renderTextTab(
 					},
 				});
 			} finally {
-				progress.hide();
+				progress.stop();
 			}
-			reportOutcome(outcome);
+			// runAction swallows a thrown error internally (shows ❌ + toastError, never
+			// rethrows) — outcome stays undefined then, so this never also shows the
+			// "returned nothing" Notice on top of the real error toast.
+			if (outcome) reportOutcome(outcome);
 		} catch (err) {
 			toastError(
 				err instanceof ProviderError

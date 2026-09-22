@@ -8,8 +8,9 @@ import {
 } from '../../settings';
 import { AnkiConnectClient } from '../../sync/ankiConnect';
 import { ProviderError } from '../../types';
-import { toastError } from '../toast';
+import { toastError, toastSuccess } from '../toast';
 import { createActionButton, runAction } from './actionButton';
+import { startProgressNotice } from './progressNotice';
 
 export interface ImageTab {
 	// Called whenever the active note's Deck+Model may have changed. Only re-fetches the
@@ -65,7 +66,8 @@ export function renderImageTab(
 				new Notice(plan.stop);
 				return;
 			}
-			const progress = new Notice('⏳ Asking the text model…', 0);
+			const progress = startProgressNotice('⏳ Asking the text model…');
+			let succeeded = false;
 			try {
 				await runAction(addImage, {
 					busyLabel: '⏳ Generating...',
@@ -76,13 +78,15 @@ export function renderImageTab(
 					},
 					work: async () => {
 						await runAddImage(plugin, note, plan, () =>
-							progress.setMessage('⏳ Generating the image…'),
+							progress.update('⏳ Generating the image…'),
 						);
+						succeeded = true;
 					},
 				});
 			} finally {
-				progress.hide();
+				progress.stop();
 			}
+			if (succeeded) toastSuccess('🖼️ Image added to note');
 		} catch (err) {
 			toastError(
 				err instanceof ProviderError
