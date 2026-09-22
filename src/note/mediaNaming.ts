@@ -18,3 +18,11 @@ export function sanitizeForFilename(word: string): string {
 
 	return WINDOWS_RESERVED_NAME.test(truncated) ? `${truncated}_` : truncated;
 }
+
+// docs/design/03-note.md §3.5 — `_obsidian_{word}_image_{timestamp}.{ext}`. The prefix
+// is what stops Anki's "Check Media" from deleting plugin-generated files. Audio was
+// dropped, so `image` is the only media type this ever names — no type param needed.
+export function buildMediaFilename(word: string, ext: string): string {
+	const timestamp = Math.floor(Date.now() / 1000);
+	return `_obsidian_${sanitizeForFilename(word)}_image_${timestamp}.${ext}`;
+}

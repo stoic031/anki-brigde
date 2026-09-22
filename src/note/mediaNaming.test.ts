@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest';
-import { sanitizeForFilename } from './mediaNaming';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { buildMediaFilename, sanitizeForFilename } from './mediaNaming';
 
 describe('sanitizeForFilename', () => {
 	it('preserves unicode', () => {
@@ -38,5 +38,32 @@ describe('sanitizeForFilename', () => {
 	it('does not split a surrogate pair when truncating to 40 characters', () => {
 		const input = 'a'.repeat(39) + '😀';
 		expect(sanitizeForFilename(input)).toBe(input);
+	});
+});
+
+describe('buildMediaFilename', () => {
+	beforeEach(() => {
+		vi.useFakeTimers().setSystemTime(new Date('2023-10-31T12:30:33Z'));
+	});
+	afterEach(() => {
+		vi.useRealTimers();
+	});
+
+	it('matches docs/design/03-note.md §3.5: _obsidian_{word}_image_{timestamp}.{ext}', () => {
+		expect(buildMediaFilename('apple', 'png')).toBe(
+			'_obsidian_apple_image_1698755433.png',
+		);
+	});
+
+	it('sanitizes the word the same way notes and media share', () => {
+		expect(buildMediaFilename('look up', 'png')).toBe(
+			'_obsidian_look_up_image_1698755433.png',
+		);
+	});
+
+	it('falls back to "note" for an empty word', () => {
+		expect(buildMediaFilename('', 'jpg')).toBe(
+			'_obsidian_note_image_1698755433.jpg',
+		);
 	});
 });

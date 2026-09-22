@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type AnkiBridgePlugin from '../../main';
 import {
 	fieldConfigKey,
@@ -42,8 +42,16 @@ class FakeSetting {
 	}
 }
 
-const { settings } = vi.hoisted(() => ({ settings: [] as unknown[] }));
+const { Notice, setIcon, settings } = vi.hoisted(() => ({
+	Notice: vi.fn(function () {
+		return { hide: vi.fn(), setMessage: vi.fn() };
+	}),
+	setIcon: vi.fn(),
+	settings: [] as unknown[],
+}));
 vi.mock('obsidian', () => ({
+	Notice,
+	setIcon,
 	Setting: class {
 		constructor() {
 			const s = new FakeSetting();
@@ -65,9 +73,24 @@ vi.mock('../../sync/ankiConnect', () => ({ AnkiConnectClient }));
 const { toastError } = vi.hoisted(() => ({ toastError: vi.fn() }));
 vi.mock('../toast', () => ({ toastError }));
 
+const { planAddImage, runAddImage } = vi.hoisted(() => ({
+	planAddImage: vi.fn(),
+	runAddImage: vi.fn(),
+}));
+vi.mock('../../note/addImage', () => ({ planAddImage, runAddImage }));
+
+const note = { path: 'a.md' };
+const flush = () => new Promise((r) => setTimeout(r, 0));
+
 import { renderImageTab } from './imageTab';
 
+beforeEach(() => {
+	// runAction schedules its restore with window.setTimeout; Node has no `window`.
+	vi.stubGlobal('window', globalThis);
+});
+
 afterEach(() => {
+	vi.unstubAllGlobals();
 	vi.clearAllMocks();
 	settings.length = 0;
 });
@@ -79,13 +102,31 @@ function setup(imageConfigs: Record<string, ImageFieldConfig> = {}) {
 		settings: { ankiConnectUrl: '', imageConfigs } as AnkiBridgeSettings,
 		saveSettings,
 	} as unknown as AnkiBridgePlugin;
-	const tab = renderImageTab(parent as unknown as HTMLElement, plugin);
+	const tab = renderImageTab(
+		parent as unknown as HTMLElement,
+		plugin,
+		() => note as never,
+	);
+	const addImage = parent.byClass('anki-bridge-sidebar__action')[0] as FakeEl;
 	const rows = () => settings as FakeSetting[];
 	const lastRow = () => rows()[rows().length - 1];
-	return { parent, plugin, tab, saveSettings, rows, lastRow };
+	return { parent, plugin, tab, saveSettings, addImage, rows, lastRow };
 }
 
 describe('renderImageTab', () => {
+	it('renders the title with the Add image button (icon + text) next to it', () => {
+		const { parent, addImage } = setup();
+
+		const header = parent.byClass('anki-bridge-sidebar__section-header')[0];
+		expect(header?.children.map((c) => c.text || c.tag)).toEqual([
+			'Image field mapping',
+			'button',
+		]);
+		expect(addImage.children[1]?.text).toBe('Add image');
+		expect(setIcon.mock.calls[0]?.[1]).toBe('image');
+		expect(addImage.disabled).toBe(true);
+	});
+
 	it('shows a hint and loads no fields until the note has Deck and Model', async () => {
 		const { parent, tab, rows } = setup();
 
@@ -217,5 +258,130 @@ describe('renderImageTab', () => {
 			'Other',
 		]);
 		expect(rows()).toHaveLength(2);
+	});
+
+	describe('Add image button', () => {
+		const plan = {
+			textProvider: {},
+			imageProvider: {},
+			fieldsInput: 'Word: 診察',
+			word: '診察',
+			outputField: 'Image',
+			onExisting: 'append' as const,
+		};
+
+		async function ready() {
+			modelFieldNames.mockResolvedValue(['Word', 'Image']);
+			const ctx = setup();
+			await ctx.tab.sync('Japanese', 'Basic');
+			return ctx;
+		}
+
+		it('is enabled once Deck and Model are set', async () => {
+			const { addImage } = await ready();
+
+			expect(addImage.disabled).toBe(false);
+		});
+
+		it('shows the reason as a Notice when the plan says stop, and never runs', async () => {
+			planAddImage.mockResolvedValue({
+				stop: 'Please configure Image field mapping for this Deck/Model in the sidebar (Image tab) first.',
+			});
+			const { addImage } = await ready();
+
+			await addImage.click();
+			await flush();
+
+			expect(Notice).toHaveBeenCalledWith(
+				'Please configure Image field mapping for this Deck/Model in the sidebar (Image tab) first.',
+			);
+			expect(runAddImage).not.toHaveBeenCalled();
+		});
+
+		it('runs the plan and cycles the button to Done', async () => {
+			planAddImage.mockResolvedValue(plan);
+			runAddImage.mockResolvedValue({ filename: '_obsidian_x_image_1.png' });
+			const { addImage } = await ready();
+
+			await addImage.click();
+			await flush();
+
+			expect(runAddImage).toHaveBeenCalledWith(
+				expect.anything(),
+				note,
+				plan,
+				expect.any(Function),
+			);
+			expect(addImage.children[1]?.text).toBe('✅ Done!');
+		});
+
+		it('is not re-enabled by sync() while a run is in progress', async () => {
+			planAddImage.mockResolvedValue(plan);
+			let finish: (v: unknown) => void = () => {};
+			runAddImage.mockReturnValue(new Promise((r) => (finish = r)));
+			const { addImage, tab } = await ready();
+
+			await addImage.click();
+			await flush();
+			expect(addImage.children[1]?.text).toBe('⏳ Generating...');
+			await tab.sync('Japanese', 'Basic');
+			expect(addImage.disabled).toBe(true);
+
+			finish({ filename: 'x.png' });
+			await flush();
+		});
+
+		it('surfaces a ProviderError message', async () => {
+			const { ProviderError } = await import('../../types');
+			planAddImage.mockResolvedValue(plan);
+			runAddImage.mockRejectedValue(
+				new ProviderError('pollinations', 'HTTP 500 from https://x'),
+			);
+			const { addImage } = await ready();
+
+			await addImage.click();
+			await flush();
+
+			expect(toastError).toHaveBeenCalledWith(
+				'❌ pollinations: HTTP 500 from https://x',
+			);
+		});
+
+		it('surfaces a thrown ProviderError from building the image provider', async () => {
+			const { ProviderError } = await import('../../types');
+			planAddImage.mockRejectedValue(
+				new ProviderError('comfyui', 'no adapter for this provider type'),
+			);
+			const { addImage } = await ready();
+
+			await addImage.click();
+			await flush();
+
+			expect(toastError).toHaveBeenCalledWith(
+				'❌ comfyui: no adapter for this provider type',
+			);
+			expect(runAddImage).not.toHaveBeenCalled();
+		});
+
+		it('falls back to a generic Anki-connection error for anything else', async () => {
+			planAddImage.mockRejectedValue(new Error('boom'));
+			const { addImage } = await ready();
+
+			await addImage.click();
+			await flush();
+
+			expect(toastError).toHaveBeenCalledWith(
+				'❌ Failed to add image. Please check Anki connection.',
+			);
+		});
+
+		it('does nothing while disabled', async () => {
+			const { addImage } = setup();
+
+			await addImage.click();
+			await flush();
+
+			expect(planAddImage).not.toHaveBeenCalled();
+		});
 	});
 });
