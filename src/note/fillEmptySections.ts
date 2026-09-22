@@ -69,8 +69,9 @@ export function fillEmptySections(
 }
 
 // `end` is the line index of the next heading of level 1-2 (or EOF), matching how
-// parseSections ends a section.
-function sectionHeadings(
+// parseSections ends a section. Exported for applyImageTag.ts, which needs the same
+// section boundaries.
+export function sectionHeadings(
 	lines: string[],
 ): { key: string; line: number; end: number }[] {
 	const marks: { level: number; text: string; line: number }[] = [];

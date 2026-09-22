@@ -32,7 +32,7 @@ Profile [Japanese ▼]          ← luôn hiện, nằm trên các tab (dùng ch
 | --- | --- | --- |
 | **Note** | Deck/Model của note đang mở; hàng nút **Sync \| Rebuild \| Delete** | Đã có |
 | **Text** | Chọn field cho Generate with AI + nút **Generate** | Đã có (phần gọi AI chưa triển khai) |
-| **Image** | Overwrite/Append, chọn field Output + nút **Add Image** | Đã có phần cấu hình (nút **Add Image** chưa triển khai) — §7.2.2 |
+| **Image** | Overwrite/Append, chọn field Output + nút **Add image** | Đã có (chưa có adapter ảnh nào — Feature #17) — §7.2.2 |
 
 - Chỉ hiển thị tab đã triển khai (hiện: Note, Text, Image). Tab đang chọn giữ trong bộ nhớ view,
   mặc định là Note.
@@ -130,7 +130,7 @@ Fields to generate with AI                [✨ Generate]
   và 03-note.md §3.2). **Hiện chưa gọi AI:** đã tick field thì hiện Notice "Generate with AI
   is not available yet.".
 
-### 7.2.2. Tab Image (cấu hình đã có; nút Add Image chưa triển khai)
+### 7.2.2. Tab Image
 
 ```
 On existing tag: [Append ▼]   (hoặc "Overwrite")
