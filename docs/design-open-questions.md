@@ -112,15 +112,20 @@ a larger job than the files around it, but it's the one that decides whether peo
 contribute at all. The module split (see history, was #11) makes this easier to do
 incrementally, one file at a time, instead of one 772-line pass.
 
-### 19. Image prompt built by the text model — details unspecified
+### 19. Image prompt built by the text model — resolved
 
 Audio generation was dropped; Add Image now asks the user's text model
 (`build-image-prompt` task) to write the image prompt from the note's non-empty fields
-(`03-note.md` §3.2, `07-sidebar.md` §7.2.2). Unresolved: (a) the prompt template /
-system instruction, (b) whether the prompt should be English regardless of note
-language, (c) whether to let the user preview/edit the prompt before the image call,
-(d) with no text provider configured we currently **stop with a Notice** rather than
-fall back to the raw field text — confirm that is what you want.
+(`03-note.md` §3.2, `07-sidebar.md` §7.2.2). All four points resolved:
+
+- (a) prompt template / system instruction: already implemented —
+  `TASK_INSTRUCTION['build-image-prompt']` in `src/providers/text/prompt.ts`.
+- (b) prompt language: already implemented as part of (a) — that instruction requires
+  English regardless of the note's language.
+- (c) no preview/edit step. Add Image calls straight through (text model → image
+  provider), same as the Generate button.
+- (d) confirmed: no text provider configured **stops with a Notice**; never falls back
+  to sending the raw field text as the prompt.
 
 ### 20. Text provider API key is stored in plain text — resolved
 
@@ -130,13 +135,20 @@ Resolved: the API key source can be **Obsidian keychain** (`app.secretStorage`, 
 (masked in the UI) and says so in its description. Remaining question: whether to make the
 keychain the default for new configs.
 
-### 21. How the AI image prompt combines with a ComfyUI workflow's own prompt
+### 21. How the AI image prompt combines with a ComfyUI workflow's own prompt — resolved
 
-Settings now let the user pick a ComfyUI workflow and show which CLIPTextEncode node feeds the
-sampler's `positive` input. The adapter (Feature #17) still has to decide what to write there when a
-workflow already has positive text (a saved workflow can hold a long style prompt such as "simple flat
-vector illustration ... educational icon style"): **replace** it with the AI-written prompt, **prepend**
-the AI prompt to it, or substitute a `{prompt}` placeholder. Related: how the settings negative prompt
-combines with the workflow's negative node, and UI→API conversion limits (reroutes, subgraphs,
-primitive nodes) when converting a saved workflow for `POST /prompt`.
+Settings let the user pick a ComfyUI workflow and show which CLIPTextEncode node feeds the
+sampler's `positive` input (`analyzeWorkflow`, `src/providers/image/comfyWorkflow.ts`).
+Resolved:
+
+- **Positive:** the adapter (Feature #17) **replaces** the positive node's text
+  entirely with the AI-written prompt — not prepend, not a `{prompt}` placeholder.
+- **Negative:** the workflow's negative node is left as saved, untouched. The settings
+  `negativePrompt` field (`06-settings.md` §6.2) only applies to providers with a
+  direct negative-prompt parameter (Automatic1111, Pollinations) — already reflected
+  in its description in `src/ui/imageProviderSection.ts` ("ComfyUI workflows have
+  their own negative prompt node").
+- **UI→API conversion limits** (reroutes, subgraphs, primitive nodes): stay as
+  documented — `analyzeWorkflow` doesn't follow them and reports it via its
+  `problems` array; no further decision needed here.
 
