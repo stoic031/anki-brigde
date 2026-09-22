@@ -322,6 +322,12 @@ describe('renderTextTab', () => {
 			expect(toastError).toHaveBeenCalledWith(
 				'❌ anthropic: HTTP 401 from https://x',
 			);
+			// A failure must not also show the "returned nothing" Notice reserved for a
+			// real empty-result outcome — that would contradict the error toast above.
+			expect(Notice).not.toHaveBeenCalledWith(
+				'The text model returned nothing to add. Try again or check the model.',
+			);
+			expect(toastSuccess).not.toHaveBeenCalled();
 		});
 
 		it('tells the user when the model returned nothing', async () => {

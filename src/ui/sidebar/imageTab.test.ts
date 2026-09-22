@@ -70,8 +70,11 @@ const { modelFieldNames, AnkiConnectClient } = vi.hoisted(() => {
 });
 vi.mock('../../sync/ankiConnect', () => ({ AnkiConnectClient }));
 
-const { toastError } = vi.hoisted(() => ({ toastError: vi.fn() }));
-vi.mock('../toast', () => ({ toastError }));
+const { toastError, toastSuccess } = vi.hoisted(() => ({
+	toastError: vi.fn(),
+	toastSuccess: vi.fn(),
+}));
+vi.mock('../toast', () => ({ toastError, toastSuccess }));
 
 const { planAddImage, runAddImage } = vi.hoisted(() => ({
 	planAddImage: vi.fn(),
@@ -313,6 +316,7 @@ describe('renderImageTab', () => {
 				expect.any(Function),
 			);
 			expect(addImage.children[1]?.text).toBe('✅ Done!');
+			expect(toastSuccess).toHaveBeenCalledWith('🖼️ Image added to note');
 		});
 
 		it('is not re-enabled by sync() while a run is in progress', async () => {
@@ -345,6 +349,7 @@ describe('renderImageTab', () => {
 			expect(toastError).toHaveBeenCalledWith(
 				'❌ pollinations: HTTP 500 from https://x',
 			);
+			expect(toastSuccess).not.toHaveBeenCalled();
 		});
 
 		it('surfaces a thrown ProviderError from building the image provider', async () => {
