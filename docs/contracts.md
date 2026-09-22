@@ -95,6 +95,8 @@ card that displays text instead of playing audio.
 
 ## 4. AI providers
 
+Code: `src/providers/types.ts`.
+
 ```ts
 interface TextResult {
  [fieldName: string]: string; // keyed by exact Anki field name from targetFields
@@ -102,14 +104,8 @@ interface TextResult {
 
 interface MediaResult {
  base64: string; // raw base64, NO "data:...;base64," prefix
- ext: string; // "mp3" | "png" — no leading dot
+ ext: string; // e.g. "png" — no leading dot
  mimeType: string;
-}
-
-interface AudioOptions {
- voice: string; // Sidebar Modal Tab 2, e.g. "Male" | "Female" — docs/design/07-sidebar.md §7.2.2
- language: string; // Sidebar Modal Tab 2, provider-dependent list — docs/design/07-sidebar.md §7.2.2
- speed?: number; // docs/design/02-providers.md §2.4 mentions this; no UI sets it yet, providers may default it
 }
 
 interface ImageOptions {
@@ -127,18 +123,17 @@ interface TextProvider {
   targetFields: string[], // fields the user ticked in the Generate-with-AI modal
  ): Promise<TextResult>;
 }
-interface AudioProvider {
- id: string;
- isCloud: boolean;
- generateAudio(text: string, opts: AudioOptions): Promise<MediaResult>;
-}
 interface ImageProvider {
  id: string;
  isCloud: boolean;
  generateImage(prompt: string, opts: ImageOptions): Promise<MediaResult>;
 }
 
-type TextTask = 'extract-vocabulary' | 'generate-example' | 'rewrite';
+type TextTask =
+ | 'extract-vocabulary'
+ | 'generate-example'
+ | 'rewrite'
+ | 'build-image-prompt'; // input = the card's fields, result = the prompt for ImageProvider
 ```
 
 `targetFields` comes straight from `modelFieldNames()` for the note's Model — the
@@ -146,6 +141,8 @@ provider is told exactly which fields exist (e.g. "Meaning", "Furigana", "Pinyin
 "Gender") and must interpret each field name itself to produce sensible content. A
 field it can't or doesn't know how to fill is simply omitted/empty from the result,
 same as the existing "field không rỗng" rule for consuming it.
+
+For task `build-image-prompt`, `targetFields` is `[]` and the result is always `{ prompt: string }`.
 
 A provider **returns a `MediaResult`. It does not name files and does not call
 `storeMediaFile`.** Naming belongs to `note/mediaNaming.ts`; storage belongs to
@@ -220,3 +217,37 @@ class ProviderError extends Error {
 
 Every user-visible error states **what broke** and **what to do next**. An empty
 `catch {}` is never acceptable.
+
+## 7. Settings (`src/settings.ts`)
+
+```ts
+interface Profile {
+ id: string; // stable, generated on Add ('default' for the auto-created one)
+ name: string; // unique, non-empty
+ deck: string; // '' = unset
+ model: string; // '' = unset
+ folder: string; // '' = vault root
+}
+
+interface AnkiBridgeSettings {
+ ankiConnectUrl: string; // '' = unset, resolves to DEFAULT_ANKI_CONNECT_URL at use time
+ profiles: Profile[]; // always >= 1 — a named Deck+Model+Folder bundle for NEW notes, docs/design/06-settings.md §6.1
+ activeProfileId: string; // always an id in `profiles` — selected in both Settings Tab and Sidebar Tab 1
+ generateWithAiFields: Record<string, string[]>; // Tab 1 field checkboxes, keyed by fieldConfigKey(deck, model)
+}
+```
+
+The active profile decides Deck/Model/Folder for **new** notes only — see
+`resolveQuickCaptureTarget` in `src/note/quickCapture.ts`, shared by "Create new note" and
+"Create note from selection"; it returns `null` when the profile has no Deck or Model. An
+existing note's Deck/Model always come from its own `anki_deck` / `anki_model` frontmatter.
+
+`loadSettings` migrates pre-profile data once: with no saved `profiles`, it creates a
+`Default` profile from `currentDeck/Model/Folder` (falling back to `defaultDeck/Model/
+Folder`) and drops those legacy keys; an unknown `activeProfileId` falls back to the first
+profile. `plugin.setActiveProfile(id)` saves and fires `PROFILE_CHANGED_EVENT`
+(`src/utils/constants.ts`) so Settings Tab and Sidebar re-render their profile selector.
+
+`fieldConfigKey(deck, model)` encodes the pair as `JSON.stringify([deck, model])` rather
+than a delimited string, because deck names routinely contain `::` (Anki's subdeck
+separator) and a plain join risks two different pairs colliding on the same key.

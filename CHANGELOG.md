@@ -2,6 +2,83 @@
 
 All notable changes to this project are documented in this file.
 
+## [Unreleased]
+
+### Added
+
+- Settings: **AI text provider** and **AI image provider** sections. Pick a provider from a fixed
+  list — text: OpenAI, Gemini, Anthropic, Groq, OpenRouter, Together (cloud) and Ollama (local);
+  image: Pollinations, Gemini, OpenAI, OpenRouter (cloud) and Automatic1111, ComfyUI (local). Add
+  several configs and choose the active one; None is active by default, so nothing calls an AI until
+  you set one up.
+- The Model dropdown lists only the right kind of model for the provider (text models for text, text-
+  to-image models for image), loaded on Refresh or when you change the provider. API keys can come from
+  the Obsidian keychain instead of being typed. Requires Obsidian 1.11.4 or newer.
+- **Generate** button now works: the active text model fills the ticked fields of the open note
+  (empty sections only, never overwriting your text) — Anki is updated when you press Sync.
+- Text providers: OpenAI-compatible (`/chat/completions`; serves OpenAI, Groq, OpenRouter, Together,
+  Ollama, Gemini) and Anthropic (`/v1/messages`) adapters with JSON validation, one retry on
+  malformed replies, and a 60 s timeout.
+- ComfyUI image provider is configured by **workflow**: pick one of the workflows saved in your ComfyUI
+  (listed from the server) and the settings show which nodes take the prompt, warning when the
+  workflow has none.
+- Image provider settings are configuration only for now: image generation itself arrives with the
+  image adapters.
+
+### Removed
+
+- Audio (TTS) generation is dropped from the scope; the image prompt is now written by the
+  user's text model.
+
+## [1.1.0]
+
+### Added
+
+- Sidebar view with a **Profile** selector, tabs, and controls for the active note:
+  - **Note** tab: Deck and Model dropdowns that mirror and edit the note's `anki_deck` /
+    `anki_model` properties (with a warning modal when the note is already synced), and a
+    **Sync | Rebuild | Delete** button row. Delete appears as soon as the note has an
+    `anki_note_id`. Rebuild replaces the note content with one empty `## Field` section
+    per field of its Model, after a confirmation.
+  - **Text** tab: "Fields to generate with AI" checkboxes, saved per Deck + Model pair,
+    with a Generate button.
+- Profiles (Deck + Model + "Save notes to" folder), managed in Settings and selectable in
+  both Settings and the sidebar; new notes use the active profile.
+- Commands: **Create new note**, **Create note from selection** (no default hotkey), and
+  **Open Deck & Model Selector**. New notes get one `## Field` section per Model field.
+- Field mapping passes 2 (alias table) and 3 (positional fallback), with aggregated
+  warnings for sections that could not be mapped.
+- Settings: Deck and Model pickers are always shown and load Anki's names when the tab
+  opens; the "Save notes to" folder picker lists real vault folders as a tree.
+- Shared pre-check for the AI buttons.
+
+### Changed
+
+- The note controls moved from the in-note `anki-controls` code block to the sidebar.
+  Sync and Delete now use the AnkiConnect URL from Settings.
+- Deck/Model for new notes come from the active profile instead of separate "default" and
+  "current" values. Existing settings are migrated to a "Default" profile on load.
+- Changing Deck/Model on an already-synced note asks for confirmation; "Update" rewrites
+  the property and clears `anki_note_id` so the next sync creates a new Anki note.
+
+### Removed
+
+- The `anki-controls` code block. Notes that still contain it keep syncing normally; it
+  shows as a plain code block, and **Rebuild** removes it.
+- The Connection Status row, refresh button, and "Save notes to" folder select in the
+  sidebar.
+
+### Fixed
+
+- Nested "Save notes to" folders display and sort correctly in both Settings and the
+  sidebar.
+- "Generate with AI" field checkboxes recover after AnkiConnect reconnects.
+
+### Notes
+
+- **Generate** currently only runs its pre-check; AI generation is not implemented yet.
+  The Image tab is planned and not part of this release.
+
 ## [1.0.0]
 
 ### Added
@@ -26,4 +103,5 @@ All notable changes to this project are documented in this file.
 - `anki_note_id` is read via `metadataCache` instead of `ctx.frontmatter`.
 - Sync failures surface the underlying `SyncError` message instead of a generic toast.
 
+[1.1.0]: https://github.com/stoic031/anki-brigde/releases/tag/1.1.0
 [1.0.0]: https://github.com/stoic031/anki-bridge/releases/tag/1.0.0

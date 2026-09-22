@@ -22,67 +22,118 @@
     ↓
 [3] Nếu thành công:
     - Hiển thị toast: "✅ Connected to Anki!"
-    - Hiện 2 dropdown bên dưới: Deck và Model
+    - Nạp lại danh sách vào 2 dropdown Deck và Model trong mục Profile bên dưới
     ↓
 [4] Nếu thất bại:
     - Hiển thị toast: "❌ Cannot connect to Anki. Please check URL and AnkiConnect."
-    - Ẩn dropdown Deck và Model
+    - Dropdown Deck và Model vẫn hiện, giữ nguyên danh sách hiện có
 ```
 
-**Deck Dropdown:**
+**Profile:**
 
-- Hiển thị sau khi Connect thành công
-- Populate từ API `deckNames`
-- User chọn Deck mặc định dùng để tạo note mới khi Sidebar Modal Tab 1 chưa có giá trị
-  "hiện tại" nào (xem `07-sidebar.md` §7.3/§7.4) — đây là default thật, không chỉ để
-  connect/preview
-- Lưu vào settings
-
-**Model Dropdown:**
-
-- Hiển thị sau khi Connect thành công
-- Populate từ API `modelNames`
-- User chọn Model mặc định dùng để tạo note mới khi Sidebar Modal Tab 1 chưa có giá trị
-  "hiện tại" nào — cùng vai trò default như Deck Dropdown ở trên
-- Lưu vào settings
-
-**Save notes to (Folder) Select:**
+Profile là một bộ **Deck + Model + Save notes to** đặt tên sẵn, dùng để quyết định note
+mới được tạo với Deck/Model nào và lưu ở folder nào — cho cả "Create new note" (xem
+`07-sidebar.md` §7.3) lẫn "Create note from selection" (`03-note.md` §3.7). Thay thế hoàn
+toàn cặp giá trị "mặc định" (Settings) / "hiện tại" (Sidebar) trước đây. Profile **không**
+chứa provider/model AI — provider Text là cấu hình toàn cục (§6.2).
 
 ```
+Profile: [Japanese ▼]   [Add]  [Delete]
+Profile name: [Japanese        ]
+Deck:  [Japanese::N2 ▼]
+Model: [Basic ▼]
 Save notes to: [/ (vault root) ▼]
 ```
 
-- Populate từ danh sách folder trong vault. Không phụ thuộc AnkiConnect nên **luôn hiện**,
-  không cần chờ Connect thành công như Deck/Model ở trên
-- Mặc định = `/` (vault root) nếu user chưa từng chọn
-- Vai trò giống Deck/Model Dropdown: Folder mặc định dùng để tạo note mới khi Tab 1 chưa
-  có giá trị "hiện tại" nào
-- Lưu vào settings
+- Dropdown **Profile** chọn profile đang dùng (active). Đây là cùng một lựa chọn với
+  dropdown Profile ở Sidebar Tab 1 (`07-sidebar.md` §7.2.1): đổi ở đâu thì nơi kia cập
+  nhật theo ngay, không cần mở lại.
+- Các ô bên dưới (Profile name, Deck, Model, Save notes to) luôn sửa **profile đang chọn**.
+- Luôn có ít nhất 1 profile. Lần đầu (hoặc khi nâng cấp từ bản cũ chưa có profile) plugin
+  tự tạo profile **"Default"** — với bản cũ thì lấy Deck/Model/Folder "hiện tại" của
+  Sidebar (nếu có), không thì lấy Deck/Model/Folder mặc định cũ.
+- **Add:** tạo profile mới (tên "New profile", thêm số nếu trùng; Deck/Model trống, folder
+  là vault root) và chuyển sang nó để user điền tiếp.
+- **Delete:** xoá profile đang chọn rồi chuyển sang profile đầu tiên còn lại. Nút bị vô
+  hiệu khi chỉ còn 1 profile.
+- **Profile name:** không được để trống và không được trùng tên profile khác (hiện
+  Notice lỗi và giữ tên cũ). Lưu khi rời ô nhập / nhấn Enter.
+- **Deck / Model:** **luôn hiện**, không cần bấm Connect. Mỗi lần mở Settings, plugin tự
+  nạp `deckNames` / `modelNames` một lần, im lặng (không toast; lỗi thì bỏ qua — nút
+  Connect mới là nơi báo lỗi kết nối). Trong lúc chưa nạp xong hoặc khi Anki đang tắt,
+  dropdown chỉ liệt kê giá trị đã lưu của profile, nên vẫn thấy profile đang set gì. Giá
+  trị đã lưu mà Anki không còn liệt kê (VD deck đã bị xoá) vẫn được hiển thị. Có lựa chọn
+  trống ("Select deck…") — profile thiếu Deck hoặc Model thì không tạo được note (hiện
+  Notice "Please set up a profile in Settings first" và mở Settings).
+- **Save notes to:** populate từ folder trong vault, không phụ thuộc AnkiConnect nên
+  **luôn hiện**. Mặc định `/` (vault root). Folder lồng nhau hiển thị dạng cây: mỗi dòng
+  chỉ hiện tên riêng, thụt lề theo độ sâu, nhóm folder con ngay dưới folder cha (dùng hàm
+  dựng cây `src/utils/folderTree.ts`).
+- Profile chỉ dùng cho **note mới**. Deck/Model của một note đã tồn tại luôn theo
+  frontmatter của note đó (xem `07-sidebar.md` §7.2.1).
 
 ## 6.2. AI Provider Settings
 
-**Text Processing:**
+Provider là danh sách **cố định** (xem `02-providers.md` §2.2); thêm provider khi có người dùng
+yêu cầu. Cả Text và Image cùng cơ chế: danh sách cấu hình (Add / Delete) + dropdown **active**
+(mặc định None = không gọi AI / không tạo ảnh), dùng chung cho mọi profile. Mỗi cấu hình:
 
-- Provider: dropdown (openai, claude, gemini, ollama, lmstudio)
-- API Key: text field (chỉ hiện khi chọn cloud provider)
-- Model: text field (gpt-4, llama3, etc.)
-- API URL: text field (chỉ hiện khi chọn local provider, default localhost:11434)
+- Name: text field (không rỗng)
+- Provider: dropdown chọn từ danh sách cố định, nhãn `(cloud)` / `(local)`. Đổi provider thì xóa
+  Model đã chọn và đặt lại Base URL về mặc định của provider mới
+- Base URL: **chỉ hiện với provider local** (Ollama `http://localhost:11434`, Automatic1111
+  `http://localhost:7860`, ComfyUI `http://localhost:8188`, có sẵn mặc định); provider cloud dùng
+  endpoint cố định nên không hiện. Sai định dạng → Notice "❌ Invalid URL. Please check the base
+  URL." và giữ giá trị cũ
+- API Key: ẩn với provider không cần key (Ollama, Automatic1111, ComfyUI); bắt buộc với cloud, riêng
+  Pollinations là tùy chọn. Chọn **nguồn** — *Enter manually* (ô nhập ẩn ký tự, lưu plain text trong
+  `data.json`) hoặc *Obsidian keychain* (`SecretComponent`, chỉ lưu **tên** secret; key đọc từ
+  `app.secretStorage` mỗi lần gọi nên đổi secret có hiệu lực ngay). Cần Obsidian ≥ 1.11.4
+  (`minAppVersion`). Key chỉ gửi tới endpoint của provider đang chọn (gọi model lẫn liệt kê model)
+- Model: dropdown model do chính provider báo, **chỉ gồm đúng loại** (Text: model sinh text; Image:
+  model text-to-image). Chỉ tải khi user đổi provider / Base URL / key hoặc bấm **Refresh**, không tự
+  tải khi mở Settings. Tải lỗi hoặc rỗng → ô text tự do kèm gợi ý; model đã lưu mà danh sách không có
+  (hoặc bị lọc) vẫn hiển thị; dòng mô tả cho biết đã lọc còn bao nhiêu trên tổng số provider báo ("2 text models available (of 5 the provider reports)"); nếu bộ lọc loại hết thì hiện toàn bộ model kèm ghi chú
+- Nhãn Cloud / Local: theo provider (không suy từ URL)
+- Dropdown active có mục **None**; Add tạo cấu hình mới (Text mặc định OpenAI, Image mặc định
+  Pollinations) và chọn nó làm active; Delete xoá cấu hình đang active (active về None). Form sửa hiện
+  bên dưới, chỉ cho cấu hình đang active. Lưu khi rời ô nhập (Name, Base URL) hoặc khi gõ (API Key, Model)
+- Cấu hình thiếu Base URL (provider local) hoặc thiếu Model (trừ provider có model mặc định:
+  Pollinations, Automatic1111, ComfyUI) coi như **chưa cấu hình** — `getActiveTextConfig` /
+  `getActiveImageConfig` trả `null`
+- Cấu hình lưu bởi bản cũ có provider không còn trong danh sách bị bỏ khi tải settings
 
-**Audio Generation:**
+**Cách lọc model theo provider** (`src/providers/modelLists.ts`; lọc theo metadata khi provider có,
+theo tên khi không — lọc theo tên là best effort):
 
-- Provider: dropdown (openai, azure, elevenlabs, edge, sherpa-onnx)
-- API Key: text field (chỉ hiện khi chọn cloud provider)
-- Model: text field (tts-1-hd, eleven_multilingual_v2)
-- Voice: text field (alloy, nanami)
-- API URL: text field (chỉ hiện khi chọn local provider)
+| Provider | Nguồn | Text | Image |
+| --- | --- | --- | --- |
+| OpenRouter | `/models` → `architecture.output_modalities` | output chỉ có `text` (bỏ model xuất audio/ảnh như lyria, gpt-audio) | output có `image`, bỏ `openrouter/auto*` |
+| Together | `/v1/models` → `type` | `chat`/`language`/`code` | `image` |
+| OpenAI | `/models` | `gpt-*`/`chatgpt-*`/`o<số>`, bỏ audio/realtime/embedding/... | `dall-e*`, `gpt-image*` |
+| Gemini | `/v1beta/openai/models` cho cả Text lẫn Image (bỏ tiền tố `models/`) | chỉ `gemini-*`/`gemma-*`, bỏ image/tts/live/audio/embedding/robotics/... (lyria, nano-banana, veo tự loại) | `imagen`, `*-image`, `nano-banana` |
+| Groq | `/models` | mọi model text-to-text (chỉ bỏ whisper, tts, orpheus) | — |
+| Anthropic | `/v1/models` | tất cả | — |
+| Ollama | `{host}/api/tags` | bỏ embedding | — |
+| Pollinations | `gen.pollinations.ai/image/models` → `category`, `output_modalities` | — | tất cả trừ video (gồm cả model cộng đồng, trả phí, đang `down`) |
+| Automatic1111 | `/sdapi/v1/sd-models` | — | tất cả checkpoint |
+| ComfyUI | không liệt kê model: cấu hình bằng **workflow** (bên dưới) | — | — |
 
-**Image Generation:**
+**ComfyUI (Image)** cấu hình bằng **workflow** thay vì Model: chỉ có Base URL (mặc định
+`http://localhost:8188`) và **Workflow**, không có API Key/Model.
+- Workflow: dropdown các workflow đã lưu trong ComfyUI (`GET /api/userdata?dir=workflows&recurse=true`,
+  bản cũ `/userdata`), lưu **đường dẫn** (VD `icons.json`, `sub/a.json`). Chỉ tải khi đổi Provider /
+  Base URL hoặc bấm **Refresh**, không tự tải khi mở Settings. Tải lỗi → ô text nhập đường dẫn kèm gợi ý
+- Chọn workflow → plugin đọc nó (`GET /api/userdata/workflows%2F<path>`, định dạng UI hoặc API) và hiện
+  tóm tắt: node prompt dương/âm (nối vào `positive`/`negative` của KSampler) và checkpoint; thiếu
+  KSampler / node prompt / SaveImage thì cảnh báo "image prompts can't be injected". Node prompt chỉ
+  đi qua reroute/combine/subgraph thì chưa được theo dõi
+- Cấu hình chưa chọn workflow coi như **chưa cấu hình** (`getActiveImageConfig` = `null`)
+- Chạy workflow (đổi UI→API bằng `/object_info`, `POST /prompt`, lấy ảnh) làm cùng adapter ComfyUI
 
-- Provider: dropdown (dalle, stability, replicate, automatic1111, comfyui)
-- API Key: text field (chỉ hiện khi chọn cloud provider)
-- Model: text field (dall-e-3, sd-xl)
-- API URL: text field (chỉ hiện khi chọn local provider, default localhost:7860)
-- Negative Prompt: textarea field
+Riêng **Image**: Negative Prompt (textarea, lưu theo từng cấu hình; chỉ provider hỗ trợ mới dùng, VD
+Automatic1111). Chưa có adapter ảnh (#17) nên chọn cấu hình active thì `getImageProvider()` báo
+`ProviderError` "no adapter for this provider type" cho tới khi #17 xong.
 
 ## 6.3. Sync Settings
 

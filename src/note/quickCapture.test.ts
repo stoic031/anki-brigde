@@ -1,6 +1,10 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { App } from 'obsidian';
-import type { AnkiBridgeSettings } from '../settings';
+import {
+	DEFAULT_SETTINGS,
+	type AnkiBridgeSettings,
+	type Profile,
+} from '../settings';
 import type AnkiBridgePlugin from '../main';
 
 const { MarkdownView, Notice } = vi.hoisted(() => ({
@@ -26,6 +30,11 @@ vi.mock('../sync/parser', () => ({ writeAnkiFrontmatter }));
 const { toastError } = vi.hoisted(() => ({ toastError: vi.fn() }));
 vi.mock('../ui/toast', () => ({ toastError }));
 
+const { revealSidebarView } = vi.hoisted(() => ({
+	revealSidebarView: vi.fn().mockResolvedValue(undefined),
+}));
+vi.mock('../ui/sidebarView', () => ({ revealSidebarView }));
+
 import {
 	getQuickCaptureFilename,
 	getSelectedText,
@@ -38,16 +47,26 @@ afterEach(() => {
 	vi.clearAllMocks();
 });
 
+// Settings whose active (and only) profile has the given values.
+function withProfile(profile: Partial<Profile>): Partial<AnkiBridgeSettings> {
+	return {
+		profiles: [{ ...DEFAULT_SETTINGS.profiles[0]!, ...profile }],
+	};
+}
+
 function fakeSettings(
 	overrides: Partial<AnkiBridgeSettings> = {},
 ): AnkiBridgeSettings {
 	return {
 		ankiConnectUrl: '',
-		defaultDeck: '',
-		defaultModel: '',
-		currentDeck: '',
-		currentModel: '',
-		currentFolder: '',
+		profiles: DEFAULT_SETTINGS.profiles,
+		activeProfileId: DEFAULT_SETTINGS.activeProfileId,
+		generateWithAiFields: {},
+		imageConfigs: {},
+		textProviders: [],
+		activeTextProviderId: '',
+		imageProviders: [],
+		activeImageProviderId: '',
 		...overrides,
 	};
 }
@@ -75,7 +94,11 @@ function fakePlugin(
 		settings?: Partial<AnkiBridgeSettings>;
 	} = {},
 ) {
-	const { view = null, existingPaths = [], settings: overrides = {} } = options;
+	const {
+		view = null,
+		existingPaths = [],
+		settings: overrides = {},
+	} = options;
 	const settings = fakeSettings(overrides);
 	const saveSettings = vi.fn().mockResolvedValue(undefined);
 	const createdFile = { path: 'created' };
@@ -149,75 +172,51 @@ describe('getQuickCaptureFilename', () => {
 });
 
 describe('resolveQuickCaptureTarget', () => {
-	it('Branch A: uses the current Deck/Model/Folder when already set', () => {
+	it("uses the active profile's Deck/Model/Folder", () => {
 		const settings = fakeSettings({
-			currentDeck: 'Japanese',
-			currentModel: 'Basic',
-			currentFolder: 'Vocab',
-			defaultDeck: 'Other',
-			defaultModel: 'Other model',
+			profiles: [
+				{
+					id: 'a',
+					name: 'A',
+					deck: 'Other',
+					model: 'Other model',
+					folder: '',
+				},
+				{
+					id: 'b',
+					name: 'B',
+					deck: 'Japanese',
+					model: 'Basic',
+					folder: 'Vocab',
+				},
+			],
+			activeProfileId: 'b',
 		});
 
 		expect(resolveQuickCaptureTarget(settings)).toEqual({
 			deck: 'Japanese',
 			model: 'Basic',
 			folder: 'Vocab',
-			seededFromDefaults: false,
 		});
 	});
 
-	it('Branch B: falls back to Settings Tab defaults when current is unset', () => {
-		const settings = fakeSettings({
-			defaultDeck: 'Japanese',
-			defaultModel: 'Basic',
-			currentFolder: 'Vocab',
-		});
-
-		expect(resolveQuickCaptureTarget(settings)).toEqual({
-			deck: 'Japanese',
-			model: 'Basic',
-			folder: 'Vocab',
-			seededFromDefaults: true,
-		});
-	});
-
-	it('returns null when neither current nor default Deck/Model are set', () => {
+	it('returns null when the active profile has no Deck/Model', () => {
 		expect(resolveQuickCaptureTarget(fakeSettings())).toBeNull();
 	});
 
-	it('falls through to Branch B when only currentDeck is set (currentModel missing)', () => {
-		const settings = fakeSettings({
-			currentDeck: 'Japanese',
-			defaultDeck: 'Default deck',
-			defaultModel: 'Default model',
-		});
-
-		expect(resolveQuickCaptureTarget(settings)).toEqual({
-			deck: 'Default deck',
-			model: 'Default model',
-			folder: '',
-			seededFromDefaults: true,
-		});
-	});
-
-	it('falls through to Branch B when only currentModel is set (currentDeck missing)', () => {
-		const settings = fakeSettings({
-			currentModel: 'Basic',
-			defaultDeck: 'Default deck',
-			defaultModel: 'Default model',
-		});
-
-		expect(resolveQuickCaptureTarget(settings)).toEqual({
-			deck: 'Default deck',
-			model: 'Default model',
-			folder: '',
-			seededFromDefaults: true,
-		});
-	});
-
-	it('returns null when current is partial and no defaults are set either', () => {
+	it('returns null when the active profile has only a Deck', () => {
 		expect(
-			resolveQuickCaptureTarget(fakeSettings({ currentDeck: 'Japanese' })),
+			resolveQuickCaptureTarget(
+				fakeSettings(withProfile({ deck: 'Japanese' })),
+			),
+		).toBeNull();
+	});
+
+	it('returns null when the active profile has only a Model', () => {
+		expect(
+			resolveQuickCaptureTarget(
+				fakeSettings(withProfile({ model: 'Basic' })),
+			),
 		).toBeNull();
 	});
 });
@@ -226,19 +225,25 @@ describe('getUniqueNotePath', () => {
 	it('returns the original path when there is no collision', () => {
 		const app = fakeVaultApp([]);
 
-		expect(getUniqueNotePath(app, 'Vocab', 'word.md')).toBe('Vocab/word.md');
+		expect(getUniqueNotePath(app, 'Vocab', 'word.md')).toBe(
+			'Vocab/word.md',
+		);
 	});
 
 	it('appends a numeric suffix on a single collision', () => {
 		const app = fakeVaultApp(['Vocab/word.md']);
 
-		expect(getUniqueNotePath(app, 'Vocab', 'word.md')).toBe('Vocab/word 1.md');
+		expect(getUniqueNotePath(app, 'Vocab', 'word.md')).toBe(
+			'Vocab/word 1.md',
+		);
 	});
 
 	it('increments the suffix past multiple collisions', () => {
 		const app = fakeVaultApp(['Vocab/word.md', 'Vocab/word 1.md']);
 
-		expect(getUniqueNotePath(app, 'Vocab', 'word.md')).toBe('Vocab/word 2.md');
+		expect(getUniqueNotePath(app, 'Vocab', 'word.md')).toBe(
+			'Vocab/word 2.md',
+		);
 	});
 
 	it('has no folder prefix when the folder is the vault root', () => {
@@ -254,39 +259,30 @@ describe('runQuickCapture', () => {
 		const { plugin, saveSettings, vaultCreate, openFile, createdFile } =
 			fakePlugin({
 				view: { editor: { getSelection: () => '薬' } },
-				settings: {
-					currentDeck: 'Japanese',
-					currentModel: 'Basic',
-					currentFolder: 'Vocab',
-				},
+				settings: withProfile({
+					deck: 'Japanese',
+					model: 'Basic',
+					folder: 'Vocab',
+				}),
 			});
 
 		await runQuickCapture(plugin);
 
 		expect(vaultCreate).toHaveBeenCalledWith(
 			'Vocab/薬.md',
-			'```anki-controls\n```\n\n## Word\n\n薬\n\n## Meaning\n',
+			'## Word\n\n薬\n\n## Meaning\n',
 		);
-		expect(writeAnkiFrontmatter).toHaveBeenCalledWith(plugin.app, createdFile, {
-			anki_deck: 'Japanese',
-			anki_model: 'Basic',
-		});
+		expect(writeAnkiFrontmatter).toHaveBeenCalledWith(
+			plugin.app,
+			createdFile,
+			{
+				anki_deck: 'Japanese',
+				anki_model: 'Basic',
+			},
+		);
 		expect(openFile).toHaveBeenCalledWith(createdFile);
 		expect(saveSettings).not.toHaveBeenCalled();
-	});
-
-	it('persists the seeded Deck/Model when falling back to Settings Tab defaults', async () => {
-		modelFieldNamesMock.mockResolvedValue(['Word']);
-		const { plugin, saveSettings } = fakePlugin({
-			view: { editor: { getSelection: () => '薬' } },
-			settings: { defaultDeck: 'Japanese', defaultModel: 'Basic' },
-		});
-
-		await runQuickCapture(plugin);
-
-		expect(saveSettings).toHaveBeenCalled();
-		expect(plugin.settings.currentDeck).toBe('Japanese');
-		expect(plugin.settings.currentModel).toBe('Basic');
+		expect(revealSidebarView).toHaveBeenCalledWith(plugin.app);
 	});
 
 	it('shows an error toast and does nothing else when there is no active markdown note', async () => {
@@ -300,7 +296,7 @@ describe('runQuickCapture', () => {
 		expect(vaultCreate).not.toHaveBeenCalled();
 	});
 
-	it('shows a Notice and opens plugin settings when neither current nor default Deck/Model are set', async () => {
+	it('shows a Notice and opens plugin settings when the active profile has no Deck/Model', async () => {
 		const { plugin, settingOpen, openTabById, vaultCreate } = fakePlugin({
 			view: { editor: { getSelection: () => '薬' } },
 		});
@@ -308,7 +304,7 @@ describe('runQuickCapture', () => {
 		await runQuickCapture(plugin);
 
 		expect(Notice).toHaveBeenCalledWith(
-			'Please configure Deck, Model, and Save location in Settings first',
+			'Please set up a profile in Settings first',
 		);
 		expect(settingOpen).toHaveBeenCalled();
 		expect(openTabById).toHaveBeenCalledWith('anki-bridge');
@@ -319,7 +315,7 @@ describe('runQuickCapture', () => {
 		modelFieldNamesMock.mockRejectedValue(new Error('boom'));
 		const { plugin, vaultCreate } = fakePlugin({
 			view: { editor: { getSelection: () => '薬' } },
-			settings: { currentDeck: 'Japanese', currentModel: 'Basic' },
+			settings: withProfile({ deck: 'Japanese', model: 'Basic' }),
 		});
 
 		await runQuickCapture(plugin);

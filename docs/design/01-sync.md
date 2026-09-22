@@ -31,9 +31,6 @@ tags: [vocabulary, medical]
 **Content (chứa dữ liệu từ vựng):**
 
 ````markdown
-```anki-controls
-```
-
 ## Word
 
 診察

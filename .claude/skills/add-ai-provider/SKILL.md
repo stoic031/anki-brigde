@@ -1,13 +1,13 @@
 ---
 name: add-ai-provider
-description: Use when adding a new AI provider (text, audio, or image) to the plugin, or when the user says "add support for <vendor>", "add a TTS provider", "wire up <model host>". Covers the full checklist from adapter file to settings UI to tests.
+description: Use when adding a new AI provider (text or image) to the plugin, or when the user says "add support for <vendor>", "wire up <model host>". Covers the full checklist from adapter file to settings UI to tests.
 ---
 
 # Add a new AI provider
 
 ## Before writing code
 
-1. Which task: text / audio / image? A vendor offering two tasks needs two adapters.
+1. Which task: text / image? A vendor offering two tasks needs two adapters.
 2. Cloud or local? This determines which settings fields appear and whether it needs
    an opt-in label.
 3. Read the interface for that task in `docs/contracts.md`. Read `.claude/rules/providers.md`.

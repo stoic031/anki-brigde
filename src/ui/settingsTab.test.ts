@@ -1,13 +1,34 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type AnkiBridgePlugin from '../main';
-import type { AnkiBridgeSettings } from '../settings';
-import { DEFAULT_ANKI_CONNECT_URL } from '../utils/constants';
+import {
+	DEFAULT_SETTINGS,
+	type AnkiBridgeSettings,
+	type Profile,
+} from '../settings';
+import {
+	DEFAULT_ANKI_CONNECT_URL,
+	PROFILE_CHANGED_EVENT,
+} from '../utils/constants';
 
 class FakeTextComponent {
 	placeholder = '';
 	value = '';
 	private changeCb: ((v: string) => unknown) | null = null;
+	private domChangeCb: (() => unknown) | null = null;
+	inputEl = {
+		addEventListener: (_event: string, cb: () => unknown) => {
+			this.domChangeCb = cb;
+		},
+	};
 
+	getValue() {
+		return this.value;
+	}
+	// The real DOM 'change' event (blur/enter) — used by the profile name field.
+	fireDomChange(v: string) {
+		this.value = v;
+		this.domChangeCb?.();
+	}
 	setPlaceholder(p: string) {
 		this.placeholder = p;
 		return this;
@@ -39,6 +60,9 @@ class FakeButtonComponent {
 		this.disabled = d;
 		return this;
 	}
+	setWarning() {
+		return this;
+	}
 	onClick(cb: () => unknown) {
 		this.clickCb = cb;
 		return this;
@@ -50,6 +74,7 @@ class FakeButtonComponent {
 
 class FakeDropdownComponent {
 	options: Record<string, string> = {};
+	optionOrder: string[] = [];
 	value = '';
 	selectEl: { empty: () => void };
 	private changeCb: ((v: string) => unknown) | null = null;
@@ -58,11 +83,13 @@ class FakeDropdownComponent {
 		this.selectEl = {
 			empty: () => {
 				this.options = {};
+				this.optionOrder = [];
 			},
 		};
 	}
 	addOption(value: string, display: string) {
 		this.options[value] = display;
+		this.optionOrder.push(value);
 		return this;
 	}
 	setValue(v: string) {
@@ -116,26 +143,16 @@ class FakeSetting {
 }
 
 interface FakeEl {
-	classes: Set<string>;
 	createDiv(opts?: { cls?: string }): FakeEl;
-	toggleClass(cls: string, value: boolean): void;
-	hasClass(cls: string): boolean;
+	empty(): void;
 }
 
-function fakeDiv(cls?: string): FakeEl {
-	const classes = new Set((cls ?? '').split(' ').filter(Boolean));
+function fakeDiv(): FakeEl {
 	return {
-		classes,
-		createDiv(opts) {
-			return fakeDiv(opts?.cls);
+		createDiv() {
+			return fakeDiv();
 		},
-		toggleClass(c, value) {
-			if (value) classes.add(c);
-			else classes.delete(c);
-		},
-		hasClass(c) {
-			return classes.has(c);
-		},
+		empty() {},
 	};
 }
 
@@ -176,25 +193,100 @@ import { renderConnectionSection } from './settingsTab';
 
 // Returns the spy as a plain local (not read back off `plugin`) so assertions like
 // `expect(saveSettings).toHaveBeenCalled()` don't trip @typescript-eslint/unbound-method.
-function fakePlugin(overrides: Partial<AnkiBridgeSettings> = {}): {
-	plugin: AnkiBridgePlugin;
-	saveSettings: ReturnType<typeof vi.fn>;
-} {
+interface FakeFolder {
+	path: string;
+	name: string;
+	parent: FakeFolder | null;
+	isRoot: () => boolean;
+}
+
+// Matches real Obsidian: vault.getRoot().path is "/", not "", and every top-level
+// folder's .parent is that root object, never null.
+const fakeRoot: FakeFolder = {
+	path: '/',
+	name: '',
+	parent: null,
+	isRoot: () => true,
+};
+
+// parent defaults to the vault root object. Pass an explicit parent to build nested
+// fixtures.
+function fakeFolder(path: string, parent: FakeFolder = fakeRoot): FakeFolder {
+	return {
+		path,
+		name: path.split('/').pop() ?? path,
+		parent,
+		isRoot: () => false,
+	};
+}
+
+const profileA: Profile = {
+	id: 'a',
+	name: 'Japanese',
+	deck: '',
+	model: '',
+	folder: '',
+};
+const profileB: Profile = {
+	id: 'b',
+	name: 'Spanish',
+	deck: '',
+	model: '',
+	folder: '',
+};
+
+// The plugin's settings carry the given profiles (default: just profile A, active).
+// setActiveProfile mirrors the real one: set id, save, then notify listeners.
+function fakePlugin(
+	overrides: Partial<AnkiBridgeSettings> = {},
+	folders: FakeFolder[] = [],
+) {
 	const saveSettings = vi.fn().mockResolvedValue(undefined);
+	const handlers = new Set<() => void>();
 	const settings: AnkiBridgeSettings = {
+		...DEFAULT_SETTINGS,
 		ankiConnectUrl: '',
-		defaultDeck: '',
-		defaultModel: '',
-		currentDeck: '',
-		currentModel: '',
-		currentFolder: '',
+		profiles: [{ ...profileA }],
+		activeProfileId: 'a',
 		...overrides,
 	};
+	const allFolders: FakeFolder[] = [fakeRoot, ...folders];
+	const setActiveProfile = vi.fn(async (id: string) => {
+		settings.activeProfileId = id;
+		await saveSettings();
+		for (const h of handlers) h();
+	});
 	const plugin = {
 		settings,
 		saveSettings,
+		setActiveProfile,
+		app: {
+			vault: { getAllFolders: () => allFolders },
+			workspace: {
+				on: (name: string, cb: () => void) => {
+					if (name !== PROFILE_CHANGED_EVENT) throw new Error(name);
+					handlers.add(cb);
+					return cb;
+				},
+				offref: (cb: () => void) => handlers.delete(cb),
+			},
+		},
 	} as unknown as AnkiBridgePlugin;
-	return { plugin, saveSettings };
+	return { plugin, saveSettings, setActiveProfile, handlers };
+}
+
+// Settings are re-created on every render, so tests look at the most recent one.
+function latest(name: string): FakeSetting {
+	const matches = settings.filter((s) => s.name === name);
+	const found = matches[matches.length - 1];
+	if (!found) throw new Error(`no "${name}" setting rendered`);
+	return found;
+}
+
+const flush = () => new Promise((resolve) => setTimeout(resolve, 0));
+
+function render(plugin: AnkiBridgePlugin) {
+	return renderConnectionSection(fakeDiv() as unknown as HTMLElement, plugin);
 }
 
 beforeEach(() => {
@@ -212,7 +304,7 @@ describe('renderConnectionSection — URL field', () => {
 			ankiConnectUrl: 'http://localhost:9999',
 		});
 
-		renderConnectionSection(fakeDiv() as unknown as HTMLElement, plugin);
+		render(plugin);
 
 		const text = settings[0]?.textComponents[0];
 		expect(text?.placeholder).toBe(DEFAULT_ANKI_CONNECT_URL);
@@ -222,9 +314,8 @@ describe('renderConnectionSection — URL field', () => {
 	it('saves a valid URL and calls plugin.saveSettings', async () => {
 		const { plugin, saveSettings } = fakePlugin({ ankiConnectUrl: '' });
 
-		renderConnectionSection(fakeDiv() as unknown as HTMLElement, plugin);
-		const text = settings[0]?.textComponents[0];
-		await text?.triggerChange('http://localhost:1234');
+		render(plugin);
+		await settings[0]?.textComponents[0]?.triggerChange('http://localhost:1234');
 
 		expect(plugin.settings.ankiConnectUrl).toBe('http://localhost:1234');
 		expect(saveSettings).toHaveBeenCalledTimes(1);
@@ -235,9 +326,8 @@ describe('renderConnectionSection — URL field', () => {
 			ankiConnectUrl: 'http://localhost:1234',
 		});
 
-		renderConnectionSection(fakeDiv() as unknown as HTMLElement, plugin);
-		const text = settings[0]?.textComponents[0];
-		await text?.triggerChange('   ');
+		render(plugin);
+		await settings[0]?.textComponents[0]?.triggerChange('   ');
 
 		expect(plugin.settings.ankiConnectUrl).toBe('');
 		expect(saveSettings).toHaveBeenCalledTimes(1);
@@ -248,9 +338,8 @@ describe('renderConnectionSection — URL field', () => {
 			ankiConnectUrl: 'http://localhost:1234',
 		});
 
-		renderConnectionSection(fakeDiv() as unknown as HTMLElement, plugin);
-		const text = settings[0]?.textComponents[0];
-		await text?.triggerChange('not a url');
+		render(plugin);
+		await settings[0]?.textComponents[0]?.triggerChange('not a url');
 
 		expect(Notice).toHaveBeenCalledWith(
 			'❌ Invalid URL. Please check the AnkiConnect URL.',
@@ -260,73 +349,112 @@ describe('renderConnectionSection — URL field', () => {
 	});
 });
 
-const HIDDEN_CLASS = 'anki-bridge-settings__hidden';
-
 describe('renderConnectionSection — Connect button', () => {
 	function renderAndConnect(overrides: Partial<AnkiBridgeSettings> = {}) {
 		const { plugin, saveSettings } = fakePlugin({
 			ankiConnectUrl: 'http://localhost:8765',
 			...overrides,
 		});
-		renderConnectionSection(fakeDiv() as unknown as HTMLElement, plugin);
-
+		render(plugin);
 		const button = settings[0]?.buttonComponents[0];
-		const deckDropdown = settings[1]?.dropdownComponents[0];
-		const modelDropdown = settings[2]?.dropdownComponents[0];
-		const dropdownsEl = settings[1]?.containerEl as FakeEl | undefined;
-		if (!button || !deckDropdown || !modelDropdown || !dropdownsEl) {
-			throw new Error(
-				'expected button, both dropdowns, and their container to be rendered',
-			);
-		}
-		return {
-			plugin,
-			saveSettings,
-			button,
-			deckDropdown,
-			modelDropdown,
-			dropdownsEl,
-		};
+		if (!button) throw new Error('expected the Connect button');
+		return { plugin, saveSettings, button };
 	}
 
-	it('starts with the dropdowns hidden', () => {
-		const { dropdownsEl } = renderAndConnect();
+	const hasSetting = (name: string) => settings.some((s) => s.name === name);
 
-		expect(dropdownsEl.hasClass(HIDDEN_CLASS)).toBe(true);
-		expect(settings[1]?.name).toBe('Default deck');
-		expect(settings[2]?.name).toBe('Default model');
+	it('always shows the Deck/Model pickers, listing only the saved value before Anki’s names load', () => {
+		renderAndConnect({
+			profiles: [{ ...profileA, deck: 'Japanese', model: 'Cloze' }],
+		});
+
+		expect(latest('Deck').dropdownComponents[0]?.optionOrder).toEqual([
+			'',
+			'Japanese',
+		]);
+		expect(latest('Deck').dropdownComponents[0]?.value).toBe('Japanese');
+		expect(latest('Model').dropdownComponents[0]?.value).toBe('Cloze');
 	});
 
-	it('on success: populates both dropdowns, reveals them, shows the success toast', async () => {
+	it('loads Anki’s names on open without pressing Connect, and without a toast', async () => {
+		deckNames.mockResolvedValue(['Default', 'Japanese']);
+		modelNames.mockResolvedValue(['Basic']);
+		renderAndConnect({ profiles: [{ ...profileA, deck: 'Japanese' }] });
+		await flush();
+
+		expect(latest('Deck').dropdownComponents[0]?.optionOrder).toEqual([
+			'',
+			'Default',
+			'Japanese',
+		]);
+		expect(latest('Deck').dropdownComponents[0]?.value).toBe('Japanese');
+		expect(latest('Model').dropdownComponents[0]?.optionOrder).toEqual([
+			'',
+			'Basic',
+		]);
+		expect(toastSuccess).not.toHaveBeenCalled();
+		expect(toastError).not.toHaveBeenCalled();
+	});
+
+	it('keeps the pickers and stays silent when Anki is offline on open', async () => {
+		deckNames.mockRejectedValue(new Error('offline'));
+		modelNames.mockRejectedValue(new Error('offline'));
+		renderAndConnect({ profiles: [{ ...profileA, deck: 'Japanese' }] });
+		await flush();
+
+		expect(latest('Deck').dropdownComponents[0]?.value).toBe('Japanese');
+		expect(toastError).not.toHaveBeenCalled();
+	});
+
+	it('ignores names that arrive after the tab was closed', async () => {
+		let resolveDecks!: (v: string[]) => void;
+		deckNames.mockReturnValue(
+			new Promise<string[]>((resolve) => {
+				resolveDecks = resolve;
+			}),
+		);
+		modelNames.mockResolvedValue(['Basic']);
+		const { plugin } = fakePlugin({ ankiConnectUrl: 'http://localhost:8765' });
+		const section = render(plugin);
+		const before = settings.length;
+
+		section.dispose();
+		resolveDecks(['Late deck']);
+		await flush();
+
+		expect(settings).toHaveLength(before);
+	});
+
+	it('on success: shows Deck/Model pickers listing Anki’s names, plus the success toast', async () => {
 		deckNames.mockResolvedValue(['Default', 'Japanese']);
 		modelNames.mockResolvedValue(['Basic', 'Cloze']);
-		const { button, deckDropdown, modelDropdown, dropdownsEl } =
-			renderAndConnect();
+		const { button } = renderAndConnect();
 
 		await button.triggerClick();
 
-		expect(deckDropdown.options).toEqual({
-			Default: 'Default',
-			Japanese: 'Japanese',
-		});
-		expect(modelDropdown.options).toEqual({
-			Basic: 'Basic',
-			Cloze: 'Cloze',
-		});
-		expect(dropdownsEl.hasClass(HIDDEN_CLASS)).toBe(false);
+		expect(latest('Deck').dropdownComponents[0]?.optionOrder).toEqual([
+			'',
+			'Default',
+			'Japanese',
+		]);
+		expect(latest('Model').dropdownComponents[0]?.optionOrder).toEqual([
+			'',
+			'Basic',
+			'Cloze',
+		]);
 		expect(toastSuccess).toHaveBeenCalledWith('✅ Connected to Anki!');
 		expect(button.text).toBe('🔗 Connect');
 		expect(button.disabled).toBe(false);
 	});
 
-	it('on failure: hides the dropdowns and shows the failure toast', async () => {
+	it('on failure: keeps the pickers and shows the failure toast', async () => {
 		deckNames.mockRejectedValue(new Error('offline'));
 		modelNames.mockResolvedValue(['Basic']);
-		const { button, dropdownsEl } = renderAndConnect();
+		const { button } = renderAndConnect();
 
 		await button.triggerClick();
 
-		expect(dropdownsEl.hasClass(HIDDEN_CLASS)).toBe(true);
+		expect(hasSetting('Deck')).toBe(true);
 		expect(toastError).toHaveBeenCalledWith(
 			'❌ Cannot connect to Anki. Please check URL and AnkiConnect.',
 		);
@@ -334,72 +462,262 @@ describe('renderConnectionSection — Connect button', () => {
 		expect(button.disabled).toBe(false);
 	});
 
-	it('re-hides the dropdowns if a later Connect click fails after an earlier success', async () => {
-		deckNames
-			.mockResolvedValueOnce(['Default'])
-			.mockRejectedValueOnce(new Error('offline'));
-		modelNames.mockResolvedValue(['Basic']);
-		const { button, deckDropdown, dropdownsEl } = renderAndConnect();
-
-		await button.triggerClick();
-		expect(deckDropdown.options).toEqual({ Default: 'Default' });
-		expect(dropdownsEl.hasClass(HIDDEN_CLASS)).toBe(false);
-
-		await button.triggerClick();
-
-		expect(dropdownsEl.hasClass(HIDDEN_CLASS)).toBe(true);
-		expect(toastError).toHaveBeenCalledTimes(1);
-	});
-
-	it('pre-selects the saved default deck/model if still present after connect', async () => {
+	it('pre-selects the active profile’s deck/model if still present', async () => {
 		deckNames.mockResolvedValue(['Default', 'Japanese']);
 		modelNames.mockResolvedValue(['Basic', 'Cloze']);
-		const { button, deckDropdown, modelDropdown } = renderAndConnect({
-			defaultDeck: 'Japanese',
-			defaultModel: 'Cloze',
+		const { button } = renderAndConnect({
+			profiles: [{ ...profileA, deck: 'Japanese', model: 'Cloze' }],
 		});
 
 		await button.triggerClick();
 
-		expect(deckDropdown.value).toBe('Japanese');
-		expect(modelDropdown.value).toBe('Cloze');
+		expect(latest('Deck').dropdownComponents[0]?.value).toBe('Japanese');
+		expect(latest('Model').dropdownComponents[0]?.value).toBe('Cloze');
 	});
 
-	it('leaves a saved default unselected if it is no longer in the fetched list', async () => {
+	it('still shows a saved deck that is no longer in the fetched list', async () => {
 		deckNames.mockResolvedValue(['Default']);
 		modelNames.mockResolvedValue(['Basic']);
-		const { button, deckDropdown } = renderAndConnect({
-			defaultDeck: 'Deleted deck',
+		const { button } = renderAndConnect({
+			profiles: [{ ...profileA, deck: 'Deleted deck' }],
 		});
 
 		await button.triggerClick();
 
-		expect(deckDropdown.value).toBe('');
+		expect(latest('Deck').dropdownComponents[0]?.value).toBe('Deleted deck');
+		expect(latest('Deck').dropdownComponents[0]?.options['Deleted deck']).toBe(
+			'Deleted deck',
+		);
 	});
 
-	it('persists the selection when the user picks a deck', async () => {
+	it('persists a picked deck into the active profile', async () => {
 		deckNames.mockResolvedValue(['Default', 'Japanese']);
 		modelNames.mockResolvedValue(['Basic']);
-		const { plugin, saveSettings, button, deckDropdown } =
-			renderAndConnect();
+		const { plugin, saveSettings, button } = renderAndConnect();
 		await button.triggerClick();
 
-		await deckDropdown.triggerChange('Japanese');
+		await latest('Deck').dropdownComponents[0]?.triggerChange('Japanese');
 
-		expect(plugin.settings.defaultDeck).toBe('Japanese');
+		expect(plugin.settings.profiles[0]?.deck).toBe('Japanese');
 		expect(saveSettings).toHaveBeenCalledTimes(1);
 	});
 
-	it('persists the selection when the user picks a model', async () => {
+	it('persists a picked model into the active profile', async () => {
 		deckNames.mockResolvedValue(['Default']);
 		modelNames.mockResolvedValue(['Basic', 'Cloze']);
-		const { plugin, saveSettings, button, modelDropdown } =
-			renderAndConnect();
+		const { plugin, saveSettings, button } = renderAndConnect();
 		await button.triggerClick();
 
-		await modelDropdown.triggerChange('Cloze');
+		await latest('Model').dropdownComponents[0]?.triggerChange('Cloze');
 
-		expect(plugin.settings.defaultModel).toBe('Cloze');
+		expect(plugin.settings.profiles[0]?.model).toBe('Cloze');
 		expect(saveSettings).toHaveBeenCalledTimes(1);
+	});
+});
+
+describe('renderConnectionSection — profiles', () => {
+	const twoProfiles = () => ({
+		profiles: [{ ...profileA }, { ...profileB }],
+	});
+
+	it('lists every profile and selects the active one', () => {
+		const { plugin } = fakePlugin({ ...twoProfiles(), activeProfileId: 'b' });
+
+		render(plugin);
+
+		const dropdown = latest('Profile').dropdownComponents[0];
+		expect(dropdown?.options).toEqual({ a: 'Japanese', b: 'Spanish' });
+		expect(dropdown?.value).toBe('b');
+		expect(latest('Profile name').textComponents[0]?.value).toBe('Spanish');
+	});
+
+	it('picking a profile calls plugin.setActiveProfile', async () => {
+		const { plugin, setActiveProfile } = fakePlugin(twoProfiles());
+		render(plugin);
+
+		await latest('Profile').dropdownComponents[0]?.triggerChange('b');
+
+		expect(setActiveProfile).toHaveBeenCalledWith('b');
+	});
+
+	it('Add creates an empty profile with a unique name and makes it active', async () => {
+		const { plugin } = fakePlugin({
+			profiles: [{ ...profileA, name: 'New profile' }],
+		});
+		render(plugin);
+
+		await latest('Profile').buttonComponents[0]?.triggerClick();
+		await flush();
+
+		expect(plugin.settings.profiles).toHaveLength(2);
+		const added = plugin.settings.profiles[1];
+		expect(added).toMatchObject({
+			name: 'New profile 2',
+			deck: '',
+			model: '',
+			folder: '',
+		});
+		expect(plugin.settings.activeProfileId).toBe(added?.id);
+	});
+
+	it('Delete is disabled while only one profile exists', () => {
+		const { plugin } = fakePlugin();
+
+		render(plugin);
+
+		expect(latest('Profile').buttonComponents[1]?.disabled).toBe(true);
+	});
+
+	it('Delete removes the active profile and activates the first remaining one', async () => {
+		const { plugin } = fakePlugin({ ...twoProfiles(), activeProfileId: 'b' });
+		render(plugin);
+
+		await latest('Profile').buttonComponents[1]?.triggerClick();
+		await flush();
+
+		expect(plugin.settings.profiles.map((p) => p.id)).toEqual(['a']);
+		expect(plugin.settings.activeProfileId).toBe('a');
+	});
+
+	it('renames the active profile', async () => {
+		const { plugin, setActiveProfile } = fakePlugin();
+		render(plugin);
+
+		latest('Profile name').textComponents[0]?.fireDomChange('  Kanji ');
+		await flush();
+
+		expect(plugin.settings.profiles[0]?.name).toBe('Kanji');
+		expect(setActiveProfile).toHaveBeenCalledWith('a');
+	});
+
+	it('rejects an empty name and restores the old one', () => {
+		const { plugin, setActiveProfile } = fakePlugin();
+		render(plugin);
+		const text = latest('Profile name').textComponents[0];
+
+		text?.fireDomChange('   ');
+
+		expect(Notice).toHaveBeenCalledWith('❌ Profile name cannot be empty.');
+		expect(plugin.settings.profiles[0]?.name).toBe('Japanese');
+		expect(text?.value).toBe('Japanese');
+		expect(setActiveProfile).not.toHaveBeenCalled();
+	});
+
+	it('rejects a name another profile already uses', () => {
+		const { plugin } = fakePlugin(twoProfiles());
+		render(plugin);
+
+		latest('Profile name').textComponents[0]?.fireDomChange('Spanish');
+
+		expect(Notice).toHaveBeenCalledWith(
+			'❌ A profile with that name already exists. Please choose another.',
+		);
+		expect(plugin.settings.profiles[0]?.name).toBe('Japanese');
+	});
+
+	it('re-renders when the active profile changes elsewhere (e.g. the sidebar)', async () => {
+		const { plugin } = fakePlugin(twoProfiles());
+		render(plugin);
+
+		await plugin.setActiveProfile('b');
+
+		expect(latest('Profile').dropdownComponents[0]?.value).toBe('b');
+		expect(latest('Profile name').textComponents[0]?.value).toBe('Spanish');
+	});
+
+	it('stops listening after dispose()', () => {
+		const { plugin, handlers } = fakePlugin();
+		const section = render(plugin);
+		expect(handlers.size).toBe(1);
+
+		section.dispose();
+
+		expect(handlers.size).toBe(0);
+	});
+});
+
+describe('renderConnectionSection — Save notes to folder', () => {
+	it('renders immediately with the vault root option, no Connect needed', () => {
+		const { plugin } = fakePlugin({}, [
+			fakeFolder('Vocab'),
+			fakeFolder('Anki Notes'),
+		]);
+
+		render(plugin);
+
+		expect(latest('Save notes to').dropdownComponents[0]?.options).toEqual({
+			'': '/ (vault root)',
+			'Anki Notes': 'Anki Notes',
+			Vocab: 'Vocab',
+		});
+	});
+
+	it('pre-selects the active profile’s folder if it still exists', () => {
+		const { plugin } = fakePlugin(
+			{ profiles: [{ ...profileA, folder: 'Vocab' }] },
+			[fakeFolder('Vocab')],
+		);
+
+		render(plugin);
+
+		expect(latest('Save notes to').dropdownComponents[0]?.value).toBe('Vocab');
+	});
+
+	it('leaves the saved folder unselected if it no longer exists', () => {
+		const { plugin } = fakePlugin(
+			{ profiles: [{ ...profileA, folder: 'Deleted' }] },
+			[fakeFolder('Vocab')],
+		);
+
+		render(plugin);
+
+		expect(latest('Save notes to').dropdownComponents[0]?.value).toBe('');
+	});
+
+	it('persists the picked folder into the active profile', async () => {
+		const { plugin, saveSettings } = fakePlugin({}, [fakeFolder('Vocab')]);
+
+		render(plugin);
+		await latest('Save notes to').dropdownComponents[0]?.triggerChange('Vocab');
+
+		expect(plugin.settings.profiles[0]?.folder).toBe('Vocab');
+		expect(saveSettings).toHaveBeenCalledTimes(1);
+	});
+
+	it('indents nested folders by depth and shows only each folder’s own name', () => {
+		const INDENT = '\u00a0\u00a0'; // NBSP x2, matches folderTree.ts
+		const japanese = fakeFolder('Japanese');
+		const n2 = fakeFolder('Japanese/N2', japanese);
+		const vocab = fakeFolder('Japanese/N2/Vocab', n2);
+		const { plugin } = fakePlugin({}, [japanese, n2, vocab]);
+
+		render(plugin);
+
+		expect(latest('Save notes to').dropdownComponents[0]?.options).toEqual({
+			'': '/ (vault root)',
+			Japanese: 'Japanese',
+			'Japanese/N2': `${INDENT}N2`,
+			'Japanese/N2/Vocab': `${INDENT}${INDENT}Vocab`,
+		});
+	});
+
+	it('does not let a sibling folder wedge between a parent and its own child (path-string sort bug)', () => {
+		// "Japanese Advanced" (space, 0x20) sorts before "Japanese/N2" (slash, 0x2F)
+		// under plain path-string comparison, even though Japanese/N2 is a child of the
+		// unrelated "Japanese" folder. buildFolderTreeEntries() must keep children with
+		// their parent.
+		const japanese = fakeFolder('Japanese');
+		const japaneseAdvanced = fakeFolder('Japanese Advanced');
+		const n2 = fakeFolder('Japanese/N2', japanese);
+		const { plugin } = fakePlugin({}, [japaneseAdvanced, japanese, n2]);
+
+		render(plugin);
+
+		expect(latest('Save notes to').dropdownComponents[0]?.optionOrder).toEqual([
+			'',
+			'Japanese',
+			'Japanese/N2',
+			'Japanese Advanced',
+		]);
 	});
 });

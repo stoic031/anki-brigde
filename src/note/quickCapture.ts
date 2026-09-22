@@ -1,10 +1,15 @@
 import { App, MarkdownView, Notice } from 'obsidian';
 import { sanitizeForFilename } from './mediaNaming';
 import { generateContentSkeleton } from './contentTemplate';
-import { resolveAnkiConnectUrl, type AnkiBridgeSettings } from '../settings';
+import {
+	getActiveProfile,
+	resolveAnkiConnectUrl,
+	type AnkiBridgeSettings,
+} from '../settings';
 import { AnkiConnectClient } from '../sync/ankiConnect';
 import { writeAnkiFrontmatter } from '../sync/parser';
 import { toastError } from '../ui/toast';
+import { revealSidebarView } from '../ui/sidebarView';
 import type AnkiBridgePlugin from '../main';
 
 // docs/design/03-note.md §3.7 — selection source is the active markdown note only.
@@ -23,33 +28,17 @@ export interface QuickCaptureTarget {
 	deck: string;
 	model: string;
 	folder: string;
-	seededFromDefaults: boolean;
 }
 
 // docs/design/07-sidebar.md §7.3 step [2], reused for the hotkey flow per
-// docs/design/03-note.md §3.7 step 4. Returns null when neither Tab 1's current
-// value nor the Settings Tab defaults are configured — caller shows a Notice and
-// opens Settings instead of creating a note.
+// docs/design/03-note.md §3.7 step 4. Target comes from the active profile; returns
+// null when it has no Deck/Model — caller shows a Notice and opens Settings instead
+// of creating a note.
 export function resolveQuickCaptureTarget(
 	settings: AnkiBridgeSettings,
 ): QuickCaptureTarget | null {
-	if (settings.currentDeck && settings.currentModel) {
-		return {
-			deck: settings.currentDeck,
-			model: settings.currentModel,
-			folder: settings.currentFolder,
-			seededFromDefaults: false,
-		};
-	}
-	if (settings.defaultDeck && settings.defaultModel) {
-		return {
-			deck: settings.defaultDeck,
-			model: settings.defaultModel,
-			folder: settings.currentFolder,
-			seededFromDefaults: true,
-		};
-	}
-	return null;
+	const { deck, model, folder } = getActiveProfile(settings);
+	return deck && model ? { deck, model, folder } : null;
 }
 
 // docs/design/03-note.md §3.7 step 5 — Obsidian's own numeric-suffix convention
@@ -75,14 +64,13 @@ interface AppWithSettingTab {
 
 // Undocumented but community-standard way to open Settings to a specific plugin tab;
 // `App` has no typed `setting` property in obsidian.d.ts.
-function openPluginSettings(app: App, pluginId: string): void {
+export function openPluginSettings(app: App, pluginId: string): void {
 	const withSettings = app as unknown as App & AppWithSettingTab;
 	withSettings.setting.open();
 	withSettings.setting.openTabById(pluginId);
 }
 
-// docs/design/03-note.md §3.7 steps 1-7 (step 8, auto-open Sidebar Tab 1, is skipped —
-// Feature #42's Sidebar Modal doesn't exist yet; see docs/design-open-questions.md #18).
+// docs/design/03-note.md §3.7 steps 1-8.
 export async function runQuickCapture(plugin: AnkiBridgePlugin): Promise<void> {
 	const selectedText = getSelectedText(plugin.app);
 	if (selectedText === null) {
@@ -92,17 +80,9 @@ export async function runQuickCapture(plugin: AnkiBridgePlugin): Promise<void> {
 
 	const target = resolveQuickCaptureTarget(plugin.settings);
 	if (!target) {
-		new Notice(
-			'Please configure Deck, Model, and Save location in Settings first',
-		);
+		new Notice('Please set up a profile in Settings first');
 		openPluginSettings(plugin.app, plugin.manifest.id);
 		return;
-	}
-
-	if (target.seededFromDefaults) {
-		plugin.settings.currentDeck = target.deck;
-		plugin.settings.currentModel = target.model;
-		await plugin.saveSettings();
 	}
 
 	try {
@@ -121,6 +101,7 @@ export async function runQuickCapture(plugin: AnkiBridgePlugin): Promise<void> {
 			anki_model: target.model,
 		});
 		await plugin.app.workspace.getLeaf(false).openFile(file);
+		await revealSidebarView(plugin.app);
 	} catch {
 		toastError('❌ Failed to create note. Please check Anki connection.');
 	}

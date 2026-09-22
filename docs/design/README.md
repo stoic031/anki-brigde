@@ -15,7 +15,7 @@ tương ứng.
 | [`03-note.md`](03-note.md)                 | Module 3: Note Creation & Controls                |
 | [`05-ui.md`](05-ui.md)                     | Module 5: UI/UX (visual feedback, toast, CSS)     |
 | [`06-settings.md`](06-settings.md)         | Module 6: Settings Tab (Connection Flow)          |
-| [`07-sidebar.md`](07-sidebar.md)           | Module 7: Sidebar Modal (Deck/Model, Audio & Image config, 3 tab) |
+| [`07-sidebar.md`](07-sidebar.md)           | Module 7: Sidebar Modal (Deck/Model, Image config, 3 tab) |
 | [`scenarios.md`](scenarios.md)             | Luồng xử lý tổng thể — 5 scenario end-to-end       |
 | [`roadmap.md`](roadmap.md)                 | Lộ trình phát triển theo milestone                |
 
@@ -30,12 +30,12 @@ Câu hỏi/mâu thuẫn thiết kế chưa chốt: xem `docs/design-open-questio
 ## 🎯 Tổng quan kiến trúc
 
 **Vai trò của Plugin:** Orchestrator (Điều phối) - Gọi API, không tự chạy model
-**Mục tiêu:** Sync từ vựng từ Obsidian → Anki + Tự động tạo media (audio/image) qua AI
+**Mục tiêu:** Sync từ vựng từ Obsidian → Anki + Tự động tạo ảnh qua AI
 **Nguyên tắc:**
 
 - Vault Obsidian sạch (không lưu media)
 - Media lưu thẳng vào Anki qua `storeMediaFile`
-- Button điều khiển trực tiếp trong note (Custom Markdown Block)
+- Nút điều khiển (Sync, Rebuild, Delete, Generate...) nằm ở Sidebar, không nằm trong note
 - Hỗ trợ cả Cloud API và Local Model
 - Frontmatter chỉ chứa metadata sync, dữ liệu từ vựng nằm trong content
 - Dynamic field generation dựa trên Anki Model được chọn
@@ -56,5 +56,5 @@ Câu hỏi/mâu thuẫn thiết kế chưa chốt: xem `docs/design-open-questio
 10. **Conditional rendering** - Chỉ hiện button cần thiết dựa trên trạng thái note
 11. **Content parsing** - Dựa trên heading structure (## SectionName)
 12. **Content update** - Ghi vào đúng section (Append hoặc Overwrite tag cũ tuỳ cấu hình
-    Tab 2/3, xem `03-note.md` §3.4), không ghi đè toàn bộ file
-13. **Persistence** - Lưu Deck/Model đã chọn trong settings, sync giữa Settings Tab và Sidebar Modal
+    tab Image, xem `03-note.md` §3.4), không ghi đè toàn bộ file
+13. **Persistence** - Lưu Deck/Model đã chọn trong settings, sync giữa Settings Tab và Sidebar

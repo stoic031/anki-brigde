@@ -13,8 +13,8 @@ the entry here.
 ### 15. No Image provider scoped for Milestone 3
 
 `docs/design/roadmap.md` Milestone 3 lists "Module 2: AI Provider Manager (OpenAI +
-Ollama + Edge TTS)", but that milestone's own deliverable is "Plugin có thể tạo
-audio/**image** và lưu vào Anki" — no Image provider is named to satisfy the image
+Ollama)", but that milestone's own deliverable is "Plugin có thể tạo
+**image** và lưu vào Anki" — no Image provider is named to satisfy the image
 half. `02-providers.md` §2.2 lists 5 image provider options (DALL-E 3, Stability AI,
 Replicate, Automatic1111, ComfyUI) but roadmap.md doesn't pick one for M3. Blocks
 scoping the Add Image button / Image provider work for Milestone 3. Resolve by either
@@ -22,11 +22,31 @@ naming one provider in roadmap.md's Milestone 3 bullet (DALL-E 3 pairs naturally
 the OpenAI text provider already in M3, same API key), or explicitly moving Add Image
 to a later milestone and dropping "image" from M3's deliverable line.
 
+### 18. Image-tab field persistence blocked on unbuilt Feature #41 — resolved
+
+Resolved by Feature #41: the Image tab now persists Output field + On existing tag per
+Deck+Model pair in `settings.imageConfigs` (`ImageFieldConfig`), and the `add-image`
+pre-check reads it. The Add Image button itself is still Feature #23.
+
+### 20. Text provider v1: Anthropic native hay OpenAI-compatible trước?
+
+`02-providers.md` §2.2 chỉ định hai loại endpoint (OpenAI-compatible, Anthropic). Đề xuất:
+làm OpenAI-compatible trước (phủ gần hết thị trường, kể cả Gemini/Ollama), Anthropic
+adapter làm sau. Chưa chốt.
+
+### 21. Có cần nút "Fetch models" không?
+
+`GET {baseUrl}/models` có ở OpenAI, OpenRouter, Ollama, Groq. Đề xuất: v1 chỉ nhập tay +
+`datalist`; nút Fetch (bấm mới gọi, không tự gọi ở `onload`) để sau. Chưa chốt.
+
 ---
 
 ## 🟢 Worth doing, not blocking
 
 ### 16. `roadmap.md` milestone boundaries don't cover a working demo
+
+> **Update:** the `anki-controls` block referenced below was removed; its buttons now live
+> in the sidebar (03-note.md §3.1, 07-sidebar.md §7.2.1). The milestone question stands.
 
 Found while mapping Features/Tasks to milestones for GitHub issue planning:
 
@@ -59,25 +79,30 @@ Electron app with no exposed test harness — doable, but expensive. **Proposal:
 for unit tests, a manual checklist for integration, and no Playwright until there's a
 concrete reason.
 
-### 18. Quick-capture step 8 ("auto-open Sidebar Tab 1") has no target yet
+### 17. GitHub issue text repeatedly contradicts `07-sidebar.md` §7.3's "no center modal" decision
 
-`docs/design/03-note.md` §3.7 step 8 says: if the Sidebar Modal isn't open, auto-open
-it (Tab 1) after creating a note from selection. Implemented in `runQuickCapture`
-(`src/note/quickCapture.ts`) through step 7 (open the new note in the editor) and
-stopped there — the Sidebar Modal (Feature #42) doesn't exist anywhere in the codebase
-yet, so there's nothing to open. Whoever implements Feature #42's Sidebar View should
-add the auto-open call into `runQuickCapture` at that point.
+`docs/design/07-sidebar.md` §7.3 (lines 133-165) explicitly rejects a center-screen
+"Set up Anki Bridge" modal ("Không còn modal 'Set up Anki Bridge' ở giữa màn hình") in
+favor of a 3-way resolve (Tab 1 current → Settings Tab defaults → Notice + redirect to
+Settings, abort). This has now been contradicted by GitHub issue text **twice**:
 
-### 17. GitHub issue #126 text is stale relative to `07-sidebar.md` §7.3
+- #126 ("Branch A/B reusing Sidebar persistence") described the unconfigured case as
+  "center modal (no note-name field)".
+- #142-#144 (Feature #42, "Create New Note action") went further: #143 was titled
+  "Branch B: center 'Set up Anki Bridge' modal" with its own planned file
+  (`src/ui/modals/setupModal.ts`), and #144 was "Branch B submit → save as Tab 1
+  config → continue into Branch A".
 
-Issue #126 ("Branch A/B reusing Sidebar persistence") describes the not-yet-configured
-case as "center modal (no note-name field)". `docs/design/07-sidebar.md` §7.3
-(lines 133-165) explicitly rejects a center-screen modal ("Không còn modal 'Set up
-Anki Bridge' ở giữa màn hình") in favor of a 3-way resolve (Tab 1 current → Settings
-Tab defaults → Notice + redirect to Settings, abort). Implemented per the design doc,
-not the issue text — the issue's wording predates this decision. Update or comment on
-#126 to reconcile, or update Feature #42 / Task #146 (which #126 depends on and which
-are still unimplemented) accordingly when that work starts.
+Both times, implemented per the design doc, not the issue text (#126: quick capture,
+`runQuickCapture`; #142-144: `runCreateNote` — #143/#144 closed as superseded rather
+than building the modal). Given this is now a repeated pattern rather than a one-off
+typo, worth someone checking whether an *older* draft of the design (the one issues
+#142-144 were seemingly written against) should actually win instead, and updating
+`07-sidebar.md` §7.3 to match — rather than a third task hitting this same fork.
+
+`runQuickCapture`'s step 8 ("auto-open Sidebar Tab 1") — previously logged here as
+blocked — is now implemented too, via `revealSidebarView` (`src/ui/sidebarView.ts`,
+added in #142), reused by both `runQuickCapture` and `runCreateNote`.
 
 ### 13. Translate `docs/design/` itself
 
@@ -86,3 +111,44 @@ barrier to outside contributors — and to any agent a contributor runs. Transla
 a larger job than the files around it, but it's the one that decides whether people can
 contribute at all. The module split (see history, was #11) makes this easier to do
 incrementally, one file at a time, instead of one 772-line pass.
+
+### 19. Image prompt built by the text model — resolved
+
+Audio generation was dropped; Add Image now asks the user's text model
+(`build-image-prompt` task) to write the image prompt from the note's non-empty fields
+(`03-note.md` §3.2, `07-sidebar.md` §7.2.2). All four points resolved:
+
+- (a) prompt template / system instruction: already implemented —
+  `TASK_INSTRUCTION['build-image-prompt']` in `src/providers/text/prompt.ts`.
+- (b) prompt language: already implemented as part of (a) — that instruction requires
+  English regardless of the note's language.
+- (c) no preview/edit step. Add Image calls straight through (text model → image
+  provider), same as the Generate button.
+- (d) confirmed: no text provider configured **stops with a Notice**; never falls back
+  to sending the raw field text as the prompt.
+
+### 20. Text provider API key is stored in plain text — resolved
+
+Resolved: the API key source can be **Obsidian keychain** (`app.secretStorage`, Obsidian
+≥ 1.11.4, `minAppVersion` raised accordingly), which stores only the secret's name in
+`data.json`. "Enter manually" still writes the key in plain text in the plugin's data file
+(masked in the UI) and says so in its description. Remaining question: whether to make the
+keychain the default for new configs.
+
+### 21. How the AI image prompt combines with a ComfyUI workflow's own prompt — resolved
+
+Settings let the user pick a ComfyUI workflow and show which CLIPTextEncode node feeds the
+sampler's `positive` input (`analyzeWorkflow`, `src/providers/image/comfyWorkflow.ts`).
+Resolved:
+
+- **Positive:** the adapter (Feature #17) **replaces** the positive node's text
+  entirely with the AI-written prompt — not prepend, not a `{prompt}` placeholder.
+- **Negative:** the workflow's negative node is left as saved, untouched. The settings
+  `negativePrompt` field (`06-settings.md` §6.2) only applies to providers with a
+  direct negative-prompt parameter (Automatic1111, Pollinations) — already reflected
+  in its description in `src/ui/imageProviderSection.ts` ("ComfyUI workflows have
+  their own negative prompt node").
+- **UI→API conversion limits** (reroutes, subgraphs, primitive nodes): stay as
+  documented — `analyzeWorkflow` doesn't follow them and reports it via its
+  `problems` array; no further decision needed here.
+

@@ -1,7 +1,6 @@
 ---
 paths:
     - 'src/ui/**/*.ts'
-    - 'src/note/controlsBlock.ts'
     - 'styles.css'
 ---
 
@@ -15,10 +14,13 @@ Spec: `docs/design/03-note.md`, `docs/design/05-ui.md`, `docs/design/06-settings
 - **All user-facing strings in English.** This plugin targets the Obsidian community
   store. If the spec quotes a string in another language, translate it and keep it
   consistent with the surrounding copy.
-- Sentence case: "Add audio", not "Add Audio".
+- Sentence case: "Add image", not "Add Image".
 - Bold for literal UI labels; arrow notation for navigation: **Settings → Community plugins**.
-- Reuse the existing emoji set (🔄 sync, 🗑️ delete, 🔊 audio, 🖼️ image, ⏳ working,
-  ✅ success, ❌ error). Don't invent new icons per feature.
+- **Action buttons** (sidebar) are icon + text, using Obsidian's built-in Lucide icons via
+  `setIcon` (`refresh-cw` sync, `hammer` rebuild, `trash-2` delete, `sparkles` generate).
+  Add new ones from the same set; don't ship custom SVGs.
+- **Status text and toasts** keep the emoji set (⏳ working, ✅ success, ❌ error). Don't
+  invent new status icons per feature.
 - Failure copy says what happened **and what to do next**: "❌ Failed to sync. Please
   check Anki connection." — never a bare error code.
 
@@ -28,8 +30,8 @@ Every action button cycles: normal → `⏳ …` (disabled, opacity 0.6, `cursor
 → `✅ Done!` (~2s) or `❌ Error` (~3s) → back to normal, or hidden if the action is no
 longer applicable.
 
-Visibility is conditional per `docs/design/03-note.md` §3.2 — e.g. Delete only renders when
-`anki_note_id` exists, Add Audio only when the content has no `[sound:...]`.
+Visibility is conditional per `docs/design/03-note.md` §3.2 — e.g. Delete is only shown when
+`anki_note_id` exists, Add Image only when the content has no `<img>`.
 
 ## Long operations
 
@@ -47,8 +49,10 @@ Prefix all CSS classes to avoid collisions with other plugins.
 ## State
 
 Settings tab and sidebar view read and write the **same** `this.settings` object and
-both re-render on change. Two copies of deck/model state that drift apart is the single
-most likely bug in this area.
+both re-render on change — the active profile selector in particular, via
+`plugin.setActiveProfile()` and `PROFILE_CHANGED_EVENT`. The sidebar's Deck/Model
+dropdowns are not settings at all: they mirror the active note's frontmatter. Two copies
+of deck/model state that drift apart is the single most likely bug in this area.
 
 ## Cleanup
 

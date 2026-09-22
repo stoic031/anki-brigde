@@ -1,10 +1,13 @@
-import type { App, ButtonComponent, DropdownComponent } from 'obsidian';
+import type { App, ButtonComponent } from 'obsidian';
 import { Notice, PluginSettingTab, Setting } from 'obsidian';
 import type AnkiBridgePlugin from '../main';
 import { DEFAULT_ANKI_CONNECT_URL } from '../utils/constants';
 import { isValidUrl } from '../utils/validation';
 import { resolveAnkiConnectUrl } from '../settings';
 import { AnkiConnectClient } from '../sync/ankiConnect';
+import { renderProfilesSection, type ProfilesSection } from './profilesSection';
+import { renderImageProviderSection } from './imageProviderSection';
+import { renderTextProviderSection } from './textProviderSection';
 import { toastError, toastSuccess } from './toast';
 
 export class AnkiBridgeSettingTab extends PluginSettingTab {
@@ -15,21 +18,26 @@ export class AnkiBridgeSettingTab extends PluginSettingTab {
 		super(app, plugin);
 	}
 
+	private profiles?: ProfilesSection;
+
 	display(): void {
 		this.containerEl.empty();
-		renderConnectionSection(this.containerEl, this.plugin);
+		this.profiles = renderConnectionSection(this.containerEl, this.plugin);
+		renderTextProviderSection(this.containerEl, this.plugin);
+		renderImageProviderSection(this.containerEl, this.plugin);
+	}
+
+	hide(): void {
+		this.profiles?.dispose();
+		this.profiles = undefined;
 	}
 }
-
-const DROPDOWNS_HIDDEN_CLASS = 'anki-bridge-settings__hidden';
 
 // docs/design/06-settings.md §6.1
 export function renderConnectionSection(
 	containerEl: HTMLElement,
 	plugin: AnkiBridgePlugin,
-): void {
-	let deckDropdown!: DropdownComponent;
-	let modelDropdown!: DropdownComponent;
+): ProfilesSection {
 	let connectButton!: ButtonComponent;
 
 	new Setting(containerEl)
@@ -56,44 +64,38 @@ export function renderConnectionSection(
 			button
 				.setButtonText('🔗 Connect')
 				.onClick(
-					() =>
-						void handleConnect(
-							plugin,
-							dropdownsEl,
-							deckDropdown,
-							modelDropdown,
-							connectButton,
-						),
+					() => void handleConnect(plugin, profiles, connectButton),
 				);
 		});
 
-	const dropdownsEl = containerEl.createDiv({
-		cls: `anki-bridge-settings__dropdowns ${DROPDOWNS_HIDDEN_CLASS}`,
-	});
+	const profiles = renderProfilesSection(containerEl, plugin);
+	// Load Anki's deck/model names on open so the pickers are full without pressing
+	// Connect. Silent on failure — Connect is what reports connection problems.
+	void loadAnkiNames(plugin, profiles);
+	return profiles;
+}
 
-	new Setting(dropdownsEl).setName('Default deck').addDropdown((dropdown) => {
-		deckDropdown = dropdown;
-		dropdown.onChange(async (value) => {
-			plugin.settings.defaultDeck = value;
-			await plugin.saveSettings();
-		});
-	});
-	new Setting(dropdownsEl)
-		.setName('Default model')
-		.addDropdown((dropdown) => {
-			modelDropdown = dropdown;
-			dropdown.onChange(async (value) => {
-				plugin.settings.defaultModel = value;
-				await plugin.saveSettings();
-			});
-		});
+async function loadAnkiNames(
+	plugin: AnkiBridgePlugin,
+	profiles: ProfilesSection,
+): Promise<void> {
+	try {
+		const client = new AnkiConnectClient(
+			resolveAnkiConnectUrl(plugin.settings),
+		);
+		const [deckNames, modelNames] = await Promise.all([
+			client.deckNames(),
+			client.modelNames(),
+		]);
+		profiles.setAnkiNames(deckNames, modelNames);
+	} catch {
+		// Anki offline: pickers keep showing the saved values.
+	}
 }
 
 async function handleConnect(
 	plugin: AnkiBridgePlugin,
-	dropdownsEl: HTMLElement,
-	deckDropdown: DropdownComponent,
-	modelDropdown: DropdownComponent,
+	profiles: ProfilesSection,
 	button: ButtonComponent,
 ): Promise<void> {
 	button.setDisabled(true);
@@ -108,28 +110,9 @@ async function handleConnect(
 			client.modelNames(),
 		]);
 
-		deckDropdown.selectEl.empty();
-		for (const name of deckNames) deckDropdown.addOption(name, name);
-		if (
-			plugin.settings.defaultDeck &&
-			deckNames.includes(plugin.settings.defaultDeck)
-		) {
-			deckDropdown.setValue(plugin.settings.defaultDeck);
-		}
-
-		modelDropdown.selectEl.empty();
-		for (const name of modelNames) modelDropdown.addOption(name, name);
-		if (
-			plugin.settings.defaultModel &&
-			modelNames.includes(plugin.settings.defaultModel)
-		) {
-			modelDropdown.setValue(plugin.settings.defaultModel);
-		}
-
-		dropdownsEl.toggleClass(DROPDOWNS_HIDDEN_CLASS, false);
+		profiles.setAnkiNames(deckNames, modelNames);
 		toastSuccess('✅ Connected to Anki!');
 	} catch {
-		dropdownsEl.toggleClass(DROPDOWNS_HIDDEN_CLASS, true);
 		toastError(
 			'❌ Cannot connect to Anki. Please check URL and AnkiConnect.',
 		);
