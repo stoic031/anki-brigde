@@ -49,21 +49,27 @@ describe('buildMediaFilename', () => {
 		vi.useRealTimers();
 	});
 
-	it('matches docs/design/03-note.md §3.5: _obsidian_{word}_image_{timestamp}.{ext}', () => {
-		expect(buildMediaFilename('apple', 'png')).toBe(
+	it('matches docs/design/03-note.md §3.5: {prefix}{word}_image_{timestamp}.{ext}', () => {
+		expect(buildMediaFilename('apple', 'png', '_obsidian_')).toBe(
 			'_obsidian_apple_image_1698755433.png',
 		);
 	});
 
 	it('sanitizes the word the same way notes and media share', () => {
-		expect(buildMediaFilename('look up', 'png')).toBe(
+		expect(buildMediaFilename('look up', 'png', '_obsidian_')).toBe(
 			'_obsidian_look_up_image_1698755433.png',
 		);
 	});
 
 	it('falls back to "note" for an empty word', () => {
-		expect(buildMediaFilename('', 'jpg')).toBe(
+		expect(buildMediaFilename('', 'jpg', '_obsidian_')).toBe(
 			'_obsidian_note_image_1698755433.jpg',
+		);
+	});
+
+	it('uses the given prefix as-is (docs/design/06-settings.md §6.4)', () => {
+		expect(buildMediaFilename('apple', 'png', '_myprefix_')).toBe(
+			'_myprefix_apple_image_1698755433.png',
 		);
 	});
 });

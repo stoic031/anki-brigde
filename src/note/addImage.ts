@@ -1,6 +1,10 @@
 import type { TFile } from 'obsidian';
 import type AnkiBridgePlugin from '../main';
-import { fieldConfigKey, resolveAnkiConnectUrl } from '../settings';
+import {
+	fieldConfigKey,
+	resolveAnkiConnectUrl,
+	resolveMediaPrefix,
+} from '../settings';
 import { AnkiConnectClient } from '../sync/ankiConnect';
 import { parseSections } from '../sync/parser';
 import type { ImageProvider, TextProvider } from '../providers/types';
@@ -119,7 +123,11 @@ export async function runAddImage(
 	// negativePrompt already flows into the image provider's own config
 	// (getActiveImageConfig, settings.ts) — nothing to pass here.
 	const media = await plan.imageProvider.generateImage(prompt, {});
-	const filename = buildMediaFilename(plan.word, media.ext);
+	const filename = buildMediaFilename(
+		plan.word,
+		media.ext,
+		resolveMediaPrefix(plugin.settings),
+	);
 
 	const client = new AnkiConnectClient(
 		resolveAnkiConnectUrl(plugin.settings),

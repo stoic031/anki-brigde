@@ -144,10 +144,11 @@ section, append không hợp lý vì sẽ tạo ra 2 đoạn text lẫn lộn d�
 
 ## 3.5. Media File Naming Convention
 
-- **Prefix:** `_obsidian_` (để Anki không xóa nhầm khi Check Media)
-- **Format:** `_obsidian_{word}_image_{timestamp}.{ext}` (audio was dropped — `image` is
+- **Prefix:** `_obsidian_` by default, user-configurable in Settings → Media (§6.4 in
+  `06-settings.md`), never empty (để Anki không xóa nhầm khi Check Media)
+- **Format:** `{prefix}{word}_image_{timestamp}.{ext}` (audio was dropped — `image` is
   the only media type this ever names)
-- **Ví dụ:**
+- **Ví dụ** (default prefix):
   - `_obsidian_apple_image_1698765433.png`
 
 ## 3.6. Auto-generate Content Structure

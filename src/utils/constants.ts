@@ -2,6 +2,9 @@
 // (Task #75) adds a configurable value.
 export const DEFAULT_ANKI_CONNECT_URL = 'http://localhost:8765';
 
+// docs/design/06-settings.md §6.4 / docs/contracts.md §5 — default media filename prefix.
+export const DEFAULT_MEDIA_PREFIX = '_obsidian_';
+
 // docs/contracts.md §3 — Pass 2 alias table. Add aliases here only; fieldMapper.ts
 // doesn't need to change.
 export const FIELD_ALIASES: Record<string, string[]> = {
