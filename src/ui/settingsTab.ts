@@ -9,6 +9,7 @@ import { renderProfilesSection, type ProfilesSection } from './profilesSection';
 import { renderImageProviderSection } from './imageProviderSection';
 import { renderTextProviderSection } from './textProviderSection';
 import { renderMediaSection } from './mediaSection';
+import { renderSyncSection } from './syncSection';
 import { toastError, toastSuccess } from './toast';
 
 export class AnkiBridgeSettingTab extends PluginSettingTab {
@@ -27,6 +28,7 @@ export class AnkiBridgeSettingTab extends PluginSettingTab {
 		renderTextProviderSection(this.containerEl, this.plugin);
 		renderImageProviderSection(this.containerEl, this.plugin);
 		renderMediaSection(this.containerEl, this.plugin);
+		renderSyncSection(this.containerEl, this.plugin);
 	}
 
 	hide(): void {

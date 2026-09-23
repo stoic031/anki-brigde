@@ -6,6 +6,14 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- Settings: **Auto sync on save** toggle (off by default). When on, the active note
+  syncs to Anki automatically a couple of seconds after you save it, if it already has
+  a Deck and Model set — notes not configured for Anki are left alone.
+- Settings: **Media prefix** field, so the prefix on generated media filenames
+  (default `_obsidian_`) is user-configurable instead of fixed.
+- **Generate** and **Add image**'s progress notices now tick elapsed seconds while the
+  AI call runs, instead of sitting on one static message for the whole 5-30s; Add image
+  also toasts "🖼️ Image added to note" on success, matching Generate.
 - Settings: **AI text provider** and **AI image provider** sections. Pick a provider from a fixed
   list — text: OpenAI, Gemini, Anthropic, Groq, OpenRouter, Together (cloud) and Ollama (local);
   image: Pollinations, Gemini, OpenAI, OpenRouter (cloud) and Automatic1111, ComfyUI (local). Add

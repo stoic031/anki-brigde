@@ -62,6 +62,8 @@ export interface AnkiBridgeSettings {
 	// docs/design/06-settings.md §6.4 — media filename prefix; never empty, see
 	// resolveMediaPrefix.
 	mediaPrefix: string;
+	// docs/design/06-settings.md §6.3 — sync the active note to Anki automatically on save.
+	autoSyncOnSave: boolean;
 }
 
 export const DEFAULT_PROFILE_ID = 'default';
@@ -85,6 +87,7 @@ export const DEFAULT_SETTINGS: AnkiBridgeSettings = {
 	imageProviders: [],
 	activeImageProviderId: '',
 	mediaPrefix: DEFAULT_MEDIA_PREFIX,
+	autoSyncOnSave: false,
 };
 
 // Pre-profile data.json shape — migrated into a single "Default" profile on load.
