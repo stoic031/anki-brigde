@@ -158,6 +158,7 @@ describe('saveSettings', () => {
 			imageProviders: [],
 			activeImageProviderId: '',
 			mediaPrefix: DEFAULT_MEDIA_PREFIX,
+			autoSyncOnSave: false,
 		};
 
 		await saveSettings(plugin, settings);
@@ -180,6 +181,7 @@ describe('resolveAnkiConnectUrl', () => {
 				imageProviders: [],
 				activeImageProviderId: '',
 				mediaPrefix: DEFAULT_MEDIA_PREFIX,
+				autoSyncOnSave: false,
 			}),
 		).toBe(DEFAULT_ANKI_CONNECT_URL);
 	});
@@ -197,6 +199,7 @@ describe('resolveAnkiConnectUrl', () => {
 				imageProviders: [],
 				activeImageProviderId: '',
 				mediaPrefix: DEFAULT_MEDIA_PREFIX,
+				autoSyncOnSave: false,
 			}),
 		).toBe(DEFAULT_ANKI_CONNECT_URL);
 	});
@@ -214,6 +217,7 @@ describe('resolveAnkiConnectUrl', () => {
 				imageProviders: [],
 				activeImageProviderId: '',
 				mediaPrefix: DEFAULT_MEDIA_PREFIX,
+				autoSyncOnSave: false,
 			}),
 		).toBe('http://localhost:9999');
 	});

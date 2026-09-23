@@ -4,9 +4,10 @@ import type { App, PluginManifest } from 'obsidian';
 const { PluginBase, addCommandSpy } = vi.hoisted(() => {
 	const addCommandSpy = vi.fn();
 	class PluginBase {
-		app = {};
+		app = { vault: { on: vi.fn() } };
 		addCommand = addCommandSpy;
 		addSettingTab = vi.fn();
+		registerEvent = vi.fn();
 	}
 	return { PluginBase, addCommandSpy };
 });
@@ -42,6 +43,9 @@ const { registerSidebarView, revealSidebarView } = vi.hoisted(() => ({
 	revealSidebarView: vi.fn().mockResolvedValue(undefined),
 }));
 vi.mock('./ui/sidebarView', () => ({ registerSidebarView, revealSidebarView }));
+
+const { registerAutoSync } = vi.hoisted(() => ({ registerAutoSync: vi.fn() }));
+vi.mock('./sync/autoSync', () => ({ registerAutoSync }));
 
 import AnkiBridgePlugin from './main';
 
@@ -172,10 +176,22 @@ describe('AnkiBridgePlugin.onload', () => {
 		expect(registerSidebarView).toHaveBeenCalledWith(plugin);
 	});
 
+	it('registers auto-sync', async () => {
+		const plugin = new AnkiBridgePlugin(
+			{} as App,
+			{} as PluginManifest,
+		);
+
+		await plugin.onload();
+
+		expect(registerAutoSync).toHaveBeenCalledWith(plugin);
+	});
+
 	it('exposes a ProviderManager that builds nothing until asked and reads config at call time', async () => {
 		const plugin = new AnkiBridgePlugin({} as App, {} as PluginManifest);
 		plugin.app = {
 			secretStorage: { getSecret: (id: string) => (id === 'my-key' ? 'test-secret' : null) },
+			vault: { on: vi.fn() },
 		} as unknown as App;
 		await plugin.onload();
 		expect(getActiveTextConfig).not.toHaveBeenCalled();

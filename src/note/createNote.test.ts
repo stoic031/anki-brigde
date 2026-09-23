@@ -91,6 +91,7 @@ function fakeSettings(
 		imageProviders: [],
 		activeImageProviderId: '',
 		mediaPrefix: DEFAULT_MEDIA_PREFIX,
+		autoSyncOnSave: false,
 		...overrides,
 	};
 }
