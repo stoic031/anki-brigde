@@ -43,7 +43,7 @@ Profile name: [Japanese        ]
 Deck:  [Japanese::N2 ▼]
 Model: [Basic ▼]
 Main field: [Word ▼]
-Learning language: [Japanese        ]
+Learning language: [Japanese ▼]
 Save notes to: [/ (vault root) ▼]
 ```
 
@@ -75,10 +75,15 @@ Save notes to: [/ (vault root) ▼]
   `mainFieldConfig` của cặp Deck+Model này **một lần duy nhất**, ngay khi note đầu tiên
   được tạo từ profile (Create new note / Create note from selection), nếu cặp đó chưa có
   Main Field nào (xem `07-sidebar.md` §7.4). Không bắt buộc.
-- **Learning language:** text field tự do (không có danh sách cố định, không có nguồn
-  động như Deck/Model). Đây là ngôn ngữ profile này đang học — dùng làm ngữ cảnh cho AI
-  Generate (`02-providers.md` §2.4) cùng với "Your language" (§6.2). Không bắt buộc, lưu
-  khi rời ô nhập / nhấn Enter, không validate gì ngoài trim.
+- **Learning language:** dropdown, danh sách **cố định** (`English`, `Chinese`,
+  `Japanese`, `Korean`, `German`, `Spanish`, `Vietnamese` — nhãn luôn viết bằng tiếng
+  Anh, kể cả cho Vietnamese; `src/utils/constants.ts` → `LANGUAGES`), dùng chung
+  `renderPicker()` với Deck/Model/Main field (cùng file) nên hành vi giống hệt: có lựa
+  chọn trống ("Select learning language…"), lưu ngay khi chọn (không có bước blur/Enter
+  như trước), và một giá trị đã lưu từ trước khi có danh sách này (free text cũ, không
+  khớp danh sách) vẫn hiển thị đúng thay vì biến mất. Đây là ngôn ngữ profile này đang
+  học — dùng làm ngữ cảnh cho AI Generate (`02-providers.md` §2.4) cùng với "Your
+  language" (§6.2). Không bắt buộc.
 - **Save notes to:** populate từ folder trong vault, không phụ thuộc AnkiConnect nên
   **luôn hiện**. Mặc định `/` (vault root). Folder lồng nhau hiển thị dạng cây: mỗi dòng
   chỉ hiện tên riêng, thụt lề theo độ sâu, nhóm folder con ngay dưới folder cha (dùng hàm
@@ -88,13 +93,14 @@ Save notes to: [/ (vault root) ▼]
 
 ## 6.2. AI Provider Settings
 
-**Your language:** text field tự do, nằm ngoài phần Profile (toàn cục — một người dùng
-chỉ có một ngôn ngữ hiện tại, không cần khai báo lại cho từng profile). Dùng làm ngữ
-cảnh cho AI Generate (`02-providers.md` §2.4) cùng với Learning language của profile
-(§6.1). Không bắt buộc, lưu ngay khi gõ (giống ô AnkiConnect URL).
+**Your language:** dropdown, cùng danh sách **cố định** `LANGUAGES` và cùng
+`renderPicker()` với Learning language (§6.1) — chỉ khác là nằm ngoài phần Profile
+(toàn cục: một người dùng chỉ có một ngôn ngữ hiện tại, không cần khai báo lại cho
+từng profile). Dùng làm ngữ cảnh cho AI Generate (`02-providers.md` §2.4) cùng với
+Learning language của profile (§6.1). Không bắt buộc, lưu ngay khi chọn.
 
 ```
-Your language: [English        ]
+Your language: [English ▼]
 ```
 
 Provider là danh sách **cố định** (xem `02-providers.md` §2.2); thêm provider khi có người dùng

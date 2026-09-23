@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import type AnkiBridgePlugin from '../main';
 import { DEFAULT_SETTINGS, type AnkiBridgeSettings } from '../settings';
 import { FakeEl } from '../test/fakeDom';
+import { LANGUAGES } from '../utils/constants';
 
 class FakeDropdown {
 	options: Record<string, string> = {};
@@ -164,9 +165,18 @@ function setup(overrides: Partial<AnkiBridgeSettings> = {}) {
 		...overrides,
 	};
 	const on = vi.fn();
+	// Mirrors the real plugin.setActiveProfile (src/main.ts): set id, save, fire the
+	// PROFILE_CHANGED_EVENT this section listens for — so it re-renders, same as the
+	// real app. Model's onChange (and Add/Delete/Profile-switch) rely on this.
+	const setActiveProfile = vi.fn(async (id: string) => {
+		settingsObj.activeProfileId = id;
+		await saveSettings();
+		(on.mock.calls[0]?.[1] as (() => void) | undefined)?.();
+	});
 	const plugin = {
 		settings: settingsObj,
 		saveSettings,
+		setActiveProfile,
 		app: {
 			workspace: { on, offref: vi.fn() },
 			vault: { getAllFolders: vi.fn().mockReturnValue([]) },
@@ -260,6 +270,42 @@ describe('renderProfilesSection — Main field', () => {
 		expect(saveSettings).toHaveBeenCalled();
 	});
 
+	it('clears the selected Main field and refetches when Model changes', async () => {
+		modelFieldNames
+			.mockResolvedValueOnce(['Word', 'Meaning'])
+			.mockResolvedValueOnce(['Front', 'Back']);
+		const { plugin } = setup({
+			profiles: [
+				{
+					id: 'default',
+					name: 'Default',
+					deck: 'Japanese',
+					model: 'Basic',
+					folder: '',
+					mainField: 'Meaning',
+					targetLanguage: '',
+				},
+			],
+		});
+		await vi.waitFor(() =>
+			expect(modelFieldNames).toHaveBeenCalledWith('Basic'),
+		);
+		expect(latestRow('Main field')?.dropdown?.value).toBe('Meaning');
+
+		await latestRow('Model')?.dropdown?.select('Cloze');
+
+		expect(plugin.settings.profiles[0]?.mainField).toBe('');
+		await vi.waitFor(() =>
+			expect(modelFieldNames).toHaveBeenCalledWith('Cloze'),
+		);
+		expect(latestRow('Main field')?.dropdown?.value).toBe('');
+		expect(latestRow('Main field')?.dropdown?.optionOrder).toEqual([
+			'',
+			'Front',
+			'Back',
+		]);
+	});
+
 	it('does not re-fetch when re-rendered with the same Model', async () => {
 		modelFieldNames.mockResolvedValue(['Word', 'Meaning']);
 		const { rerender } = setup({
@@ -286,10 +332,19 @@ describe('renderProfilesSection — Main field', () => {
 });
 
 describe('renderProfilesSection — Learning language', () => {
-	it('saves on blur/enter (change), trimmed', async () => {
+	it('is a select listing exactly the fixed language list, plus the placeholder', () => {
+		setup();
+
+		expect(latestRow('Learning language')?.dropdown?.optionOrder).toEqual([
+			'',
+			...LANGUAGES,
+		]);
+	});
+
+	it('selecting a language persists it immediately', async () => {
 		const { plugin, saveSettings } = setup();
 
-		await latestRow('Learning language')?.text?.change('  Japanese  ');
+		await latestRow('Learning language')?.dropdown?.select('Japanese');
 
 		expect(plugin.settings.profiles[0]?.targetLanguage).toBe('Japanese');
 		expect(saveSettings).toHaveBeenCalled();
@@ -310,6 +365,27 @@ describe('renderProfilesSection — Learning language', () => {
 			],
 		});
 
-		expect(latestRow('Learning language')?.text?.value).toBe('Spanish');
+		expect(latestRow('Learning language')?.dropdown?.value).toBe('Spanish');
+	});
+
+	it('still shows a value saved before the fixed list existed (free text)', () => {
+		setup({
+			profiles: [
+				{
+					id: 'default',
+					name: 'Default',
+					deck: '',
+					model: '',
+					folder: '',
+					mainField: '',
+					targetLanguage: 'Klingon',
+				},
+			],
+		});
+
+		expect(latestRow('Learning language')?.dropdown?.value).toBe('Klingon');
+		expect(latestRow('Learning language')?.dropdown?.optionOrder).toContain(
+			'Klingon',
+		);
 	});
 });
