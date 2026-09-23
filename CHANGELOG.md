@@ -9,6 +9,10 @@ All notable changes to this project are documented in this file.
 - Sidebar: Deck, Model, and the Sync | Rebuild | Delete buttons moved out of their own
   "Note" tab — they're now always visible above the tabs, alongside Profile. Only
   **Text** and **Image** remain as tabs.
+- Sidebar **Text tab**: instead of ticking on/off every field of the Model, you now add
+  fields one at a time from a dropdown. **Generate** no longer writes straight into the
+  note — it fills an editable preview per field, and a new **Write** button commits the
+  (possibly edited) text into the note.
 
 ### Added
 

@@ -31,8 +31,10 @@ một hàng, tab Note), **Generate** (tab Text, cạnh phần chọn field), và
 > Cả 2 đều đọc input từ **content**, không đọc từ tên file/tiêu đề note — đổi tên file sau
 > khi tạo không làm hỏng hành vi của các nút này. Cả 2 nút **không mở modal chọn field**
 > khi bấm — cấu hình field đã được chọn sẵn từ trước trong Sidebar Modal
-> (`07-sidebar.md` §7.2, tab Text/Image), theo đúng cặp Deck+Model của note đang mở. Bấm nút
-> là generate ngay; không có bước tick checkbox tại thời điểm bấm.
+> (`07-sidebar.md` §7.2, tab Text/Image), theo đúng cặp Deck+Model của note đang mở. Add
+> Image vẫn là 1 bấm = ghi note ngay. Generate thì tách 2 bước: bấm Generate chỉ gọi AI và
+> hiện preview cho sửa, chưa ghi note; bấm **Write** riêng mới thực sự ghi (xem §3.4 và
+> `07-sidebar.md` §7.2.1) — không có bước tick checkbox tại thời điểm bấm Generate.
 
 **Sync Button** (icon `refresh-cw`):
 
@@ -58,37 +60,57 @@ cho cặp Deck+Model của note đang mở (`07-sidebar.md` §7.4). Chưa cấu 
 nghĩa "chưa cấu hình" ở `07-sidebar.md` §7.4) → hiển thị Notice và **dừng lại, không
 làm gì khác**:
 
-- Generate with AI, chưa tick field nào ở tab Text → "Please configure AI field generation
+- Generate with AI, chưa thêm field nào ở tab Text → "Please configure AI field generation
   for this Deck/Model in the sidebar (Text tab) first."
 - Add Image, tab Image chưa chọn field Output → "Please configure Image field mapping for
   this Deck/Model in the sidebar (Image tab) first."
 
 **Generate Button** (icon `sparkles`, tab Text; chỉ áp dụng cho text — Image có nút riêng).
+Generate chỉ gọi AI và điền preview có thể sửa — **không ghi vào note**; ghi thật sự là
+việc của nút **Write** riêng (dưới đây). Tách 2 bước để user xem/sửa nội dung AI sinh ra
+trước khi nó chạm vào note.
 
-- Qua pre-check ở trên (tab Text đã tick ít nhất 1 field) thì đọc word từ section của
-  **field đầu tiên** trong Model — tức `fields[0]` lấy từ `modelFieldNames(anki_model)`,
-  tìm section khớp tên theo đúng quy tắc normalize/lookup ở `../contracts.md` §2/§3.
-  Không hard-code `"## Word"` — Model khác có thể đặt tên field đầu tiên khác (VD
-  "Front"). Section đó đang rỗng → hiển thị Notice lỗi "Please fill in the [FieldName]
-  section first.", dừng lại. Chưa có text provider hợp lệ (`getTextProvider()` = null) →
-  Notice "Set up a text model in settings first.", dừng lại (chưa gọi mạng).
-- `targetFields` = các field đã tick ở tab Text cho Deck+Model này, **bỏ field đầu tiên**
+- Qua pre-check ở trên (tab Text đã thêm ít nhất 1 field, xem `07-sidebar.md` §7.2.1) thì
+  đọc word từ section của **field đầu tiên** trong Model — tức `fields[0]` lấy từ
+  `modelFieldNames(anki_model)`, tìm section khớp tên theo đúng quy tắc normalize/lookup ở
+  `../contracts.md` §2/§3. Không hard-code `"## Word"` — Model khác có thể đặt tên field
+  đầu tiên khác (VD "Front"). Section đó đang rỗng → hiển thị Notice lỗi "Please fill in
+  the [FieldName] section first.", dừng lại. Chưa có text provider hợp lệ
+  (`getTextProvider()` = null) → Notice "Set up a text model in settings first.", dừng lại
+  (chưa gọi mạng).
+- `targetFields` = các field đã thêm ở tab Text cho Deck+Model này, **bỏ field đầu tiên**
   (chính là input; không có gì để sinh) → gọi AI Provider
-  `processText(word, 'extract-vocabulary', targetFields)` (`../contracts.md` §4) →
-  nhận `TextResult` (key = đúng tên field trong `targetFields`) → với mỗi key không
-  rỗng trả về, tìm section `## FieldName` khớp tên field (không phân biệt hoa/thường; nếu
-  không có thì thử alias như sync, để `Back` dùng lại `## Meaning` thay vì tạo trùng):
+  `processText(word, 'extract-vocabulary', targetFields)` (`../contracts.md` §4) một lần
+  cho toàn bộ `targetFields` → nhận `TextResult` (key = đúng tên field) → điền vào ô preview
+  (editable) ngay dưới field tương ứng ở tab Text — **chưa đụng tới note**. Bấm Generate lần
+  sau ghi đè preview cũ (regenerate toàn bộ, không giữ phần đã sửa tay).
+- Kết quả: không có preview nào có nội dung (mọi key trả về rỗng) → Notice "The text model
+  returned nothing to add. Try again or check the model." Lỗi provider → toast "❌
+  {provider}: {lý do} ({URL})". Trong lúc chờ có Notice "⏳ Asking the text model…" (ẩn khi
+  xong).
+- Visual feedback: Button đổi thành "⏳ Generating..." → "✅ Done!" → quay lại trạng thái
+  bình thường sau 2 giây.
+
+**Write Button** (icon `save`, tab Text; cạnh nút Generate) — ghi nội dung preview hiện tại
+(đã sửa tay hoặc chưa) của **tất cả** field đã thêm vào note, trong một lần bấm.
+
+- Không có preview nào có nội dung (chưa Generate lần nào, hoặc đã xoá hết) → Notice
+  "Generate content first.", dừng lại, không gọi gì khác.
+- Với mỗi field có nội dung, tìm section `## FieldName` khớp tên field (không phân biệt
+  hoa/thường; nếu không có thì thử alias như sync, để `Back` dùng lại `## Meaning` thay vì
+  tạo trùng):
   - Section đang rỗng → điền vào.
-  - Section đã có nội dung → **bỏ qua**, không ghi đè dữ liệu user đã nhập.
+  - Section đã có nội dung → **bỏ qua**, không ghi đè dữ liệu user đã nhập (note có thể đã
+    đổi từ lúc Generate tới lúc Write).
   - Chưa có section → thêm `## FieldName` ở cuối note.
   - Ghi bằng một lần `vault.process`; chỉ đụng phần section, frontmatter và text khác giữ
     nguyên từng byte. Không gọi `updateNoteFields` — Anki chỉ cập nhật khi user bấm Sync.
-- Kết quả: toast "✅ AI content generated: N filled[, M skipped (already had content)]."
-  Model không trả gì dùng được → Notice "The text model returned nothing to add. Try again
-  or check the model." Lỗi provider → toast "❌ {provider}: {lý do} ({URL})". Trong lúc chờ có
-  Notice "⏳ Asking the text model…" (ẩn khi xong).
-- Visual feedback: Button đổi thành "⏳ Generating..." → "✅ Done!" → quay lại trạng thái
-  bình thường sau 2 giây.
+- Kết quả: toast "✅ AI content generated: N filled[, M skipped (already had content)]." rồi
+  xoá hết preview (đã ghi xong). Ghi lỗi (I/O) → toast "❌ Failed to write to the note.",
+  preview giữ nguyên để user thử lại.
+- Visual feedback: giống Generate — "⏳ Writing..." → "✅ Done!"/"❌ Error" → quay lại trạng
+  thái bình thường. Không có Notice tiến trình riêng (ghi vào note là local, không gọi
+  mạng).
 
 **Add Image Button** (icon `image`, tab Image):
 
