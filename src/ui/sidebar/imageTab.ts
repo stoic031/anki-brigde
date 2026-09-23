@@ -122,7 +122,7 @@ export function renderImageTab(
 			if (!deck || !model) {
 				configEl.createEl('p', {
 					cls: 'anki-bridge-sidebar__hint',
-					text: 'Set a Deck and Model on the Note tab first.',
+					text: 'Set a Deck and Model above first.',
 				});
 				return;
 			}

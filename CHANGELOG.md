@@ -4,6 +4,12 @@ All notable changes to this project are documented in this file.
 
 ## [Unreleased]
 
+### Changed
+
+- Sidebar: Deck, Model, and the Sync | Rebuild | Delete buttons moved out of their own
+  "Note" tab — they're now always visible above the tabs, alongside Profile. Only
+  **Text** and **Image** remain as tabs.
+
 ### Added
 
 - Settings: **Auto sync on save** toggle (off by default). When on, the active note

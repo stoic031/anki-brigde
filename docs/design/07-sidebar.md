@@ -24,21 +24,27 @@ chỉ cần mở ra để xem/sửa).
 
 ```
 Anki Bridge
-Profile [Japanese ▼]          ← luôn hiện, nằm trên các tab (dùng cho note MỚI)
-[ Note | Text | Image ]
+Profile [Japanese ▼]          ← luôn hiện, trên tab (dùng cho note MỚI)
+Deck:  [Japanese::N2 ▼]       ← luôn hiện, trên tab (note đang mở)
+Model: [Basic (and reversed card) ▼]
+[⟳ Sync] [🔨 Rebuild] [🗑 Delete]
+[ Text | Image ]
 ```
+
+Profile, Deck/Model của note đang mở, và hàng nút Sync | Rebuild | Delete đều luôn
+hiện phía trên tab, không phụ thuộc tab nào đang chọn. Chỉ còn 2 tab bên dưới:
 
 | Tab | Nội dung | Trạng thái |
 | --- | --- | --- |
-| **Note** | Deck/Model của note đang mở; hàng nút **Sync \| Rebuild \| Delete** | Đã có |
 | **Text** | Chọn field cho Generate with AI + nút **Generate** | Đã có (phần gọi AI chưa triển khai) |
 | **Image** | Overwrite/Append, chọn field Output + nút **Add image** | Đã có (chưa có adapter ảnh nào — Feature #17) — §7.2.2 |
 
-- Chỉ hiển thị tab đã triển khai (hiện: Note, Text, Image). Tab đang chọn giữ trong bộ nhớ view,
-  mặc định là Note.
+- Chỉ hiển thị tab đã triển khai (hiện: Text, Image). Tab đang chọn giữ trong bộ nhớ view,
+  mặc định là Text.
 - Trước đây Sidebar chia "Tab 1/2/3" (Note / Audio / Image; Audio đã bỏ) và các nút nằm trong note; nay
-  nút hành động nằm ở Sidebar (xem `03-note.md` §3.1) và phần chọn field cho AI tách
-  thành tab **Text** riêng, cùng dạng với Image.
+  nút hành động nằm ở Sidebar (xem `03-note.md` §3.1). Deck/Model và hàng nút từng có
+  riêng 1 tab Note — nay chuyển lên trên, luôn hiện, cùng chỗ với Profile (không còn là
+  tab). Phần chọn field cho AI vẫn tách thành tab **Text** riêng, cùng dạng với Image.
 
 > **Không nhầm với Settings Tab (`06-settings.md` §6.2).** Settings Tab cấu hình
 > **provider** (chọn dịch vụ AI nào, API key, model) — áp dụng toàn cục. Các tab
@@ -52,7 +58,7 @@ Profile [Japanese ▼]          ← luôn hiện, nằm trên các tab (dùng ch
 > Deck/Model/Field được nạp khi Sidebar mở; lỗi kết nối báo bằng toast tại chỗ. Không có
 > Folder select ở Sidebar — folder lưu note mới thuộc về Profile (`06-settings.md` §6.1).
 
-### 7.2.1. Profile, tab Note và tab Text
+### 7.2.1. Profile, Deck/Model & hàng nút (luôn hiện, trên tab), và tab Text
 
 **Profile Dropdown (cho note mới):**
 
@@ -68,7 +74,7 @@ Profile: [Japanese ▼]
   vẽ lại). Không thêm/sửa/xoá profile ở Sidebar — việc đó chỉ làm ở Settings Tab.
 - Đổi profile **không** ảnh hưởng note đang mở.
 
-**Tab Note — Deck / Model của note đang mở:**
+**Deck / Model của note đang mở (luôn hiện, trên tab):**
 
 ```
 Deck:  [Japanese::N2 ▼]
@@ -89,8 +95,9 @@ Model: [Basic (and reversed card) ▼]
   đã sync (có `anki_note_id`) thì hiện modal cảnh báo trước — xem `scenarios.md`
   Scenario 4. Không có nút Refresh riêng.
 
-**Hàng nút Sync | Rebuild | Delete** (cùng một hàng, tự xuống dòng khi Sidebar hẹp; mỗi
-nút gồm icon Obsidian + chữ; hành vi và thông báo chi tiết: `03-note.md` §3.2):
+**Hàng nút Sync | Rebuild | Delete** (luôn hiện, trên tab, ngay dưới Deck/Model — cùng một
+hàng, tự xuống dòng khi Sidebar hẹp; mỗi nút gồm icon Obsidian + chữ; hành vi và thông báo
+chi tiết: `03-note.md` §3.2):
 
 - **Sync:** luôn hiện, vô hiệu khi không có note markdown đang mở.
 - **Rebuild:** đồng bộ nội dung note theo Model hiện tại. Đổi Model ở dropdown chỉ đổi
@@ -121,7 +128,7 @@ Fields to generate with AI                [✨ Generate]
 ```
 
 - Chỉ liệt kê field khi note đang mở có cả `anki_deck` và `anki_model` (không thì hiện
-  gợi ý "Set a Deck and Model on the Note tab first." và nút Generate bị vô hiệu). Danh
+  gợi ý "Set a Deck and Model above first." và nút Generate bị vô hiệu). Danh
   sách field lấy từ `modelFieldNames(model)` của note đang mở. Tự cập nhật khi user chuyển
   sang note khác hoặc khi cặp Deck+Model của note đổi; gõ nội dung trong note không kéo
   theo tải lại.

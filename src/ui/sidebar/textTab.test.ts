@@ -144,7 +144,7 @@ describe('renderTextTab', () => {
 
 		expect(modelFieldNames).not.toHaveBeenCalled();
 		expect(fieldsEl.children[0]?.text).toBe(
-			'Set a Deck and Model on the Note tab first.',
+			'Set a Deck and Model above first.',
 		);
 		expect(generate.disabled).toBe(true);
 	});
