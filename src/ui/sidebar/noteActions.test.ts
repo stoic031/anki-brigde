@@ -50,7 +50,7 @@ vi.mock('../modals/confirmRebuildFields', () => ({
 	},
 }));
 
-import { SyncError } from '../../types';
+import { AnkiConnectError, SyncError } from '../../types';
 import { renderNoteActions, type ActionState } from './noteActions';
 
 const note = { path: 'a.md' } as unknown as TFile;
@@ -178,6 +178,19 @@ describe('Sync button', () => {
 
 		expect(toastError).toHaveBeenCalledWith(
 			'❌ Failed to sync. Please check Anki connection.',
+		);
+	});
+
+	it('shows an unrecognized AnkiConnectError’s own message instead of the generic one', async () => {
+		syncNote.mockRejectedValue(
+			new AnkiConnectError('modelFieldNames', 'some Anki-side message'),
+		);
+		const { sync } = setup();
+
+		await sync.click();
+
+		expect(toastError).toHaveBeenCalledWith(
+			"❌ AnkiConnect 'modelFieldNames' failed: some Anki-side message",
 		);
 	});
 

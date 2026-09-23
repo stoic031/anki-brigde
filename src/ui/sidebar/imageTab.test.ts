@@ -380,6 +380,21 @@ describe('renderImageTab', () => {
 			);
 		});
 
+		it('shows an unrecognized AnkiConnectError’s own message instead of the generic one', async () => {
+			const { AnkiConnectError } = await import('../../types');
+			planAddImage.mockRejectedValue(
+				new AnkiConnectError('modelFieldNames', 'some Anki-side message'),
+			);
+			const { addImage } = await ready();
+
+			await addImage.click();
+			await flush();
+
+			expect(toastError).toHaveBeenCalledWith(
+				"❌ AnkiConnect 'modelFieldNames' failed: some Anki-side message",
+			);
+		});
+
 		it('does nothing while disabled', async () => {
 			const { addImage } = setup();
 
