@@ -115,20 +115,33 @@ nút gồm icon Obsidian + chữ; hành vi và thông báo chi tiết: `03-note.
 **Tab Text — Fields to generate with AI:**
 
 ```
-Fields to generate with AI                [✨ Generate]
-☐ Meaning
-☐ Furigana
+Fields to generate with AI      [+ add field ▾] [✨ Generate] [💾 Write]
+Meaning                                                              [×]
+┌─ (sau khi Generate) ────────────────────────────────────────────────┐
+│ medicine (có thể sửa trước khi Write)                                │
+└───────────────────────────────────────────────────────────────────────┘
+Furigana                                                             [×]
 ```
 
-- Chỉ liệt kê field khi note đang mở có cả `anki_deck` và `anki_model` (không thì hiện
-  gợi ý "Set a Deck and Model on the Note tab first." và nút Generate bị vô hiệu). Danh
-  sách field lấy từ `modelFieldNames(model)` của note đang mở. Tự cập nhật khi user chuyển
-  sang note khác hoặc khi cặp Deck+Model của note đổi; gõ nội dung trong note không kéo
-  theo tải lại.
-- Nút **Generate** (icon + chữ) nằm ngay cạnh tiêu đề, nhắm tới các field đang tick — xem
-  [`03-note.md`](03-note.md) §3.2. Không tick field nào → coi như chưa cấu hình (xem §7.4
-  và 03-note.md §3.2). **Hiện chưa gọi AI:** đã tick field thì hiện Notice "Generate with AI
-  is not available yet.".
+- Chỉ hoạt động khi note đang mở có cả `anki_deck` và `anki_model` (không thì hiện gợi ý
+  "Set a Deck and Model on the Note tab first." và cả 2 nút Generate/Write bị vô hiệu).
+  Danh sách field cho dropdown lấy từ `modelFieldNames(model)` của note đang mở, **trừ
+  field đầu tiên** (input — không có gì để sinh) và trừ field đã thêm rồi. Tự cập nhật khi
+  user chuyển sang note khác hoặc khi cặp Deck+Model của note đổi (danh sách field đã thêm
+  reset theo cấu hình đã lưu cho cặp mới); gõ nội dung trong note không kéo theo tải lại.
+- **Dropdown "+ add field"**: chọn một field từ danh sách trên để thêm vào — field đó biến
+  mất khỏi dropdown và xuất hiện thành 1 dòng dưới, kèm nút `[×]` để bỏ field đó (bỏ luôn
+  nội dung preview nếu có). Danh sách field đã thêm lưu theo cặp Deck+Model, giống hệt cách
+  lưu cũ (§7.4) — chỉ đổi cách UI dựng danh sách này (thêm/bớt từng field) thay vì tick
+  checkbox hàng loạt.
+- Nút **Generate** (icon + chữ): gọi AI Provider cho toàn bộ field đã thêm trong 1 lần gọi —
+  xem [`03-note.md`](03-note.md) §3.2. **Không ghi vào note** — chỉ điền/ghi đè nội dung
+  preview (có thể sửa tay) dưới mỗi field đã thêm. Chưa thêm field nào → coi như chưa cấu
+  hình (xem §7.4 và 03-note.md §3.2).
+- Nút **Write** (icon + chữ): ghi nội dung preview (đã sửa hoặc chưa) của tất cả field đã
+  thêm vào note — 1 lần, áp dụng đúng quy tắc Content Update Logic ở §3.4 (section đang rỗng
+  mới điền, section đã có nội dung thì bỏ qua). Chưa Generate lần nào (không có preview nào
+  có nội dung) → hiện Notice "Generate content first." và không làm gì khác.
 
 ### 7.2.2. Tab Image
 

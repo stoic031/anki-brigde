@@ -46,12 +46,12 @@ export async function planGenerate(
 	if (word === '')
 		return { stop: `Please fill in the ${inputField} section first.` };
 
-	const ticked =
+	const added =
 		plugin.settings.generateWithAiFields[fieldConfigKey(deck, model)] ?? [];
-	const targetFields = ticked.filter((f) => f !== inputField);
+	const targetFields = added.filter((f) => f !== inputField);
 	if (targetFields.length === 0) {
 		return {
-			stop: `Tick at least one field besides ${inputField} to generate.`,
+			stop: `Add at least one field besides ${inputField} to generate.`,
 		};
 	}
 	return { provider, word, targetFields };
@@ -62,18 +62,25 @@ export interface GenerateOutcome {
 	skipped: string[];
 }
 
-// One model call, then one atomic write into the note. Anki is never touched — the user
-// syncs explicitly afterwards.
-export async function runGenerate(
-	plugin: AnkiBridgePlugin,
-	note: TFile,
+// One model call — no write. The result is shown for review/editing (Text tab);
+// nothing lands in the note until applyGenerated() below runs.
+export async function generateDraft(
 	plan: Exclude<GeneratePlan, { stop: string }>,
-): Promise<GenerateOutcome> {
-	const results = await plan.provider.processText(
+): Promise<Record<string, string>> {
+	return plan.provider.processText(
 		plan.word,
 		'extract-vocabulary',
 		plan.targetFields,
 	);
+}
+
+// One atomic write into the note from a (possibly user-edited) results map. Anki is
+// never touched — the user syncs explicitly afterwards.
+export async function applyGenerated(
+	plugin: AnkiBridgePlugin,
+	note: TFile,
+	results: Record<string, string>,
+): Promise<GenerateOutcome> {
 	const outcome: GenerateOutcome = { filled: [], skipped: [] };
 	await plugin.app.vault.process(note, (content) => {
 		const r = fillEmptySections(content, results);

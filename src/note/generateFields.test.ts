@@ -3,7 +3,7 @@ import type { TFile } from 'obsidian';
 import type AnkiBridgePlugin from '../main';
 import { DEFAULT_SETTINGS, fieldConfigKey } from '../settings';
 import { ProviderError } from '../types';
-import { planGenerate, runGenerate } from './generateFields';
+import { applyGenerated, generateDraft, planGenerate } from './generateFields';
 
 const { modelFieldNames } = vi.hoisted(() => ({ modelFieldNames: vi.fn() }));
 vi.mock('../sync/ankiConnect', () => ({
@@ -100,7 +100,7 @@ describe('planGenerate', () => {
 		const { plugin } = setup({ ticked: ['Word'] });
 		const plan = await planGenerate(plugin, note, 'D', 'M');
 
-		expect(plan.stop).toContain('Tick at least one field besides Word');
+		expect(plan.stop).toContain('Add at least one field besides Word');
 	});
 
 	it('propagates AnkiConnect failures', async () => {
@@ -113,23 +113,24 @@ describe('planGenerate', () => {
 	});
 });
 
-describe('runGenerate', () => {
+describe('generateDraft', () => {
 	const plan = {
 		provider,
 		word: '薬',
 		targetFields: ['Meaning', 'Furigana'],
 	};
 
-	it('calls the model once and fills only empty sections, reporting counts', async () => {
+	it('calls the model once and returns its raw result, without touching the note', async () => {
 		provider.processText.mockResolvedValue({
 			Meaning: 'medicine',
 			Furigana: 'くすり',
 		});
-		const { plugin, getContent } = setup({
+		const { process, getContent } = setup({
 			content: '## Word\n薬\n\n## Meaning\n\n## Furigana\nmine\n',
 		});
+		const before = getContent();
 
-		const outcome = await runGenerate(plugin, note, plan);
+		const results = await generateDraft(plan);
 
 		expect(provider.processText).toHaveBeenCalledTimes(1);
 		expect(provider.processText).toHaveBeenCalledWith(
@@ -137,23 +138,46 @@ describe('runGenerate', () => {
 			'extract-vocabulary',
 			['Meaning', 'Furigana'],
 		);
+		expect(results).toEqual({ Meaning: 'medicine', Furigana: 'くすり' });
+		expect(process).not.toHaveBeenCalled();
+		expect(getContent()).toBe(before);
+	});
+
+	it('propagates a provider failure', async () => {
+		provider.processText.mockRejectedValue(
+			new ProviderError('p', 'HTTP 500 from http://x'),
+		);
+
+		await expect(generateDraft(plan)).rejects.toBeInstanceOf(ProviderError);
+	});
+});
+
+describe('applyGenerated', () => {
+	it('fills only empty sections and reports counts, from a given results map', async () => {
+		const { plugin, getContent } = setup({
+			content: '## Word\n薬\n\n## Meaning\n\n## Furigana\nmine\n',
+		});
+
+		const outcome = await applyGenerated(plugin, note, {
+			Meaning: 'medicine',
+			Furigana: 'くすり',
+		});
+
 		expect(outcome).toEqual({ filled: ['Meaning'], skipped: ['Furigana'] });
 		expect(getContent()).toBe(
 			'## Word\n薬\n\n## Meaning\n\nmedicine\n\n## Furigana\nmine\n',
 		);
 	});
 
-	it('leaves the note untouched when the provider fails', async () => {
-		provider.processText.mockRejectedValue(
-			new ProviderError('p', 'HTTP 500 from http://x'),
-		);
-		const { plugin, process, getContent } = setup();
-		const before = getContent();
+	it('writes edited text, not necessarily what a model returned — the caller owns the map', async () => {
+		const { plugin, getContent } = setup({
+			content: '## Word\n薬\n\n## Meaning\n\n',
+		});
 
-		await expect(runGenerate(plugin, note, plan)).rejects.toBeInstanceOf(
-			ProviderError,
+		await applyGenerated(plugin, note, { Meaning: 'edited by hand' });
+
+		expect(getContent()).toBe(
+			'## Word\n薬\n\n## Meaning\n\nedited by hand\n\n',
 		);
-		expect(process).not.toHaveBeenCalled();
-		expect(getContent()).toBe(before);
 	});
 });
