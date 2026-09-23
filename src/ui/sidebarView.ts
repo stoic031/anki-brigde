@@ -59,20 +59,20 @@ export class SidebarView extends ItemView {
 		this.contentEl.createEl('h4', { text: 'Anki Bridge' });
 		this.renderProfileDropdown();
 
-		// docs/design/07-sidebar.md §7.2 — Profile sits above the tabs (it is about new
-		// notes); everything below is about the active note.
+		// docs/design/07-sidebar.md §7.2 — Profile, Deck, Model, and the note-action
+		// buttons all sit above the tabs (always visible regardless of which tab is
+		// selected); only Text and Image are tabs.
+		this.renderDeckDropdown(this.contentEl);
+		this.renderModelDropdown(this.contentEl);
+		this.noteActions = renderNoteActions(this.contentEl, this.plugin);
+
 		const panels = renderTabs(this.contentEl, [
-			{ id: 'note', label: 'Note' },
 			{ id: 'text', label: 'Text' },
 			{ id: 'image', label: 'Image' },
 		]);
-		const notePanel = panels.note;
 		const textPanel = panels.text;
 		const imagePanel = panels.image;
-		if (!notePanel || !textPanel || !imagePanel) return;
-		this.renderDeckDropdown(notePanel);
-		this.renderModelDropdown(notePanel);
-		this.noteActions = renderNoteActions(notePanel, this.plugin);
+		if (!textPanel || !imagePanel) return;
 		this.textTab = renderTextTab(textPanel, this.plugin, () =>
 			this.getActiveNote(),
 		);

@@ -138,7 +138,7 @@ describe('renderImageTab', () => {
 		expect(modelFieldNames).not.toHaveBeenCalled();
 		expect(rows()).toHaveLength(0);
 		expect(parent.byClass('anki-bridge-sidebar__hint')[0]?.text).toBe(
-			'Set a Deck and Model on the Note tab first.',
+			'Set a Deck and Model above first.',
 		);
 	});
 

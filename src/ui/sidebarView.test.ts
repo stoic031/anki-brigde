@@ -345,7 +345,7 @@ describe('SidebarView', () => {
 		expect(view.getIcon()).toBeTruthy();
 	});
 
-	it('renders the title, Profile above the tabs, then Deck and Model in the Note tab — and no Save notes to', async () => {
+	it('renders the title, then Profile/Deck/Model above the tabs — and no Save notes to', async () => {
 		const { plugin } = fakePlugin();
 		const { view, opened } = openView(plugin);
 
@@ -354,16 +354,14 @@ describe('SidebarView', () => {
 		const contentEl = view.contentEl as unknown as FakeEl;
 		expect(contentEl.children[0]?.text).toBe('Anki Bridge');
 		expect(contentEl.byClass('anki-bridge-sidebar__tab').map((t) => t.text)).toEqual([
-			'Note',
 			'Text',
 			'Image',
 		]);
 		expect(settings.map((s) => s.name)).toEqual(['Profile', 'Deck', 'Model']);
-		// Deck and Model live in the Note panel, not above the tabs.
-		const [notePanel] = contentEl.byClass('anki-bridge-sidebar__panel');
-		expect(notePanel?.children).toHaveLength(0);
-		expect(settings[DECK_IDX]?.containerEl).toBe(notePanel);
-		expect(settings[MODEL_IDX]?.containerEl).toBe(notePanel);
+		// Only Text and Image are tabs now — Deck and Model live directly under
+		// contentEl, same as Profile, not inside any tab panel.
+		expect(settings[DECK_IDX]?.containerEl).toBe(contentEl);
+		expect(settings[MODEL_IDX]?.containerEl).toBe(contentEl);
 	});
 
 	describe('Profile dropdown', () => {
