@@ -4,6 +4,13 @@ All notable changes to this project are documented in this file.
 
 ## [Unreleased]
 
+### Changed
+
+- Sidebar **Text tab**: instead of ticking on/off every field of the Model, you now add
+  fields one at a time from a dropdown. **Generate** no longer writes straight into the
+  note — it fills an editable preview per field, and a new **Write** button commits the
+  (possibly edited) text into the note.
+
 ### Added
 
 - Settings: **Auto sync on save** toggle (off by default). When on, the active note
