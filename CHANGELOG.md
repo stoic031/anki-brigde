@@ -14,6 +14,14 @@ All notable changes to this project are documented in this file.
   note — it fills an editable preview per field, and a new **Write** button commits the
   (possibly edited) text into the note.
 
+### Fixed
+
+- Sync, Rebuild, Delete, Generate, and Add image now show AnkiConnect's own error
+  message when it's not one of the few specifically-recognized cases (offline,
+  duplicate, model not found), instead of always falling back to a generic "check
+  Anki connection" message that could misreport an unrelated error as a connection
+  problem.
+
 ### Added
 
 - Settings: **Auto sync on save** toggle (off by default). When on, the active note

@@ -156,8 +156,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "opencode_opencode",
-      "community": 80,
-      "community_name": "settings.ts",
+      "community": 115,
+      "community_name": "plugin",
       "norm_label": "opencode.json"
     },
     {
@@ -167,8 +167,8 @@
       "source_location": "L2",
       "_origin": "ast",
       "id": "opencode_opencode_schema",
-      "community": 80,
-      "community_name": "settings.ts",
+      "community": 115,
+      "community_name": "plugin",
       "norm_label": "$schema"
     },
     {
@@ -178,8 +178,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "opencode_opencode_plugin",
-      "community": 80,
-      "community_name": "settings.ts",
+      "community": 115,
+      "community_name": "plugin",
       "norm_label": "plugin"
     },
     {
@@ -189,8 +189,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "ref_opencode_plugins_graphify_js",
-      "community": 80,
-      "community_name": "settings.ts",
+      "community": 115,
+      "community_name": "plugin",
       "norm_label": ".opencode/plugins/graphify.js"
     },
     {
@@ -816,8 +816,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_main_test",
-      "community": 115,
-      "community_name": "main.test.ts",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "main.test.ts"
     },
     {
@@ -827,8 +827,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "src_main_test_pluginbase_addcommandspy",
-      "community": 115,
-      "community_name": "main.test.ts",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "{ pluginbase, addcommandspy }"
     },
     {
@@ -838,8 +838,8 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_main_test_loadsettings_savesettings_getactivetextconfig_getactiveimageconfig",
-      "community": 115,
-      "community_name": "main.test.ts",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "{ loadsettings, savesettings, getactivetextconfig, getactiveimageconfig }"
     },
     {
@@ -849,8 +849,8 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "src_main_test_runquickcapture",
-      "community": 115,
-      "community_name": "main.test.ts",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "{ runquickcapture }"
     },
     {
@@ -860,8 +860,8 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "src_main_test_runcreatenote",
-      "community": 115,
-      "community_name": "main.test.ts",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "{ runcreatenote }"
     },
     {
@@ -871,8 +871,8 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "src_main_test_registersidebarview_revealsidebarview",
-      "community": 115,
-      "community_name": "main.test.ts",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "{ registersidebarview, revealsidebarview }"
     },
     {
@@ -882,8 +882,8 @@
       "source_location": "L47",
       "_origin": "ast",
       "id": "src_main_test_registerautosync",
-      "community": 115,
-      "community_name": "main.test.ts",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "{ registerautosync }"
     },
     {
@@ -893,7 +893,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_main",
-      "community": 90,
+      "community": 109,
       "community_name": "main.ts",
       "norm_label": "main.ts"
     },
@@ -904,8 +904,8 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "src_main_ankibridgeplugin",
-      "community": 90,
-      "community_name": "main.ts",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "ankibridgeplugin"
     },
     {
@@ -916,7 +916,7 @@
       "_origin": "ast",
       "id": "src_main_ankibridgeplugin_onload",
       "community": 90,
-      "community_name": "main.ts",
+      "community_name": "quickCapture.ts",
       "norm_label": ".onload()"
     },
     {
@@ -927,7 +927,7 @@
       "_origin": "ast",
       "id": "src_main_ankibridgeplugin_savesettings",
       "community": 111,
-      "community_name": "profilesSection.ts",
+      "community_name": "AnkiBridgePlugin",
       "norm_label": ".savesettings()"
     },
     {
@@ -938,7 +938,7 @@
       "_origin": "ast",
       "id": "src_main_ankibridgeplugin_setactiveprofile",
       "community": 111,
-      "community_name": "profilesSection.ts",
+      "community_name": "AnkiBridgePlugin",
       "norm_label": ".setactiveprofile()"
     },
     {
@@ -948,8 +948,8 @@
       "source_location": "L79",
       "_origin": "ast",
       "id": "src_main_ankibridgeplugin_onunload",
-      "community": 90,
-      "community_name": "main.ts",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": ".onunload()"
     },
     {
@@ -959,8 +959,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_note_addimage_test",
-      "community": 87,
-      "community_name": "addImage.ts",
+      "community": 104,
+      "community_name": "addImage.test.ts",
       "norm_label": "addimage.test.ts"
     },
     {
@@ -970,8 +970,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_note_addimage_test_modelfieldnames_storemediafile",
-      "community": 87,
-      "community_name": "addImage.ts",
+      "community": 104,
+      "community_name": "addImage.test.ts",
       "norm_label": "{ modelfieldnames, storemediafile }"
     },
     {
@@ -981,8 +981,8 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "src_note_addimage_test_note",
-      "community": 87,
-      "community_name": "addImage.ts",
+      "community": 104,
+      "community_name": "addImage.test.ts",
       "norm_label": "note"
     },
     {
@@ -992,8 +992,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "src_note_addimage_test_textprovider",
-      "community": 87,
-      "community_name": "addImage.ts",
+      "community": 104,
+      "community_name": "addImage.test.ts",
       "norm_label": "textprovider"
     },
     {
@@ -1003,8 +1003,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "src_note_addimage_test_imageprovider",
-      "community": 87,
-      "community_name": "addImage.ts",
+      "community": 104,
+      "community_name": "addImage.test.ts",
       "norm_label": "imageprovider"
     },
     {
@@ -1014,8 +1014,8 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "src_note_addimage_test_setup",
-      "community": 87,
-      "community_name": "addImage.ts",
+      "community": 104,
+      "community_name": "addImage.test.ts",
       "norm_label": "setup()"
     },
     {
@@ -1025,7 +1025,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_note_addimage",
-      "community": 87,
+      "community": 91,
       "community_name": "addImage.ts",
       "norm_label": "addimage.ts"
     },
@@ -1036,7 +1036,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "src_note_addimage_addimageplan",
-      "community": 87,
+      "community": 91,
       "community_name": "addImage.ts",
       "norm_label": "addimageplan"
     },
@@ -1047,7 +1047,7 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_note_addimage_sectiontext",
-      "community": 87,
+      "community": 91,
       "community_name": "addImage.ts",
       "norm_label": "sectiontext()"
     },
@@ -1058,7 +1058,7 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "src_note_addimage_planaddimage",
-      "community": 87,
+      "community": 91,
       "community_name": "addImage.ts",
       "norm_label": "planaddimage()"
     },
@@ -1069,7 +1069,7 @@
       "source_location": "L94",
       "_origin": "ast",
       "id": "src_note_addimage_addimageoutcome",
-      "community": 87,
+      "community": 91,
       "community_name": "addImage.ts",
       "norm_label": "addimageoutcome"
     },
@@ -1080,8 +1080,8 @@
       "source_location": "L101",
       "_origin": "ast",
       "id": "src_note_addimage_runaddimage",
-      "community": 87,
-      "community_name": "addImage.ts",
+      "community": 84,
+      "community_name": "sidebarView.ts",
       "norm_label": "runaddimage()"
     },
     {
@@ -1092,7 +1092,7 @@
       "_origin": "ast",
       "id": "src_note_aiprecheck_test",
       "community": 87,
-      "community_name": "addImage.ts",
+      "community_name": "generateFields.ts",
       "norm_label": "aiprecheck.test.ts"
     },
     {
@@ -1103,7 +1103,7 @@
       "_origin": "ast",
       "id": "src_note_aiprecheck_test_fakesettings",
       "community": 87,
-      "community_name": "addImage.ts",
+      "community_name": "generateFields.ts",
       "norm_label": "fakesettings()"
     },
     {
@@ -1114,7 +1114,7 @@
       "_origin": "ast",
       "id": "src_note_aiprecheck",
       "community": 87,
-      "community_name": "addImage.ts",
+      "community_name": "generateFields.ts",
       "norm_label": "aiprecheck.ts"
     },
     {
@@ -1125,7 +1125,7 @@
       "_origin": "ast",
       "id": "src_note_aiprecheck_aibuttonaction",
       "community": 87,
-      "community_name": "addImage.ts",
+      "community_name": "generateFields.ts",
       "norm_label": "aibuttonaction"
     },
     {
@@ -1136,7 +1136,7 @@
       "_origin": "ast",
       "id": "src_note_aiprecheck_aiprecheckresult",
       "community": 87,
-      "community_name": "addImage.ts",
+      "community_name": "generateFields.ts",
       "norm_label": "aiprecheckresult"
     },
     {
@@ -1147,7 +1147,7 @@
       "_origin": "ast",
       "id": "src_note_aiprecheck_runaiprecheck",
       "community": 87,
-      "community_name": "addImage.ts",
+      "community_name": "generateFields.ts",
       "norm_label": "runaiprecheck()"
     },
     {
@@ -1157,7 +1157,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_note_applyimagetag_test",
-      "community": 87,
+      "community": 91,
       "community_name": "addImage.ts",
       "norm_label": "applyimagetag.test.ts"
     },
@@ -1168,7 +1168,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_note_applyimagetag",
-      "community": 87,
+      "community": 91,
       "community_name": "addImage.ts",
       "norm_label": "applyimagetag.ts"
     },
@@ -1179,7 +1179,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "src_note_applyimagetag_imagetagmode",
-      "community": 87,
+      "community": 91,
       "community_name": "addImage.ts",
       "norm_label": "imagetagmode"
     },
@@ -1190,7 +1190,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "src_note_applyimagetag_applyimagetag",
-      "community": 87,
+      "community": 91,
       "community_name": "addImage.ts",
       "norm_label": "applyimagetag()"
     },
@@ -1202,7 +1202,7 @@
       "_origin": "ast",
       "id": "src_note_contenttemplate_test",
       "community": 90,
-      "community_name": "main.ts",
+      "community_name": "quickCapture.ts",
       "norm_label": "contenttemplate.test.ts"
     },
     {
@@ -1213,7 +1213,7 @@
       "_origin": "ast",
       "id": "src_note_contenttemplate",
       "community": 90,
-      "community_name": "main.ts",
+      "community_name": "quickCapture.ts",
       "norm_label": "contenttemplate.ts"
     },
     {
@@ -1224,7 +1224,7 @@
       "_origin": "ast",
       "id": "src_note_contenttemplate_generatecontentskeleton",
       "community": 90,
-      "community_name": "main.ts",
+      "community_name": "quickCapture.ts",
       "norm_label": "generatecontentskeleton()"
     },
     {
@@ -1235,7 +1235,7 @@
       "_origin": "ast",
       "id": "src_note_contenttemplate_rebuildcontent",
       "community": 90,
-      "community_name": "main.ts",
+      "community_name": "quickCapture.ts",
       "norm_label": "rebuildcontent()"
     },
     {
@@ -1356,7 +1356,7 @@
       "_origin": "ast",
       "id": "src_note_createnote",
       "community": 90,
-      "community_name": "main.ts",
+      "community_name": "quickCapture.ts",
       "norm_label": "createnote.ts"
     },
     {
@@ -1367,7 +1367,7 @@
       "_origin": "ast",
       "id": "src_note_createnote_runcreatenote",
       "community": 90,
-      "community_name": "main.ts",
+      "community_name": "quickCapture.ts",
       "norm_label": "runcreatenote()"
     },
     {
@@ -1377,7 +1377,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_note_fillemptysections_test",
-      "community": 87,
+      "community": 91,
       "community_name": "addImage.ts",
       "norm_label": "fillemptysections.test.ts"
     },
@@ -1388,7 +1388,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_note_fillemptysections",
-      "community": 87,
+      "community": 91,
       "community_name": "addImage.ts",
       "norm_label": "fillemptysections.ts"
     },
@@ -1399,7 +1399,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "src_note_fillemptysections_resolvesectionkey",
-      "community": 87,
+      "community": 91,
       "community_name": "addImage.ts",
       "norm_label": "resolvesectionkey()"
     },
@@ -1410,7 +1410,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "src_note_fillemptysections_fillresult",
-      "community": 87,
+      "community": 91,
       "community_name": "addImage.ts",
       "norm_label": "fillresult"
     },
@@ -1421,7 +1421,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "src_note_fillemptysections_fillemptysections",
-      "community": 87,
+      "community": 91,
       "community_name": "addImage.ts",
       "norm_label": "fillemptysections()"
     },
@@ -1432,7 +1432,7 @@
       "source_location": "L74",
       "_origin": "ast",
       "id": "src_note_fillemptysections_sectionheadings",
-      "community": 87,
+      "community": 91,
       "community_name": "addImage.ts",
       "norm_label": "sectionheadings()"
     },
@@ -1444,7 +1444,7 @@
       "_origin": "ast",
       "id": "src_note_generatefields_test",
       "community": 87,
-      "community_name": "addImage.ts",
+      "community_name": "generateFields.ts",
       "norm_label": "generatefields.test.ts"
     },
     {
@@ -1455,7 +1455,7 @@
       "_origin": "ast",
       "id": "src_note_generatefields_test_modelfieldnames",
       "community": 87,
-      "community_name": "addImage.ts",
+      "community_name": "generateFields.ts",
       "norm_label": "{ modelfieldnames }"
     },
     {
@@ -1466,7 +1466,7 @@
       "_origin": "ast",
       "id": "src_note_generatefields_test_note",
       "community": 87,
-      "community_name": "addImage.ts",
+      "community_name": "generateFields.ts",
       "norm_label": "note"
     },
     {
@@ -1477,7 +1477,7 @@
       "_origin": "ast",
       "id": "src_note_generatefields_test_provider",
       "community": 87,
-      "community_name": "addImage.ts",
+      "community_name": "generateFields.ts",
       "norm_label": "provider"
     },
     {
@@ -1488,7 +1488,7 @@
       "_origin": "ast",
       "id": "src_note_generatefields_test_setup",
       "community": 87,
-      "community_name": "addImage.ts",
+      "community_name": "generateFields.ts",
       "norm_label": "setup()"
     },
     {
@@ -1499,7 +1499,7 @@
       "_origin": "ast",
       "id": "src_note_generatefields",
       "community": 87,
-      "community_name": "addImage.ts",
+      "community_name": "generateFields.ts",
       "norm_label": "generatefields.ts"
     },
     {
@@ -1510,7 +1510,7 @@
       "_origin": "ast",
       "id": "src_note_generatefields_generateplan",
       "community": 87,
-      "community_name": "addImage.ts",
+      "community_name": "generateFields.ts",
       "norm_label": "generateplan"
     },
     {
@@ -1521,7 +1521,7 @@
       "_origin": "ast",
       "id": "src_note_generatefields_plangenerate",
       "community": 87,
-      "community_name": "addImage.ts",
+      "community_name": "generateFields.ts",
       "norm_label": "plangenerate()"
     },
     {
@@ -1532,7 +1532,7 @@
       "_origin": "ast",
       "id": "src_note_generatefields_generateoutcome",
       "community": 87,
-      "community_name": "addImage.ts",
+      "community_name": "generateFields.ts",
       "norm_label": "generateoutcome"
     },
     {
@@ -1553,8 +1553,8 @@
       "source_location": "L79",
       "_origin": "ast",
       "id": "src_note_generatefields_applygenerated",
-      "community": 84,
-      "community_name": "sidebarView.ts",
+      "community": 87,
+      "community_name": "generateFields.ts",
       "norm_label": "applygenerated()"
     },
     {
@@ -1565,7 +1565,7 @@
       "_origin": "ast",
       "id": "src_note_medianaming_test",
       "community": 90,
-      "community_name": "main.ts",
+      "community_name": "quickCapture.ts",
       "norm_label": "medianaming.test.ts"
     },
     {
@@ -1576,7 +1576,7 @@
       "_origin": "ast",
       "id": "src_note_medianaming",
       "community": 90,
-      "community_name": "main.ts",
+      "community_name": "quickCapture.ts",
       "norm_label": "medianaming.ts"
     },
     {
@@ -1587,7 +1587,7 @@
       "_origin": "ast",
       "id": "src_note_medianaming_sanitizeforfilename",
       "community": 90,
-      "community_name": "main.ts",
+      "community_name": "quickCapture.ts",
       "norm_label": "sanitizeforfilename()"
     },
     {
@@ -1598,7 +1598,7 @@
       "_origin": "ast",
       "id": "src_note_medianaming_buildmediafilename",
       "community": 90,
-      "community_name": "main.ts",
+      "community_name": "quickCapture.ts",
       "norm_label": "buildmediafilename()"
     },
     {
@@ -1608,8 +1608,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_note_quickcapture_test",
-      "community": 110,
-      "community_name": "quickCapture.test.ts",
+      "community": 90,
+      "community_name": "quickCapture.ts",
       "norm_label": "quickcapture.test.ts"
     },
     {
@@ -1619,8 +1619,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "src_note_quickcapture_test_markdownview_notice",
-      "community": 110,
-      "community_name": "quickCapture.test.ts",
+      "community": 90,
+      "community_name": "quickCapture.ts",
       "norm_label": "{ markdownview, notice }"
     },
     {
@@ -1630,8 +1630,8 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "src_note_quickcapture_test_modelfieldnamesmock_ankiconnectclient",
-      "community": 110,
-      "community_name": "quickCapture.test.ts",
+      "community": 90,
+      "community_name": "quickCapture.ts",
       "norm_label": "{ modelfieldnamesmock, ankiconnectclient }"
     },
     {
@@ -1641,8 +1641,8 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "src_note_quickcapture_test_writeankifrontmatter",
-      "community": 110,
-      "community_name": "quickCapture.test.ts",
+      "community": 90,
+      "community_name": "quickCapture.ts",
       "norm_label": "{ writeankifrontmatter }"
     },
     {
@@ -1652,8 +1652,8 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "src_note_quickcapture_test_toasterror",
-      "community": 110,
-      "community_name": "quickCapture.test.ts",
+      "community": 90,
+      "community_name": "quickCapture.ts",
       "norm_label": "{ toasterror }"
     },
     {
@@ -1663,8 +1663,8 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "src_note_quickcapture_test_revealsidebarview",
-      "community": 110,
-      "community_name": "quickCapture.test.ts",
+      "community": 90,
+      "community_name": "quickCapture.ts",
       "norm_label": "{ revealsidebarview }"
     },
     {
@@ -1674,8 +1674,8 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "src_note_quickcapture_test_withprofile",
-      "community": 110,
-      "community_name": "quickCapture.test.ts",
+      "community": 90,
+      "community_name": "quickCapture.ts",
       "norm_label": "withprofile()"
     },
     {
@@ -1685,8 +1685,8 @@
       "source_location": "L58",
       "_origin": "ast",
       "id": "src_note_quickcapture_test_fakesettings",
-      "community": 110,
-      "community_name": "quickCapture.test.ts",
+      "community": 90,
+      "community_name": "quickCapture.ts",
       "norm_label": "fakesettings()"
     },
     {
@@ -1696,8 +1696,8 @@
       "source_location": "L77",
       "_origin": "ast",
       "id": "src_note_quickcapture_test_fakeapp",
-      "community": 110,
-      "community_name": "quickCapture.test.ts",
+      "community": 90,
+      "community_name": "quickCapture.ts",
       "norm_label": "fakeapp()"
     },
     {
@@ -1707,8 +1707,8 @@
       "source_location": "L83",
       "_origin": "ast",
       "id": "src_note_quickcapture_test_fakevaultapp",
-      "community": 110,
-      "community_name": "quickCapture.test.ts",
+      "community": 90,
+      "community_name": "quickCapture.ts",
       "norm_label": "fakevaultapp()"
     },
     {
@@ -1718,8 +1718,8 @@
       "source_location": "L93",
       "_origin": "ast",
       "id": "src_note_quickcapture_test_fakeplugin",
-      "community": 110,
-      "community_name": "quickCapture.test.ts",
+      "community": 90,
+      "community_name": "quickCapture.ts",
       "norm_label": "fakeplugin()"
     },
     {
@@ -1730,7 +1730,7 @@
       "_origin": "ast",
       "id": "src_note_quickcapture",
       "community": 90,
-      "community_name": "main.ts",
+      "community_name": "quickCapture.ts",
       "norm_label": "quickcapture.ts"
     },
     {
@@ -1741,7 +1741,7 @@
       "_origin": "ast",
       "id": "src_note_quickcapture_getselectedtext",
       "community": 90,
-      "community_name": "main.ts",
+      "community_name": "quickCapture.ts",
       "norm_label": "getselectedtext()"
     },
     {
@@ -1752,7 +1752,7 @@
       "_origin": "ast",
       "id": "src_note_quickcapture_getquickcapturefilename",
       "community": 90,
-      "community_name": "main.ts",
+      "community_name": "quickCapture.ts",
       "norm_label": "getquickcapturefilename()"
     },
     {
@@ -1763,7 +1763,7 @@
       "_origin": "ast",
       "id": "src_note_quickcapture_quickcapturetarget",
       "community": 90,
-      "community_name": "main.ts",
+      "community_name": "quickCapture.ts",
       "norm_label": "quickcapturetarget"
     },
     {
@@ -1774,7 +1774,7 @@
       "_origin": "ast",
       "id": "src_note_quickcapture_resolvequickcapturetarget",
       "community": 90,
-      "community_name": "main.ts",
+      "community_name": "quickCapture.ts",
       "norm_label": "resolvequickcapturetarget()"
     },
     {
@@ -1785,7 +1785,7 @@
       "_origin": "ast",
       "id": "src_note_quickcapture_getuniquenotepath",
       "community": 90,
-      "community_name": "main.ts",
+      "community_name": "quickCapture.ts",
       "norm_label": "getuniquenotepath()"
     },
     {
@@ -1796,7 +1796,7 @@
       "_origin": "ast",
       "id": "src_note_quickcapture_appwithsettingtab",
       "community": 90,
-      "community_name": "main.ts",
+      "community_name": "quickCapture.ts",
       "norm_label": "appwithsettingtab"
     },
     {
@@ -1807,7 +1807,7 @@
       "_origin": "ast",
       "id": "src_note_quickcapture_openpluginsettings",
       "community": 90,
-      "community_name": "main.ts",
+      "community_name": "quickCapture.ts",
       "norm_label": "openpluginsettings()"
     },
     {
@@ -1818,7 +1818,7 @@
       "_origin": "ast",
       "id": "src_note_quickcapture_runquickcapture",
       "community": 90,
-      "community_name": "main.ts",
+      "community_name": "quickCapture.ts",
       "norm_label": "runquickcapture()"
     },
     {
@@ -1829,7 +1829,7 @@
       "_origin": "ast",
       "id": "src_providers_image_comfyworkflow_test",
       "community": 88,
-      "community_name": "comfyWorkflow.ts",
+      "community_name": "providerEditor.ts",
       "norm_label": "comfyworkflow.test.ts"
     },
     {
@@ -1840,7 +1840,7 @@
       "_origin": "ast",
       "id": "src_providers_image_comfyworkflow_test_requesturl",
       "community": 88,
-      "community_name": "comfyWorkflow.ts",
+      "community_name": "providerEditor.ts",
       "norm_label": "{ requesturl }"
     },
     {
@@ -1851,7 +1851,7 @@
       "_origin": "ast",
       "id": "src_providers_image_comfyworkflow_test_ok",
       "community": 88,
-      "community_name": "comfyWorkflow.ts",
+      "community_name": "providerEditor.ts",
       "norm_label": "ok()"
     },
     {
@@ -1862,7 +1862,7 @@
       "_origin": "ast",
       "id": "src_providers_image_comfyworkflow_test_urls",
       "community": 88,
-      "community_name": "comfyWorkflow.ts",
+      "community_name": "providerEditor.ts",
       "norm_label": "urls()"
     },
     {
@@ -1873,7 +1873,7 @@
       "_origin": "ast",
       "id": "src_providers_image_comfyworkflow_test_uiworkflow",
       "community": 88,
-      "community_name": "comfyWorkflow.ts",
+      "community_name": "providerEditor.ts",
       "norm_label": "uiworkflow"
     },
     {
@@ -1884,7 +1884,7 @@
       "_origin": "ast",
       "id": "src_providers_image_comfyworkflow",
       "community": 88,
-      "community_name": "comfyWorkflow.ts",
+      "community_name": "providerEditor.ts",
       "norm_label": "comfyworkflow.ts"
     },
     {
@@ -1895,7 +1895,7 @@
       "_origin": "ast",
       "id": "src_providers_image_comfyworkflow_trim",
       "community": 88,
-      "community_name": "comfyWorkflow.ts",
+      "community_name": "providerEditor.ts",
       "norm_label": "trim()"
     },
     {
@@ -1906,7 +1906,7 @@
       "_origin": "ast",
       "id": "src_providers_image_comfyworkflow_get",
       "community": 88,
-      "community_name": "comfyWorkflow.ts",
+      "community_name": "providerEditor.ts",
       "norm_label": "get()"
     },
     {
@@ -1917,7 +1917,7 @@
       "_origin": "ast",
       "id": "src_providers_image_comfyworkflow_obj",
       "community": 88,
-      "community_name": "comfyWorkflow.ts",
+      "community_name": "providerEditor.ts",
       "norm_label": "obj()"
     },
     {
@@ -1928,7 +1928,7 @@
       "_origin": "ast",
       "id": "src_providers_image_comfyworkflow_listworkflows",
       "community": 88,
-      "community_name": "comfyWorkflow.ts",
+      "community_name": "providerEditor.ts",
       "norm_label": "listworkflows()"
     },
     {
@@ -1939,7 +1939,7 @@
       "_origin": "ast",
       "id": "src_providers_image_comfyworkflow_fetchworkflow",
       "community": 88,
-      "community_name": "comfyWorkflow.ts",
+      "community_name": "providerEditor.ts",
       "norm_label": "fetchworkflow()"
     },
     {
@@ -1950,7 +1950,7 @@
       "_origin": "ast",
       "id": "src_providers_image_comfyworkflow_workflownode",
       "community": 88,
-      "community_name": "comfyWorkflow.ts",
+      "community_name": "providerEditor.ts",
       "norm_label": "workflownode"
     },
     {
@@ -1961,7 +1961,7 @@
       "_origin": "ast",
       "id": "src_providers_image_comfyworkflow_workflowanalysis",
       "community": 88,
-      "community_name": "comfyWorkflow.ts",
+      "community_name": "providerEditor.ts",
       "norm_label": "workflowanalysis"
     },
     {
@@ -1972,7 +1972,7 @@
       "_origin": "ast",
       "id": "src_providers_image_comfyworkflow_analyzeworkflow",
       "community": 88,
-      "community_name": "comfyWorkflow.ts",
+      "community_name": "providerEditor.ts",
       "norm_label": "analyzeworkflow()"
     },
     {
@@ -1983,7 +1983,7 @@
       "_origin": "ast",
       "id": "src_providers_image_comfyworkflow_describeanalysis",
       "community": 88,
-      "community_name": "comfyWorkflow.ts",
+      "community_name": "providerEditor.ts",
       "norm_label": "describeanalysis()"
     },
     {
@@ -1994,7 +1994,7 @@
       "_origin": "ast",
       "id": "src_providers_image_comfyworkflow_graph",
       "community": 88,
-      "community_name": "comfyWorkflow.ts",
+      "community_name": "providerEditor.ts",
       "norm_label": "graph"
     },
     {
@@ -2005,7 +2005,7 @@
       "_origin": "ast",
       "id": "src_providers_image_comfyworkflow_textnode",
       "community": 88,
-      "community_name": "comfyWorkflow.ts",
+      "community_name": "providerEditor.ts",
       "norm_label": "textnode()"
     },
     {
@@ -2016,7 +2016,7 @@
       "_origin": "ast",
       "id": "src_providers_image_comfyworkflow_normalize",
       "community": 88,
-      "community_name": "comfyWorkflow.ts",
+      "community_name": "providerEditor.ts",
       "norm_label": "normalize()"
     },
     {
@@ -2027,7 +2027,7 @@
       "_origin": "ast",
       "id": "src_providers_image_comfyworkflow_fromuiformat",
       "community": 88,
-      "community_name": "comfyWorkflow.ts",
+      "community_name": "providerEditor.ts",
       "norm_label": "fromuiformat()"
     },
     {
@@ -2038,7 +2038,7 @@
       "_origin": "ast",
       "id": "src_providers_image_comfyworkflow_fromapiformat",
       "community": 88,
-      "community_name": "comfyWorkflow.ts",
+      "community_name": "providerEditor.ts",
       "norm_label": "fromapiformat()"
     },
     {
@@ -2048,8 +2048,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_providers_modellists_test",
-      "community": 94,
-      "community_name": "modelLists.ts",
+      "community": 88,
+      "community_name": "providerEditor.ts",
       "norm_label": "modellists.test.ts"
     },
     {
@@ -2059,8 +2059,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "src_providers_modellists_test_requesturl",
-      "community": 94,
-      "community_name": "modelLists.ts",
+      "community": 88,
+      "community_name": "providerEditor.ts",
       "norm_label": "{ requesturl }"
     },
     {
@@ -2070,8 +2070,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "src_providers_modellists_test_ok",
-      "community": 94,
-      "community_name": "modelLists.ts",
+      "community": 88,
+      "community_name": "providerEditor.ts",
       "norm_label": "ok()"
     },
     {
@@ -2081,8 +2081,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_providers_modellists_test_ids",
-      "community": 94,
-      "community_name": "modelLists.ts",
+      "community": 88,
+      "community_name": "providerEditor.ts",
       "norm_label": "ids()"
     },
     {
@@ -2092,8 +2092,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "src_providers_modellists_test_call",
-      "community": 94,
-      "community_name": "modelLists.ts",
+      "community": 88,
+      "community_name": "providerEditor.ts",
       "norm_label": "call()"
     },
     {
@@ -2103,8 +2103,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_providers_modellists",
-      "community": 94,
-      "community_name": "modelLists.ts",
+      "community": 88,
+      "community_name": "providerEditor.ts",
       "norm_label": "modellists.ts"
     },
     {
@@ -2114,8 +2114,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "src_providers_modellists_modelkind",
-      "community": 94,
-      "community_name": "modelLists.ts",
+      "community": 88,
+      "community_name": "providerEditor.ts",
       "norm_label": "modelkind"
     },
     {
@@ -2125,8 +2125,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "src_providers_modellists_modellist",
-      "community": 94,
-      "community_name": "modelLists.ts",
+      "community": 88,
+      "community_name": "providerEditor.ts",
       "norm_label": "modellist"
     },
     {
@@ -2136,8 +2136,8 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "src_providers_modellists_entry",
-      "community": 94,
-      "community_name": "modelLists.ts",
+      "community": 88,
+      "community_name": "providerEditor.ts",
       "norm_label": "entry"
     },
     {
@@ -2147,8 +2147,8 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "src_providers_modellists_get",
-      "community": 94,
-      "community_name": "modelLists.ts",
+      "community": 88,
+      "community_name": "providerEditor.ts",
       "norm_label": "get()"
     },
     {
@@ -2158,8 +2158,8 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "src_providers_modellists_bearer",
-      "community": 94,
-      "community_name": "modelLists.ts",
+      "community": 88,
+      "community_name": "providerEditor.ts",
       "norm_label": "bearer()"
     },
     {
@@ -2169,8 +2169,8 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "src_providers_modellists_shape",
-      "community": 94,
-      "community_name": "modelLists.ts",
+      "community": 88,
+      "community_name": "providerEditor.ts",
       "norm_label": "shape()"
     },
     {
@@ -2180,8 +2180,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_providers_modellists_trim",
-      "community": 94,
-      "community_name": "modelLists.ts",
+      "community": 88,
+      "community_name": "providerEditor.ts",
       "norm_label": "trim()"
     },
     {
@@ -2191,8 +2191,8 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "src_providers_modellists_obj",
-      "community": 94,
-      "community_name": "modelLists.ts",
+      "community": 88,
+      "community_name": "providerEditor.ts",
       "norm_label": "obj()"
     },
     {
@@ -2202,8 +2202,8 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "src_providers_modellists_fetcher",
-      "community": 94,
-      "community_name": "modelLists.ts",
+      "community": 88,
+      "community_name": "providerEditor.ts",
       "norm_label": "fetcher"
     },
     {
@@ -2213,8 +2213,8 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "src_providers_modellists_openaistyle",
-      "community": 94,
-      "community_name": "modelLists.ts",
+      "community": 88,
+      "community_name": "providerEditor.ts",
       "norm_label": "openaistyle()"
     },
     {
@@ -2224,8 +2224,8 @@
       "source_location": "L66",
       "_origin": "ast",
       "id": "src_providers_modellists_fetchers",
-      "community": 94,
-      "community_name": "modelLists.ts",
+      "community": 88,
+      "community_name": "providerEditor.ts",
       "norm_label": "fetchers"
     },
     {
@@ -2235,8 +2235,8 @@
       "source_location": "L153",
       "_origin": "ast",
       "id": "src_providers_modellists_filters",
-      "community": 94,
-      "community_name": "modelLists.ts",
+      "community": 88,
+      "community_name": "providerEditor.ts",
       "norm_label": "filters"
     },
     {
@@ -2246,8 +2246,8 @@
       "source_location": "L184",
       "_origin": "ast",
       "id": "src_providers_modellists_uniquesorted",
-      "community": 94,
-      "community_name": "modelLists.ts",
+      "community": 88,
+      "community_name": "providerEditor.ts",
       "norm_label": "uniquesorted()"
     },
     {
@@ -2257,8 +2257,8 @@
       "source_location": "L187",
       "_origin": "ast",
       "id": "src_providers_modellists_listmodels",
-      "community": 94,
-      "community_name": "modelLists.ts",
+      "community": 88,
+      "community_name": "providerEditor.ts",
       "norm_label": "listmodels()"
     },
     {
@@ -2268,8 +2268,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_providers_presets_test",
-      "community": 80,
-      "community_name": "settings.ts",
+      "community": 88,
+      "community_name": "providerEditor.ts",
       "norm_label": "presets.test.ts"
     },
     {
@@ -2279,8 +2279,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_providers_presets",
-      "community": 80,
-      "community_name": "settings.ts",
+      "community": 88,
+      "community_name": "providerEditor.ts",
       "norm_label": "presets.ts"
     },
     {
@@ -2323,8 +2323,8 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "src_providers_presets_same",
-      "community": 80,
-      "community_name": "settings.ts",
+      "community": 88,
+      "community_name": "providerEditor.ts",
       "norm_label": "same()"
     },
     {
@@ -2334,8 +2334,8 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "src_providers_presets_cloud",
-      "community": 80,
-      "community_name": "settings.ts",
+      "community": 88,
+      "community_name": "providerEditor.ts",
       "norm_label": "cloud()"
     },
     {
@@ -2345,8 +2345,8 @@
       "source_location": "L55",
       "_origin": "ast",
       "id": "src_providers_presets_text_presets",
-      "community": 80,
-      "community_name": "settings.ts",
+      "community": 88,
+      "community_name": "providerEditor.ts",
       "norm_label": "text_presets"
     },
     {
@@ -2356,8 +2356,8 @@
       "source_location": "L96",
       "_origin": "ast",
       "id": "src_providers_presets_image_presets",
-      "community": 80,
-      "community_name": "settings.ts",
+      "community": 88,
+      "community_name": "providerEditor.ts",
       "norm_label": "image_presets"
     },
     {
@@ -2367,8 +2367,8 @@
       "source_location": "L146",
       "_origin": "ast",
       "id": "src_providers_presets_presetlabel",
-      "community": 80,
-      "community_name": "settings.ts",
+      "community": 88,
+      "community_name": "providerEditor.ts",
       "norm_label": "presetlabel()"
     },
     {
@@ -2610,7 +2610,7 @@
       "_origin": "ast",
       "id": "src_providers_text_http_requestjson",
       "community": 88,
-      "community_name": "comfyWorkflow.ts",
+      "community_name": "providerEditor.ts",
       "norm_label": "requestjson()"
     },
     {
@@ -3005,8 +3005,8 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "src_settings_profile",
-      "community": 110,
-      "community_name": "quickCapture.test.ts",
+      "community": 90,
+      "community_name": "quickCapture.ts",
       "norm_label": "profile"
     },
     {
@@ -3049,8 +3049,8 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "src_settings_imagefieldconfig",
-      "community": 87,
-      "community_name": "addImage.ts",
+      "community": 104,
+      "community_name": "addImage.test.ts",
       "norm_label": "imagefieldconfig"
     },
     {
@@ -3060,8 +3060,8 @@
       "source_location": "L49",
       "_origin": "ast",
       "id": "src_settings_ankibridgesettings",
-      "community": 80,
-      "community_name": "settings.ts",
+      "community": 87,
+      "community_name": "generateFields.ts",
       "norm_label": "ankibridgesettings"
     },
     {
@@ -3082,8 +3082,8 @@
       "source_location": "L79",
       "_origin": "ast",
       "id": "src_settings_default_settings",
-      "community": 87,
-      "community_name": "addImage.ts",
+      "community": 109,
+      "community_name": "main.ts",
       "norm_label": "default_settings"
     },
     {
@@ -3193,7 +3193,7 @@
       "_origin": "ast",
       "id": "src_settings_getactiveprofile",
       "community": 111,
-      "community_name": "profilesSection.ts",
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "getactiveprofile()"
     },
     {
@@ -3225,8 +3225,8 @@
       "source_location": "L267",
       "_origin": "ast",
       "id": "src_settings_resolvemediaprefix",
-      "community": 87,
-      "community_name": "addImage.ts",
+      "community": 80,
+      "community_name": "settings.ts",
       "norm_label": "resolvemediaprefix()"
     },
     {
@@ -3237,7 +3237,7 @@
       "_origin": "ast",
       "id": "src_settings_fieldconfigkey",
       "community": 87,
-      "community_name": "addImage.ts",
+      "community_name": "generateFields.ts",
       "norm_label": "fieldconfigkey()"
     },
     {
@@ -3248,7 +3248,7 @@
       "_origin": "ast",
       "id": "src_sync_ankiconnect_test",
       "community": 7,
-      "community_name": "ankiConnect.ts",
+      "community_name": "AnkiConnectClient",
       "norm_label": "ankiconnect.test.ts"
     },
     {
@@ -3259,7 +3259,7 @@
       "_origin": "ast",
       "id": "src_sync_ankiconnect_test_requesturl",
       "community": 7,
-      "community_name": "ankiConnect.ts",
+      "community_name": "AnkiConnectClient",
       "norm_label": "{ requesturl }"
     },
     {
@@ -3270,7 +3270,7 @@
       "_origin": "ast",
       "id": "src_sync_ankiconnect_test_jsonresponse",
       "community": 7,
-      "community_name": "ankiConnect.ts",
+      "community_name": "AnkiConnectClient",
       "norm_label": "jsonresponse()"
     },
     {
@@ -3281,7 +3281,7 @@
       "_origin": "ast",
       "id": "src_sync_ankiconnect_test_sentbody",
       "community": 7,
-      "community_name": "ankiConnect.ts",
+      "community_name": "AnkiConnectClient",
       "norm_label": "sentbody()"
     },
     {
@@ -3292,7 +3292,7 @@
       "_origin": "ast",
       "id": "src_sync_ankiconnect_test_client",
       "community": 7,
-      "community_name": "ankiConnect.ts",
+      "community_name": "AnkiConnectClient",
       "norm_label": "client()"
     },
     {
@@ -3303,7 +3303,7 @@
       "_origin": "ast",
       "id": "src_sync_ankiconnect",
       "community": 7,
-      "community_name": "ankiConnect.ts",
+      "community_name": "AnkiConnectClient",
       "norm_label": "ankiconnect.ts"
     },
     {
@@ -3314,7 +3314,7 @@
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectresponse",
       "community": 7,
-      "community_name": "ankiConnect.ts",
+      "community_name": "AnkiConnectClient",
       "norm_label": "ankiconnectresponse"
     },
     {
@@ -3324,7 +3324,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectclient",
-      "community": 104,
+      "community": 7,
       "community_name": "AnkiConnectClient",
       "norm_label": "ankiconnectclient"
     },
@@ -3335,7 +3335,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectclient_constructor",
-      "community": 104,
+      "community": 7,
       "community_name": "AnkiConnectClient",
       "norm_label": ".constructor()"
     },
@@ -3346,7 +3346,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectclient_invoke",
-      "community": 104,
+      "community": 7,
       "community_name": "AnkiConnectClient",
       "norm_label": ".invoke()"
     },
@@ -3357,7 +3357,7 @@
       "source_location": "L72",
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectclient_addnote",
-      "community": 104,
+      "community": 7,
       "community_name": "AnkiConnectClient",
       "norm_label": ".addnote()"
     },
@@ -3368,7 +3368,7 @@
       "source_location": "L88",
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectclient_updatenotefields",
-      "community": 104,
+      "community": 7,
       "community_name": "AnkiConnectClient",
       "norm_label": ".updatenotefields()"
     },
@@ -3379,7 +3379,7 @@
       "source_location": "L97",
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectclient_deletenotes",
-      "community": 104,
+      "community": 7,
       "community_name": "AnkiConnectClient",
       "norm_label": ".deletenotes()"
     },
@@ -3390,7 +3390,7 @@
       "source_location": "L101",
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectclient_decknames",
-      "community": 104,
+      "community": 7,
       "community_name": "AnkiConnectClient",
       "norm_label": ".decknames()"
     },
@@ -3401,7 +3401,7 @@
       "source_location": "L105",
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectclient_modelnames",
-      "community": 104,
+      "community": 7,
       "community_name": "AnkiConnectClient",
       "norm_label": ".modelnames()"
     },
@@ -3412,7 +3412,7 @@
       "source_location": "L109",
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectclient_modelfieldnames",
-      "community": 104,
+      "community": 7,
       "community_name": "AnkiConnectClient",
       "norm_label": ".modelfieldnames()"
     },
@@ -3423,7 +3423,7 @@
       "source_location": "L113",
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectclient_version",
-      "community": 104,
+      "community": 7,
       "community_name": "AnkiConnectClient",
       "norm_label": ".version()"
     },
@@ -3434,7 +3434,7 @@
       "source_location": "L118",
       "_origin": "ast",
       "id": "src_sync_ankiconnect_ankiconnectclient_storemediafile",
-      "community": 104,
+      "community": 7,
       "community_name": "AnkiConnectClient",
       "norm_label": ".storemediafile()"
     },
@@ -3445,8 +3445,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_sync_autosync_test",
-      "community": 80,
-      "community_name": "settings.ts",
+      "community": 94,
+      "community_name": "autoSync.test.ts",
       "norm_label": "autosync.test.ts"
     },
     {
@@ -3456,8 +3456,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "src_sync_autosync_test_readankifrontmatter",
-      "community": 80,
-      "community_name": "settings.ts",
+      "community": 94,
+      "community_name": "autoSync.test.ts",
       "norm_label": "{ readankifrontmatter }"
     },
     {
@@ -3467,8 +3467,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "src_sync_autosync_test_syncnote",
-      "community": 80,
-      "community_name": "settings.ts",
+      "community": 94,
+      "community_name": "autoSync.test.ts",
       "norm_label": "{ syncnote }"
     },
     {
@@ -3478,8 +3478,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_sync_autosync_test_ankiconnectclient",
-      "community": 80,
-      "community_name": "settings.ts",
+      "community": 94,
+      "community_name": "autoSync.test.ts",
       "norm_label": "{ ankiconnectclient }"
     },
     {
@@ -3489,8 +3489,8 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "src_sync_autosync_test_toastsuccess_toasterror",
-      "community": 80,
-      "community_name": "settings.ts",
+      "community": 94,
+      "community_name": "autoSync.test.ts",
       "norm_label": "{ toastsuccess, toasterror }"
     },
     {
@@ -3500,8 +3500,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_sync_autosync_test_faketfile",
-      "community": 80,
-      "community_name": "settings.ts",
+      "community": 94,
+      "community_name": "autoSync.test.ts",
       "norm_label": "faketfile()"
     },
     {
@@ -3511,8 +3511,8 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "src_sync_autosync_test_fakeplugin",
-      "community": 80,
-      "community_name": "settings.ts",
+      "community": 94,
+      "community_name": "autoSync.test.ts",
       "norm_label": "fakeplugin()"
     },
     {
@@ -3522,8 +3522,8 @@
       "source_location": "L62",
       "_origin": "ast",
       "id": "src_sync_autosync_test_configured",
-      "community": 80,
-      "community_name": "settings.ts",
+      "community": 94,
+      "community_name": "autoSync.test.ts",
       "norm_label": "configured"
     },
     {
@@ -3544,8 +3544,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_sync_autosync_registerautosync",
-      "community": 90,
-      "community_name": "main.ts",
+      "community": 5,
+      "community_name": "syncEngine.ts",
       "norm_label": "registerautosync()"
     },
     {
@@ -3721,7 +3721,7 @@
       "_origin": "ast",
       "id": "src_sync_syncengine_test",
       "community": 7,
-      "community_name": "ankiConnect.ts",
+      "community_name": "AnkiConnectClient",
       "norm_label": "syncengine.test.ts"
     },
     {
@@ -3732,7 +3732,7 @@
       "_origin": "ast",
       "id": "src_sync_syncengine_test_fields",
       "community": 7,
-      "community_name": "ankiConnect.ts",
+      "community_name": "AnkiConnectClient",
       "norm_label": "fields"
     },
     {
@@ -3743,7 +3743,7 @@
       "_origin": "ast",
       "id": "src_sync_syncengine_test_fakeapp",
       "community": 7,
-      "community_name": "ankiConnect.ts",
+      "community_name": "AnkiConnectClient",
       "norm_label": "fakeapp()"
     },
     {
@@ -3754,7 +3754,7 @@
       "_origin": "ast",
       "id": "src_sync_syncengine_test_fakeclient",
       "community": 7,
-      "community_name": "ankiConnect.ts",
+      "community_name": "AnkiConnectClient",
       "norm_label": "fakeclient()"
     },
     {
@@ -3765,7 +3765,7 @@
       "_origin": "ast",
       "id": "src_sync_syncengine_test_file",
       "community": 7,
-      "community_name": "ankiConnect.ts",
+      "community_name": "AnkiConnectClient",
       "norm_label": "file"
     },
     {
@@ -4073,7 +4073,7 @@
       "_origin": "ast",
       "id": "src_types_ankiconnecterror",
       "community": 7,
-      "community_name": "ankiConnect.ts",
+      "community_name": "AnkiConnectClient",
       "norm_label": "ankiconnecterror"
     },
     {
@@ -4084,7 +4084,7 @@
       "_origin": "ast",
       "id": "src_types_ankiconnecterror_constructor",
       "community": 7,
-      "community_name": "ankiConnect.ts",
+      "community_name": "AnkiConnectClient",
       "norm_label": ".constructor()"
     },
     {
@@ -4116,8 +4116,8 @@
       "source_location": "L44",
       "_origin": "ast",
       "id": "src_types_syncerror",
-      "community": 5,
-      "community_name": "syncEngine.ts",
+      "community": 105,
+      "community_name": "noteActions.test.ts",
       "norm_label": "syncerror"
     },
     {
@@ -4127,8 +4127,8 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "src_types_syncerror_constructor",
-      "community": 5,
-      "community_name": "syncEngine.ts",
+      "community": 105,
+      "community_name": "noteActions.test.ts",
       "norm_label": ".constructor()"
     },
     {
@@ -4139,7 +4139,7 @@
       "_origin": "ast",
       "id": "src_ui_comfyworkflowrow",
       "community": 88,
-      "community_name": "comfyWorkflow.ts",
+      "community_name": "providerEditor.ts",
       "norm_label": "comfyworkflowrow.ts"
     },
     {
@@ -4150,7 +4150,7 @@
       "_origin": "ast",
       "id": "src_ui_comfyworkflowrow_workflowholder",
       "community": 88,
-      "community_name": "comfyWorkflow.ts",
+      "community_name": "providerEditor.ts",
       "norm_label": "workflowholder"
     },
     {
@@ -4161,7 +4161,7 @@
       "_origin": "ast",
       "id": "src_ui_comfyworkflowrow_workflowstate",
       "community": 88,
-      "community_name": "comfyWorkflow.ts",
+      "community_name": "providerEditor.ts",
       "norm_label": "workflowstate"
     },
     {
@@ -4172,7 +4172,7 @@
       "_origin": "ast",
       "id": "src_ui_comfyworkflowrow_states",
       "community": 88,
-      "community_name": "comfyWorkflow.ts",
+      "community_name": "providerEditor.ts",
       "norm_label": "states"
     },
     {
@@ -4194,7 +4194,7 @@
       "_origin": "ast",
       "id": "src_ui_comfyworkflowrow_reason",
       "community": 88,
-      "community_name": "comfyWorkflow.ts",
+      "community_name": "providerEditor.ts",
       "norm_label": "reason()"
     },
     {
@@ -4205,7 +4205,7 @@
       "_origin": "ast",
       "id": "src_ui_comfyworkflowrow_refreshworkflows",
       "community": 88,
-      "community_name": "comfyWorkflow.ts",
+      "community_name": "providerEditor.ts",
       "norm_label": "refreshworkflows()"
     },
     {
@@ -4216,7 +4216,7 @@
       "_origin": "ast",
       "id": "src_ui_comfyworkflowrow_analyzeselected",
       "community": 88,
-      "community_name": "comfyWorkflow.ts",
+      "community_name": "providerEditor.ts",
       "norm_label": "analyzeselected()"
     },
     {
@@ -4227,7 +4227,7 @@
       "_origin": "ast",
       "id": "src_ui_comfyworkflowrow_renderworkflowrow",
       "community": 88,
-      "community_name": "comfyWorkflow.ts",
+      "community_name": "providerEditor.ts",
       "norm_label": "renderworkflowrow()"
     },
     {
@@ -4754,8 +4754,8 @@
       "source_location": "L228",
       "_origin": "ast",
       "id": "src_ui_imageprovidersection_test_setup",
-      "community": 112,
-      "community_name": "renderConnectionSection",
+      "community": 93,
+      "community_name": "imageProviderSection.test.ts",
       "norm_label": "setup()"
     },
     {
@@ -4798,8 +4798,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_ui_imageprovidersection",
-      "community": 80,
-      "community_name": "settings.ts",
+      "community": 88,
+      "community_name": "providerEditor.ts",
       "norm_label": "imageprovidersection.ts"
     },
     {
@@ -4809,8 +4809,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_ui_imageprovidersection_renderimageprovidersection",
-      "community": 112,
-      "community_name": "renderConnectionSection",
+      "community": 93,
+      "community_name": "imageProviderSection.test.ts",
       "norm_label": "renderimageprovidersection()"
     },
     {
@@ -4821,7 +4821,7 @@
       "_origin": "ast",
       "id": "src_ui_mediasection_test",
       "community": 109,
-      "community_name": "settingsTab.ts",
+      "community_name": "main.ts",
       "norm_label": "mediasection.test.ts"
     },
     {
@@ -4942,7 +4942,7 @@
       "_origin": "ast",
       "id": "src_ui_mediasection_test_notice_settings",
       "community": 109,
-      "community_name": "settingsTab.ts",
+      "community_name": "main.ts",
       "norm_label": "{ notice, settings }"
     },
     {
@@ -4953,7 +4953,7 @@
       "_origin": "ast",
       "id": "src_ui_mediasection_test_constructor",
       "community": 109,
-      "community_name": "settingsTab.ts",
+      "community_name": "main.ts",
       "norm_label": "constructor()"
     },
     {
@@ -4964,7 +4964,7 @@
       "_origin": "ast",
       "id": "src_ui_mediasection_test_fakeplugin",
       "community": 109,
-      "community_name": "settingsTab.ts",
+      "community_name": "main.ts",
       "norm_label": "fakeplugin()"
     },
     {
@@ -4974,8 +4974,8 @@
       "source_location": "L77",
       "_origin": "ast",
       "id": "src_ui_mediasection_test_render",
-      "community": 109,
-      "community_name": "settingsTab.ts",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "render()"
     },
     {
@@ -4986,7 +4986,7 @@
       "_origin": "ast",
       "id": "src_ui_mediasection",
       "community": 109,
-      "community_name": "settingsTab.ts",
+      "community_name": "main.ts",
       "norm_label": "mediasection.ts"
     },
     {
@@ -4996,8 +4996,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "src_ui_mediasection_rendermediasection",
-      "community": 109,
-      "community_name": "settingsTab.ts",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "rendermediasection()"
     },
     {
@@ -5899,7 +5899,7 @@
       "_origin": "ast",
       "id": "src_ui_profilessection",
       "community": 111,
-      "community_name": "profilesSection.ts",
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "profilessection.ts"
     },
     {
@@ -5909,8 +5909,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "src_ui_profilessection_profilessection",
-      "community": 112,
-      "community_name": "renderConnectionSection",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "profilessection"
     },
     {
@@ -5920,8 +5920,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_ui_profilessection_profilessection_setankinames",
-      "community": 112,
-      "community_name": "renderConnectionSection",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": ".setankinames()"
     },
     {
@@ -5931,8 +5931,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "src_ui_profilessection_profilessection_dispose",
-      "community": 112,
-      "community_name": "renderConnectionSection",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": ".dispose()"
     },
     {
@@ -5943,7 +5943,7 @@
       "_origin": "ast",
       "id": "src_ui_profilessection_renderprofilessection",
       "community": 111,
-      "community_name": "profilesSection.ts",
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "renderprofilessection()"
     },
     {
@@ -5954,7 +5954,7 @@
       "_origin": "ast",
       "id": "src_ui_profilessection_uniquename",
       "community": 111,
-      "community_name": "profilesSection.ts",
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "uniquename()"
     },
     {
@@ -5965,7 +5965,7 @@
       "_origin": "ast",
       "id": "src_ui_profilessection_renderpicker",
       "community": 111,
-      "community_name": "profilesSection.ts",
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "renderpicker()"
     },
     {
@@ -5976,7 +5976,7 @@
       "_origin": "ast",
       "id": "src_ui_profilessection_renderfolderpicker",
       "community": 111,
-      "community_name": "profilesSection.ts",
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "renderfolderpicker()"
     },
     {
@@ -5986,8 +5986,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_ui_providereditor",
-      "community": 80,
-      "community_name": "settings.ts",
+      "community": 88,
+      "community_name": "providerEditor.ts",
       "norm_label": "providereditor.ts"
     },
     {
@@ -5997,8 +5997,8 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "src_ui_providereditor_anyproviderconfig",
-      "community": 80,
-      "community_name": "settings.ts",
+      "community": 88,
+      "community_name": "providerEditor.ts",
       "norm_label": "anyproviderconfig"
     },
     {
@@ -6008,8 +6008,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "src_ui_providereditor_providerkindspec",
-      "community": 80,
-      "community_name": "settings.ts",
+      "community": 88,
+      "community_name": "providerEditor.ts",
       "norm_label": "providerkindspec"
     },
     {
@@ -6019,8 +6019,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "src_ui_providereditor_modelstate",
-      "community": 80,
-      "community_name": "settings.ts",
+      "community": 88,
+      "community_name": "providerEditor.ts",
       "norm_label": "modelstate"
     },
     {
@@ -6030,8 +6030,8 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "src_ui_providereditor_modelstates",
-      "community": 80,
-      "community_name": "settings.ts",
+      "community": 88,
+      "community_name": "providerEditor.ts",
       "norm_label": "modelstates"
     },
     {
@@ -6041,8 +6041,8 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "src_ui_providereditor_clearmodelcache",
-      "community": 93,
-      "community_name": "imageProviderSection.test.ts",
+      "community": 86,
+      "community_name": "textProviderSection.test.ts",
       "norm_label": "clearmodelcache()"
     },
     {
@@ -6052,8 +6052,8 @@
       "source_location": "L42",
       "_origin": "ast",
       "id": "src_ui_providereditor_rendereditor",
-      "community": 80,
-      "community_name": "settings.ts",
+      "community": 88,
+      "community_name": "providerEditor.ts",
       "norm_label": "rendereditor()"
     },
     {
@@ -6063,8 +6063,8 @@
       "source_location": "L149",
       "_origin": "ast",
       "id": "src_ui_providereditor_renderapikeyrows",
-      "community": 80,
-      "community_name": "settings.ts",
+      "community": 88,
+      "community_name": "providerEditor.ts",
       "norm_label": "renderapikeyrows()"
     },
     {
@@ -6074,8 +6074,8 @@
       "source_location": "L205",
       "_origin": "ast",
       "id": "src_ui_providereditor_rendermodelrow",
-      "community": 80,
-      "community_name": "settings.ts",
+      "community": 88,
+      "community_name": "providerEditor.ts",
       "norm_label": "rendermodelrow()"
     },
     {
@@ -6085,8 +6085,8 @@
       "source_location": "L284",
       "_origin": "ast",
       "id": "src_ui_providereditor_refreshmodels",
-      "community": 80,
-      "community_name": "settings.ts",
+      "community": 88,
+      "community_name": "providerEditor.ts",
       "norm_label": "refreshmodels()"
     },
     {
@@ -6096,8 +6096,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_ui_providersection",
-      "community": 80,
-      "community_name": "settings.ts",
+      "community": 88,
+      "community_name": "providerEditor.ts",
       "norm_label": "providersection.ts"
     },
     {
@@ -6107,8 +6107,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "src_ui_providersection_providersectionspec",
-      "community": 80,
-      "community_name": "settings.ts",
+      "community": 88,
+      "community_name": "providerEditor.ts",
       "norm_label": "providersectionspec"
     },
     {
@@ -6118,8 +6118,8 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "src_ui_providersection_renderprovidersection",
-      "community": 80,
-      "community_name": "settings.ts",
+      "community": 88,
+      "community_name": "providerEditor.ts",
       "norm_label": "renderprovidersection()"
     },
     {
@@ -6129,8 +6129,8 @@
       "source_location": "L97",
       "_origin": "ast",
       "id": "src_ui_providersection_uniquename",
-      "community": 80,
-      "community_name": "settings.ts",
+      "community": 88,
+      "community_name": "providerEditor.ts",
       "norm_label": "uniquename()"
     },
     {
@@ -6624,8 +6624,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_ui_settingstab",
-      "community": 109,
-      "community_name": "settingsTab.ts",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "settingstab.ts"
     },
     {
@@ -6635,8 +6635,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_ui_settingstab_ankibridgesettingtab",
-      "community": 112,
-      "community_name": "renderConnectionSection",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "ankibridgesettingtab"
     },
     {
@@ -6646,8 +6646,8 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_ui_settingstab_ankibridgesettingtab_constructor",
-      "community": 112,
-      "community_name": "renderConnectionSection",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": ".constructor()"
     },
     {
@@ -6657,8 +6657,8 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "src_ui_settingstab_ankibridgesettingtab_display",
-      "community": 112,
-      "community_name": "renderConnectionSection",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": ".display()"
     },
     {
@@ -6668,8 +6668,8 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "src_ui_settingstab_ankibridgesettingtab_hide",
-      "community": 112,
-      "community_name": "renderConnectionSection",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": ".hide()"
     },
     {
@@ -6679,8 +6679,8 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "src_ui_settingstab_renderconnectionsection",
-      "community": 112,
-      "community_name": "renderConnectionSection",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "renderconnectionsection()"
     },
     {
@@ -6690,8 +6690,8 @@
       "source_location": "L82",
       "_origin": "ast",
       "id": "src_ui_settingstab_loadankinames",
-      "community": 112,
-      "community_name": "renderConnectionSection",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "loadankinames()"
     },
     {
@@ -6701,8 +6701,8 @@
       "source_location": "L100",
       "_origin": "ast",
       "id": "src_ui_settingstab_handleconnect",
-      "community": 112,
-      "community_name": "renderConnectionSection",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "handleconnect()"
     },
     {
@@ -6767,8 +6767,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "src_ui_sidebar_imagetab_test_fakedropdown",
-      "community": 91,
-      "community_name": "FakeDropdown",
+      "community": 14,
+      "community_name": "imageTab.test.ts",
       "norm_label": "fakedropdown"
     },
     {
@@ -6778,8 +6778,8 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "src_ui_sidebar_imagetab_test_fakedropdown_addoptions",
-      "community": 91,
-      "community_name": "FakeDropdown",
+      "community": 14,
+      "community_name": "imageTab.test.ts",
       "norm_label": ".addoptions()"
     },
     {
@@ -6789,8 +6789,8 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "src_ui_sidebar_imagetab_test_fakedropdown_setvalue",
-      "community": 91,
-      "community_name": "FakeDropdown",
+      "community": 14,
+      "community_name": "imageTab.test.ts",
       "norm_label": ".setvalue()"
     },
     {
@@ -6800,8 +6800,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "src_ui_sidebar_imagetab_test_fakedropdown_onchange",
-      "community": 91,
-      "community_name": "FakeDropdown",
+      "community": 14,
+      "community_name": "imageTab.test.ts",
       "norm_label": ".onchange()"
     },
     {
@@ -6811,8 +6811,8 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "src_ui_sidebar_imagetab_test_fakedropdown_trigger",
-      "community": 91,
-      "community_name": "FakeDropdown",
+      "community": 14,
+      "community_name": "imageTab.test.ts",
       "norm_label": ".trigger()"
     },
     {
@@ -6822,8 +6822,8 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "src_ui_sidebar_imagetab_test_fakesetting",
-      "community": 119,
-      "community_name": "FakeSetting",
+      "community": 14,
+      "community_name": "imageTab.test.ts",
       "norm_label": "fakesetting"
     },
     {
@@ -6833,8 +6833,8 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "src_ui_sidebar_imagetab_test_fakesetting_setname",
-      "community": 119,
-      "community_name": "FakeSetting",
+      "community": 14,
+      "community_name": "imageTab.test.ts",
       "norm_label": ".setname()"
     },
     {
@@ -6844,8 +6844,8 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "src_ui_sidebar_imagetab_test_fakesetting_adddropdown",
-      "community": 119,
-      "community_name": "FakeSetting",
+      "community": 14,
+      "community_name": "imageTab.test.ts",
       "norm_label": ".adddropdown()"
     },
     {
@@ -7163,8 +7163,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_ui_sidebar_progressnotice_test",
-      "community": 84,
-      "community_name": "sidebarView.ts",
+      "community": 106,
+      "community_name": "startProgressNotice",
       "norm_label": "progressnotice.test.ts"
     },
     {
@@ -7174,8 +7174,8 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "src_ui_sidebar_progressnotice_test_notice_notices",
-      "community": 84,
-      "community_name": "sidebarView.ts",
+      "community": 106,
+      "community_name": "startProgressNotice",
       "norm_label": "{ notice, notices }"
     },
     {
@@ -7185,8 +7185,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_ui_sidebar_progressnotice",
-      "community": 84,
-      "community_name": "sidebarView.ts",
+      "community": 106,
+      "community_name": "startProgressNotice",
       "norm_label": "progressnotice.ts"
     },
     {
@@ -7197,7 +7197,7 @@
       "_origin": "ast",
       "id": "src_ui_sidebar_progressnotice_progressnotice",
       "community": 106,
-      "community_name": "ProgressNotice",
+      "community_name": "startProgressNotice",
       "norm_label": "progressnotice"
     },
     {
@@ -7208,7 +7208,7 @@
       "_origin": "ast",
       "id": "src_ui_sidebar_progressnotice_progressnotice_update",
       "community": 106,
-      "community_name": "ProgressNotice",
+      "community_name": "startProgressNotice",
       "norm_label": ".update()"
     },
     {
@@ -7219,7 +7219,7 @@
       "_origin": "ast",
       "id": "src_ui_sidebar_progressnotice_progressnotice_stop",
       "community": 106,
-      "community_name": "ProgressNotice",
+      "community_name": "startProgressNotice",
       "norm_label": ".stop()"
     },
     {
@@ -7229,8 +7229,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "src_ui_sidebar_progressnotice_withelapsed",
-      "community": 84,
-      "community_name": "sidebarView.ts",
+      "community": 106,
+      "community_name": "startProgressNotice",
       "norm_label": "withelapsed()"
     },
     {
@@ -7240,8 +7240,8 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "src_ui_sidebar_progressnotice_startprogressnotice",
-      "community": 84,
-      "community_name": "sidebarView.ts",
+      "community": 106,
+      "community_name": "startProgressNotice",
       "norm_label": "startprogressnotice()"
     },
     {
@@ -7666,7 +7666,7 @@
       "label": "readyWithDraft()",
       "file_type": "code",
       "source_file": "src/ui/sidebar/textTab.test.ts",
-      "source_location": "L482",
+      "source_location": "L497",
       "_origin": "ast",
       "id": "src_ui_sidebar_texttab_test_readywithdraft",
       "community": 97,
@@ -7746,8 +7746,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_fakedropdowncomponent",
-      "community": 78,
-      "community_name": "sidebarView.test.ts",
+      "community": 110,
+      "community_name": "FakeDropdownComponent",
       "norm_label": "fakedropdowncomponent"
     },
     {
@@ -7757,8 +7757,8 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_fakedropdowncomponent_constructor",
-      "community": 78,
-      "community_name": "sidebarView.test.ts",
+      "community": 110,
+      "community_name": "FakeDropdownComponent",
       "norm_label": ".constructor()"
     },
     {
@@ -7768,8 +7768,8 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_fakedropdowncomponent_addoption",
-      "community": 78,
-      "community_name": "sidebarView.test.ts",
+      "community": 110,
+      "community_name": "FakeDropdownComponent",
       "norm_label": ".addoption()"
     },
     {
@@ -7779,8 +7779,8 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_fakedropdowncomponent_setvalue",
-      "community": 78,
-      "community_name": "sidebarView.test.ts",
+      "community": 110,
+      "community_name": "FakeDropdownComponent",
       "norm_label": ".setvalue()"
     },
     {
@@ -7790,8 +7790,8 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_fakedropdowncomponent_setdisabled",
-      "community": 78,
-      "community_name": "sidebarView.test.ts",
+      "community": 110,
+      "community_name": "FakeDropdownComponent",
       "norm_label": ".setdisabled()"
     },
     {
@@ -7801,8 +7801,8 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_fakedropdowncomponent_onchange",
-      "community": 78,
-      "community_name": "sidebarView.test.ts",
+      "community": 110,
+      "community_name": "FakeDropdownComponent",
       "norm_label": ".onchange()"
     },
     {
@@ -7812,8 +7812,8 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_fakedropdowncomponent_triggerchange",
-      "community": 78,
-      "community_name": "sidebarView.test.ts",
+      "community": 110,
+      "community_name": "FakeDropdownComponent",
       "norm_label": ".triggerchange()"
     },
     {
@@ -7823,8 +7823,8 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_fakebuttoncomponent",
-      "community": 78,
-      "community_name": "sidebarView.test.ts",
+      "community": 113,
+      "community_name": "FakeButtonComponent",
       "norm_label": "fakebuttoncomponent"
     },
     {
@@ -7834,8 +7834,8 @@
       "source_location": "L56",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_fakebuttoncomponent_setbuttontext",
-      "community": 78,
-      "community_name": "sidebarView.test.ts",
+      "community": 113,
+      "community_name": "FakeButtonComponent",
       "norm_label": ".setbuttontext()"
     },
     {
@@ -7845,8 +7845,8 @@
       "source_location": "L60",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_fakebuttoncomponent_setdisabled",
-      "community": 78,
-      "community_name": "sidebarView.test.ts",
+      "community": 113,
+      "community_name": "FakeButtonComponent",
       "norm_label": ".setdisabled()"
     },
     {
@@ -7856,8 +7856,8 @@
       "source_location": "L64",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_fakebuttoncomponent_onclick",
-      "community": 78,
-      "community_name": "sidebarView.test.ts",
+      "community": 113,
+      "community_name": "FakeButtonComponent",
       "norm_label": ".onclick()"
     },
     {
@@ -7867,8 +7867,8 @@
       "source_location": "L68",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_fakebuttoncomponent_triggerclick",
-      "community": 78,
-      "community_name": "sidebarView.test.ts",
+      "community": 113,
+      "community_name": "FakeButtonComponent",
       "norm_label": ".triggerclick()"
     },
     {
@@ -7878,8 +7878,8 @@
       "source_location": "L73",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_faketogglecomponent",
-      "community": 78,
-      "community_name": "sidebarView.test.ts",
+      "community": 118,
+      "community_name": "FakeToggleComponent",
       "norm_label": "faketogglecomponent"
     },
     {
@@ -7889,8 +7889,8 @@
       "source_location": "L77",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_faketogglecomponent_setvalue",
-      "community": 78,
-      "community_name": "sidebarView.test.ts",
+      "community": 118,
+      "community_name": "FakeToggleComponent",
       "norm_label": ".setvalue()"
     },
     {
@@ -7900,8 +7900,8 @@
       "source_location": "L81",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_faketogglecomponent_onchange",
-      "community": 78,
-      "community_name": "sidebarView.test.ts",
+      "community": 118,
+      "community_name": "FakeToggleComponent",
       "norm_label": ".onchange()"
     },
     {
@@ -7911,8 +7911,8 @@
       "source_location": "L85",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_faketogglecomponent_triggerchange",
-      "community": 78,
-      "community_name": "sidebarView.test.ts",
+      "community": 118,
+      "community_name": "FakeToggleComponent",
       "norm_label": ".triggerchange()"
     },
     {
@@ -7922,8 +7922,8 @@
       "source_location": "L91",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_fakesetting",
-      "community": 78,
-      "community_name": "sidebarView.test.ts",
+      "community": 112,
+      "community_name": "FakeSetting",
       "norm_label": "fakesetting"
     },
     {
@@ -7933,8 +7933,8 @@
       "source_location": "L98",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_fakesetting_constructor",
-      "community": 78,
-      "community_name": "sidebarView.test.ts",
+      "community": 112,
+      "community_name": "FakeSetting",
       "norm_label": ".constructor()"
     },
     {
@@ -7944,8 +7944,8 @@
       "source_location": "L99",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_fakesetting_setname",
-      "community": 78,
-      "community_name": "sidebarView.test.ts",
+      "community": 112,
+      "community_name": "FakeSetting",
       "norm_label": ".setname()"
     },
     {
@@ -7955,8 +7955,8 @@
       "source_location": "L103",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_fakesetting_setdesc",
-      "community": 78,
-      "community_name": "sidebarView.test.ts",
+      "community": 112,
+      "community_name": "FakeSetting",
       "norm_label": ".setdesc()"
     },
     {
@@ -7966,8 +7966,8 @@
       "source_location": "L107",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_fakesetting_adddropdown",
-      "community": 78,
-      "community_name": "sidebarView.test.ts",
+      "community": 112,
+      "community_name": "FakeSetting",
       "norm_label": ".adddropdown()"
     },
     {
@@ -7977,8 +7977,8 @@
       "source_location": "L113",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_fakesetting_addbutton",
-      "community": 78,
-      "community_name": "sidebarView.test.ts",
+      "community": 112,
+      "community_name": "FakeSetting",
       "norm_label": ".addbutton()"
     },
     {
@@ -7988,8 +7988,8 @@
       "source_location": "L119",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_fakesetting_addtoggle",
-      "community": 78,
-      "community_name": "sidebarView.test.ts",
+      "community": 112,
+      "community_name": "FakeSetting",
       "norm_label": ".addtoggle()"
     },
     {
@@ -8010,8 +8010,8 @@
       "source_location": "L130",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_itemview",
-      "community": 78,
-      "community_name": "sidebarView.test.ts",
+      "community": 119,
+      "community_name": "ItemView",
       "norm_label": "itemview"
     },
     {
@@ -8021,8 +8021,8 @@
       "source_location": "L132",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_itemview_constructor",
-      "community": 78,
-      "community_name": "sidebarView.test.ts",
+      "community": 119,
+      "community_name": "ItemView",
       "norm_label": ".constructor()"
     },
     {
@@ -8032,8 +8032,8 @@
       "source_location": "L133",
       "_origin": "ast",
       "id": "src_ui_sidebarview_test_itemview_registerevent",
-      "community": 78,
-      "community_name": "sidebarView.test.ts",
+      "community": 119,
+      "community_name": "ItemView",
       "norm_label": ".registerevent()"
     },
     {
@@ -8263,8 +8263,8 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "src_ui_sidebarview_sidebarview_constructor",
-      "community": 90,
-      "community_name": "main.ts",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": ".constructor()"
     },
     {
@@ -8450,8 +8450,8 @@
       "source_location": "L284",
       "_origin": "ast",
       "id": "src_ui_sidebarview_registersidebarview",
-      "community": 90,
-      "community_name": "main.ts",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "registersidebarview()"
     },
     {
@@ -8462,7 +8462,7 @@
       "_origin": "ast",
       "id": "src_ui_sidebarview_revealsidebarview",
       "community": 90,
-      "community_name": "main.ts",
+      "community_name": "quickCapture.ts",
       "norm_label": "revealsidebarview()"
     },
     {
@@ -8472,8 +8472,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_ui_syncsection_test",
-      "community": 113,
-      "community_name": "syncSection.test.ts",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "syncsection.test.ts"
     },
     {
@@ -8483,8 +8483,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "src_ui_syncsection_test_faketogglecomponent",
-      "community": 113,
-      "community_name": "syncSection.test.ts",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "faketogglecomponent"
     },
     {
@@ -8494,8 +8494,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_ui_syncsection_test_faketogglecomponent_setvalue",
-      "community": 113,
-      "community_name": "syncSection.test.ts",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": ".setvalue()"
     },
     {
@@ -8505,8 +8505,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "src_ui_syncsection_test_faketogglecomponent_onchange",
-      "community": 113,
-      "community_name": "syncSection.test.ts",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": ".onchange()"
     },
     {
@@ -8516,8 +8516,8 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "src_ui_syncsection_test_faketogglecomponent_triggerchange",
-      "community": 113,
-      "community_name": "syncSection.test.ts",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": ".triggerchange()"
     },
     {
@@ -8527,8 +8527,8 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "src_ui_syncsection_test_fakesetting",
-      "community": 118,
-      "community_name": "FakeSetting",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "fakesetting"
     },
     {
@@ -8538,8 +8538,8 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "src_ui_syncsection_test_fakesetting_constructor",
-      "community": 118,
-      "community_name": "FakeSetting",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": ".constructor()"
     },
     {
@@ -8549,8 +8549,8 @@
       "source_location": "L29",
       "_origin": "ast",
       "id": "src_ui_syncsection_test_fakesetting_setname",
-      "community": 118,
-      "community_name": "FakeSetting",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": ".setname()"
     },
     {
@@ -8560,8 +8560,8 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "src_ui_syncsection_test_fakesetting_setdesc",
-      "community": 118,
-      "community_name": "FakeSetting",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": ".setdesc()"
     },
     {
@@ -8571,8 +8571,8 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "src_ui_syncsection_test_fakesetting_addtoggle",
-      "community": 118,
-      "community_name": "FakeSetting",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": ".addtoggle()"
     },
     {
@@ -8582,8 +8582,8 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "src_ui_syncsection_test_settings",
-      "community": 113,
-      "community_name": "syncSection.test.ts",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "{ settings }"
     },
     {
@@ -8593,8 +8593,8 @@
       "source_location": "L48",
       "_origin": "ast",
       "id": "src_ui_syncsection_test_constructor",
-      "community": 113,
-      "community_name": "syncSection.test.ts",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "constructor()"
     },
     {
@@ -8604,8 +8604,8 @@
       "source_location": "L58",
       "_origin": "ast",
       "id": "src_ui_syncsection_test_fakeplugin",
-      "community": 113,
-      "community_name": "syncSection.test.ts",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "fakeplugin()"
     },
     {
@@ -8615,8 +8615,8 @@
       "source_location": "L67",
       "_origin": "ast",
       "id": "src_ui_syncsection_test_render",
-      "community": 113,
-      "community_name": "syncSection.test.ts",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "render()"
     },
     {
@@ -8626,8 +8626,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_ui_syncsection",
-      "community": 113,
-      "community_name": "syncSection.test.ts",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "syncsection.ts"
     },
     {
@@ -8637,8 +8637,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "src_ui_syncsection_rendersyncsection",
-      "community": 113,
-      "community_name": "syncSection.test.ts",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "rendersyncsection()"
     },
     {
@@ -9154,8 +9154,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_ui_textprovidersection",
-      "community": 80,
-      "community_name": "settings.ts",
+      "community": 88,
+      "community_name": "providerEditor.ts",
       "norm_label": "textprovidersection.ts"
     },
     {
@@ -9165,8 +9165,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "src_ui_textprovidersection_rendertextprovidersection",
-      "community": 86,
-      "community_name": "textProviderSection.test.ts",
+      "community": 88,
+      "community_name": "providerEditor.ts",
       "norm_label": "rendertextprovidersection()"
     },
     {
@@ -9232,7 +9232,7 @@
       "_origin": "ast",
       "id": "src_utils_constants",
       "community": 109,
-      "community_name": "settingsTab.ts",
+      "community_name": "main.ts",
       "norm_label": "constants.ts"
     },
     {
@@ -9243,7 +9243,7 @@
       "_origin": "ast",
       "id": "src_utils_constants_field_aliases",
       "community": 109,
-      "community_name": "settingsTab.ts",
+      "community_name": "main.ts",
       "norm_label": "field_aliases"
     },
     {
@@ -9254,7 +9254,7 @@
       "_origin": "ast",
       "id": "src_utils_foldertree_test",
       "community": 111,
-      "community_name": "profilesSection.ts",
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "foldertree.test.ts"
     },
     {
@@ -9265,7 +9265,7 @@
       "_origin": "ast",
       "id": "src_utils_foldertree_test_fakefolder",
       "community": 111,
-      "community_name": "profilesSection.ts",
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "fakefolder"
     },
     {
@@ -9276,7 +9276,7 @@
       "_origin": "ast",
       "id": "src_utils_foldertree_test_fakeroot",
       "community": 111,
-      "community_name": "profilesSection.ts",
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "fakeroot"
     },
     {
@@ -9287,7 +9287,7 @@
       "_origin": "ast",
       "id": "src_utils_foldertree",
       "community": 111,
-      "community_name": "profilesSection.ts",
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "foldertree.ts"
     },
     {
@@ -9298,7 +9298,7 @@
       "_origin": "ast",
       "id": "src_utils_foldertree_foldertreeentry",
       "community": 111,
-      "community_name": "profilesSection.ts",
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "foldertreeentry"
     },
     {
@@ -9309,7 +9309,7 @@
       "_origin": "ast",
       "id": "src_utils_foldertree_buildfoldertreeentries",
       "community": 111,
-      "community_name": "profilesSection.ts",
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "buildfoldertreeentries()"
     },
     {
@@ -9319,8 +9319,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_utils_validation_test",
-      "community": 109,
-      "community_name": "settingsTab.ts",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "validation.test.ts"
     },
     {
@@ -9330,8 +9330,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_utils_validation",
-      "community": 109,
-      "community_name": "settingsTab.ts",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "validation.ts"
     },
     {
@@ -9341,8 +9341,8 @@
       "source_location": "L2",
       "_origin": "ast",
       "id": "src_utils_validation_isvalidurl",
-      "community": 109,
-      "community_name": "settingsTab.ts",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "isvalidurl()"
     },
     {
@@ -9352,8 +9352,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_utils_validation_isvalidmediaprefix",
-      "community": 109,
-      "community_name": "settingsTab.ts",
+      "community": 111,
+      "community_name": "AnkiBridgePlugin",
       "norm_label": "isvalidmediaprefix()"
     },
     {
@@ -9709,10 +9709,21 @@
       "norm_label": "changed"
     },
     {
-      "label": "Added",
+      "label": "Fixed",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
       "source_location": "L17",
+      "_origin": "ast",
+      "id": "changelog_fixed",
+      "community": 79,
+      "community_name": "[1.1.0]",
+      "norm_label": "fixed"
+    },
+    {
+      "label": "Added",
+      "file_type": "document",
+      "source_file": "CHANGELOG.md",
+      "source_location": "L25",
       "_origin": "ast",
       "id": "changelog_added",
       "community": 79,
@@ -9723,7 +9734,7 @@
       "label": "Removed",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L46",
+      "source_location": "L54",
       "_origin": "ast",
       "id": "changelog_removed",
       "community": 79,
@@ -9734,7 +9745,7 @@
       "label": "[1.1.0]",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L51",
+      "source_location": "L59",
       "_origin": "ast",
       "id": "changelog_1_1_0",
       "community": 79,
@@ -9745,9 +9756,9 @@
       "label": "Added",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L53",
+      "source_location": "L61",
       "_origin": "ast",
-      "id": "changelog_added_53",
+      "id": "changelog_added_61",
       "community": 79,
       "community_name": "[1.1.0]",
       "norm_label": "added"
@@ -9756,9 +9767,9 @@
       "label": "Changed",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L73",
+      "source_location": "L81",
       "_origin": "ast",
-      "id": "changelog_changed_73",
+      "id": "changelog_changed_81",
       "community": 79,
       "community_name": "[1.1.0]",
       "norm_label": "changed"
@@ -9767,9 +9778,9 @@
       "label": "Removed",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L82",
+      "source_location": "L90",
       "_origin": "ast",
-      "id": "changelog_removed_82",
+      "id": "changelog_removed_90",
       "community": 79,
       "community_name": "[1.1.0]",
       "norm_label": "removed"
@@ -9778,9 +9789,9 @@
       "label": "Fixed",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L89",
+      "source_location": "L97",
       "_origin": "ast",
-      "id": "changelog_fixed",
+      "id": "changelog_fixed_97",
       "community": 79,
       "community_name": "[1.1.0]",
       "norm_label": "fixed"
@@ -9789,7 +9800,7 @@
       "label": "Notes",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L95",
+      "source_location": "L103",
       "_origin": "ast",
       "id": "changelog_notes",
       "community": 79,
@@ -9800,7 +9811,7 @@
       "label": "[1.0.0]",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L100",
+      "source_location": "L108",
       "_origin": "ast",
       "id": "changelog_1_0_0",
       "community": 79,
@@ -9811,9 +9822,9 @@
       "label": "Added",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L102",
+      "source_location": "L110",
       "_origin": "ast",
-      "id": "changelog_added_102",
+      "id": "changelog_added_110",
       "community": 79,
       "community_name": "[1.1.0]",
       "norm_label": "added"
@@ -9822,9 +9833,9 @@
       "label": "Fixed",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L118",
+      "source_location": "L126",
       "_origin": "ast",
-      "id": "changelog_fixed_118",
+      "id": "changelog_fixed_126",
       "community": 79,
       "community_name": "[1.1.0]",
       "norm_label": "fixed"
@@ -14590,7 +14601,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ui/sidebar/imageTab.ts",
-      "source_location": "L109",
+      "source_location": "L112",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebar_imagetab_renderimagetab",
@@ -17009,7 +17020,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ui/sidebar/textTab.ts",
-      "source_location": "L216",
+      "source_location": "L219",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebar_texttab_rendertexttab",
@@ -22282,7 +22293,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ui/sidebar/textTab.test.ts",
-      "source_location": "L486",
+      "source_location": "L501",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebar_texttab_test_readywithdraft",
@@ -24523,6 +24534,54 @@
       "_origin": "ast",
       "source": "src_types_ankiconnecterror",
       "target": "src_types_ankiconnecterror_constructor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/sidebar/actionButton.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_sidebar_actionbutton",
+      "target": "src_types_ankiconnecterror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/sidebar/imageTab.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_sidebar_imagetab",
+      "target": "src_types_ankiconnecterror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/sidebar/noteActions.test.ts",
+      "source_location": "L53",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_sidebar_noteactions_test",
+      "target": "src_types_ankiconnecterror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/ui/sidebar/textTab.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_ui_sidebar_texttab",
+      "target": "src_types_ankiconnecterror",
       "confidence_score": 1.0
     },
     {
@@ -28606,7 +28665,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ui/sidebar/actionButton.ts",
-      "source_location": "L62",
+      "source_location": "L66",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebar_actionbutton_runaction",
@@ -29066,7 +29125,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ui/sidebar/imageTab.ts",
-      "source_location": "L91",
+      "source_location": "L94",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebar_imagetab_renderimagetab",
@@ -29820,7 +29879,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebar/textTab.test.ts",
-      "source_location": "L482",
+      "source_location": "L497",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebar_texttab_test",
@@ -29953,7 +30012,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebar/textTab.test.ts",
-      "source_location": "L492",
+      "source_location": "L507",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebar_texttab_test_readywithdraft",
@@ -30042,7 +30101,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebar/textTab.test.ts",
-      "source_location": "L493",
+      "source_location": "L508",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebar_texttab_test_readywithdraft",
@@ -30066,7 +30125,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebar/textTab.test.ts",
-      "source_location": "L484",
+      "source_location": "L499",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebar_texttab_test_readywithdraft",
@@ -30206,7 +30265,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/ui/sidebar/textTab.ts",
-      "source_location": "L217",
+      "source_location": "L220",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebar_texttab_rendertexttab",
@@ -30231,7 +30290,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/ui/sidebar/textTab.ts",
-      "source_location": "L192",
+      "source_location": "L195",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_ui_sidebar_texttab_rendertexttab",
@@ -32688,7 +32747,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L100",
+      "source_location": "L108",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_changelog",
@@ -32699,7 +32758,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L51",
+      "source_location": "L59",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_changelog",
@@ -32721,7 +32780,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L17",
+      "source_location": "L25",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_unreleased",
@@ -32743,7 +32802,18 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L46",
+      "source_location": "L17",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "changelog_unreleased",
+      "target": "changelog_fixed",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "CHANGELOG.md",
+      "source_location": "L54",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_unreleased",
@@ -32754,40 +32824,40 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L53",
+      "source_location": "L61",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_1_1_0",
-      "target": "changelog_added_53",
+      "target": "changelog_added_61",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L73",
+      "source_location": "L81",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_1_1_0",
-      "target": "changelog_changed_73",
+      "target": "changelog_changed_81",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L89",
+      "source_location": "L97",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_1_1_0",
-      "target": "changelog_fixed",
+      "target": "changelog_fixed_97",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L95",
+      "source_location": "L103",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_1_1_0",
@@ -32798,33 +32868,33 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L82",
+      "source_location": "L90",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_1_1_0",
-      "target": "changelog_removed_82",
+      "target": "changelog_removed_90",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L102",
+      "source_location": "L110",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_1_0_0",
-      "target": "changelog_added_102",
+      "target": "changelog_added_110",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L118",
+      "source_location": "L126",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_1_0_0",
-      "target": "changelog_fixed_118",
+      "target": "changelog_fixed_126",
       "confidence_score": 1.0
     },
     {
@@ -34913,5 +34983,5 @@
       "source_file": ".opencode/skills/graphify/SKILL.md"
     }
   ],
-  "built_at_commit": "1eb4b311ec7511ea54da0736d28dacb7248572fc"
+  "built_at_commit": "acaafc64dd725ab1491afd2fe55ed31f858f3098"
 }

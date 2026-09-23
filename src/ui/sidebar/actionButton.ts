@@ -1,5 +1,5 @@
 import { setIcon } from 'obsidian';
-import { ProviderError, SyncError } from '../../types';
+import { AnkiConnectError, ProviderError, SyncError } from '../../types';
 import { toastError } from '../toast';
 
 export interface ActionButton {
@@ -59,8 +59,14 @@ export async function runAction(
 		// SyncError already carries a case-specific message (docs/design/01-sync.md §1.6);
 		// show it instead of the generic copy so "model not found" doesn't read as
 		// "Anki is down". ProviderError likewise names the provider and URL that failed.
+		// AnkiConnectError reaches here bare when it's a real AnkiConnect error that
+		// toSyncError() didn't recognize (syncEngine.ts) — its own message still beats
+		// the generic fallback, which would otherwise misreport a real error as
+		// "check Anki connection" while Anki is actually reachable.
 		toastError(
-			err instanceof SyncError || err instanceof ProviderError
+			err instanceof SyncError ||
+				err instanceof ProviderError ||
+				err instanceof AnkiConnectError
 				? `❌ ${err.message}`
 				: opts.failure,
 		);
