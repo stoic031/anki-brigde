@@ -1,5 +1,5 @@
 import { ProviderError } from '../../types';
-import type { TextResult, TextTask } from '../types';
+import type { TextContext, TextResult, TextTask } from '../types';
 import { parseTextResult } from './parseResult';
 import { buildMessages, resultKeys } from './prompt';
 
@@ -11,8 +11,9 @@ export async function runText(
 	task: TextTask,
 	targetFields: string[],
 	complete: (system: string, user: string) => Promise<string>,
+	context?: TextContext,
 ): Promise<TextResult> {
-	const { system, user } = buildMessages(input, task, targetFields);
+	const { system, user } = buildMessages(input, task, targetFields, context);
 	const keys = resultKeys(task, targetFields);
 	let lastError: ProviderError | undefined;
 	for (let attempt = 0; attempt < 2; attempt++) {

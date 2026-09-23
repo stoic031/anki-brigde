@@ -28,14 +28,20 @@ const { revealSidebarView } = vi.hoisted(() => ({
 }));
 vi.mock('../ui/sidebarView', () => ({ revealSidebarView }));
 
-const { resolveQuickCaptureTarget, getUniqueNotePath, openPluginSettings } =
-	vi.hoisted(() => ({
-		resolveQuickCaptureTarget: vi.fn(),
-		getUniqueNotePath: vi.fn(),
-		openPluginSettings: vi.fn(),
-	}));
+const {
+	resolveQuickCaptureTarget,
+	resolveMainField,
+	getUniqueNotePath,
+	openPluginSettings,
+} = vi.hoisted(() => ({
+	resolveQuickCaptureTarget: vi.fn(),
+	resolveMainField: vi.fn().mockResolvedValue(''),
+	getUniqueNotePath: vi.fn(),
+	openPluginSettings: vi.fn(),
+}));
 vi.mock('./quickCapture', () => ({
 	resolveQuickCaptureTarget,
+	resolveMainField,
 	getUniqueNotePath,
 	openPluginSettings,
 }));
@@ -86,12 +92,14 @@ function fakeSettings(
 		activeProfileId: DEFAULT_SETTINGS.activeProfileId,
 		generateWithAiFields: {},
 		imageConfigs: {},
+		mainFieldConfig: {},
 		textProviders: [],
 		activeTextProviderId: '',
 		imageProviders: [],
 		activeImageProviderId: '',
 		mediaPrefix: DEFAULT_MEDIA_PREFIX,
 		autoSyncOnSave: false,
+		nativeLanguage: '',
 		...overrides,
 	};
 }
@@ -152,6 +160,54 @@ describe('runCreateNote', () => {
 		expect(openFile).toHaveBeenCalledWith(createdFile);
 		expect(revealSidebarView).toHaveBeenCalledWith(plugin.app);
 		expect(saveSettings).not.toHaveBeenCalled();
+	});
+
+	it('pre-fills the Main Field section with whatever resolveMainField resolves to', async () => {
+		resolveQuickCaptureTarget.mockReturnValue({
+			deck: 'Japanese',
+			model: 'Basic',
+			folder: 'Vocab',
+			mainField: 'Word',
+		});
+		resolveMainField.mockResolvedValue('Word');
+		getUniqueNotePath.mockReturnValue('Vocab/word.md');
+		modelFieldNamesMock.mockResolvedValue(['Word', 'Meaning']);
+		const { plugin, vaultCreate } = fakePlugin();
+
+		const promise = runCreateNote(plugin);
+		await submitNoteName('word');
+		await promise;
+
+		expect(resolveMainField).toHaveBeenCalledWith(
+			plugin,
+			resolveQuickCaptureTarget.mock.results[0]?.value,
+		);
+		expect(vaultCreate).toHaveBeenCalledWith(
+			'Vocab/word.md',
+			'## Word\n\nword\n\n## Meaning\n',
+		);
+	});
+
+	it('creates the note with nothing prefilled when resolveMainField resolves to empty', async () => {
+		resolveQuickCaptureTarget.mockReturnValue({
+			deck: 'Japanese',
+			model: 'Basic',
+			folder: 'Vocab',
+			mainField: '',
+		});
+		resolveMainField.mockResolvedValue('');
+		getUniqueNotePath.mockReturnValue('Vocab/word.md');
+		modelFieldNamesMock.mockResolvedValue(['Word', 'Meaning']);
+		const { plugin, vaultCreate } = fakePlugin();
+
+		const promise = runCreateNote(plugin);
+		await submitNoteName('word');
+		await promise;
+
+		expect(vaultCreate).toHaveBeenCalledWith(
+			'Vocab/word.md',
+			'## Word\n\n## Meaning\n',
+		);
 	});
 
 	it('shows a Notice and opens plugin settings when the active profile has no Deck/Model', async () => {

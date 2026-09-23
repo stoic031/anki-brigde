@@ -1,7 +1,12 @@
 import { Notice, Setting, type Events } from 'obsidian';
 import type AnkiBridgePlugin from '../main';
-import { getActiveProfile, type Profile } from '../settings';
-import { PROFILE_CHANGED_EVENT } from '../utils/constants';
+import {
+	getActiveProfile,
+	resolveAnkiConnectUrl,
+	type Profile,
+} from '../settings';
+import { AnkiConnectClient } from '../sync/ankiConnect';
+import { LANGUAGES, PROFILE_CHANGED_EVENT } from '../utils/constants';
 import { buildFolderTreeEntries } from '../utils/folderTree';
 
 export interface ProfilesSection {
@@ -19,6 +24,12 @@ export function renderProfilesSection(
 	const el = containerEl.createDiv({ cls: 'anki-bridge-settings__profiles' });
 	let names: { decks: string[]; models: string[] } | null = null;
 	let disposed = false;
+	// Main field options depend on the active profile's Model — fetched lazily and
+	// cached by model name (dedup, self-corrects if the model changes again while a
+	// fetch is in flight; see the check before renderPicker below).
+	let mainFields: string[] = [];
+	let mainFieldsModel = '';
+	let mainFieldsLoading = false;
 
 	const render = (): void => {
 		el.empty();
@@ -45,6 +56,8 @@ export function renderProfilesSection(
 						deck: '',
 						model: '',
 						folder: '',
+						mainField: '',
+						targetLanguage: '',
 					};
 					settings.profiles.push(profile);
 					void plugin.setActiveProfile(profile.id);
@@ -93,12 +106,76 @@ export function renderProfilesSection(
 			active.deck = v;
 			await plugin.saveSettings();
 		});
-		renderPicker(el, 'Model', names?.models ?? [], active.model, async (v) => {
-			active.model = v;
-			await plugin.saveSettings();
-		});
+		renderPicker(
+			el,
+			'Model',
+			names?.models ?? [],
+			active.model,
+			async (v) => {
+				active.model = v;
+				// Stale for the old model — docs/design/06-settings.md §6.1, same
+				// "changing X clears the dependent selection" rule as §6.2's provider/Model.
+				active.mainField = '';
+				// Saves and fires PROFILE_CHANGED_EVENT, which render() listens for below —
+				// re-enters render() so Main field's fetch-on-model-change check (below)
+				// actually runs; without this, Main field never re-fetches on a live Model
+				// change. Same idiom the "Profile name" field uses just above.
+				await plugin.setActiveProfile(active.id);
+			},
+		);
+
+		if (
+			active.model &&
+			active.model !== mainFieldsModel &&
+			!mainFieldsLoading
+		) {
+			void loadMainFields(active.model);
+		}
+		renderPicker(
+			el,
+			'Main field',
+			active.model && mainFieldsModel === active.model ? mainFields : [],
+			active.mainField,
+			async (v) => {
+				active.mainField = v;
+				await plugin.saveSettings();
+			},
+		);
+
+		renderPicker(
+			el,
+			'Learning language',
+			LANGUAGES,
+			active.targetLanguage,
+			async (v) => {
+				active.targetLanguage = v;
+				await plugin.saveSettings();
+			},
+		);
 
 		renderFolderPicker(el, plugin, active);
+	};
+
+	// docs/design/06-settings.md §6.1 — Main field options depend on the profile's
+	// Model, fetched from AnkiConnect same as Deck/Model names. Silent on failure,
+	// same convention as loadAnkiNames() in settingsTab.ts — the picker just keeps
+	// showing the saved value.
+	const loadMainFields = async (model: string): Promise<void> => {
+		mainFieldsLoading = true;
+		try {
+			const client = new AnkiConnectClient(
+				resolveAnkiConnectUrl(plugin.settings),
+			);
+			const fields = await client.modelFieldNames(model);
+			if (disposed) return;
+			mainFields = fields;
+			mainFieldsModel = model;
+			render();
+		} catch {
+			// Anki offline: keep showing the saved Main field value.
+		} finally {
+			mainFieldsLoading = false;
+		}
 	};
 
 	render();
@@ -127,17 +204,24 @@ function uniqueName(profiles: Profile[], base: string): string {
 	return name;
 }
 
-function renderPicker(
+// Shared by Deck/Model/Main field (this file) and the Learning/Your language pickers
+// (this file + languageSection.ts) — same shape either way: fixed or fetched options,
+// a "Select …" placeholder, a saved value not currently in `options` still shown
+// (deleted deck/model, or — for languages — data saved before this list existed), and
+// commit-on-select.
+export function renderPicker(
 	el: HTMLElement,
 	label: string,
 	options: string[],
 	current: string,
 	onChange: (value: string) => Promise<void>,
+	desc?: string,
 ): void {
-	new Setting(el).setName(label).addDropdown((dropdown) => {
+	const setting = new Setting(el).setName(label);
+	if (desc) setting.setDesc(desc);
+	setting.addDropdown((dropdown) => {
 		dropdown.addOption('', `Select ${label.toLowerCase()}…`);
 		for (const name of options) dropdown.addOption(name, name);
-		// A saved value Anki doesn't list (deleted, or names not loaded) still shows.
 		if (current && !options.includes(current)) {
 			dropdown.addOption(current, current);
 		}

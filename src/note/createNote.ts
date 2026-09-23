@@ -4,6 +4,7 @@ import { generateContentSkeleton } from './contentTemplate';
 import {
 	getUniqueNotePath,
 	openPluginSettings,
+	resolveMainField,
 	resolveQuickCaptureTarget,
 } from './quickCapture';
 import { resolveAnkiConnectUrl } from '../settings';
@@ -38,7 +39,14 @@ export async function runCreateNote(plugin: AnkiBridgePlugin): Promise<void> {
 
 		const filename = `${sanitizeForFilename(name)}.md`;
 		const path = getUniqueNotePath(plugin.app, target.folder, filename);
-		const content = generateContentSkeleton(fields);
+		// Main Field isn't required here — a fresh Deck+Model pair has no note open
+		// yet to have configured it from (docs/design/03-note.md §3.6/§3.7). Falls
+		// back to the profile's Main Field default and seeds it for this pair.
+		const mainField = await resolveMainField(plugin, target);
+		const content = generateContentSkeleton(
+			fields,
+			mainField ? { field: mainField, content: name } : undefined,
+		);
 
 		const file = await plugin.app.vault.create(path, content);
 		await writeAnkiFrontmatter(plugin.app, file, {

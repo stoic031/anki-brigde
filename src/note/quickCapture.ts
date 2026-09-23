@@ -2,6 +2,7 @@ import { App, MarkdownView, Notice } from 'obsidian';
 import { sanitizeForFilename } from './mediaNaming';
 import { generateContentSkeleton } from './contentTemplate';
 import {
+	fieldConfigKey,
 	getActiveProfile,
 	resolveAnkiConnectUrl,
 	type AnkiBridgeSettings,
@@ -28,6 +29,7 @@ export interface QuickCaptureTarget {
 	deck: string;
 	model: string;
 	folder: string;
+	mainField: string; // the profile's Main Field default, '' = unset — see resolveMainField
 }
 
 // docs/design/07-sidebar.md §7.3 step [2], reused for the hotkey flow per
@@ -37,8 +39,25 @@ export interface QuickCaptureTarget {
 export function resolveQuickCaptureTarget(
 	settings: AnkiBridgeSettings,
 ): QuickCaptureTarget | null {
-	const { deck, model, folder } = getActiveProfile(settings);
-	return deck && model ? { deck, model, folder } : null;
+	const { deck, model, folder, mainField } = getActiveProfile(settings);
+	return deck && model ? { deck, model, folder, mainField } : null;
+}
+
+// docs/design/06-settings.md §6.1 — seeds mainFieldConfig for this Deck+Model pair
+// from the profile's Main Field default, the first time only (never overwrites a
+// pair that's already configured, e.g. from the sidebar). Shared by runCreateNote and
+// runQuickCapture — both create notes from a resolved QuickCaptureTarget.
+export async function resolveMainField(
+	plugin: AnkiBridgePlugin,
+	target: QuickCaptureTarget,
+): Promise<string> {
+	const key = fieldConfigKey(target.deck, target.model);
+	const existing = plugin.settings.mainFieldConfig[key];
+	if (existing) return existing;
+	if (!target.mainField) return '';
+	plugin.settings.mainFieldConfig[key] = target.mainField;
+	await plugin.saveSettings();
+	return target.mainField;
 }
 
 // docs/design/03-note.md §3.7 step 5 — Obsidian's own numeric-suffix convention
@@ -93,7 +112,12 @@ export async function runQuickCapture(plugin: AnkiBridgePlugin): Promise<void> {
 
 		const filename = getQuickCaptureFilename(selectedText);
 		const path = getUniqueNotePath(plugin.app, target.folder, filename);
-		const content = generateContentSkeleton(fields, selectedText);
+		// Main Field isn't required here — see the same note in createNote.ts.
+		const mainField = await resolveMainField(plugin, target);
+		const content = generateContentSkeleton(
+			fields,
+			mainField ? { field: mainField, content: selectedText } : undefined,
+		);
 
 		const file = await plugin.app.vault.create(path, content);
 		await writeAnkiFrontmatter(plugin.app, file, {

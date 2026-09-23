@@ -1,4 +1,4 @@
-import type { TextTask } from '../types';
+import type { TextContext, TextTask } from '../types';
 
 const TASK_INSTRUCTION: Record<TextTask, string> = {
 	'extract-vocabulary':
@@ -18,14 +18,34 @@ export function resultKeys(task: TextTask, targetFields: string[]): string[] {
 	return task === 'build-image-prompt' ? [IMAGE_PROMPT_KEY] : targetFields;
 }
 
+// docs/design/02-providers.md §2.4 — 'build-image-prompt' always stays English-only
+// (docs/design-open-questions.md #19), so it never gets a language context line
+// regardless of what's passed.
+function buildContextLine(
+	task: TextTask,
+	context?: TextContext,
+): string | undefined {
+	if (task === 'build-image-prompt') return undefined;
+	const target = context?.targetLanguage?.trim();
+	const native = context?.nativeLanguage?.trim();
+	if (!target && !native) return undefined;
+	const parts: string[] = [];
+	if (target) parts.push(`is learning ${target}`);
+	if (native) parts.push(`explains best in ${native}`);
+	return `Context: the user ${parts.join(' and ')}.`;
+}
+
 export function buildMessages(
 	input: string,
 	task: TextTask,
 	targetFields: string[],
+	context?: TextContext,
 ): { system: string; user: string } {
 	const keys = resultKeys(task, targetFields);
+	const contextLine = buildContextLine(task, context);
 	const system = [
 		TASK_INSTRUCTION[task],
+		...(contextLine ? [contextLine] : []),
 		`Reply with ONLY a JSON object whose keys are exactly: ${JSON.stringify(keys)}.`,
 		'Every value is a string. Omit a key if you cannot fill it. No markdown, no commentary.',
 	].join('\n');

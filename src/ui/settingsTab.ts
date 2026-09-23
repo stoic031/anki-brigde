@@ -6,6 +6,7 @@ import { isValidUrl } from '../utils/validation';
 import { resolveAnkiConnectUrl } from '../settings';
 import { AnkiConnectClient } from '../sync/ankiConnect';
 import { renderProfilesSection, type ProfilesSection } from './profilesSection';
+import { renderLanguageSection } from './languageSection';
 import { renderImageProviderSection } from './imageProviderSection';
 import { renderTextProviderSection } from './textProviderSection';
 import { renderMediaSection } from './mediaSection';
@@ -25,6 +26,7 @@ export class AnkiBridgeSettingTab extends PluginSettingTab {
 	display(): void {
 		this.containerEl.empty();
 		this.profiles = renderConnectionSection(this.containerEl, this.plugin);
+		renderLanguageSection(this.containerEl, this.plugin);
 		renderTextProviderSection(this.containerEl, this.plugin);
 		renderImageProviderSection(this.containerEl, this.plugin);
 		renderMediaSection(this.containerEl, this.plugin);

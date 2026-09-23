@@ -8,6 +8,13 @@ export interface MediaResult {
 	mimeType: string;
 }
 
+// docs/design/02-providers.md §2.4 — optional context fed into the system prompt for
+// text tasks other than 'build-image-prompt' (which stays English-only regardless).
+export interface TextContext {
+	targetLanguage?: string; // profile's Learning language, docs/design/06-settings.md §6.1
+	nativeLanguage?: string; // global "Your language", docs/design/06-settings.md §6.2
+}
+
 export interface TextProvider {
 	id: string;
 	isCloud: boolean;
@@ -15,6 +22,7 @@ export interface TextProvider {
 		input: string,
 		task: TextTask,
 		targetFields: string[], // fields the user ticked in the Generate-with-AI modal
+		context?: TextContext,
 	): Promise<TextResult>;
 }
 

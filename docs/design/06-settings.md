@@ -42,6 +42,8 @@ Profile: [Japanese ▼]   [Add]  [Delete]
 Profile name: [Japanese        ]
 Deck:  [Japanese::N2 ▼]
 Model: [Basic ▼]
+Main field: [Word ▼]
+Learning language: [Japanese ▼]
 Save notes to: [/ (vault root) ▼]
 ```
 
@@ -65,6 +67,23 @@ Save notes to: [/ (vault root) ▼]
   trị đã lưu mà Anki không còn liệt kê (VD deck đã bị xoá) vẫn được hiển thị. Có lựa chọn
   trống ("Select deck…") — profile thiếu Deck hoặc Model thì không tạo được note (hiện
   Notice "Please set up a profile in Settings first" và mở Settings).
+- **Main field:** dropdown lấy field từ `modelFieldNames(model)` của profile này — chỉ
+  tải/hiện khi profile đã có Model (giống cơ chế Deck/Model ở trên, kể cả việc giữ hiển
+  thị giá trị đã lưu dù model không còn field đó). Đây **không** phải Main Field thật sự
+  dùng cho Rebuild/Generate của một note cụ thể (đó là dropdown per-Deck+Model ở Sidebar,
+  `07-sidebar.md` §7.2.1) — nó chỉ là giá trị **mặc định**, dùng để "mồi" cho
+  `mainFieldConfig` của cặp Deck+Model này **một lần duy nhất**, ngay khi note đầu tiên
+  được tạo từ profile (Create new note / Create note from selection), nếu cặp đó chưa có
+  Main Field nào (xem `07-sidebar.md` §7.4). Không bắt buộc.
+- **Learning language:** dropdown, danh sách **cố định** (`English`, `Chinese`,
+  `Japanese`, `Korean`, `German`, `Spanish`, `Vietnamese` — nhãn luôn viết bằng tiếng
+  Anh, kể cả cho Vietnamese; `src/utils/constants.ts` → `LANGUAGES`), dùng chung
+  `renderPicker()` với Deck/Model/Main field (cùng file) nên hành vi giống hệt: có lựa
+  chọn trống ("Select learning language…"), lưu ngay khi chọn (không có bước blur/Enter
+  như trước), và một giá trị đã lưu từ trước khi có danh sách này (free text cũ, không
+  khớp danh sách) vẫn hiển thị đúng thay vì biến mất. Đây là ngôn ngữ profile này đang
+  học — dùng làm ngữ cảnh cho AI Generate (`02-providers.md` §2.4) cùng với "Your
+  language" (§6.2). Không bắt buộc.
 - **Save notes to:** populate từ folder trong vault, không phụ thuộc AnkiConnect nên
   **luôn hiện**. Mặc định `/` (vault root). Folder lồng nhau hiển thị dạng cây: mỗi dòng
   chỉ hiện tên riêng, thụt lề theo độ sâu, nhóm folder con ngay dưới folder cha (dùng hàm
@@ -73,6 +92,16 @@ Save notes to: [/ (vault root) ▼]
   frontmatter của note đó (xem `07-sidebar.md` §7.2.1).
 
 ## 6.2. AI Provider Settings
+
+**Your language:** dropdown, cùng danh sách **cố định** `LANGUAGES` và cùng
+`renderPicker()` với Learning language (§6.1) — chỉ khác là nằm ngoài phần Profile
+(toàn cục: một người dùng chỉ có một ngôn ngữ hiện tại, không cần khai báo lại cho
+từng profile). Dùng làm ngữ cảnh cho AI Generate (`02-providers.md` §2.4) cùng với
+Learning language của profile (§6.1). Không bắt buộc, lưu ngay khi chọn.
+
+```
+Your language: [English ▼]
+```
 
 Provider là danh sách **cố định** (xem `02-providers.md` §2.2); thêm provider khi có người dùng
 yêu cầu. Cả Text và Image cùng cơ chế: danh sách cấu hình (Add / Delete) + dropdown **active**

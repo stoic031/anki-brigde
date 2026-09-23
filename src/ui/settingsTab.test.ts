@@ -226,6 +226,8 @@ const profileA: Profile = {
 	deck: '',
 	model: '',
 	folder: '',
+	mainField: '',
+	targetLanguage: '',
 };
 const profileB: Profile = {
 	id: 'b',
@@ -233,6 +235,8 @@ const profileB: Profile = {
 	deck: '',
 	model: '',
 	folder: '',
+	mainField: '',
+	targetLanguage: '',
 };
 
 // The plugin's settings carry the given profiles (default: just profile A, active).
@@ -315,7 +319,9 @@ describe('renderConnectionSection — URL field', () => {
 		const { plugin, saveSettings } = fakePlugin({ ankiConnectUrl: '' });
 
 		render(plugin);
-		await settings[0]?.textComponents[0]?.triggerChange('http://localhost:1234');
+		await settings[0]?.textComponents[0]?.triggerChange(
+			'http://localhost:1234',
+		);
 
 		expect(plugin.settings.ankiConnectUrl).toBe('http://localhost:1234');
 		expect(saveSettings).toHaveBeenCalledTimes(1);
@@ -414,7 +420,9 @@ describe('renderConnectionSection — Connect button', () => {
 			}),
 		);
 		modelNames.mockResolvedValue(['Basic']);
-		const { plugin } = fakePlugin({ ankiConnectUrl: 'http://localhost:8765' });
+		const { plugin } = fakePlugin({
+			ankiConnectUrl: 'http://localhost:8765',
+		});
 		const section = render(plugin);
 		const before = settings.length;
 
@@ -484,10 +492,12 @@ describe('renderConnectionSection — Connect button', () => {
 
 		await button.triggerClick();
 
-		expect(latest('Deck').dropdownComponents[0]?.value).toBe('Deleted deck');
-		expect(latest('Deck').dropdownComponents[0]?.options['Deleted deck']).toBe(
+		expect(latest('Deck').dropdownComponents[0]?.value).toBe(
 			'Deleted deck',
 		);
+		expect(
+			latest('Deck').dropdownComponents[0]?.options['Deleted deck'],
+		).toBe('Deleted deck');
 	});
 
 	it('persists a picked deck into the active profile', async () => {
@@ -521,7 +531,10 @@ describe('renderConnectionSection — profiles', () => {
 	});
 
 	it('lists every profile and selects the active one', () => {
-		const { plugin } = fakePlugin({ ...twoProfiles(), activeProfileId: 'b' });
+		const { plugin } = fakePlugin({
+			...twoProfiles(),
+			activeProfileId: 'b',
+		});
 
 		render(plugin);
 
@@ -569,7 +582,10 @@ describe('renderConnectionSection — profiles', () => {
 	});
 
 	it('Delete removes the active profile and activates the first remaining one', async () => {
-		const { plugin } = fakePlugin({ ...twoProfiles(), activeProfileId: 'b' });
+		const { plugin } = fakePlugin({
+			...twoProfiles(),
+			activeProfileId: 'b',
+		});
 		render(plugin);
 
 		await latest('Profile').buttonComponents[1]?.triggerClick();
@@ -660,7 +676,9 @@ describe('renderConnectionSection — Save notes to folder', () => {
 
 		render(plugin);
 
-		expect(latest('Save notes to').dropdownComponents[0]?.value).toBe('Vocab');
+		expect(latest('Save notes to').dropdownComponents[0]?.value).toBe(
+			'Vocab',
+		);
 	});
 
 	it('leaves the saved folder unselected if it no longer exists', () => {
@@ -678,7 +696,9 @@ describe('renderConnectionSection — Save notes to folder', () => {
 		const { plugin, saveSettings } = fakePlugin({}, [fakeFolder('Vocab')]);
 
 		render(plugin);
-		await latest('Save notes to').dropdownComponents[0]?.triggerChange('Vocab');
+		await latest('Save notes to').dropdownComponents[0]?.triggerChange(
+			'Vocab',
+		);
 
 		expect(plugin.settings.profiles[0]?.folder).toBe('Vocab');
 		expect(saveSettings).toHaveBeenCalledTimes(1);
@@ -713,11 +733,8 @@ describe('renderConnectionSection — Save notes to folder', () => {
 
 		render(plugin);
 
-		expect(latest('Save notes to').dropdownComponents[0]?.optionOrder).toEqual([
-			'',
-			'Japanese',
-			'Japanese/N2',
-			'Japanese Advanced',
-		]);
+		expect(
+			latest('Save notes to').dropdownComponents[0]?.optionOrder,
+		).toEqual(['', 'Japanese', 'Japanese/N2', 'Japanese Advanced']);
 	});
 });

@@ -3,8 +3,11 @@ import type AnkiBridgePlugin from '../../main';
 import type { TFile } from 'obsidian';
 import { FakeEl } from '../../test/fakeDom';
 
-const { setIcon } = vi.hoisted(() => ({ setIcon: vi.fn() }));
-vi.mock('obsidian', () => ({ setIcon }));
+const { setIcon, Notice } = vi.hoisted(() => ({
+	setIcon: vi.fn(),
+	Notice: vi.fn(),
+}));
+vi.mock('obsidian', () => ({ setIcon, Notice }));
 
 const { syncNote, deleteNote } = vi.hoisted(() => ({
 	syncNote: vi.fn(),
@@ -30,8 +33,14 @@ vi.mock('../toast', () => ({ toastSuccess, toastError }));
 
 // Modals capture their confirm callback so tests can "click" Confirm.
 const { deleteModal, rebuildModal } = vi.hoisted(() => ({
-	deleteModal: { onConfirm: undefined as (() => void) | undefined, open: vi.fn() },
-	rebuildModal: { onConfirm: undefined as (() => void) | undefined, open: vi.fn() },
+	deleteModal: {
+		onConfirm: undefined as (() => void) | undefined,
+		open: vi.fn(),
+	},
+	rebuildModal: {
+		onConfirm: undefined as (() => void) | undefined,
+		open: vi.fn(),
+	},
 }));
 vi.mock('../modals/confirmDelete', () => ({
 	ConfirmDeleteModal: class {
@@ -51,26 +60,39 @@ vi.mock('../modals/confirmRebuildFields', () => ({
 }));
 
 import { AnkiConnectError, SyncError } from '../../types';
+import { fieldConfigKey } from '../../settings';
 import { renderNoteActions, type ActionState } from './noteActions';
 
-const note = { path: 'a.md' } as unknown as TFile;
+const note = { path: 'a.md', basename: 'a' } as unknown as TFile;
 const process = vi.fn(async (_f: unknown, fn: (d: string) => string) =>
 	fn('---\nanki_model: Basic\n---\n\nold body\n'),
 );
 
-function setup(state: Partial<ActionState> = {}) {
+function setup(
+	state: Partial<ActionState> = {},
+	// Rebuild is gated on Main Field being configured; default it for the pair used
+	// by every existing test (deck: 'Japanese', model: 'Basic') so tests that don't
+	// care about the gate keep working unchanged.
+	mainFieldConfig: Record<string, string> = {
+		[fieldConfigKey('Japanese', 'Basic')]: 'Front',
+	},
+) {
 	const parent = new FakeEl();
 	const plugin = {
 		app: { vault: { process } },
-		settings: { ankiConnectUrl: 'http://localhost:1234' },
+		settings: { ankiConnectUrl: 'http://localhost:1234', mainFieldConfig },
 	} as unknown as AnkiBridgePlugin;
 	const actions = renderNoteActions(parent as unknown as HTMLElement, plugin);
-	actions.update({ note, model: 'Basic', synced: false, ...state });
-	const [sync, rebuild, del] = parent.byClass('anki-bridge-sidebar__action') as [
-		FakeEl,
-		FakeEl,
-		FakeEl,
-	];
+	actions.update({
+		note,
+		deck: 'Japanese',
+		model: 'Basic',
+		synced: false,
+		...state,
+	});
+	const [sync, rebuild, del] = parent.byClass(
+		'anki-bridge-sidebar__action',
+	) as [FakeEl, FakeEl, FakeEl];
 	const label = (b: FakeEl) => b.children[1]?.text;
 	return { parent, actions, sync, rebuild, del, label };
 }
@@ -92,12 +114,14 @@ describe('renderNoteActions — layout and state', () => {
 		const { parent, sync, rebuild, del, label } = setup();
 
 		expect(parent.byClass('anki-bridge-sidebar__actions')).toHaveLength(1);
-		expect([sync, rebuild, del].map(label)).toEqual(['Sync', 'Rebuild', 'Delete']);
-		expect((setIcon.mock.calls as [unknown, string][]).map(([, name]) => name)).toEqual([
-			'refresh-cw',
-			'hammer',
-			'trash-2',
+		expect([sync, rebuild, del].map(label)).toEqual([
+			'Sync',
+			'Rebuild',
+			'Delete',
 		]);
+		expect(
+			(setIcon.mock.calls as [unknown, string][]).map(([, name]) => name),
+		).toEqual(['refresh-cw', 'hammer', 'trash-2']);
 	});
 
 	it('disables Sync and Rebuild with no active note', () => {
@@ -118,10 +142,20 @@ describe('renderNoteActions — layout and state', () => {
 		const { actions, del } = setup({ synced: false });
 		expect(del.hidden).toBe(true);
 
-		actions.update({ note, model: 'Basic', synced: true });
+		actions.update({
+			note,
+			deck: 'Japanese',
+			model: 'Basic',
+			synced: true,
+		});
 		expect(del.hidden).toBe(false);
 
-		actions.update({ note, model: 'Basic', synced: false });
+		actions.update({
+			note,
+			deck: 'Japanese',
+			model: 'Basic',
+			synced: false,
+		});
 		expect(del.hidden).toBe(true);
 	});
 });
@@ -158,13 +192,17 @@ describe('Sync button', () => {
 	});
 
 	it('shows a SyncError’s own message, then restores after 3s', async () => {
-		syncNote.mockRejectedValue(new SyncError('model-not-found', 'Model "X" not found in Anki.'));
+		syncNote.mockRejectedValue(
+			new SyncError('model-not-found', 'Model "X" not found in Anki.'),
+		);
 		const { sync, label } = setup();
 
 		await sync.click();
 
 		expect(label(sync)).toBe('❌ Error');
-		expect(toastError).toHaveBeenCalledWith('❌ Model "X" not found in Anki.');
+		expect(toastError).toHaveBeenCalledWith(
+			'❌ Model "X" not found in Anki.',
+		);
 		vi.advanceTimersByTime(3000);
 		expect(label(sync)).toBe('Sync');
 		expect(sync.disabled).toBe(false);
@@ -208,7 +246,12 @@ describe('Sync button', () => {
 		const { actions, sync } = setup();
 
 		const click = sync.click();
-		actions.update({ note, model: 'Basic', synced: true });
+		actions.update({
+			note,
+			deck: 'Japanese',
+			model: 'Basic',
+			synced: true,
+		});
 		expect(sync.disabled).toBe(true);
 
 		resolve();
@@ -258,7 +301,9 @@ describe('Delete button', () => {
 	});
 
 	it('shows a SyncError’s own message', async () => {
-		deleteNote.mockRejectedValue(new SyncError('offline', 'Cannot reach Anki.'));
+		deleteNote.mockRejectedValue(
+			new SyncError('offline', 'Cannot reach Anki.'),
+		);
 		const { del } = setup({ synced: true });
 		await del.click();
 
@@ -280,7 +325,7 @@ describe('Rebuild button', () => {
 		expect(process).not.toHaveBeenCalled();
 	});
 
-	it('on confirm: rewrites the body from the Model’s fields, keeping frontmatter', async () => {
+	it('on confirm: rewrites the body from the Model’s fields, keeping frontmatter, and prefills Main Field with the note title', async () => {
 		modelFieldNames.mockResolvedValue(['Front', 'Back']);
 		const { rebuild, label } = setup();
 		await rebuild.click();
@@ -290,10 +335,22 @@ describe('Rebuild button', () => {
 		await vi.waitFor(() => expect(process).toHaveBeenCalledTimes(1));
 		expect(modelFieldNames).toHaveBeenCalledWith('Basic');
 		expect(await process.mock.results[0]?.value).toBe(
-			'---\nanki_model: Basic\n---\n\n## Front\n\n## Back\n',
+			'---\nanki_model: Basic\n---\n\n## Front\n\na\n\n## Back\n',
 		);
 		await vi.waitFor(() => expect(label(rebuild)).toBe('✅ Done!'));
 		expect(toastSuccess).toHaveBeenCalledWith('✅ Note fields rebuilt.');
+	});
+
+	it('shows a Notice and stops, without opening the confirm modal, when Main Field is not configured', async () => {
+		const { rebuild } = setup({}, {}); // no mainFieldConfig for any pair
+
+		await rebuild.click();
+
+		expect(Notice).toHaveBeenCalledWith(
+			'Please choose a main field for this deck/model in the sidebar first.',
+		);
+		expect(rebuildModal.open).not.toHaveBeenCalled();
+		expect(process).not.toHaveBeenCalled();
 	});
 
 	it('on failure: leaves the note alone and shows an error toast', async () => {

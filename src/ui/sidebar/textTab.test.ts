@@ -234,31 +234,38 @@ describe('renderTextTab', () => {
 		expect(write.disabled).toBe(true);
 	});
 
-	it('offers every field but the input field to add, and enables both buttons', async () => {
+	it('offers every field but the Main Field to add, and enables both buttons', async () => {
 		modelFieldNames.mockResolvedValue(['Word', 'Meaning', 'Furigana']);
-		const { tab, generate, write } = setup();
+		const { tab, generate, write } = setup({
+			mainFieldConfig: { [fieldConfigKey('Japanese', 'Basic')]: 'Word' },
+		});
 
 		await tab.sync('Japanese', 'Basic');
 
 		expect(modelFieldNames).toHaveBeenCalledWith('Basic');
-		expect(latestDropdown()?.optionOrder).toEqual(['', 'Meaning', 'Furigana']);
+		expect(latestDropdown()?.optionOrder).toEqual([
+			'',
+			'Meaning',
+			'Furigana',
+		]);
 		expect(generate.disabled).toBe(false);
 		expect(write.disabled).toBe(false);
 	});
 
-	it('restores fields already added for that Deck+Model pair only, excluding the input field', async () => {
+	it('restores fields already added for that Deck+Model pair only, excluding the Main Field', async () => {
 		modelFieldNames.mockResolvedValue(['Word', 'Meaning', 'Furigana']);
 		const { tab } = setup({
 			generateWithAiFields: {
 				[fieldConfigKey('Japanese', 'Basic')]: ['Word', 'Furigana'],
 				[fieldConfigKey('Spanish', 'Cloze')]: ['Meaning'],
 			},
+			mainFieldConfig: { [fieldConfigKey('Japanese', 'Basic')]: 'Word' },
 		});
 
 		await tab.sync('Japanese', 'Basic');
 
 		expect(latestRow('Furigana')).toBeDefined();
-		expect(latestRow('Word')).toBeUndefined(); // input field, never addable
+		expect(latestRow('Word')).toBeUndefined(); // Main Field, never addable
 		expect(latestRow('Meaning')).toBeUndefined(); // belongs to a different pair
 		// Already-added fields are no longer offered in the dropdown.
 		expect(latestDropdown()?.optionOrder).toEqual(['', 'Meaning']);
@@ -266,7 +273,9 @@ describe('renderTextTab', () => {
 
 	it('adding a field persists it and removes it from the dropdown', async () => {
 		modelFieldNames.mockResolvedValue(['Word', 'Meaning', 'Furigana']);
-		const { tab, plugin, saveSettings } = setup();
+		const { tab, plugin, saveSettings } = setup({
+			mainFieldConfig: { [fieldConfigKey('Japanese', 'Basic')]: 'Word' },
+		});
 		await tab.sync('Japanese', 'Basic');
 
 		await latestDropdown()?.select('Meaning');
@@ -284,6 +293,7 @@ describe('renderTextTab', () => {
 			generateWithAiFields: {
 				[fieldConfigKey('Japanese', 'Basic')]: ['Meaning'],
 			},
+			mainFieldConfig: { [fieldConfigKey('Japanese', 'Basic')]: 'Word' },
 		});
 		await tab.sync('Japanese', 'Basic');
 
@@ -316,6 +326,10 @@ describe('renderTextTab', () => {
 			generateWithAiFields: {
 				[fieldConfigKey('Japanese', 'Basic')]: ['Meaning'],
 			},
+			mainFieldConfig: {
+				[fieldConfigKey('Japanese', 'Basic')]: 'Word',
+				[fieldConfigKey('Japanese', 'Cloze')]: 'Front',
+			},
 		});
 		await tab.sync('Japanese', 'Basic');
 		expect(latestRow('Meaning')).toBeDefined();
@@ -330,9 +344,13 @@ describe('renderTextTab', () => {
 	it('drops a slow response for a pair that is no longer current', async () => {
 		let resolveSlow!: (v: string[]) => void;
 		modelFieldNames
-			.mockReturnValueOnce(new Promise<string[]>((r) => (resolveSlow = r)))
+			.mockReturnValueOnce(
+				new Promise<string[]>((r) => (resolveSlow = r)),
+			)
 			.mockResolvedValueOnce(['Front', 'Back']);
-		const { tab } = setup();
+		const { tab } = setup({
+			mainFieldConfig: { [fieldConfigKey('Spanish', 'Cloze')]: 'Front' },
+		});
 
 		const slow = tab.sync('Japanese', 'Basic');
 		await tab.sync('Spanish', 'Cloze');
@@ -340,6 +358,27 @@ describe('renderTextTab', () => {
 		await slow;
 
 		expect(latestDropdown()?.optionOrder).toEqual(['', 'Back']);
+	});
+
+	it('refresh() re-reads Main Field for the same pair, unlike sync() which dedupes', async () => {
+		modelFieldNames.mockResolvedValue(['Word', 'Meaning', 'Furigana']);
+		const key = fieldConfigKey('Japanese', 'Basic');
+		const { tab, plugin } = setup({
+			mainFieldConfig: { [key]: 'Word' },
+		});
+		await tab.sync('Japanese', 'Basic');
+		expect(latestDropdown()?.optionOrder).toEqual([
+			'',
+			'Meaning',
+			'Furigana',
+		]);
+
+		// Main Field changes for the same pair (sidebar's Main Field dropdown) — a
+		// plain sync() would no-op here since the pair itself didn't change.
+		plugin.settings.mainFieldConfig[key] = 'Meaning';
+		await tab.refresh('Japanese', 'Basic');
+
+		expect(latestDropdown()?.optionOrder).toEqual(['', 'Word', 'Furigana']);
 	});
 
 	it('shows an error toast when loading fields fails, without throwing', async () => {
@@ -521,7 +560,10 @@ describe('renderTextTab', () => {
 
 		it('writes the edited text, not the original AI output', async () => {
 			const { write } = await readyWithDraft('medicine');
-			applyGenerated.mockResolvedValue({ filled: ['Meaning'], skipped: [] });
+			applyGenerated.mockResolvedValue({
+				filled: ['Meaning'],
+				skipped: [],
+			});
 
 			await latestRow('Meaning')?.textArea?.edit('edited by hand');
 			await write.click();
@@ -540,7 +582,10 @@ describe('renderTextTab', () => {
 
 		it('clears the draft after a successful write', async () => {
 			const { write } = await readyWithDraft('medicine');
-			applyGenerated.mockResolvedValue({ filled: ['Meaning'], skipped: [] });
+			applyGenerated.mockResolvedValue({
+				filled: ['Meaning'],
+				skipped: [],
+			});
 
 			await write.click();
 			await flush();

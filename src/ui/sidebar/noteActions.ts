@@ -1,7 +1,7 @@
-import type { TFile } from 'obsidian';
+import { Notice, type TFile } from 'obsidian';
 import type AnkiBridgePlugin from '../../main';
 import { rebuildContent } from '../../note/contentTemplate';
-import { resolveAnkiConnectUrl } from '../../settings';
+import { fieldConfigKey, resolveAnkiConnectUrl } from '../../settings';
 import { AnkiConnectClient } from '../../sync/ankiConnect';
 import { deleteNote, syncNote } from '../../sync/syncEngine';
 import { ConfirmDeleteModal } from '../modals/confirmDelete';
@@ -11,6 +11,7 @@ import { createActionButton, runAction } from './actionButton';
 
 export interface ActionState {
 	note: TFile | null; // active markdown note, if any
+	deck: string; // its anki_deck ('' = unset)
 	model: string; // its anki_model ('' = unset)
 	synced: boolean; // it has an anki_note_id
 }
@@ -32,14 +33,17 @@ export function renderNoteActions(
 		label: 'Sync',
 		variant: 'primary',
 	});
-	const rebuild = createActionButton(row, { icon: 'hammer', label: 'Rebuild' });
+	const rebuild = createActionButton(row, {
+		icon: 'hammer',
+		label: 'Rebuild',
+	});
 	const del = createActionButton(row, {
 		icon: 'trash-2',
 		label: 'Delete',
 		variant: 'danger',
 	});
 
-	let state: ActionState = { note: null, model: '', synced: false };
+	let state: ActionState = { note: null, deck: '', model: '', synced: false };
 	const client = () =>
 		new AnkiConnectClient(resolveAnkiConnectUrl(plugin.settings));
 
@@ -68,8 +72,19 @@ export function renderNoteActions(
 	});
 
 	rebuild.el.addEventListener('click', () => {
-		const { note, model } = state;
+		const { note, deck, model } = state;
 		if (!note || !model || rebuild.el.disabled) return;
+		// docs/design/03-note.md §3.2 — Rebuild requires Main Field, same shape as the
+		// AI buttons' pre-check: the note is already open, so its Main Field dropdown
+		// is already visible in the sidebar for the user to set.
+		const mainField =
+			plugin.settings.mainFieldConfig[fieldConfigKey(deck, model)];
+		if (!mainField) {
+			new Notice(
+				'Please choose a main field for this deck/model in the sidebar first.',
+			);
+			return;
+		}
 		// Destructive: replaces everything below the frontmatter. Always confirm.
 		new ConfirmRebuildFieldsModal(
 			plugin.app,
@@ -78,11 +93,15 @@ export function renderNoteActions(
 					work: async () => {
 						const fields = await client().modelFieldNames(model);
 						await plugin.app.vault.process(note, (content) =>
-							rebuildContent(content, fields),
+							rebuildContent(content, fields, {
+								field: mainField,
+								content: note.basename,
+							}),
 						);
 						toastSuccess('✅ Note fields rebuilt.');
 					},
-					failure: '❌ Failed to rebuild fields. Please check Anki connection.',
+					failure:
+						'❌ Failed to rebuild fields. Please check Anki connection.',
 					onRestore: apply,
 				}),
 		).open();
@@ -99,7 +118,8 @@ export function renderNoteActions(
 						await deleteNote(plugin.app, note, client());
 						toastSuccess('✅ Note deleted from Anki!');
 					},
-					failure: '❌ Failed to delete. Please check Anki connection.',
+					failure:
+						'❌ Failed to delete. Please check Anki connection.',
 					onRestore: apply,
 					hideOnSuccess: true,
 				}),
