@@ -7,7 +7,7 @@ import {
 } from '../../note/generateFields';
 import { fieldConfigKey, resolveAnkiConnectUrl } from '../../settings';
 import { AnkiConnectClient } from '../../sync/ankiConnect';
-import { ProviderError } from '../../types';
+import { AnkiConnectError, ProviderError } from '../../types';
 import { toastError, toastSuccess } from '../toast';
 import { createActionButton, runAction } from './actionButton';
 import { startProgressNotice } from './progressNotice';
@@ -198,8 +198,11 @@ export function renderTextTab(
 				progress.stop();
 			}
 		} catch (err) {
+			// AnkiConnectError reaches here bare for a real, unrecognized AnkiConnect
+			// error (planGenerate's modelFieldNames call) — show its own message rather
+			// than the generic fallback, which would misreport it as a connection issue.
 			toastError(
-				err instanceof ProviderError
+				err instanceof ProviderError || err instanceof AnkiConnectError
 					? `❌ ${err.message}`
 					: '❌ Failed to generate content. Please check Anki connection.',
 			);

@@ -7,7 +7,7 @@ import {
 	type ImageFieldConfig,
 } from '../../settings';
 import { AnkiConnectClient } from '../../sync/ankiConnect';
-import { ProviderError } from '../../types';
+import { AnkiConnectError, ProviderError } from '../../types';
 import { toastError, toastSuccess } from '../toast';
 import { createActionButton, runAction } from './actionButton';
 import { startProgressNotice } from './progressNotice';
@@ -88,8 +88,11 @@ export function renderImageTab(
 			}
 			if (succeeded) toastSuccess('🖼️ Image added to note');
 		} catch (err) {
+			// AnkiConnectError reaches here bare for a real, unrecognized AnkiConnect
+			// error (planAddImage's modelFieldNames call) — show its own message rather
+			// than the generic fallback, which would misreport it as a connection issue.
 			toastError(
-				err instanceof ProviderError
+				err instanceof ProviderError || err instanceof AnkiConnectError
 					? `❌ ${err.message}`
 					: '❌ Failed to add image. Please check Anki connection.',
 			);

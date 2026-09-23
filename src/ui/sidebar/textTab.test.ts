@@ -492,6 +492,21 @@ describe('renderTextTab', () => {
 			);
 		});
 
+		it('shows an unrecognized AnkiConnectError’s own message instead of the generic one', async () => {
+			const { AnkiConnectError } = await import('../../types');
+			planGenerate.mockRejectedValue(
+				new AnkiConnectError('modelFieldNames', 'some Anki-side message'),
+			);
+			const { generate } = await ready();
+
+			await generate.click();
+			await flush();
+
+			expect(toastError).toHaveBeenCalledWith(
+				"❌ AnkiConnect 'modelFieldNames' failed: some Anki-side message",
+			);
+		});
+
 		it('tells the user when the model returned nothing usable', async () => {
 			planGenerate.mockResolvedValue(plan);
 			generateDraft.mockResolvedValue({ Meaning: '' });
