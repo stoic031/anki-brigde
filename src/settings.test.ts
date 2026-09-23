@@ -69,8 +69,31 @@ describe('loadSettings', () => {
 
 		const loaded = await loadSettings(plugin);
 
-		expect(loaded.profiles).toEqual(profiles);
+		// Old saved profiles predate mainField/targetLanguage — normalized to '',
+		// never `undefined` at runtime.
+		expect(loaded.profiles).toEqual(
+			profiles.map((p) => ({ ...p, mainField: '', targetLanguage: '' })),
+		);
 		expect(loaded.activeProfileId).toBe('b');
+	});
+
+	it('keeps a saved profile’s mainField/targetLanguage, not the normalized default', async () => {
+		const profiles = [
+			{
+				id: 'a',
+				name: 'A',
+				deck: 'D1',
+				model: 'M1',
+				folder: '',
+				mainField: 'Word',
+				targetLanguage: 'Japanese',
+			},
+		];
+		const { plugin } = fakePlugin({ profiles, activeProfileId: 'a' });
+
+		const loaded = await loadSettings(plugin);
+
+		expect(loaded.profiles).toEqual(profiles);
 	});
 
 	it('falls back to the first profile when activeProfileId is unknown', async () => {
@@ -101,6 +124,8 @@ describe('loadSettings', () => {
 					deck: 'Deck',
 					model: 'Model',
 					folder: 'Anki Notes',
+					mainField: '',
+					targetLanguage: '',
 				},
 			]);
 			expect(loaded.activeProfileId).toBe('default');
@@ -134,8 +159,24 @@ describe('getActiveProfile', () => {
 		const settings = {
 			...DEFAULT_SETTINGS,
 			profiles: [
-				{ id: 'a', name: 'A', deck: '', model: '', folder: '' },
-				{ id: 'b', name: 'B', deck: '', model: '', folder: '' },
+				{
+					id: 'a',
+					name: 'A',
+					deck: '',
+					model: '',
+					folder: '',
+					mainField: '',
+					targetLanguage: '',
+				},
+				{
+					id: 'b',
+					name: 'B',
+					deck: '',
+					model: '',
+					folder: '',
+					mainField: '',
+					targetLanguage: '',
+				},
 			],
 			activeProfileId: 'b',
 		};
@@ -153,12 +194,14 @@ describe('saveSettings', () => {
 			activeProfileId: DEFAULT_SETTINGS.activeProfileId,
 			generateWithAiFields: {},
 			imageConfigs: {},
+			mainFieldConfig: {},
 			textProviders: [],
 			activeTextProviderId: '',
 			imageProviders: [],
 			activeImageProviderId: '',
 			mediaPrefix: DEFAULT_MEDIA_PREFIX,
 			autoSyncOnSave: false,
+			nativeLanguage: '',
 		};
 
 		await saveSettings(plugin, settings);
@@ -176,12 +219,14 @@ describe('resolveAnkiConnectUrl', () => {
 				activeProfileId: DEFAULT_SETTINGS.activeProfileId,
 				generateWithAiFields: {},
 				imageConfigs: {},
+				mainFieldConfig: {},
 				textProviders: [],
 				activeTextProviderId: '',
 				imageProviders: [],
 				activeImageProviderId: '',
 				mediaPrefix: DEFAULT_MEDIA_PREFIX,
 				autoSyncOnSave: false,
+				nativeLanguage: '',
 			}),
 		).toBe(DEFAULT_ANKI_CONNECT_URL);
 	});
@@ -194,12 +239,14 @@ describe('resolveAnkiConnectUrl', () => {
 				activeProfileId: DEFAULT_SETTINGS.activeProfileId,
 				generateWithAiFields: {},
 				imageConfigs: {},
+				mainFieldConfig: {},
 				textProviders: [],
 				activeTextProviderId: '',
 				imageProviders: [],
 				activeImageProviderId: '',
 				mediaPrefix: DEFAULT_MEDIA_PREFIX,
 				autoSyncOnSave: false,
+				nativeLanguage: '',
 			}),
 		).toBe(DEFAULT_ANKI_CONNECT_URL);
 	});
@@ -212,12 +259,14 @@ describe('resolveAnkiConnectUrl', () => {
 				activeProfileId: DEFAULT_SETTINGS.activeProfileId,
 				generateWithAiFields: {},
 				imageConfigs: {},
+				mainFieldConfig: {},
 				textProviders: [],
 				activeTextProviderId: '',
 				imageProviders: [],
 				activeImageProviderId: '',
 				mediaPrefix: DEFAULT_MEDIA_PREFIX,
 				autoSyncOnSave: false,
+				nativeLanguage: '',
 			}),
 		).toBe('http://localhost:9999');
 	});

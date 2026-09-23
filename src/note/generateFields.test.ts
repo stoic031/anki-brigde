@@ -5,33 +5,51 @@ import { DEFAULT_SETTINGS, fieldConfigKey } from '../settings';
 import { ProviderError } from '../types';
 import { applyGenerated, generateDraft, planGenerate } from './generateFields';
 
-const { modelFieldNames } = vi.hoisted(() => ({ modelFieldNames: vi.fn() }));
-vi.mock('../sync/ankiConnect', () => ({
-	AnkiConnectClient: class {
-		modelFieldNames = modelFieldNames;
-	},
-}));
-
 const note = { path: 'a.md' } as TFile;
 const provider = { id: 'p', isCloud: false, processText: vi.fn() };
 
 function setup(
-	opts: { content?: string; ticked?: string[]; provider?: unknown } = {},
+	opts: {
+		content?: string;
+		ticked?: string[];
+		provider?: unknown;
+		mainField?: string | null; // null = leave unconfigured
+		targetLanguage?: string; // adds a profile matching deck 'D' / model 'M'
+		nativeLanguage?: string;
+	} = {},
 ) {
 	let content =
 		opts.content ?? '## Word\n薬\n\n## Meaning\n\n## Furigana\n\n';
 	const process = vi.fn(async (_f: TFile, fn: (c: string) => string) => {
 		content = fn(content);
 	});
+	const mainField = opts.mainField === undefined ? 'Word' : opts.mainField;
 	const plugin = {
 		settings: {
 			...structuredClone(DEFAULT_SETTINGS),
+			profiles: opts.targetLanguage
+				? [
+						{
+							id: 'p',
+							name: 'P',
+							deck: 'D',
+							model: 'M',
+							folder: '',
+							mainField: '',
+							targetLanguage: opts.targetLanguage,
+						},
+					]
+				: DEFAULT_SETTINGS.profiles,
 			generateWithAiFields: {
 				[fieldConfigKey('D', 'M')]: opts.ticked ?? [
 					'Meaning',
 					'Furigana',
 				],
 			},
+			mainFieldConfig: mainField
+				? { [fieldConfigKey('D', 'M')]: mainField }
+				: {},
+			nativeLanguage: opts.nativeLanguage ?? '',
 		},
 		providers: {
 			getTextProvider: () =>
@@ -48,9 +66,6 @@ function setup(
 }
 
 beforeEach(() => {
-	modelFieldNames
-		.mockReset()
-		.mockResolvedValue(['Word', 'Meaning', 'Furigana']);
 	provider.processText.mockReset();
 });
 
@@ -63,6 +78,28 @@ describe('planGenerate', () => {
 			provider,
 			word: '薬',
 			targetFields: ['Meaning'],
+			context: { targetLanguage: undefined, nativeLanguage: undefined },
+		});
+	});
+
+	it('resolves targetLanguage from the profile matching this Deck+Model, and nativeLanguage from global settings', async () => {
+		const { plugin } = setup({
+			targetLanguage: 'Japanese',
+			nativeLanguage: 'English',
+		});
+		const plan = await planGenerate(plugin, note, 'D', 'M');
+
+		expect(plan).toMatchObject({
+			context: { targetLanguage: 'Japanese', nativeLanguage: 'English' },
+		});
+	});
+
+	it('leaves targetLanguage undefined when no profile matches this Deck+Model', async () => {
+		const { plugin } = setup({ nativeLanguage: 'English' });
+		const plan = await planGenerate(plugin, note, 'D', 'M');
+
+		expect(plan).toMatchObject({
+			context: { targetLanguage: undefined, nativeLanguage: 'English' },
 		});
 	});
 
@@ -73,12 +110,20 @@ describe('planGenerate', () => {
 		expect(plan.stop).toContain('configure AI field generation');
 	});
 
-	it('stops when no text model is configured, before touching Anki', async () => {
+	it('stops when no text model is configured', async () => {
 		const { plugin } = setup({ provider: null });
 		const plan = await planGenerate(plugin, note, 'D', 'M');
 
 		expect(plan.stop).toBe('Set up a text model in settings first.');
-		expect(modelFieldNames).not.toHaveBeenCalled();
+	});
+
+	it('stops with the configure-Main-Field message when it is unset', async () => {
+		const { plugin } = setup({ mainField: null });
+		const plan = await planGenerate(plugin, note, 'D', 'M');
+
+		expect(plan.stop).toBe(
+			'Please choose a main field for this deck/model in the sidebar first.',
+		);
 	});
 
 	it('stops when the input section is empty and names the field', async () => {
@@ -89,8 +134,7 @@ describe('planGenerate', () => {
 	});
 
 	it('finds the input section through an alias (Front → ## Word)', async () => {
-		modelFieldNames.mockResolvedValue(['Front', 'Back']);
-		const { plugin } = setup({ ticked: ['Back'] });
+		const { plugin } = setup({ ticked: ['Back'], mainField: 'Front' });
 		const plan = await planGenerate(plugin, note, 'D', 'M');
 
 		expect(plan).toMatchObject({ word: '薬', targetFields: ['Back'] });
@@ -102,15 +146,6 @@ describe('planGenerate', () => {
 
 		expect(plan.stop).toContain('Add at least one field besides Word');
 	});
-
-	it('propagates AnkiConnect failures', async () => {
-		modelFieldNames.mockRejectedValue(new Error('offline'));
-		const { plugin } = setup();
-
-		await expect(planGenerate(plugin, note, 'D', 'M')).rejects.toThrow(
-			'offline',
-		);
-	});
 });
 
 describe('generateDraft', () => {
@@ -118,6 +153,7 @@ describe('generateDraft', () => {
 		provider,
 		word: '薬',
 		targetFields: ['Meaning', 'Furigana'],
+		context: { targetLanguage: 'Japanese', nativeLanguage: 'English' },
 	};
 
 	it('calls the model once and returns its raw result, without touching the note', async () => {
@@ -137,6 +173,7 @@ describe('generateDraft', () => {
 			'薬',
 			'extract-vocabulary',
 			['Meaning', 'Furigana'],
+			plan.context,
 		);
 		expect(results).toEqual({ Meaning: 'medicine', Furigana: 'くすり' });
 		expect(process).not.toHaveBeenCalled();

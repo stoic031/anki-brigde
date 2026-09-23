@@ -36,14 +36,37 @@ describe('generateContentSkeleton', () => {
 		expect(generateContentSkeleton([])).toBe('');
 	});
 
-	it('pre-fills only the first field section when firstFieldContent is given', () => {
-		expect(generateContentSkeleton(['Word', 'Meaning'], '薬')).toBe(
-			'## Word\n\n薬\n\n## Meaning\n',
-		);
+	it('pre-fills only the named field section when prefill is given', () => {
+		expect(
+			generateContentSkeleton(['Word', 'Meaning'], {
+				field: 'Word',
+				content: '薬',
+			}),
+		).toBe('## Word\n\n薬\n\n## Meaning\n');
 	});
 
-	it('ignores firstFieldContent when there are no fields', () => {
-		expect(generateContentSkeleton([], '薬')).toBe('');
+	it('pre-fills a field regardless of its position', () => {
+		expect(
+			generateContentSkeleton(['Word', 'Meaning'], {
+				field: 'Meaning',
+				content: 'medicine',
+			}),
+		).toBe('## Word\n\n## Meaning\n\nmedicine\n');
+	});
+
+	it('prefills nothing when the field is not on the model', () => {
+		expect(
+			generateContentSkeleton(['Word', 'Meaning'], {
+				field: 'Stale',
+				content: '薬',
+			}),
+		).toBe('## Word\n\n## Meaning\n');
+	});
+
+	it('ignores prefill when there are no fields', () => {
+		expect(
+			generateContentSkeleton([], { field: 'Word', content: '薬' }),
+		).toBe('');
 	});
 
 	it('round-trips through parseSections: every field becomes its own empty section', () => {
@@ -56,11 +79,14 @@ describe('generateContentSkeleton', () => {
 		}
 	});
 
-	it('round-trips a pre-filled first field, including multi-line selected text', () => {
+	it('round-trips a pre-filled field, including multi-line selected text', () => {
 		const fields = ['Word', 'Meaning'];
 		const selectedText = '薬\nくすり (medicine)';
 		const sections = parseSections(
-			generateContentSkeleton(fields, selectedText),
+			generateContentSkeleton(fields, {
+				field: 'Word',
+				content: selectedText,
+			}),
 		);
 
 		expect(sections.get('word')).toBe(selectedText);
@@ -102,6 +128,19 @@ describe('rebuildContent', () => {
 	it('does not mistake a later --- rule for frontmatter', () => {
 		expect(rebuildContent('intro\n---\nmore', ['Front', 'Back'])).toBe(
 			skeleton,
+		);
+	});
+
+	it('pre-fills the named field with the note title when a prefill is given', () => {
+		const content = '---\nanki_deck: Japanese\n---\n\n## Word\n\nold\n';
+
+		expect(
+			rebuildContent(content, ['Front', 'Back'], {
+				field: 'Front',
+				content: 'word',
+			}),
+		).toBe(
+			'---\nanki_deck: Japanese\n---\n\n## Front\n\nword\n\n## Back\n',
 		);
 	});
 

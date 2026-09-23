@@ -1,6 +1,11 @@
 import { Notice, Setting, type Events } from 'obsidian';
 import type AnkiBridgePlugin from '../main';
-import { getActiveProfile, type Profile } from '../settings';
+import {
+	getActiveProfile,
+	resolveAnkiConnectUrl,
+	type Profile,
+} from '../settings';
+import { AnkiConnectClient } from '../sync/ankiConnect';
 import { PROFILE_CHANGED_EVENT } from '../utils/constants';
 import { buildFolderTreeEntries } from '../utils/folderTree';
 
@@ -19,6 +24,12 @@ export function renderProfilesSection(
 	const el = containerEl.createDiv({ cls: 'anki-bridge-settings__profiles' });
 	let names: { decks: string[]; models: string[] } | null = null;
 	let disposed = false;
+	// Main field options depend on the active profile's Model — fetched lazily and
+	// cached by model name (dedup, self-corrects if the model changes again while a
+	// fetch is in flight; see the check before renderPicker below).
+	let mainFields: string[] = [];
+	let mainFieldsModel = '';
+	let mainFieldsLoading = false;
 
 	const render = (): void => {
 		el.empty();
@@ -45,6 +56,8 @@ export function renderProfilesSection(
 						deck: '',
 						model: '',
 						folder: '',
+						mainField: '',
+						targetLanguage: '',
 					};
 					settings.profiles.push(profile);
 					void plugin.setActiveProfile(profile.id);
@@ -93,12 +106,68 @@ export function renderProfilesSection(
 			active.deck = v;
 			await plugin.saveSettings();
 		});
-		renderPicker(el, 'Model', names?.models ?? [], active.model, async (v) => {
-			active.model = v;
-			await plugin.saveSettings();
+		renderPicker(
+			el,
+			'Model',
+			names?.models ?? [],
+			active.model,
+			async (v) => {
+				active.model = v;
+				await plugin.saveSettings();
+			},
+		);
+
+		if (
+			active.model &&
+			active.model !== mainFieldsModel &&
+			!mainFieldsLoading
+		) {
+			void loadMainFields(active.model);
+		}
+		renderPicker(
+			el,
+			'Main field',
+			active.model && mainFieldsModel === active.model ? mainFields : [],
+			active.mainField,
+			async (v) => {
+				active.mainField = v;
+				await plugin.saveSettings();
+			},
+		);
+
+		new Setting(el).setName('Learning language').addText((text) => {
+			text.setPlaceholder('E.g. Japanese').setValue(
+				active.targetLanguage,
+			);
+			text.inputEl.addEventListener('change', () => {
+				active.targetLanguage = text.getValue().trim();
+				void plugin.saveSettings();
+			});
 		});
 
 		renderFolderPicker(el, plugin, active);
+	};
+
+	// docs/design/06-settings.md §6.1 — Main field options depend on the profile's
+	// Model, fetched from AnkiConnect same as Deck/Model names. Silent on failure,
+	// same convention as loadAnkiNames() in settingsTab.ts — the picker just keeps
+	// showing the saved value.
+	const loadMainFields = async (model: string): Promise<void> => {
+		mainFieldsLoading = true;
+		try {
+			const client = new AnkiConnectClient(
+				resolveAnkiConnectUrl(plugin.settings),
+			);
+			const fields = await client.modelFieldNames(model);
+			if (disposed) return;
+			mainFields = fields;
+			mainFieldsModel = model;
+			render();
+		} catch {
+			// Anki offline: keep showing the saved Main field value.
+		} finally {
+			mainFieldsLoading = false;
+		}
 	};
 
 	render();

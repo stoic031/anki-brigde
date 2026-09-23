@@ -82,6 +82,14 @@ dùng active) — thay đổi cộng thêm, không phá dữ liệu cũ.
   luôn là `{ prompt: string }` (1 prompt tiếng Anh cho image model)
 - Adapter nằm ở `src/providers/text/` (`openaiCompatible.ts`, `anthropic.ts`), đăng ký qua
   `textFactories` (`index.ts`). Nhãn Cloud/Local suy từ Base URL (localhost/127.0.0.1 = Local)
+- `processText` nhận thêm tham số tùy chọn thứ 4, `context?: TextContext`
+  (`{ targetLanguage?, nativeLanguage? }`, `../contracts.md` §4) — Generate
+  (`03-note.md` §3.2) truyền vào Learning language của profile khớp Deck+Model của note
+  (`06-settings.md` §6.1) và Your language toàn cục (`06-settings.md` §6.2). Có giá trị
+  thì thêm đúng 1 dòng vào system prompt (`src/providers/text/prompt.ts`), không có thì
+  không thêm gì — không bắt buộc, không đổi hành vi cũ khi cả hai đều trống.
+  **`build-image-prompt` không bao giờ nhận dòng ngữ cảnh này**, kể cả khi `context`
+  được truyền vào — task đó luôn cố định tiếng Anh (`docs/design-open-questions.md` #19).
 
 **Image Generation:**
 

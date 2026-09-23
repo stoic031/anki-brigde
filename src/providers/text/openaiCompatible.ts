@@ -45,7 +45,7 @@ export function createOpenAiCompatible(config: ProviderConfig): TextProvider {
 	return {
 		id,
 		isCloud: !isLocalUrl(baseUrl),
-		processText: (input, task, targetFields) =>
-			runText(id, input, task, targetFields, complete),
+		processText: (input, task, targetFields, context) =>
+			runText(id, input, task, targetFields, complete, context),
 	};
 }

@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { App } from 'obsidian';
 import {
 	DEFAULT_SETTINGS,
+	fieldConfigKey,
 	type AnkiBridgeSettings,
 	type Profile,
 } from '../settings';
@@ -40,6 +41,7 @@ import {
 	getQuickCaptureFilename,
 	getSelectedText,
 	getUniqueNotePath,
+	resolveMainField,
 	resolveQuickCaptureTarget,
 	runQuickCapture,
 } from './quickCapture';
@@ -64,12 +66,14 @@ function fakeSettings(
 		activeProfileId: DEFAULT_SETTINGS.activeProfileId,
 		generateWithAiFields: {},
 		imageConfigs: {},
+		mainFieldConfig: {},
 		textProviders: [],
 		activeTextProviderId: '',
 		imageProviders: [],
 		activeImageProviderId: '',
 		mediaPrefix: DEFAULT_MEDIA_PREFIX,
 		autoSyncOnSave: false,
+		nativeLanguage: '',
 		...overrides,
 	};
 }
@@ -184,6 +188,8 @@ describe('resolveQuickCaptureTarget', () => {
 					deck: 'Other',
 					model: 'Other model',
 					folder: '',
+					mainField: '',
+					targetLanguage: '',
 				},
 				{
 					id: 'b',
@@ -191,6 +197,8 @@ describe('resolveQuickCaptureTarget', () => {
 					deck: 'Japanese',
 					model: 'Basic',
 					folder: 'Vocab',
+					mainField: 'Word',
+					targetLanguage: '',
 				},
 			],
 			activeProfileId: 'b',
@@ -200,6 +208,7 @@ describe('resolveQuickCaptureTarget', () => {
 			deck: 'Japanese',
 			model: 'Basic',
 			folder: 'Vocab',
+			mainField: 'Word',
 		});
 	});
 
@@ -256,17 +265,69 @@ describe('getUniqueNotePath', () => {
 	});
 });
 
+describe('resolveMainField', () => {
+	const target = {
+		deck: 'Japanese',
+		model: 'Basic',
+		folder: '',
+		mainField: 'Word',
+	};
+
+	it('returns the already-configured value for this pair, without touching settings', async () => {
+		const { plugin, saveSettings } = fakePlugin({
+			settings: {
+				mainFieldConfig: {
+					[fieldConfigKey('Japanese', 'Basic')]: 'Front',
+				},
+			},
+		});
+
+		await expect(resolveMainField(plugin, target)).resolves.toBe('Front');
+
+		expect(saveSettings).not.toHaveBeenCalled();
+	});
+
+	it('seeds mainFieldConfig from the profile default when the pair is unconfigured', async () => {
+		const { plugin, saveSettings } = fakePlugin();
+
+		await expect(resolveMainField(plugin, target)).resolves.toBe('Word');
+
+		expect(
+			plugin.settings.mainFieldConfig[
+				fieldConfigKey('Japanese', 'Basic')
+			],
+		).toBe('Word');
+		expect(saveSettings).toHaveBeenCalledTimes(1);
+	});
+
+	it('returns empty and touches nothing when neither the pair nor the profile has a Main Field', async () => {
+		const { plugin, saveSettings } = fakePlugin();
+
+		await expect(
+			resolveMainField(plugin, { ...target, mainField: '' }),
+		).resolves.toBe('');
+
+		expect(plugin.settings.mainFieldConfig).toEqual({});
+		expect(saveSettings).not.toHaveBeenCalled();
+	});
+});
+
 describe('runQuickCapture', () => {
-	it('creates the note with the skeleton, prefilled first field, and frontmatter, then opens it', async () => {
+	it('creates the note with the skeleton, prefilled Main Field, and frontmatter, then opens it', async () => {
 		modelFieldNamesMock.mockResolvedValue(['Word', 'Meaning']);
 		const { plugin, saveSettings, vaultCreate, openFile, createdFile } =
 			fakePlugin({
 				view: { editor: { getSelection: () => '薬' } },
-				settings: withProfile({
-					deck: 'Japanese',
-					model: 'Basic',
-					folder: 'Vocab',
-				}),
+				settings: {
+					...withProfile({
+						deck: 'Japanese',
+						model: 'Basic',
+						folder: 'Vocab',
+					}),
+					mainFieldConfig: {
+						[fieldConfigKey('Japanese', 'Basic')]: 'Word',
+					},
+				},
 			});
 
 		await runQuickCapture(plugin);
@@ -286,6 +347,25 @@ describe('runQuickCapture', () => {
 		expect(openFile).toHaveBeenCalledWith(createdFile);
 		expect(saveSettings).not.toHaveBeenCalled();
 		expect(revealSidebarView).toHaveBeenCalledWith(plugin.app);
+	});
+
+	it('creates the note with nothing prefilled when Main Field is not configured for the pair', async () => {
+		modelFieldNamesMock.mockResolvedValue(['Word', 'Meaning']);
+		const { plugin, vaultCreate } = fakePlugin({
+			view: { editor: { getSelection: () => '薬' } },
+			settings: withProfile({
+				deck: 'Japanese',
+				model: 'Basic',
+				folder: 'Vocab',
+			}),
+		});
+
+		await runQuickCapture(plugin);
+
+		expect(vaultCreate).toHaveBeenCalledWith(
+			'Vocab/薬.md',
+			'## Word\n\n## Meaning\n',
+		);
 	});
 
 	it('shows an error toast and does nothing else when there is no active markdown note', async () => {

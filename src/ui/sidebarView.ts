@@ -18,6 +18,10 @@ import { renderNoteActions, type NoteActions } from './sidebar/noteActions';
 import { renderTabs } from './sidebar/tabs';
 import { renderImageTab, type ImageTab } from './sidebar/imageTab';
 import { renderTextTab, type TextTab } from './sidebar/textTab';
+import {
+	renderMainFieldDropdown,
+	type MainFieldControl,
+} from './sidebar/mainField';
 
 export const VIEW_TYPE_SIDEBAR = 'anki-bridge-sidebar';
 
@@ -34,6 +38,7 @@ export class SidebarView extends ItemView {
 	private noteActions?: NoteActions;
 	private textTab?: TextTab;
 	private imageTab?: ImageTab;
+	private mainFieldControl?: MainFieldControl;
 
 	constructor(
 		leaf: WorkspaceLeaf,
@@ -64,6 +69,14 @@ export class SidebarView extends ItemView {
 		// selected); only Text and Image are tabs.
 		this.renderDeckDropdown(this.contentEl);
 		this.renderModelDropdown(this.contentEl);
+		this.mainFieldControl = renderMainFieldDropdown(
+			this.contentEl,
+			this.plugin,
+			() => {
+				const { deck, model } = this.getNoteDeckModel();
+				void this.textTab?.refresh(deck, model);
+			},
+		);
 		this.noteActions = renderNoteActions(this.contentEl, this.plugin);
 
 		const panels = renderTabs(this.contentEl, [
@@ -221,6 +234,7 @@ export class SidebarView extends ItemView {
 		fill(this.modelDropdown, this.modelNames, model);
 		this.noteActions?.update({
 			note: this.getActiveNote(),
+			deck,
 			model,
 			synced: this.isSynced(),
 		});
@@ -240,6 +254,7 @@ export class SidebarView extends ItemView {
 	private async syncFromNote(): Promise<void> {
 		this.renderDropdownValues();
 		const { deck, model } = this.getNoteDeckModel();
+		await this.mainFieldControl?.sync(deck, model);
 		await this.textTab?.sync(deck, model);
 		await this.imageTab?.sync(deck, model);
 	}

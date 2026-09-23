@@ -16,12 +16,14 @@ function fakeSettings(
 		activeProfileId: DEFAULT_SETTINGS.activeProfileId,
 		generateWithAiFields: {},
 		imageConfigs: {},
+		mainFieldConfig: {},
 		textProviders: [],
 		activeTextProviderId: '',
 		imageProviders: [],
 		activeImageProviderId: '',
 		mediaPrefix: DEFAULT_MEDIA_PREFIX,
 		autoSyncOnSave: false,
+		nativeLanguage: '',
 		...overrides,
 	};
 }

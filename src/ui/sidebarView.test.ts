@@ -147,19 +147,43 @@ vi.mock('obsidian', async () => {
 
 // The action row and Text tab have their own tests; here they're spies so the view's
 // wiring (what it passes them, and when) can be asserted directly.
-const { noteActionsUpdate, textTabSync, imageTabSync } = vi.hoisted(() => ({
+const {
+	noteActionsUpdate,
+	textTabSync,
+	textTabRefresh,
+	imageTabSync,
+	mainFieldSync,
+} = vi.hoisted(() => ({
 	noteActionsUpdate: vi.fn(),
 	textTabSync: vi.fn().mockResolvedValue(undefined),
+	textTabRefresh: vi.fn().mockResolvedValue(undefined),
 	imageTabSync: vi.fn().mockResolvedValue(undefined),
+	mainFieldSync: vi.fn().mockResolvedValue(undefined),
 }));
 vi.mock('./sidebar/noteActions', () => ({
 	renderNoteActions: vi.fn(() => ({ update: noteActionsUpdate })),
 }));
 vi.mock('./sidebar/textTab', () => ({
-	renderTextTab: vi.fn(() => ({ sync: textTabSync })),
+	renderTextTab: vi.fn(() => ({
+		sync: textTabSync,
+		refresh: textTabRefresh,
+	})),
 }));
 vi.mock('./sidebar/imageTab', () => ({
 	renderImageTab: vi.fn(() => ({ sync: imageTabSync })),
+}));
+// Captures the onChange callback sidebarView wires up, so a test can "change" Main
+// Field and assert it forces the Text tab to refresh.
+const mainFieldOnChange = vi.hoisted(() => ({
+	current: undefined as (() => void) | undefined,
+}));
+vi.mock('./sidebar/mainField', () => ({
+	renderMainFieldDropdown: vi.fn(
+		(_parent: unknown, _plugin: unknown, onChange: () => void) => {
+			mainFieldOnChange.current = onChange;
+			return { sync: mainFieldSync };
+		},
+	),
 }));
 
 const { deckNamesMock, modelNamesMock, AnkiConnectClient } = vi.hoisted(() => {
@@ -209,11 +233,13 @@ afterEach(() => {
 	vi.clearAllMocks();
 	settings.length = 0;
 	textTabSync.mockResolvedValue(undefined);
+	textTabRefresh.mockResolvedValue(undefined);
 	imageTabSync.mockResolvedValue(undefined);
+	mainFieldSync.mockResolvedValue(undefined);
+	mainFieldOnChange.current = undefined;
 	deckModelWarningCapture.onKeepOld = undefined;
 	deckModelWarningCapture.onUpdate = undefined;
 });
-
 
 const profileA: Profile = {
 	id: 'a',
@@ -221,6 +247,8 @@ const profileA: Profile = {
 	deck: '',
 	model: '',
 	folder: '',
+	mainField: '',
+	targetLanguage: '',
 };
 const profileB: Profile = { ...profileA, id: 'b', name: 'Spanish' };
 
@@ -252,7 +280,10 @@ function fakeApp(
 	const processFrontMatter = vi
 		.fn()
 		.mockImplementation(
-			async (_file: unknown, fn: (fm: Record<string, unknown>) => void) => {
+			async (
+				_file: unknown,
+				fn: (fm: Record<string, unknown>) => void,
+			) => {
 				fn(liveFrontmatter);
 			},
 		);
@@ -309,9 +340,9 @@ function handlerFor(
 	mock: ReturnType<typeof vi.fn>,
 	eventName: string,
 ): (...args: unknown[]) => void {
-	const handler = mock.mock.calls.find(([name]) => name === eventName)?.[1] as
-		| ((...args: unknown[]) => void)
-		| undefined;
+	const handler = mock.mock.calls.find(
+		([name]) => name === eventName,
+	)?.[1] as ((...args: unknown[]) => void) | undefined;
 	if (!handler) throw new Error(`no "${eventName}" handler registered`);
 	return handler;
 }
@@ -353,11 +384,14 @@ describe('SidebarView', () => {
 
 		const contentEl = view.contentEl as unknown as FakeEl;
 		expect(contentEl.children[0]?.text).toBe('Anki Bridge');
-		expect(contentEl.byClass('anki-bridge-sidebar__tab').map((t) => t.text)).toEqual([
-			'Text',
-			'Image',
+		expect(
+			contentEl.byClass('anki-bridge-sidebar__tab').map((t) => t.text),
+		).toEqual(['Text', 'Image']);
+		expect(settings.map((s) => s.name)).toEqual([
+			'Profile',
+			'Deck',
+			'Model',
 		]);
-		expect(settings.map((s) => s.name)).toEqual(['Profile', 'Deck', 'Model']);
 		// Only Text and Image are tabs now — Deck and Model live directly under
 		// contentEl, same as Profile, not inside any tab panel.
 		expect(settings[DECK_IDX]?.containerEl).toBe(contentEl);
@@ -379,7 +413,9 @@ describe('SidebarView', () => {
 			const { plugin, setActiveProfile } = fakePlugin();
 			await openView(plugin).opened;
 
-			await settings[PROFILE_IDX]?.dropdownComponents[0]?.triggerChange('b');
+			await settings[PROFILE_IDX]?.dropdownComponents[0]?.triggerChange(
+				'b',
+			);
 
 			expect(setActiveProfile).toHaveBeenCalledWith('b');
 		});
@@ -388,7 +424,11 @@ describe('SidebarView', () => {
 			const { plugin, workspaceOn } = fakePlugin();
 			await openView(plugin).opened;
 
-			plugin.settings.profiles.push({ ...profileA, id: 'c', name: 'French' });
+			plugin.settings.profiles.push({
+				...profileA,
+				id: 'c',
+				name: 'French',
+			});
 			plugin.settings.activeProfileId = 'c';
 			handlerFor(workspaceOn, PROFILE_CHANGED_EVENT)();
 
@@ -401,11 +441,18 @@ describe('SidebarView', () => {
 	describe('Deck dropdown', () => {
 		it('lists Anki’s decks and shows the active note’s anki_deck', async () => {
 			deckNamesMock.mockResolvedValue(['Japanese', 'Spanish']);
-			const { plugin } = fakePlugin({}, noteOptions({ anki_deck: 'Spanish' }));
+			const { plugin } = fakePlugin(
+				{},
+				noteOptions({ anki_deck: 'Spanish' }),
+			);
 
 			await openView(plugin).opened;
 
-			expect(deckDropdown()?.optionOrder).toEqual(['', 'Japanese', 'Spanish']);
+			expect(deckDropdown()?.optionOrder).toEqual([
+				'',
+				'Japanese',
+				'Spanish',
+			]);
 			expect(deckDropdown()?.value).toBe('Spanish');
 			expect(deckDropdown()?.disabled).toBe(false);
 		});
@@ -456,7 +503,9 @@ describe('SidebarView', () => {
 
 			await openView(plugin).opened;
 
-			expect(deckDropdown()?.options['Deleted deck']).toBe('Deleted deck');
+			expect(deckDropdown()?.options['Deleted deck']).toBe(
+				'Deleted deck',
+			);
 			expect(deckDropdown()?.value).toBe('Deleted deck');
 		});
 
@@ -522,11 +571,18 @@ describe('SidebarView', () => {
 	describe('Model dropdown', () => {
 		it('lists Anki’s models and shows the active note’s anki_model', async () => {
 			modelNamesMock.mockResolvedValue(['Basic', 'Cloze']);
-			const { plugin } = fakePlugin({}, noteOptions({ anki_model: 'Cloze' }));
+			const { plugin } = fakePlugin(
+				{},
+				noteOptions({ anki_model: 'Cloze' }),
+			);
 
 			await openView(plugin).opened;
 
-			expect(modelDropdown()?.optionOrder).toEqual(['', 'Basic', 'Cloze']);
+			expect(modelDropdown()?.optionOrder).toEqual([
+				'',
+				'Basic',
+				'Cloze',
+			]);
 			expect(modelDropdown()?.value).toBe('Cloze');
 		});
 
@@ -581,6 +637,19 @@ describe('SidebarView', () => {
 
 			expect(textTabSync).toHaveBeenLastCalledWith('Japanese', 'Basic');
 			expect(imageTabSync).toHaveBeenLastCalledWith('Japanese', 'Basic');
+			expect(mainFieldSync).toHaveBeenLastCalledWith('Japanese', 'Basic');
+		});
+
+		it('forces the Text tab to refresh when Main Field changes for the current pair', async () => {
+			const { plugin } = fakePlugin({}, noteOptions(pair));
+
+			await openView(plugin).opened;
+			mainFieldOnChange.current?.();
+
+			expect(textTabRefresh).toHaveBeenLastCalledWith(
+				'Japanese',
+				'Basic',
+			);
 		});
 
 		it('hands empty Deck/Model to the Text tab when no note is open', async () => {
@@ -612,6 +681,7 @@ describe('SidebarView', () => {
 
 			expect(noteActionsUpdate).toHaveBeenLastCalledWith({
 				note: getActiveFile() as TFile,
+				deck: 'Japanese',
 				model: 'Basic',
 				synced: true,
 			});
@@ -624,6 +694,7 @@ describe('SidebarView', () => {
 
 			expect(noteActionsUpdate).toHaveBeenLastCalledWith({
 				note: null,
+				deck: '',
 				model: '',
 				synced: false,
 			});
@@ -632,13 +703,17 @@ describe('SidebarView', () => {
 		it('treats a non-markdown file as no note', async () => {
 			const { plugin } = fakePlugin(
 				{},
-				{ activeFile: fakeTFile({ extension: 'png' }), frontmatter: pair },
+				{
+					activeFile: fakeTFile({ extension: 'png' }),
+					frontmatter: pair,
+				},
 			);
 
 			await openView(plugin).opened;
 
 			expect(noteActionsUpdate).toHaveBeenLastCalledWith({
 				note: null,
+				deck: '',
 				model: '',
 				synced: false,
 			});
@@ -646,16 +721,18 @@ describe('SidebarView', () => {
 
 		it('re-syncs dropdowns, action row and Text tab when switching notes', async () => {
 			deckNamesMock.mockResolvedValue(['Japanese', 'French']);
-			const { plugin, getActiveFile, getFileCache, workspaceOn } = fakePlugin(
-				{},
-				noteOptions(pair),
-			);
+			const { plugin, getActiveFile, getFileCache, workspaceOn } =
+				fakePlugin({}, noteOptions(pair));
 			await openView(plugin).opened;
 
 			const next = fakeTFile();
 			getActiveFile.mockReturnValue(next);
 			getFileCache.mockReturnValue({
-				frontmatter: { anki_deck: 'French', anki_model: 'Cloze', anki_note_id: 7 },
+				frontmatter: {
+					anki_deck: 'French',
+					anki_model: 'Cloze',
+					anki_note_id: 7,
+				},
 			});
 			handlerFor(workspaceOn, 'file-open')();
 
@@ -665,13 +742,17 @@ describe('SidebarView', () => {
 			expect(deckDropdown()?.value).toBe('French');
 			expect(noteActionsUpdate).toHaveBeenLastCalledWith({
 				note: next,
+				deck: 'French',
 				model: 'Cloze',
 				synced: true,
 			});
 		});
 
 		it('disables the dropdowns when the last note is closed', async () => {
-			const { plugin, getActiveFile, workspaceOn } = fakePlugin({}, noteOptions(pair));
+			const { plugin, getActiveFile, workspaceOn } = fakePlugin(
+				{},
+				noteOptions(pair),
+			);
 			await openView(plugin).opened;
 			expect(deckDropdown()?.disabled).toBe(false);
 
@@ -683,25 +764,27 @@ describe('SidebarView', () => {
 			});
 			expect(noteActionsUpdate).toHaveBeenLastCalledWith({
 				note: null,
+				deck: '',
 				model: '',
 				synced: false,
 			});
 		});
 
 		it('re-syncs when the active note’s metadata changes — e.g. Delete appears after the first sync', async () => {
-			const { plugin, getActiveFile, getFileCache, metadataOn } = fakePlugin(
-				{},
-				noteOptions(pair),
-			);
+			const { plugin, getActiveFile, getFileCache, metadataOn } =
+				fakePlugin({}, noteOptions(pair));
 			await openView(plugin).opened;
 			const active = getActiveFile() as TFile;
 
-			getFileCache.mockReturnValue({ frontmatter: { ...pair, anki_note_id: 9 } });
+			getFileCache.mockReturnValue({
+				frontmatter: { ...pair, anki_note_id: 9 },
+			});
 			handlerFor(metadataOn, 'changed')(active);
 
 			await vi.waitFor(() => {
 				expect(noteActionsUpdate).toHaveBeenLastCalledWith({
 					note: active,
+					deck: 'Japanese',
 					model: 'Basic',
 					synced: true,
 				});
@@ -709,7 +792,10 @@ describe('SidebarView', () => {
 		});
 
 		it('ignores metadata changes of notes that are not the active one', async () => {
-			const { plugin, getFileCache, metadataOn } = fakePlugin({}, noteOptions(pair));
+			const { plugin, getFileCache, metadataOn } = fakePlugin(
+				{},
+				noteOptions(pair),
+			);
 			await openView(plugin).opened;
 			const calls = textTabSync.mock.calls.length;
 

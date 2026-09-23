@@ -1,9 +1,8 @@
 import type { TFile } from 'obsidian';
 import type AnkiBridgePlugin from '../main';
-import { fieldConfigKey, resolveAnkiConnectUrl } from '../settings';
-import { AnkiConnectClient } from '../sync/ankiConnect';
+import { fieldConfigKey } from '../settings';
 import { parseSections } from '../sync/parser';
-import type { TextProvider } from '../providers/types';
+import type { TextContext, TextProvider } from '../providers/types';
 import { runAiPreCheck } from './aiPreCheck';
 import { fillEmptySections, resolveSectionKey } from './fillEmptySections';
 
@@ -14,6 +13,7 @@ export type GeneratePlan =
 			provider: TextProvider;
 			word: string;
 			targetFields: string[];
+			context: TextContext;
 	  };
 
 // docs/design/03-note.md §3.2 — everything that can be checked before spending a model call.
@@ -30,12 +30,16 @@ export async function planGenerate(
 	const provider = plugin.providers.getTextProvider();
 	if (!provider) return { stop: 'Set up a text model in settings first.' };
 
-	const client = new AnkiConnectClient(
-		resolveAnkiConnectUrl(plugin.settings),
-	);
-	const fields = await client.modelFieldNames(model);
-	const inputField = fields[0];
-	if (!inputField) return { stop: 'This model has no fields.' };
+	// docs/design/03-note.md §3.2 — Main Field is Generate's input field, replacing
+	// the old fields[0] convention. The note is already open, so its Main Field
+	// dropdown is already visible in the sidebar for the user to set.
+	const inputField =
+		plugin.settings.mainFieldConfig[fieldConfigKey(deck, model)];
+	if (!inputField) {
+		return {
+			stop: 'Please choose a main field for this deck/model in the sidebar first.',
+		};
+	}
 
 	const sections = parseSections(await plugin.app.vault.read(note));
 	const key = resolveSectionKey(sections.keys(), inputField);
@@ -54,7 +58,19 @@ export async function planGenerate(
 			stop: `Add at least one field besides ${inputField} to generate.`,
 		};
 	}
-	return { provider, word, targetFields };
+
+	// docs/design/02-providers.md §2.4 — targetLanguage comes from whichever profile
+	// was set up for this exact Deck+Model pair (not the active profile — an open
+	// note doesn't have to match whatever is currently selected in the dropdown).
+	// No match, or unset, → undefined, so buildMessages just leaves it out.
+	const profile = plugin.settings.profiles.find(
+		(p) => p.deck === deck && p.model === model,
+	);
+	const context: TextContext = {
+		targetLanguage: profile?.targetLanguage || undefined,
+		nativeLanguage: plugin.settings.nativeLanguage || undefined,
+	};
+	return { provider, word, targetFields, context };
 }
 
 export interface GenerateOutcome {
@@ -71,6 +87,7 @@ export async function generateDraft(
 		plan.word,
 		'extract-vocabulary',
 		plan.targetFields,
+		plan.context,
 	);
 }
 

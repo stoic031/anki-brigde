@@ -16,6 +16,10 @@ export interface TextTab {
 	// Called whenever the active note's Deck+Model may have changed. Only re-fetches the
 	// field list when the pair actually differs from what is rendered.
 	sync(deck: string, model: string): Promise<void>;
+	// Called when Main Field changes for the current pair (sidebarView's Main Field
+	// dropdown). Re-reads it and re-renders even though the pair itself didn't change —
+	// sync() alone would no-op via its renderedKey dedup.
+	refresh(deck: string, model: string): Promise<void>;
 }
 
 function reportOutcome({
@@ -50,7 +54,9 @@ export function renderTextTab(
 	plugin: AnkiBridgePlugin,
 	getNote: () => TFile | null,
 ): TextTab {
-	const header = parent.createDiv({ cls: 'anki-bridge-sidebar__section-header' });
+	const header = parent.createDiv({
+		cls: 'anki-bridge-sidebar__section-header',
+	});
 	header.createSpan({
 		cls: 'anki-bridge-sidebar__section-title',
 		text: 'Fields to generate with AI',
@@ -83,7 +89,8 @@ export function renderTextTab(
 	let drafts: Record<string, string> = {};
 
 	const apply = () => {
-		if (!generate.busy) generate.el.disabled = !current.deck || !current.model;
+		if (!generate.busy)
+			generate.el.disabled = !current.deck || !current.model;
 		if (!write.busy) write.el.disabled = !current.deck || !current.model;
 	};
 
@@ -122,7 +129,9 @@ export function renderTextTab(
 						.setIcon('x')
 						.setTooltip('Remove')
 						.onClick(async () => {
-							addedFields = addedFields.filter((f) => f !== field);
+							addedFields = addedFields.filter(
+								(f) => f !== field,
+							);
 							delete drafts[field];
 							await persist();
 							renderFields();
@@ -221,50 +230,57 @@ export function renderTextTab(
 		});
 	};
 
-	return {
-		async sync(deck, model) {
-			current = { deck, model };
-			apply();
+	// force = true (refresh()) bypasses the renderedKey dedup — used when Main Field
+	// changes for the same pair, which sync() alone wouldn't pick up.
+	const doSync = async (deck: string, model: string, force: boolean) => {
+		current = { deck, model };
+		apply();
 
-			const key = fieldConfigKey(deck, model);
-			if (key === renderedKey) return;
-			renderedKey = key;
+		const key = fieldConfigKey(deck, model);
+		if (!force && key === renderedKey) return;
+		renderedKey = key;
 
-			if (!deck || !model) {
-				allFields = [];
-				inputField = '';
-				addedFields = [];
-				drafts = {};
-				fieldsEl.empty();
-				addFieldEl.empty();
-				fieldsEl.createEl('p', {
-					cls: 'anki-bridge-sidebar__hint',
-					text: 'Set a Deck and Model above first.',
-				});
-				return;
-			}
-
-			let fields: string[];
-			try {
-				const client = new AnkiConnectClient(
-					resolveAnkiConnectUrl(plugin.settings),
-				);
-				fields = await client.modelFieldNames(model);
-			} catch {
-				toastError('❌ Failed to load fields. Please check Anki connection.');
-				return;
-			}
-			// The note changed while fields were loading — a newer sync owns the list.
-			if (renderedKey !== key) return;
-
-			allFields = fields;
-			inputField = fields[0] ?? '';
-			const saved = plugin.settings.generateWithAiFields[key] ?? [];
-			addedFields = saved.filter(
-				(f) => f !== inputField && allFields.includes(f),
-			);
+		if (!deck || !model) {
+			allFields = [];
+			inputField = '';
+			addedFields = [];
 			drafts = {};
-			renderFields();
-		},
+			fieldsEl.empty();
+			addFieldEl.empty();
+			fieldsEl.createEl('p', {
+				cls: 'anki-bridge-sidebar__hint',
+				text: 'Set a Deck and Model above first.',
+			});
+			return;
+		}
+
+		let fields: string[];
+		try {
+			const client = new AnkiConnectClient(
+				resolveAnkiConnectUrl(plugin.settings),
+			);
+			fields = await client.modelFieldNames(model);
+		} catch {
+			toastError(
+				'❌ Failed to load fields. Please check Anki connection.',
+			);
+			return;
+		}
+		// The note changed while fields were loading — a newer sync owns the list.
+		if (renderedKey !== key) return;
+
+		allFields = fields;
+		inputField = plugin.settings.mainFieldConfig?.[key] ?? '';
+		const saved = plugin.settings.generateWithAiFields[key] ?? [];
+		addedFields = saved.filter(
+			(f) => f !== inputField && allFields.includes(f),
+		);
+		drafts = {};
+		renderFields();
+	};
+
+	return {
+		sync: (deck, model) => doSync(deck, model, false),
+		refresh: (deck, model) => doSync(deck, model, true),
 	};
 }

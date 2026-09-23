@@ -7,7 +7,10 @@ import {
 	type ProviderPreset,
 	type TextProviderId,
 } from './providers/presets';
-import { DEFAULT_ANKI_CONNECT_URL, DEFAULT_MEDIA_PREFIX } from './utils/constants';
+import {
+	DEFAULT_ANKI_CONNECT_URL,
+	DEFAULT_MEDIA_PREFIX,
+} from './utils/constants';
 
 // docs/design/06-settings.md §6.1 — a named Deck + Model + "Save notes to" bundle used when
 // creating notes. '' = unset (folder '' = vault root).
@@ -17,6 +20,12 @@ export interface Profile {
 	deck: string;
 	model: string;
 	folder: string;
+	// Seeds settings.mainFieldConfig for this Deck+Model pair the first time a note is
+	// created from this profile, if that pair has no Main Field yet — docs/design/06-settings.md
+	// §6.1, docs/design/07-sidebar.md §7.2.1. '' = unset.
+	mainField: string;
+	// Feeds AI Generate as context (docs/design/02-providers.md §2.4). '' = unset.
+	targetLanguage: string;
 }
 
 // docs/design/06-settings.md §6.2 — one saved AI endpoint. Global, not per profile.
@@ -55,6 +64,9 @@ export interface AnkiBridgeSettings {
 	generateWithAiFields: Record<string, string[]>;
 	// Tab 3 Image config, same fieldConfigKey(deck, model) keying. docs/design/07-sidebar.md §7.4.
 	imageConfigs: Record<string, ImageFieldConfig>;
+	// Main Field dropdown (below Model), keyed by fieldConfigKey(deck, model). '' /
+	// absent = not configured. docs/design/07-sidebar.md §7.2.1/§7.4.
+	mainFieldConfig: Record<string, string>;
 	textProviders: TextProviderConfig[];
 	activeTextProviderId: string; // '' = none configured = no AI calls; else an id in `textProviders`
 	imageProviders: ImageProviderConfig[];
@@ -64,6 +76,9 @@ export interface AnkiBridgeSettings {
 	mediaPrefix: string;
 	// docs/design/06-settings.md §6.3 — sync the active note to Anki automatically on save.
 	autoSyncOnSave: boolean;
+	// docs/design/06-settings.md §6.2 — the user's own language, global (not per profile).
+	// Feeds AI Generate as context alongside each profile's targetLanguage. '' = unset.
+	nativeLanguage: string;
 }
 
 export const DEFAULT_PROFILE_ID = 'default';
@@ -74,6 +89,8 @@ const DEFAULT_PROFILE: Profile = {
 	deck: '',
 	model: '',
 	folder: '',
+	mainField: '',
+	targetLanguage: '',
 };
 
 export const DEFAULT_SETTINGS: AnkiBridgeSettings = {
@@ -82,12 +99,14 @@ export const DEFAULT_SETTINGS: AnkiBridgeSettings = {
 	activeProfileId: DEFAULT_PROFILE_ID,
 	generateWithAiFields: {},
 	imageConfigs: {},
+	mainFieldConfig: {},
 	textProviders: [],
 	activeTextProviderId: '',
 	imageProviders: [],
 	activeImageProviderId: '',
 	mediaPrefix: DEFAULT_MEDIA_PREFIX,
 	autoSyncOnSave: false,
+	nativeLanguage: '',
 };
 
 // Pre-profile data.json shape — migrated into a single "Default" profile on load.
@@ -135,9 +154,18 @@ export async function loadSettings(
 				deck: currentDeck || defaultDeck || '',
 				model: currentModel || defaultModel || '',
 				folder: currentFolder || defaultFolder || '',
+				mainField: '',
+				targetLanguage: '',
 			},
 		];
 	}
+	// Saved profiles from before mainField/targetLanguage existed are missing those
+	// keys — normalize so callers never see `undefined` for a typed `string` field.
+	settings.profiles = settings.profiles.map((p) => ({
+		...p,
+		mainField: p.mainField ?? '',
+		targetLanguage: p.targetLanguage ?? '',
+	}));
 	if (!settings.profiles.some((p) => p.id === settings.activeProfileId)) {
 		settings.activeProfileId =
 			settings.profiles[0]?.id ?? DEFAULT_PROFILE_ID;
