@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { TFile } from 'obsidian';
 import type AnkiBridgePlugin from '../main';
-import { DEFAULT_SETTINGS, fieldConfigKey } from '../settings';
+import { DEFAULT_SETTINGS, examplesKey, fieldConfigKey } from '../settings';
 import { ProviderError } from '../types';
 import { applyGenerated, generateDraft, planGenerate } from './generateFields';
 
@@ -14,7 +14,7 @@ function setup(
 		ticked?: string[];
 		provider?: unknown;
 		mainField?: string | null; // null = leave unconfigured
-		targetLanguage?: string; // adds a profile matching deck 'D' / model 'M'
+		targetLanguage?: string; // adds a selected profile with this Learning language
 		nativeLanguage?: string;
 	} = {},
 ) {
@@ -40,6 +40,9 @@ function setup(
 						},
 					]
 				: DEFAULT_SETTINGS.profiles,
+			activeProfileId: opts.targetLanguage
+				? 'p'
+				: DEFAULT_SETTINGS.activeProfileId,
 			generateWithAiFields: {
 				[fieldConfigKey('D', 'M')]: opts.ticked ?? [
 					'Meaning',
@@ -82,7 +85,7 @@ describe('planGenerate', () => {
 		});
 	});
 
-	it('resolves targetLanguage from the profile matching this Deck+Model, and nativeLanguage from global settings', async () => {
+	it('resolves targetLanguage from the selected profile, and nativeLanguage from global settings', async () => {
 		const { plugin } = setup({
 			targetLanguage: 'Japanese',
 			nativeLanguage: 'English',
@@ -94,7 +97,58 @@ describe('planGenerate', () => {
 		});
 	});
 
-	it('leaves targetLanguage undefined when no profile matches this Deck+Model', async () => {
+	it("passes this Deck+Model's approved cards as examples", async () => {
+		const { plugin } = setup();
+		const examples = [{ word: '火', fields: { Meaning: 'fire' } }];
+		plugin.settings.generateExamples = {
+			[examplesKey('D', 'M', '')]: examples,
+		};
+		const plan = await planGenerate(plugin, note, 'D', 'M');
+
+		expect(plan).toMatchObject({ context: { examples } });
+	});
+
+	it('only passes examples written for the selected Learning language', async () => {
+		const { plugin } = setup({ targetLanguage: 'Japanese' });
+		plugin.settings.generateExamples = {
+			[examplesKey('D', 'M', 'English')]: [
+				{ word: 'note', fields: { Meaning: 'ghi chú' } },
+			],
+		};
+		const plan = await planGenerate(plugin, note, 'D', 'M');
+
+		expect(plan).toMatchObject({ context: { examples: undefined } });
+	});
+
+	it("uses the selected profile's language, not the profile matching the note's Deck+Model", async () => {
+		const { plugin } = setup();
+		plugin.settings.profiles = [
+			{
+				id: 'jp',
+				name: 'Japan',
+				deck: 'D',
+				model: 'M',
+				folder: '',
+				mainField: '',
+				targetLanguage: 'Japanese',
+			},
+			{
+				id: 'en',
+				name: 'English',
+				deck: 'Other',
+				model: 'M',
+				folder: '',
+				mainField: '',
+				targetLanguage: 'English',
+			},
+		];
+		plugin.settings.activeProfileId = 'en';
+		const plan = await planGenerate(plugin, note, 'D', 'M');
+
+		expect(plan).toMatchObject({ context: { targetLanguage: 'English' } });
+	});
+
+	it('leaves targetLanguage undefined when the selected profile has none', async () => {
 		const { plugin } = setup({ nativeLanguage: 'English' });
 		const plan = await planGenerate(plugin, note, 'D', 'M');
 

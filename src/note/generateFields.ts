@@ -1,6 +1,6 @@
 import type { TFile } from 'obsidian';
 import type AnkiBridgePlugin from '../main';
-import { fieldConfigKey } from '../settings';
+import { examplesKey, fieldConfigKey, getActiveProfile } from '../settings';
 import { parseSections } from '../sync/parser';
 import type { TextContext, TextProvider } from '../providers/types';
 import { runAiPreCheck } from './aiPreCheck';
@@ -59,16 +59,18 @@ export async function planGenerate(
 		};
 	}
 
-	// docs/design/02-providers.md §2.4 — targetLanguage comes from whichever profile
-	// was set up for this exact Deck+Model pair (not the active profile — an open
-	// note doesn't have to match whatever is currently selected in the dropdown).
-	// No match, or unset, → undefined, so buildMessages just leaves it out.
-	const profile = plugin.settings.profiles.find(
-		(p) => p.deck === deck && p.model === model,
-	);
+	// docs/design/02-providers.md §2.4 — Learning language of the selected profile; the
+	// note's Deck+Model don't pick a profile (profiles only drive note creation).
+	// Unset → undefined, so buildMessages just leaves it out.
+	const targetLanguage =
+		getActiveProfile(plugin.settings).targetLanguage || undefined;
 	const context: TextContext = {
-		targetLanguage: profile?.targetLanguage || undefined,
+		targetLanguage,
 		nativeLanguage: plugin.settings.nativeLanguage || undefined,
+		examples:
+			plugin.settings.generateExamples[
+				examplesKey(deck, model, targetLanguage)
+			],
 	};
 	return { provider, word, targetFields, context };
 }

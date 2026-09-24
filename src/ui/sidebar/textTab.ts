@@ -5,7 +5,12 @@ import {
 	generateDraft,
 	planGenerate,
 } from '../../note/generateFields';
-import { fieldConfigKey, resolveAnkiConnectUrl } from '../../settings';
+import {
+	examplesKey,
+	fieldConfigKey,
+	rememberExample,
+	resolveAnkiConnectUrl,
+} from '../../settings';
 import { AnkiConnectClient } from '../../sync/ankiConnect';
 import { AnkiConnectError, ProviderError } from '../../types';
 import { toastError, toastSuccess } from '../toast';
@@ -71,9 +76,14 @@ export function renderTextTab(
 		icon: 'plus',
 		label: 'Add field',
 	});
+	const clear = createActionButton(actionsRow, {
+		icon: 'eraser',
+		label: 'Clear',
+	});
 	generate.el.disabled = true;
 	write.el.disabled = true;
 	addField.el.disabled = true;
+	clear.el.disabled = true;
 
 	parent.createDiv({
 		cls: [
@@ -95,6 +105,10 @@ export function renderTextTab(
 	// successful Write. Keyed by field name; a field's entry only exists once
 	// Generate has run at least once since it was added.
 	let drafts: Record<string, string> = {};
+	// The Main Field value and Learning language the drafts were generated with —
+	// recorded with them on Write.
+	let draftWord = '';
+	let draftLanguage = '';
 
 	const apply = () => {
 		if (!generate.busy)
@@ -110,6 +124,7 @@ export function renderTextTab(
 
 	const renderFields = (): void => {
 		fieldsEl.empty();
+		clear.el.disabled = Object.keys(drafts).length === 0;
 		if (!current.deck || !current.model) return;
 
 		const remaining = allFields.filter(
@@ -145,6 +160,15 @@ export function renderTextTab(
 			}
 		}
 	};
+
+	// Drops every preview without touching the note — they are in-memory only and
+	// Generate can recreate them.
+	clear.el.addEventListener('click', () => {
+		if (clear.el.disabled) return;
+		drafts = {};
+		draftWord = '';
+		renderFields();
+	});
 
 	// docs/design/07-sidebar.md §7.2.1 — opens a Menu of the fields not yet added
 	// (same list the old dropdown offered), instead of a <select>, so this button can
@@ -196,6 +220,8 @@ export function renderTextTab(
 					onRestore: apply,
 					work: async () => {
 						const results = await generateDraft(plan);
+						draftWord = plan.word;
+						draftLanguage = plan.context.targetLanguage ?? '';
 						// Full regenerate: every currently-added field's preview is replaced,
 						// same as the single batch model call it always was.
 						let any = false;
@@ -244,6 +270,19 @@ export function renderTextTab(
 			work: async () => {
 				const outcome = await applyGenerated(plugin, note, drafts);
 				reportOutcome(outcome);
+				// docs/design/02-providers.md §2.4 — what the user wrote (edits included)
+				// becomes a few-shot example for the next Generate on this pair.
+				const fields = Object.fromEntries(
+					Object.entries(drafts).filter(([, v]) => v.trim() !== ''),
+				);
+				if (draftWord) {
+					rememberExample(
+						plugin.settings,
+						examplesKey(current.deck, current.model, draftLanguage),
+						{ word: draftWord, fields },
+					);
+					await plugin.saveSettings();
+				}
 				drafts = {};
 				renderFields();
 			},

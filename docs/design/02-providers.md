@@ -84,12 +84,25 @@ dùng active) — thay đổi cộng thêm, không phá dữ liệu cũ.
   `textFactories` (`index.ts`). Nhãn Cloud/Local suy từ Base URL (localhost/127.0.0.1 = Local)
 - `processText` nhận thêm tham số tùy chọn thứ 4, `context?: TextContext`
   (`{ targetLanguage?, nativeLanguage? }`, `../contracts.md` §4) — Generate
-  (`03-note.md` §3.2) truyền vào Learning language của profile khớp Deck+Model của note
+  (`03-note.md` §3.2) truyền vào Learning language của profile đang chọn (không dò profile theo Deck+Model của note — profile chỉ dùng để tạo note)
   (`06-settings.md` §6.1) và Your language toàn cục (`06-settings.md` §6.2). Có giá trị
   thì thêm đúng 1 dòng vào system prompt (`src/providers/text/prompt.ts`), không có thì
   không thêm gì — không bắt buộc, không đổi hành vi cũ khi cả hai đều trống.
   **`build-image-prompt` không bao giờ nhận dòng ngữ cảnh này**, kể cả khi `context`
   được truyền vào — task đó luôn cố định tiếng Anh (`docs/design-open-questions.md` #19).
+- Prompt `extract-vocabulary` yêu cầu nội dung ngắn gọn kiểu flashcard: nghĩa = 1–3 nghĩa
+  phổ biến nhất, ví dụ = 1 câu ngắn, field khác = 1 dòng; tự suy mục đích field từ tên;
+  không nhãn, không markdown; không chắc thì bỏ field. Có Learning language → câu ví dụ
+  viết bằng Learning language, kể cả khi từ đầu vào thuộc ngôn ngữ khác (dùng từ tương
+  đương); không có → cùng ngôn ngữ với từ đầu vào. Định nghĩa/nghĩa/bản dịch bằng ngôn
+  ngữ của user. Gợi ý tên field phải trung
+  lập, không ám chỉ một ngôn ngữ cụ thể (vd không dùng Furigana làm ví dụ).
+- `context.examples` (tối đa 3 thẻ user đã Write cho Deck+Model + Learning language này — đổi profile
+  sang ngôn ngữ khác thì không dùng thẻ của ngôn ngữ cũ, `07-sidebar.md`
+  §7.2.1) được thêm vào system prompt dưới dạng ví dụ few-shot để model bắt chước độ dài
+  và văn phong của user — mỗi giá trị cắt còn 300 ký tự. Chỉ cho `extract-vocabulary`,
+  không bao giờ cho `build-image-prompt`. Dữ liệu nằm trong `saveData` (không ghi vào
+  vault) và chỉ gửi tới provider user đã chọn cho Generate.
 
 **Image Generation:**
 
