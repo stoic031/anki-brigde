@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type AnkiBridgePlugin from '../main';
-import { DEFAULT_SETTINGS, type AnkiBridgeSettings } from '../settings';
+import { DEFAULT_SETTINGS, fieldConfigKey, type AnkiBridgeSettings } from '../settings';
 
 vi.mock('obsidian', () => ({ TFile: class FakeTFile {} }));
 
@@ -22,6 +22,9 @@ const { toastSuccess, toastError } = vi.hoisted(() => ({
 	toastError: vi.fn(),
 }));
 vi.mock('../ui/toast', () => ({ toastSuccess, toastError }));
+
+const { syncNoteName } = vi.hoisted(() => ({ syncNoteName: vi.fn() }));
+vi.mock('../note/noteName', () => ({ syncNoteName }));
 
 import { TFile } from 'obsidian';
 import { SyncError } from '../types';
@@ -67,6 +70,7 @@ beforeEach(() => {
 	vi.stubGlobal('window', globalThis);
 	readAnkiFrontmatter.mockReturnValue(configured);
 	syncNote.mockReset().mockResolvedValue(undefined);
+	syncNoteName.mockReset().mockResolvedValue(undefined);
 	toastSuccess.mockClear();
 	toastError.mockClear();
 });
@@ -179,6 +183,36 @@ describe('registerAutoSync', () => {
 		resolveSync?.();
 	});
 
+	it('renames the note to its Main Field after a sync', async () => {
+		const { plugin, getActiveFile, fireModify } = fakePlugin({
+			mainFieldConfig: { [fieldConfigKey('Deck', 'Basic')]: 'Front' },
+		});
+		const file = fakeTFile();
+		getActiveFile.mockReturnValue(file);
+		registerAutoSync(plugin);
+
+		fireModify(file);
+		await vi.advanceTimersByTimeAsync(2000);
+
+		expect(syncNoteName).toHaveBeenCalledWith(plugin.app, file, 'Front');
+	});
+
+	it('still reports the sync as done when the rename fails', async () => {
+		syncNoteName.mockRejectedValue(new Error('name taken'));
+		const { plugin, getActiveFile, fireModify } = fakePlugin();
+		const file = fakeTFile();
+		getActiveFile.mockReturnValue(file);
+		registerAutoSync(plugin);
+
+		fireModify(file);
+		await vi.advanceTimersByTimeAsync(2000);
+
+		expect(toastError).toHaveBeenCalledWith(
+			"❌ Synced, but couldn't rename the note: Error: name taken",
+		);
+		expect(toastSuccess).toHaveBeenCalledWith('✅ Note synced to Anki!');
+	});
+
 	it('toasts success after a sync', async () => {
 		const { plugin, getActiveFile, fireModify } = fakePlugin();
 		const file = fakeTFile();
@@ -203,6 +237,25 @@ describe('registerAutoSync', () => {
 
 		expect(toastError).toHaveBeenCalledWith('❌ Anki is not running.');
 		expect(toastSuccess).not.toHaveBeenCalled();
+	});
+
+	it('never resolves an Anki-edited conflict itself, only points at the Sync button', async () => {
+		syncNote.mockRejectedValue(
+			new SyncError('anki-edited', 'This note was edited in Anki since the last sync.'),
+		);
+		const { plugin, getActiveFile, fireModify } = fakePlugin();
+		const file = fakeTFile();
+		getActiveFile.mockReturnValue(file);
+		registerAutoSync(plugin);
+
+		fireModify(file);
+		await vi.advanceTimersByTimeAsync(2000);
+
+		expect(syncNote).toHaveBeenCalledTimes(1);
+		expect(syncNote.mock.calls[0]?.[3]).toBeUndefined();
+		expect(toastError).toHaveBeenCalledWith(
+			'❌ This note was edited in Anki since the last sync. Use the Sync button to resolve.',
+		);
 	});
 
 	it('falls back to a generic error toast for anything else', async () => {

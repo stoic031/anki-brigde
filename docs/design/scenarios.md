@@ -84,7 +84,7 @@ profile đang chọn** (giống hệt Scenario 1), không phải folder của no
     ↓
 [2] Bấm hotkey đã gán cho command "create-note-from-selection"
     ↓
-[3] Plugin tính filename = sanitizeForFilename("薬") = "薬.md"
+[3] Plugin tính filename = noteFilename("薬") = "薬.md"
     ↓
 [4] Plugin lấy Deck/Model/Folder từ profile đang chọn (cùng cơ chế `07-sidebar.md` §7.3;
     VD: Deck "Japanese::N2", Model "Japanese Vocabulary", Folder "Vocabulary/"):

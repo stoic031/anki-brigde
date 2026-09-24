@@ -175,8 +175,8 @@ describe('getQuickCaptureFilename', () => {
 		expect(getQuickCaptureFilename('')).toBe('note.md');
 	});
 
-	it('sanitizes path separators and whitespace before appending .md', () => {
-		expect(getQuickCaptureFilename('a/b c')).toBe('ab_c.md');
+	it('swaps path separators for full-width ones and keeps spaces before appending .md', () => {
+		expect(getQuickCaptureFilename('a/b c')).toBe('a／b c.md');
 	});
 });
 

@@ -7,6 +7,7 @@ export function mapContentToFields(
 	model: string,
 ): FieldMappingResult {
 	const result: Record<string, string> = {};
+	const sources: Record<string, string> = {};
 	const usedSections = new Set<string>();
 	const warnings: string[] = [];
 
@@ -17,6 +18,7 @@ export function mapContentToFields(
 		const value = sections.get(key);
 		if (value === undefined) continue;
 		result[field] = stringifySectionValue(value);
+		sources[field] = key;
 		usedSections.add(key);
 	}
 
@@ -31,6 +33,7 @@ export function mapContentToFields(
 			const value = sections.get(alias);
 			if (value === undefined) continue;
 			result[field] = stringifySectionValue(value);
+			sources[field] = alias;
 			usedSections.add(alias);
 			break;
 		}
@@ -44,6 +47,7 @@ export function mapContentToFields(
 			if (next.done) break;
 			const [sectionKey, value] = next.value;
 			result[field] = stringifySectionValue(value);
+			sources[field] = sectionKey;
 			usedSections.add(sectionKey);
 		}
 		warnings.push('Pass 1 and 2 mapped no fields; used positional fallback.');
@@ -62,7 +66,7 @@ export function mapContentToFields(
 		warnings.push(message.charAt(0).toUpperCase() + message.slice(1));
 	}
 
-	return { fields: result, warnings };
+	return { fields: result, sources, warnings };
 }
 
 function stringifySectionValue(value: SectionValue): string {

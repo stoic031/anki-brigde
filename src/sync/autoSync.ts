@@ -1,6 +1,7 @@
 import { TFile } from 'obsidian';
 import type AnkiBridgePlugin from '../main';
-import { resolveAnkiConnectUrl } from '../settings';
+import { syncNoteName } from '../note/noteName';
+import { fieldConfigKey, resolveAnkiConnectUrl } from '../settings';
 import { SyncError } from '../types';
 import { toastError, toastSuccess } from '../ui/toast';
 import { AnkiConnectClient } from './ankiConnect';
@@ -63,11 +64,25 @@ async function trigger(
 			resolveAnkiConnectUrl(plugin.settings),
 		);
 		await syncNote(plugin.app, file, client);
+		// docs/design/03-note.md §3.2 — the note name follows its Main Field.
+		await syncNoteName(
+			plugin.app,
+			file,
+			plugin.settings.mainFieldConfig[
+				fieldConfigKey(frontmatter.anki_deck, frontmatter.anki_model)
+			],
+		).catch((err: unknown) =>
+			toastError(`❌ Synced, but couldn't rename the note: ${String(err)}`),
+		);
 		toastSuccess('✅ Note synced to Anki!');
 	} catch (err) {
+		// An Anki-edited conflict is never resolved here — overwriting either side needs the
+		// user's choice, which only the Sync button asks for (docs/design/01-sync.md §1.1).
 		toastError(
 			err instanceof SyncError
-				? `❌ ${err.message}`
+				? err.reason === 'anki-edited'
+					? `❌ ${err.message} Use the Sync button to resolve.`
+					: `❌ ${err.message}`
 				: '❌ Failed to sync. Please check Anki connection.',
 		);
 	} finally {

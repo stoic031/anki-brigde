@@ -238,3 +238,20 @@ describe('mapContentToFields — end to end', () => {
 		expect(result.warnings).toEqual(["1 section not mapped to model 'Vocab': collocations"]);
 	});
 });
+
+describe('mapContentToFields — sources', () => {
+	it('records which section filled each field, across all passes', () => {
+		const exactAndAlias = mapContentToFields(
+			sections([
+				['word', '診察'],
+				['back', 'exam'],
+			]),
+			['Front', 'Back', 'Extra'],
+			'Basic',
+		);
+		expect(exactAndAlias.sources).toEqual({ Front: 'word', Back: 'back' });
+
+		const positional = mapContentToFields(sections([['unrelated', 'v']]), ['FieldA'], 'Basic');
+		expect(positional.sources).toEqual({ FieldA: 'unrelated' });
+	});
+});
