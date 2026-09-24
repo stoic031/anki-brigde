@@ -160,8 +160,8 @@
     "semantic_hash": ""
   },
   "docs/design/02-providers.md": {
-    "mtime": 1790228691.119498,
-    "ast_hash": "c8b3786667ebcb569cff1bd5b04392e7",
+    "mtime": 1790229205.496953,
+    "ast_hash": "102b7717d23fdeb93c44170739a28974",
     "semantic_hash": ""
   },
   "docs/design/03-note.md": {
@@ -180,8 +180,8 @@
     "semantic_hash": ""
   },
   "docs/design/07-sidebar.md": {
-    "mtime": 1790228095.2692509,
-    "ast_hash": "9f515ad98e512f95e80b01eba9a05460",
+    "mtime": 1790229224.057691,
+    "ast_hash": "bf73b1c1c4ea5c6fe9ae992ca347ff94",
     "semantic_hash": ""
   },
   "docs/design/README.md": {
@@ -320,8 +320,8 @@
     "semantic_hash": ""
   },
   "src/settings.ts": {
-    "mtime": 1790228081.3033757,
-    "ast_hash": "fac244a5fdede4f23162c6f4afccda3a",
+    "mtime": 1790229168.4608197,
+    "ast_hash": "efffc507d6b96e5faf28996e1973cfb1",
     "semantic_hash": ""
   },
   "src/ui/settingsTab.test.ts": {
@@ -510,13 +510,13 @@
     "semantic_hash": ""
   },
   "src/ui/sidebar/textTab.test.ts": {
-    "mtime": 1790228081.3035824,
-    "ast_hash": "436ada0be526736564c2d93e19031cd6",
+    "mtime": 1790229192.510417,
+    "ast_hash": "f6a2f17f5cef0770ee2129bfd43c09bb",
     "semantic_hash": ""
   },
   "src/ui/sidebar/textTab.ts": {
-    "mtime": 1790228081.3038363,
-    "ast_hash": "2fb17aa68163ec53f8913a3b6416ef49",
+    "mtime": 1790229168.4623787,
+    "ast_hash": "bf442fe79a71f246d7e9b068322d28cc",
     "semantic_hash": ""
   },
   "src/providers/types.ts": {
@@ -560,8 +560,8 @@
     "semantic_hash": ""
   },
   "src/providers/text/prompt.ts": {
-    "mtime": 1790228440.5683358,
-    "ast_hash": "18a253728fc8f7ea01fa187126aa07dd",
+    "mtime": 1790229168.8341444,
+    "ast_hash": "9a411f3f322ed8aa396fee968792ce78",
     "semantic_hash": ""
   },
   "src/providers/text/runText.ts": {
@@ -595,13 +595,13 @@
     "semantic_hash": ""
   },
   "src/note/generateFields.test.ts": {
-    "mtime": 1790228691.5300996,
-    "ast_hash": "59976cfd468d54c3969ca1c44a0c2a3b",
+    "mtime": 1790229192.5106425,
+    "ast_hash": "c157fa93cd059dc8f61a074569a592c3",
     "semantic_hash": ""
   },
   "src/note/generateFields.ts": {
-    "mtime": 1790228691.11889,
-    "ast_hash": "1163b46f8653e1970489330872e971fd",
+    "mtime": 1790229168.4611163,
+    "ast_hash": "f4fd9ca201df92940070217d24a319bf",
     "semantic_hash": ""
   },
   "src/ui/imageProviderSection.test.ts": {
@@ -730,8 +730,8 @@
     "semantic_hash": ""
   },
   "src/providers/text/prompt.test.ts": {
-    "mtime": 1790228440.1429715,
-    "ast_hash": "33eaa17dc8dcdb13bb73dd07f5149865",
+    "mtime": 1790229192.5108435,
+    "ast_hash": "1c65cc3af51c25384dcebb8599d9f8a2",
     "semantic_hash": ""
   },
   "src/ui/collapsibleSection.test.ts": {
