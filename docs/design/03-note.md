@@ -128,6 +128,11 @@ trước khi nó chạm vào note.
     2. Gọi image provider `generateImage(prompt, opts)` → gọi AnkiConnect `storeMediaFile` →
        ghi tag `<img src="filename.png">` vào cuối section **Output**, theo tuỳ chọn
        Overwrite/Append của tab Image (xem §3.4).
+    - Obsidian hiển thị ảnh bằng cách đọc file từ Anki (`retrieveMediaFile`) lúc render
+      (markdown post-processor, `src/note/ankiImages.ts`): chỉ với note có `anki_deck`, chỉ
+      `<img src>` là tên file trần không có trong vault; thay `src` bằng data URL giữ trong bộ nhớ,
+      không ghi gì vào vault. Anki tắt / không có file → ảnh vẫn vỡ, không hiện Notice (render
+      thụ động), lần render sau thử lại.
     - Chưa cấu hình text provider → Notice "Set up a text model in settings to generate image
       prompts." và dừng (không gửi field thô tới image provider).
     - Không có section nào không rỗng → Notice "Nothing to generate an image from — please

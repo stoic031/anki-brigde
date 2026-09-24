@@ -125,6 +125,11 @@ export class AnkiConnectClient {
 	}
 
 	// Returns the filename Anki actually stored under (it renames on a collision).
+	// Raw base64 of a file in Anki's media folder; false when there is no such file.
+	async retrieveMediaFile(filename: string): Promise<string | false> {
+		return this.invoke<string | false>('retrieveMediaFile', { filename });
+	}
+
 	async storeMediaFile(
 		filename: string,
 		base64Data: string,

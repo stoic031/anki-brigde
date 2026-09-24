@@ -178,6 +178,12 @@ describe('AnkiConnectClient action methods', () => {
 		});
 	});
 
+	it('retrieveMediaFile sends the filename and resolves base64 or false', async () => {
+		requestUrl.mockResolvedValue(jsonResponse({ result: false, error: null }));
+		await expect(client().retrieveMediaFile('x.png')).resolves.toBe(false);
+		expect(sentBody()).toEqual({ action: 'retrieveMediaFile', version: 6, params: { filename: 'x.png' } });
+	});
+
 	it('storeMediaFile sends filename + base64 data and resolves the stored filename', async () => {
 		requestUrl.mockResolvedValue(
 			jsonResponse({ result: 'x_1.png', error: null }),

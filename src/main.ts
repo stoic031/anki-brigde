@@ -14,6 +14,7 @@ import {
 import { AnkiBridgeSettingTab } from './ui/settingsTab';
 import { registerSidebarView, revealSidebarView } from './ui/sidebarView';
 import { registerAutoSync } from './sync/autoSync';
+import { registerAnkiImages } from './note/ankiImages';
 import { PROFILE_CHANGED_EVENT } from './utils/constants';
 
 export default class AnkiBridgePlugin extends Plugin {
@@ -43,6 +44,7 @@ export default class AnkiBridgePlugin extends Plugin {
 		this.addSettingTab(new AnkiBridgeSettingTab(this.app, this));
 		registerSidebarView(this);
 		registerAutoSync(this);
+		registerAnkiImages(this);
 
 		this.addCommand({
 			id: 'create-note-from-selection',
