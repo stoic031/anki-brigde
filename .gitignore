@@ -20,3 +20,7 @@ data.json
 
 # Exclude macOS Finder (System Explorer) View States
 .DS_Store
+
+# local tooling (knowledge graph, opencode)
+graphify-out/
+.opencode/
