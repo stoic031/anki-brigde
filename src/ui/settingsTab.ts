@@ -11,6 +11,7 @@ import { renderImageProviderSection } from './imageProviderSection';
 import { renderTextProviderSection } from './textProviderSection';
 import { renderMediaSection } from './mediaSection';
 import { renderSyncSection } from './syncSection';
+import { renderCollapsibleSection } from './collapsibleSection';
 import { toastError, toastSuccess } from './toast';
 
 export class AnkiBridgeSettingTab extends PluginSettingTab {
@@ -25,12 +26,30 @@ export class AnkiBridgeSettingTab extends PluginSettingTab {
 
 	display(): void {
 		this.containerEl.empty();
-		this.profiles = renderConnectionSection(this.containerEl, this.plugin);
-		renderLanguageSection(this.containerEl, this.plugin);
-		renderTextProviderSection(this.containerEl, this.plugin);
-		renderImageProviderSection(this.containerEl, this.plugin);
-		renderMediaSection(this.containerEl, this.plugin);
-		renderSyncSection(this.containerEl, this.plugin);
+
+		const connectionBody = renderCollapsibleSection(
+			this.containerEl,
+			'Connection & profiles',
+			true,
+		);
+		this.profiles = renderConnectionSection(connectionBody, this.plugin);
+
+		const aiBody = renderCollapsibleSection(
+			this.containerEl,
+			'AI providers',
+			false,
+		);
+		renderLanguageSection(aiBody, this.plugin);
+		renderTextProviderSection(aiBody, this.plugin);
+		renderImageProviderSection(aiBody, this.plugin);
+
+		const advancedBody = renderCollapsibleSection(
+			this.containerEl,
+			'Sync & media',
+			false,
+		);
+		renderSyncSection(advancedBody, this.plugin);
+		renderMediaSection(advancedBody, this.plugin);
 	}
 
 	hide(): void {

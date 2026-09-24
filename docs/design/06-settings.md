@@ -2,6 +2,17 @@
 
 > Xem [`README.md`](README.md) cho tổng quan kiến trúc.
 
+**Bố cục:** để trang Settings đỡ dài, các mục bên dưới được gom vào 3 khối gấp/mở được
+(`<details>`/`<summary>` gốc của trình duyệt, không cần JS — `src/ui/collapsibleSection.ts`),
+không đổi thứ tự hay hành vi bên trong mỗi mục:
+
+- **"Connection & profiles"** — mở sẵn (thiết lập cơ bản, hay sửa nhất). Gồm §6.1.
+- **"AI providers"** — đóng sẵn. Gồm Your language + Text/Image provider trong §6.2.
+- **"Sync & media"** — đóng sẵn. Gồm §6.3 + §6.4.
+
+Trạng thái mở/đóng không lưu lại — mỗi lần mở tab Settings, Obsidian gọi lại `display()`
+nên luôn về đúng mặc định ở trên.
+
 ## 6.1. Connection Section
 
 **AnkiConnect URL:**
