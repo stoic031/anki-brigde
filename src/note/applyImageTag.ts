@@ -42,6 +42,9 @@ export function applyImageTag(
 	// Trailing blanks would otherwise stack with the separator below.
 	while (kept.length > 0 && kept[kept.length - 1]?.trim() === '') kept.pop();
 
-	lines.splice(heading.line + 1, body.length, ...kept, '', tag);
+	// A blank line after the tag when another section follows: an HTML block runs until
+	// a blank line in Markdown, so the next heading would otherwise render as part of it.
+	const after = heading.end < lines.length ? [''] : [];
+	lines.splice(heading.line + 1, body.length, ...kept, '', tag, ...after);
 	return lines.join(eol);
 }

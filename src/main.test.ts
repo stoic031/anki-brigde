@@ -47,6 +47,9 @@ vi.mock('./ui/sidebarView', () => ({ registerSidebarView, revealSidebarView }));
 const { registerAutoSync } = vi.hoisted(() => ({ registerAutoSync: vi.fn() }));
 vi.mock('./sync/autoSync', () => ({ registerAutoSync }));
 
+const { registerAnkiImages } = vi.hoisted(() => ({ registerAnkiImages: vi.fn() }));
+vi.mock('./note/ankiImages', () => ({ registerAnkiImages }));
+
 import AnkiBridgePlugin from './main';
 
 describe('AnkiBridgePlugin.onload', () => {
@@ -185,6 +188,15 @@ describe('AnkiBridgePlugin.onload', () => {
 		await plugin.onload();
 
 		expect(registerAutoSync).toHaveBeenCalledWith(plugin);
+	});
+
+	it('registers the Anki image renderer', async () => {
+		const plugin = new AnkiBridgePlugin(
+			{} as App,
+			{} as PluginManifest,
+		);
+		await plugin.onload();
+		expect(registerAnkiImages).toHaveBeenCalledWith(plugin);
 	});
 
 	it('exposes a ProviderManager that builds nothing until asked and reads config at call time', async () => {

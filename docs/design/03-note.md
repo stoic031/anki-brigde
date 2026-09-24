@@ -21,9 +21,7 @@ render).
 Các nút nằm ở Sidebar (`07-sidebar.md` §7.2.1). Hiện có: **Sync | Rebuild | Delete** (cùng
 một hàng, tab Note), **Generate** (tab Text, cạnh phần chọn field), và **Add image**
 (tab Image, cạnh phần chọn Output field). Mỗi nút gồm icon + chữ. Add image gọi
-`generateImage()` của image provider user đã chọn — cho tới khi Feature #17 có adapter
-ảnh thật, bấm nút sẽ báo lỗi provider ("no adapter for this provider type") thay vì tạo
-ảnh.
+`generateImage()` của image provider user đã chọn.
 
 > **Nguyên tắc chung cho 2 nút AI** (Generate, Add Image): không nút
 > nào trong 2 nút này gọi `updateNoteFields` — mỗi nút chỉ ghi vào **content của note
@@ -130,6 +128,11 @@ trước khi nó chạm vào note.
     2. Gọi image provider `generateImage(prompt, opts)` → gọi AnkiConnect `storeMediaFile` →
        ghi tag `<img src="filename.png">` vào cuối section **Output**, theo tuỳ chọn
        Overwrite/Append của tab Image (xem §3.4).
+    - Obsidian hiển thị ảnh bằng cách đọc file từ Anki (`retrieveMediaFile`) lúc render
+      (markdown post-processor, `src/note/ankiImages.ts`): chỉ với note có `anki_deck`, chỉ
+      `<img src>` là tên file trần không có trong vault; thay `src` bằng data URL giữ trong bộ nhớ,
+      không ghi gì vào vault. Anki tắt / không có file → ảnh vẫn vỡ, không hiện Notice (render
+      thụ động), lần render sau thử lại.
     - Chưa cấu hình text provider → Notice "Set up a text model in settings to generate image
       prompts." và dừng (không gửi field thô tới image provider).
     - Không có section nào không rỗng → Notice "Nothing to generate an image from — please

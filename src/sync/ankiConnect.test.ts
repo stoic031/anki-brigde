@@ -130,6 +130,14 @@ describe('AnkiConnectClient action methods', () => {
 		});
 	});
 
+	it('noteFields asks notesInfo for one note and flattens the field values', async () => {
+		requestUrl.mockResolvedValue(
+			jsonResponse({ result: [{ fields: { Front: { value: 'x', order: 0 }, Back: { value: '', order: 1 } } }], error: null }),
+		);
+		await expect(client().noteFields(123)).resolves.toEqual({ Front: 'x', Back: '' });
+		expect(sentBody()).toEqual({ action: 'notesInfo', version: 6, params: { notes: [123] } });
+	});
+
 	it('deleteNotes sends the noteIds array and resolves void', async () => {
 		requestUrl.mockResolvedValue(jsonResponse({ result: null, error: null }));
 		await expect(client().deleteNotes([1, 2, 3])).resolves.toBeUndefined();
@@ -168,6 +176,12 @@ describe('AnkiConnectClient action methods', () => {
 			version: 6,
 			params: {},
 		});
+	});
+
+	it('retrieveMediaFile sends the filename and resolves base64 or false', async () => {
+		requestUrl.mockResolvedValue(jsonResponse({ result: false, error: null }));
+		await expect(client().retrieveMediaFile('x.png')).resolves.toBe(false);
+		expect(sentBody()).toEqual({ action: 'retrieveMediaFile', version: 6, params: { filename: 'x.png' } });
 	});
 
 	it('storeMediaFile sends filename + base64 data and resolves the stored filename', async () => {

@@ -1,16 +1,16 @@
 # Graph Report - anki-bridge  (2026-09-24)
 
 ## Corpus Check
-- 151 files · ~96,463 words
+- 162 files · ~100,937 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1165 nodes · 2116 edges · 126 communities (55 shown, 71 thin omitted)
-- Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 23 edges (avg confidence: 0.76)
+- 1219 nodes · 2310 edges · 119 communities (52 shown, 67 thin omitted)
+- Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 29 edges (avg confidence: 0.77)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `8ab8243f`
+- Built from commit: `38c2f8e7`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -95,65 +95,56 @@
 - settings.ts
 - confirmRebuildFields.test.ts
 - confirmDelete.test.ts
-- quickCapture.test.ts
-- textTab.ts
+- main.test.ts
+- sidebarView.ts
 - src/types.ts
 - textProviderSection.test.ts
-- addImage.ts
-- comfyWorkflow.ts
+- textTab.ts
+- providerEditor.ts
 - Generate with AI Button
 - quickCapture.ts
-- profilesSection.test.ts
+- FakeSecret
 - SidebarView
 - imageProviderSection.test.ts
-- main.ts
 - FakeSetting
 - Scenario 1: Create Note via Icon/Command
 - textTab.test.ts
-- mainField.test.ts
+- addImage.ts
 - Sidebar Modal (Right Sidebar View Panel)
-- providerEditor.ts
+- presets.ts
 - FakeButton
 - FakeDropdown
 - FakeEl
-- constants.ts
+- FakeToggleComponent
 - noteActions.test.ts
-- ProgressNotice
+- startProgressNotice
+- FakeArea
 - FakeSetting
-- syncSection.test.ts
 - mediaSection.test.ts
-- presets.ts
 - profilesSection.ts
-- FakeText
-- main.test.ts
+- main.ts
 - createNote.test.ts
-- plugin
-- FakeSetting
-- imageTab.test.ts
-- noteActions.ts
+- addImage.test.ts
+- AnkiBridgeSettings
 - FakeDropdown
 - settingsTab.ts
-- FakeSetting
-- FakeEl
-- fakeDom.ts
-- FakeDropdown
+- FakeText
+- profilesSection.test.ts
 - FakeSetting
 
 ## God Nodes (most connected - your core abstractions)
-1. `AnkiBridgePlugin` - 45 edges
+1. `AnkiBridgePlugin` - 47 edges
 2. `fieldConfigKey()` - 28 edges
-3. `resolveAnkiConnectUrl()` - 25 edges
-4. `AnkiConnectClient` - 25 edges
-5. `AnkiBridgeSettings` - 24 edges
-6. `ProviderError` - 24 edges
+3. `AnkiConnectClient` - 28 edges
+4. `resolveAnkiConnectUrl()` - 27 edges
+5. `ProviderError` - 27 edges
+6. `AnkiBridgeSettings` - 24 edges
 7. `SidebarView` - 23 edges
 8. `FakeEl` - 21 edges
 9. `toastError()` - 20 edges
 10. `Common Provider Interface (processText/generateAudio/generateImage)` - 20 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `loadSettings()` --references--> `plugin`  [EXTRACTED]
-  src/settings.ts → .opencode/opencode.json
 - `graphify Skill (/graphify)` --references--> `GitHub Clone & Cross-Repo Merge`  [EXTRACTED]
   .opencode/skills/graphify/SKILL.md → .claude/skills/graphify/references/github-and-merge.md
 - `graphify Skill (/graphify)` --references--> `Post-Commit Auto-Rebuild Hook`  [EXTRACTED]
@@ -162,6 +153,8 @@
   AGENTS.md → docs/contracts.md
 - `Q12: Playwright-for-Obsidian proposal (use Vitest instead)` --references--> `Definition of Done (lint + type-check + test:unit)`  [INFERRED]
   docs/design-open-questions.md → AGENTS.md
+- `Q10: Milestone 1 acceptance criteria checklist` --conceptually_related_to--> `Scenario 1: Create Note via Icon/Command`  [INFERRED]
+  docs/design-open-questions.md → docs/design/scenarios.md
 
 ## Import Cycles
 - 3-file cycle: `src/main.ts -> src/ui/sidebarView.ts -> src/ui/sidebar/imageTab.ts -> src/main.ts`
@@ -196,7 +189,7 @@
 - **Pluggable AI Provider Interfaces** — docs_contracts_textprovider, docs_contracts_audioprovider, docs_contracts_imageprovider, docs_design_02_providers_abstraction_layer [INFERRED 0.85]
 - **AST + Semantic Extraction Forming the Merged Graph Build** — opencode_skills_graphify_skill_ast_extraction, opencode_skills_graphify_skill_semantic_extraction, opencode_skills_graphify_references_extraction_spec_node_id_format, opencode_skills_graphify_references_extraction_spec_confidence_rubric [INFERRED 0.85]
 
-## Communities (126 total, 71 thin omitted)
+## Communities (119 total, 67 thin omitted)
 
 ### Community 0 - "Create Note From Selection (Hotkey / Quick Capture)"
 Cohesion: 0.20
@@ -219,16 +212,16 @@ Cohesion: 0.33
 Nodes (7): Repo Layout (src/ module organization), AnkiFrontmatter interface, FIELD_ALIASES map, Field Mapping Algorithm (3-pass deterministic), ParsedNote interface, Dynamic Field Mapping (§1.5), Q10: Milestone 1 acceptance criteria checklist
 
 ### Community 5 - "syncEngine.ts"
-Cohesion: 0.09
-Nodes (25): { AnkiConnectClient }, configured, { readAnkiFrontmatter }, { syncNote }, { toastSuccess, toastError }, trigger(), mapContentToFields(), stringifySectionValue() (+17 more)
+Cohesion: 0.13
+Nodes (19): mapContentToFields(), stringifySectionValue(), extractSectionValue(), parseSections(), readAnkiFrontmatter(), file, writeAnkiFrontmatter(), createNote() (+11 more)
 
 ### Community 6 - "noteNameModal.test.ts"
 Cohesion: 0.09
 Nodes (6): NoteNameModal, FakeButtonComponent, FakeSetting, FakeTextComponent, openModal(), { settings, modalState }
 
 ### Community 7 - "AnkiConnectClient"
-Cohesion: 0.16
-Nodes (3): AnkiConnectClient, AnkiConnectResponse, { requestUrl }
+Cohesion: 0.09
+Nodes (8): AnkiImageDeps, createAnkiImageProcessor(), MIME, anki, FakeImg, setup(), AnkiConnectClient, { requestUrl }
 
 ### Community 8 - "Graphify Full Pipeline"
 Cohesion: 0.15
@@ -253,6 +246,10 @@ Nodes (6): Heading-Based Content Parsing, Sync Error Path Coverage, Idempotent S
 ### Community 13 - "MediaResult interface"
 Cohesion: 0.50
 Nodes (5): AGENTS.md Non-Negotiables (9 rules), AudioProvider interface, ImageProvider interface, MediaResult interface, Q14: AudioOptions/ImageOptions shape undefined
+
+### Community 14 - "FakeEl"
+Cohesion: 0.06
+Nodes (17): CreateOpts, FakeEl, renderCollapsibleSection(), { setIcon }, FakeDropdown, FakeSetting, { modelFieldNames, AnkiConnectClient }, note (+9 more)
 
 ### Community 15 - "settingsTab.test.ts"
 Cohesion: 0.05
@@ -279,8 +276,8 @@ Cohesion: 0.12
 Nodes (15): [1.0.0], [1.1.0], Added, Added, Added, Changed, Changed, Changelog (+7 more)
 
 ### Community 80 - "settings.ts"
-Cohesion: 0.17
-Nodes (18): ImageProviderId, ProviderPreset, TextProviderId, DEFAULT_PROFILE, endpointUrl(), getActiveImageConfig(), getActiveTextConfig(), ImageProviderConfig (+10 more)
+Cohesion: 0.13
+Nodes (23): plugin, $schema, .opencode/plugins/graphify.js, ImageProviderId, ProviderPreset, TextProviderId, DEFAULT_PROFILE, endpointUrl() (+15 more)
 
 ### Community 81 - "confirmRebuildFields.test.ts"
 Cohesion: 0.12
@@ -290,49 +287,45 @@ Nodes (5): ConfirmRebuildFieldsModal, FakeButtonComponent, FakeSetting, openModa
 Cohesion: 0.12
 Nodes (5): ConfirmDeleteModal, FakeButtonComponent, FakeSetting, openModal(), { settings, modalState }
 
-### Community 83 - "quickCapture.test.ts"
-Cohesion: 0.20
-Nodes (7): fakePlugin(), fakeSettings(), { MarkdownView, Notice }, { modelFieldNamesMock, AnkiConnectClient }, { revealSidebarView }, { toastError }, { writeAnkiFrontmatter }
+### Community 83 - "main.test.ts"
+Cohesion: 0.25
+Nodes (7): { loadSettings, saveSettings, getActiveTextConfig, getActiveImageConfig }, { PluginBase, addCommandSpy }, { registerAnkiImages }, { registerAutoSync }, { registerSidebarView, revealSidebarView }, { runCreateNote }, { runQuickCapture }
 
-### Community 84 - "textTab.ts"
-Cohesion: 0.22
-Nodes (15): generateDraft(), rememberExample(), AnkiConnectError, ActionButton, createActionButton(), runAction(), renderImageTab(), startProgressNotice() (+7 more)
+### Community 84 - "sidebarView.ts"
+Cohesion: 0.19
+Nodes (16): planAddImage(), resolveAnkiConnectUrl(), AnkiConnectResponse, trigger(), AnkiConnectError, ActionButton, createActionButton(), runAction() (+8 more)
 
 ### Community 85 - "src/types.ts"
-Cohesion: 0.06
-Nodes (53): bearer(), Entry, Fetcher, FETCHERS, FILTERS, get(), listModels(), ModelList (+45 more)
+Cohesion: 0.07
+Nodes (60): createAutomatic1111(), createComfyUi(), obj(), OutputImage, waitForImage(), createGeminiImage(), Part, body() (+52 more)
 
 ### Community 86 - "textProviderSection.test.ts"
-Cohesion: 0.11
-Nodes (8): renderTextProviderSection(), cloud, FakeDropdown, FakeSecret, { listModels }, local, { Notice, rendered, secrets }, setup()
+Cohesion: 0.05
+Nodes (12): clearModelCache(), cloud, FakeButton, FakeDropdown, FakeEl, FakeSecret, FakeSetting, FakeText (+4 more)
 
-### Community 87 - "addImage.ts"
-Cohesion: 0.10
-Nodes (30): AddImageOutcome, AddImagePlan, planAddImage(), runAddImage(), sectionText(), imageProvider, { modelFieldNames, storeMediaFile }, note (+22 more)
+### Community 87 - "textTab.ts"
+Cohesion: 0.32
+Nodes (11): runAiPreCheck(), generateDraft(), planGenerate(), note, provider, setup(), examplesKey(), fieldConfigKey() (+3 more)
 
-### Community 88 - "comfyWorkflow.ts"
-Cohesion: 0.17
-Nodes (22): analyzeWorkflow(), describeAnalysis(), fetchWorkflow(), fromApiFormat(), fromUiFormat(), get(), Graph, listWorkflows() (+14 more)
+### Community 88 - "providerEditor.ts"
+Cohesion: 0.06
+Nodes (55): analyzeWorkflow(), ApiPrompt, describeAnalysis(), fetchWorkflow(), fromApiFormat(), fromUiFormat(), get(), Graph (+47 more)
 
 ### Community 89 - "Generate with AI Button"
 Cohesion: 0.23
 Nodes (12): processText(), targetFields (processText input), TextResult (processText output), Auto-generate Content Structure, Generate with AI Button, Connection Status + Test Connection, Deck Dropdown, Field Checkboxes (Generate with AI) (+4 more)
 
 ### Community 90 - "quickCapture.ts"
-Cohesion: 0.30
-Nodes (13): runCreateNote(), buildMediaFilename(), sanitizeForFilename(), AppWithSettingTab, getQuickCaptureFilename(), getSelectedText(), getUniqueNotePath(), openPluginSettings() (+5 more)
+Cohesion: 0.13
+Nodes (24): FieldPrefill, generateContentSkeleton(), rebuildContent(), runCreateNote(), buildMediaFilename(), sanitizeForFilename(), AppWithSettingTab, getQuickCaptureFilename() (+16 more)
 
-### Community 91 - "profilesSection.test.ts"
-Cohesion: 0.07
-Nodes (7): FakeButton, FakeDropdown, FakeSetting, FakeText, { modelFieldNames, AnkiConnectClient }, { Notice, settings }, setup()
+### Community 92 - "SidebarView"
+Cohesion: 0.09
+Nodes (9): renderMainFieldDropdown(), FakeDropdown, FakeSetting, { modelFieldNames, AnkiConnectClient }, { settings }, setup(), { toastError }, TextTab (+1 more)
 
 ### Community 93 - "imageProviderSection.test.ts"
-Cohesion: 0.08
-Nodes (10): clearWorkflowCache(), auto, FakeArea, FakeSecret, FakeText, flush(), { listModels }, { listWorkflows, fetchWorkflow } (+2 more)
-
-### Community 94 - "main.ts"
-Cohesion: 0.29
-Nodes (6): AnkiBridgePlugin, registerAutoSync(), ImageTab, MainFieldControl, registerSidebarView(), revealSidebarView()
+Cohesion: 0.17
+Nodes (7): clearWorkflowCache(), auto, { listModels }, { listWorkflows, fetchWorkflow }, { Notice, rendered, secrets }, openai, setup()
 
 ### Community 96 - "Scenario 1: Create Note via Icon/Command"
 Cohesion: 0.32
@@ -342,45 +335,37 @@ Nodes (8): Branch A — Deck/Model Already Configured, Branch B — First-Time S
 Cohesion: 0.07
 Nodes (16): addFieldViaMenu(), FakeExtraButton, FakeMenu, FakeMenuItem, FakeSetting, FakeTextArea, flush(), { modelFieldNames, AnkiConnectClient } (+8 more)
 
-### Community 98 - "mainField.test.ts"
-Cohesion: 0.13
-Nodes (7): renderMainFieldDropdown(), FakeDropdown, FakeSetting, { modelFieldNames, AnkiConnectClient }, { settings }, setup(), { toastError }
+### Community 98 - "addImage.ts"
+Cohesion: 0.20
+Nodes (14): AddImageOutcome, AddImagePlan, runAddImage(), sectionText(), applyImageTag(), ImageTagMode, fillEmptySections(), FillResult (+6 more)
 
 ### Community 99 - "Sidebar Modal (Right Sidebar View Panel)"
 Cohesion: 0.29
 Nodes (7): AI Provider Manager, AI Buttons Never Write To Anki Directly (Sync-only) Principle, anki-controls Markdown Code Block, Sync Button, Command: "Anki: Open Deck & Model Selector", Sidebar Modal (Right Sidebar View Panel), Design Doc Architecture Overview
 
-### Community 100 - "providerEditor.ts"
-Cohesion: 0.25
-Nodes (13): ModelKind, AnkiBridgeSettings, WorkflowHolder, AnyProviderConfig, clearModelCache(), ModelState, modelStates, ProviderKindSpec (+5 more)
-
-### Community 104 - "constants.ts"
-Cohesion: 0.23
-Nodes (6): renderLanguageSection(), FakeSetting, { settings }, setup(), renderPicker(), LANGUAGES
+### Community 100 - "presets.ts"
+Cohesion: 0.48
+Nodes (5): cloud(), IMAGE_PRESETS, presetLabel(), same(), TEXT_PRESETS
 
 ### Community 105 - "noteActions.test.ts"
-Cohesion: 0.18
-Nodes (9): ActionState, { deleteModal, rebuildModal }, { modelFieldNames, AnkiConnectClient }, note, process, { setIcon, Notice }, setup(), { syncNote, deleteNote } (+1 more)
+Cohesion: 0.15
+Nodes (10): SyncError, ActionState, { deleteModal, rebuildModal }, { modelFieldNames, AnkiConnectClient }, note, process, { setIcon, Notice }, setup() (+2 more)
 
-### Community 108 - "syncSection.test.ts"
-Cohesion: 0.22
-Nodes (4): renderSyncSection(), FakeToggleComponent, render(), { settings }
+### Community 106 - "startProgressNotice"
+Cohesion: 0.32
+Nodes (4): ProgressNotice, startProgressNotice(), { Notice, notices }, withElapsed()
 
 ### Community 109 - "mediaSection.test.ts"
-Cohesion: 0.29
-Nodes (5): renderMediaSection(), { Notice, settings }, render(), isValidMediaPrefix(), isValidUrl()
-
-### Community 110 - "presets.ts"
-Cohesion: 0.26
-Nodes (9): cloud(), IMAGE_PRESETS, presetLabel(), same(), TEXT_PRESETS, renderImageProviderSection(), setup(), renderProviderSection() (+1 more)
+Cohesion: 0.12
+Nodes (7): renderMediaSection(), FakeSetting, FakeTextComponent, { Notice, settings }, render(), isValidMediaPrefix(), isValidUrl()
 
 ### Community 111 - "profilesSection.ts"
-Cohesion: 0.23
-Nodes (9): getActiveProfile(), Profile, renderFolderPicker(), renderProfilesSection(), uniqueName(), buildFolderTreeEntries(), FolderTreeEntry, FakeFolder (+1 more)
+Cohesion: 0.18
+Nodes (12): renderLanguageSection(), { settings }, setup(), renderFolderPicker(), renderPicker(), renderProfilesSection(), uniqueName(), LANGUAGES (+4 more)
 
-### Community 113 - "main.test.ts"
-Cohesion: 0.29
-Nodes (6): { loadSettings, saveSettings, getActiveTextConfig, getActiveImageConfig }, { PluginBase, addCommandSpy }, { registerAutoSync }, { registerSidebarView, revealSidebarView }, { runCreateNote }, { runQuickCapture }
+### Community 113 - "main.ts"
+Cohesion: 0.26
+Nodes (7): AnkiBridgePlugin, registerAnkiImages(), registerAutoSync(), registerSidebarView(), renderSyncSection(), render(), { settings }
 
 ### Community 114 - "createNote.test.ts"
 Cohesion: 0.22
@@ -391,42 +376,38 @@ Nodes (9): fakePlugin(), fakeSettings(), { modelFieldNamesMock, AnkiConnectClien
 	openPluginSettings,
 }, { revealSidebarView }, { toastError } (+1 more)
 
-### Community 115 - "plugin"
-Cohesion: 0.40
-Nodes (4): plugin, $schema, .opencode/plugins/graphify.js, saveSettings()
+### Community 115 - "addImage.test.ts"
+Cohesion: 0.29
+Nodes (6): imageProvider, { modelFieldNames, storeMediaFile }, note, setup(), textProvider, ImageFieldConfig
 
-### Community 117 - "imageTab.test.ts"
-Cohesion: 0.20
-Nodes (8): ImageFieldConfig, { modelFieldNames, AnkiConnectClient }, note, { Notice, setIcon, settings }, { planAddImage, runAddImage }, ready(), setup(), { toastError, toastSuccess }
-
-### Community 118 - "noteActions.ts"
-Cohesion: 0.36
-Nodes (5): FieldPrefill, generateContentSkeleton(), rebuildContent(), NoteActions, renderNoteActions()
+### Community 118 - "AnkiBridgeSettings"
+Cohesion: 0.14
+Nodes (10): AiButtonAction, AiPreCheckResult, ApprovedCard, AnkiBridgeSettings, DEFAULT_SETTINGS, { AnkiConnectClient }, configured, { readAnkiFrontmatter } (+2 more)
 
 ### Community 120 - "settingsTab.ts"
-Cohesion: 0.21
-Nodes (7): renderCollapsibleSection(), { setIcon }, ProfilesSection, AnkiBridgeSettingTab, handleConnect(), loadAnkiNames(), renderConnectionSection()
+Cohesion: 0.27
+Nodes (6): renderImageProviderSection(), ProfilesSection, AnkiBridgeSettingTab, handleConnect(), loadAnkiNames(), renderConnectionSection()
 
-### Community 123 - "fakeDom.ts"
-Cohesion: 0.32
-Nodes (5): CreateOpts, renderTabs(), Tab, render(), tabs
+### Community 129 - "profilesSection.test.ts"
+Cohesion: 0.07
+Nodes (7): FakeButton, FakeDropdown, FakeSetting, FakeText, { modelFieldNames, AnkiConnectClient }, { Notice, settings }, setup()
 
 ## Knowledge Gaps
-- **282 isolated node(s):** `$schema`, `.opencode/plugins/graphify.js`, `id`, `name`, `version` (+277 more)
+- **290 isolated node(s):** `$schema`, `.opencode/plugins/graphify.js`, `id`, `name`, `version` (+285 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **71 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **67 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `AnkiBridgePlugin` connect `main.ts` to `syncEngine.ts`, `settingsTab.test.ts`, `sidebarView.test.ts`, `quickCapture.test.ts`, `textTab.ts`, `addImage.ts`, `quickCapture.ts`, `profilesSection.test.ts`, `SidebarView`, `textTab.test.ts`, `mainField.test.ts`, `providerEditor.ts`, `constants.ts`, `noteActions.test.ts`, `syncSection.test.ts`, `mediaSection.test.ts`, `presets.ts`, `profilesSection.ts`, `main.test.ts`, `createNote.test.ts`, `imageTab.test.ts`, `noteActions.ts`, `settingsTab.ts`?**
-  _High betweenness centrality (0.067) - this node is a cross-community bridge._
-- **Why does `AnkiBridgeSettings` connect `providerEditor.ts` to `syncEngine.ts`, `settingsTab.test.ts`, `sidebarView.test.ts`, `settings.ts`, `quickCapture.test.ts`, `src/types.ts`, `textProviderSection.test.ts`, `addImage.ts`, `quickCapture.ts`, `profilesSection.test.ts`, `imageProviderSection.test.ts`, `main.ts`, `textTab.test.ts`, `mainField.test.ts`, `constants.ts`, `syncSection.test.ts`, `mediaSection.test.ts`, `createNote.test.ts`, `imageTab.test.ts`?**
-  _High betweenness centrality (0.043) - this node is a cross-community bridge._
-- **Why does `NoteNameModal` connect `noteNameModal.test.ts` to `quickCapture.ts`?**
-  _High betweenness centrality (0.027) - this node is a cross-community bridge._
+- **Why does `AnkiBridgePlugin` connect `main.ts` to `profilesSection.test.ts`, `AnkiConnectClient`, `FakeEl`, `settingsTab.test.ts`, `sidebarView.test.ts`, `main.test.ts`, `sidebarView.ts`, `textTab.ts`, `providerEditor.ts`, `quickCapture.ts`, `SidebarView`, `textTab.test.ts`, `addImage.ts`, `noteActions.test.ts`, `mediaSection.test.ts`, `profilesSection.ts`, `createNote.test.ts`, `addImage.test.ts`, `AnkiBridgeSettings`, `settingsTab.ts`?**
+  _High betweenness centrality (0.060) - this node is a cross-community bridge._
+- **Why does `AnkiBridgeSettings` connect `AnkiBridgeSettings` to `profilesSection.test.ts`, `textTab.test.ts`, `mediaSection.test.ts`, `FakeEl`, `profilesSection.ts`, `settings.ts`, `main.ts`, `createNote.test.ts`, `settingsTab.test.ts`, `sidebarView.test.ts`, `textProviderSection.test.ts`, `providerEditor.ts`, `quickCapture.ts`, `SidebarView`, `imageProviderSection.test.ts`?**
+  _High betweenness centrality (0.034) - this node is a cross-community bridge._
+- **Why does `ProviderError` connect `src/types.ts` to `addImage.ts`, `addImage.test.ts`, `sidebarView.ts`, `textProviderSection.test.ts`, `textTab.ts`, `providerEditor.ts`, `imageProviderSection.test.ts`?**
+  _High betweenness centrality (0.031) - this node is a cross-community bridge._
 - **What connects `$schema`, `.opencode/plugins/graphify.js`, `id` to the rest of the system?**
-  _282 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _290 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `graphify Skill (/graphify)` be split into smaller, more focused modules?**
   _Cohesion score 0.10541310541310542 - nodes in this community are weakly interconnected._
 - **Should `devDependencies` be split into smaller, more focused modules?**

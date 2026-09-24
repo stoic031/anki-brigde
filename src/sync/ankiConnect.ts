@@ -94,6 +94,16 @@ export class AnkiConnectClient {
 		});
 	}
 
+	// Current field values of one note, keyed by field name.
+	async noteFields(noteId: number): Promise<Record<string, string>> {
+		const [info] = await this.invoke<
+			{ fields?: Record<string, { value: string }> }[]
+		>('notesInfo', { notes: [noteId] });
+		return Object.fromEntries(
+			Object.entries(info?.fields ?? {}).map(([k, f]) => [k, f.value]),
+		);
+	}
+
 	async deleteNotes(noteIds: number[]): Promise<void> {
 		await this.invoke<null>('deleteNotes', { notes: noteIds });
 	}
@@ -115,6 +125,11 @@ export class AnkiConnectClient {
 	}
 
 	// Returns the filename Anki actually stored under (it renames on a collision).
+	// Raw base64 of a file in Anki's media folder; false when there is no such file.
+	async retrieveMediaFile(filename: string): Promise<string | false> {
+		return this.invoke<string | false>('retrieveMediaFile', { filename });
+	}
+
 	async storeMediaFile(
 		filename: string,
 		base64Data: string,

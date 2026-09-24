@@ -163,3 +163,7 @@ bỏ qua âm thầm**: gộp lại và hiển thị **một** warning duy nhất
 - **Duplicate note:** Hiển thị toast "Note already exists in Anki"
 - **Parse error:** Hiển thị toast "Cannot parse note content. Please check format."
 - **Model not found:** Hiển thị toast "Model not found in Anki. Please select it again."
+- **Anki giữ nội dung cũ sau khi update:** sau `updateNoteFields`, đọc lại note bằng `notesInfo`;
+  field nào khác giá trị vừa gửi (bỏ khoảng trắng hai đầu) → toast "Anki kept the old content. Close
+  this note in the Anki Browser and sync again." (AnkiConnect báo thành công nhưng editor của Anki
+  Browser đang mở note đó ghi đè lại nội dung cũ)
