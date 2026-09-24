@@ -1,7 +1,14 @@
 import type { ProviderConfig } from '../providerManager';
 import type { ImageProvider } from '../types';
-import { IMAGE_TIMEOUT_MS, requestBinary, requestJson } from '../text/http';
-import { isLocalUrl, str } from '../text/openaiCompatible';
+import {
+	IMAGE_TIMEOUT_MS,
+	isLocalUrl,
+	obj,
+	requestBinary,
+	requestJson,
+	str,
+	trimSlash,
+} from '../http';
 import { analyzeWorkflow, fetchWorkflow, toApiPrompt } from './comfyWorkflow';
 import { media, noImage } from './media';
 import { ProviderError } from '../../types';
@@ -12,9 +19,6 @@ const REQUEST_TIMEOUT_MS = 15_000;
 export const COMFY_RUN_TIMEOUT_MS = 300_000;
 const POLL_MS = 1_000;
 
-const obj = (v: unknown): Record<string, unknown> =>
-	typeof v === 'object' && v !== null ? (v as Record<string, unknown>) : {};
-
 interface OutputImage {
 	filename: string;
 	subfolder: string;
@@ -24,7 +28,7 @@ interface OutputImage {
 // docs/design/02-providers.md §2.2 — runs the workflow the user saved in ComfyUI with the
 // AI prompt replacing the positive prompt node's text (negative node kept as saved).
 export function createComfyUi(config: ProviderConfig): ImageProvider {
-	const baseUrl = str(config.baseUrl).replace(/\/+$/, '');
+	const baseUrl = trimSlash(str(config.baseUrl));
 	const workflow = str(config.workflow);
 	const get = (url: string) =>
 		requestJson('GET', ID, url, {}, undefined, REQUEST_TIMEOUT_MS);

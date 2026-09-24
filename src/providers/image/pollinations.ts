@@ -1,12 +1,11 @@
 import type { ProviderConfig } from '../providerManager';
 import type { ImageProvider } from '../types';
-import { IMAGE_TIMEOUT_MS, requestBinary } from '../text/http';
-import { str } from '../text/openaiCompatible';
+import { IMAGE_TIMEOUT_MS, requestBinary, str, trimSlash } from '../http';
 import { media, noImage } from './media';
 
 // GET {base}/image/{prompt} answers with the image bytes. The key is optional.
 export function createPollinations(config: ProviderConfig): ImageProvider {
-	const baseUrl = str(config.baseUrl).replace(/\/+$/, '');
+	const baseUrl = trimSlash(str(config.baseUrl));
 	const apiKey = str(config.apiKey).trim();
 	const id = 'pollinations';
 

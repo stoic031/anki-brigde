@@ -1,6 +1,6 @@
 import type { App, ButtonComponent } from 'obsidian';
 import { Notice, PluginSettingTab, Setting } from 'obsidian';
-import type AnkiBridgePlugin from '../main';
+import type VocabWeavePlugin from '../main';
 import { DEFAULT_ANKI_CONNECT_URL } from '../utils/constants';
 import { isValidUrl } from '../utils/validation';
 import { resolveAnkiConnectUrl } from '../settings';
@@ -14,10 +14,10 @@ import { renderSyncSection } from './syncSection';
 import { renderCollapsibleSection } from './collapsibleSection';
 import { toastError, toastSuccess } from './toast';
 
-export class AnkiBridgeSettingTab extends PluginSettingTab {
+export class VocabWeaveSettingTab extends PluginSettingTab {
 	constructor(
 		app: App,
-		private plugin: AnkiBridgePlugin,
+		private plugin: VocabWeavePlugin,
 	) {
 		super(app, plugin);
 	}
@@ -61,7 +61,7 @@ export class AnkiBridgeSettingTab extends PluginSettingTab {
 // docs/design/06-settings.md §6.1
 export function renderConnectionSection(
 	containerEl: HTMLElement,
-	plugin: AnkiBridgePlugin,
+	plugin: VocabWeavePlugin,
 ): ProfilesSection {
 	let connectButton!: ButtonComponent;
 
@@ -101,7 +101,7 @@ export function renderConnectionSection(
 }
 
 async function loadAnkiNames(
-	plugin: AnkiBridgePlugin,
+	plugin: VocabWeavePlugin,
 	profiles: ProfilesSection,
 ): Promise<void> {
 	try {
@@ -119,7 +119,7 @@ async function loadAnkiNames(
 }
 
 async function handleConnect(
-	plugin: AnkiBridgePlugin,
+	plugin: VocabWeavePlugin,
 	profiles: ProfilesSection,
 	button: ButtonComponent,
 ): Promise<void> {

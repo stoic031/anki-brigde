@@ -9,16 +9,16 @@ import {
 	getActiveTextConfig,
 	loadSettings,
 	saveSettings,
-	type AnkiBridgeSettings,
+	type VocabWeaveSettings,
 } from './settings';
-import { AnkiBridgeSettingTab } from './ui/settingsTab';
+import { VocabWeaveSettingTab } from './ui/settingsTab';
 import { registerSidebarView, revealSidebarView } from './ui/sidebarView';
 import { registerAutoSync } from './sync/autoSync';
 import { registerAnkiImages } from './note/ankiImages';
 import { PROFILE_CHANGED_EVENT } from './utils/constants';
 
-export default class AnkiBridgePlugin extends Plugin {
-	settings!: AnkiBridgeSettings;
+export default class VocabWeavePlugin extends Plugin {
+	settings!: VocabWeaveSettings;
 
 	// docs/design/02-providers.md §2.3 — providers are built on first use, config read at
 	// call time, so settings edits apply without a reload and nothing runs on load.
@@ -41,7 +41,7 @@ export default class AnkiBridgePlugin extends Plugin {
 
 	async onload(): Promise<void> {
 		this.settings = await loadSettings(this);
-		this.addSettingTab(new AnkiBridgeSettingTab(this.app, this));
+		this.addSettingTab(new VocabWeaveSettingTab(this.app, this));
 		registerSidebarView(this);
 		registerAutoSync(this);
 		registerAnkiImages(this);
@@ -60,7 +60,7 @@ export default class AnkiBridgePlugin extends Plugin {
 
 		this.addCommand({
 			id: 'open-deck-model-selector',
-			name: 'Open Deck & Model Selector',
+			name: 'Open deck and model selector',
 			callback: () => void revealSidebarView(this.app),
 		});
 	}
@@ -76,6 +76,4 @@ export default class AnkiBridgePlugin extends Plugin {
 		await this.saveSettings();
 		this.app.workspace.trigger(PROFILE_CHANGED_EVENT);
 	}
-
-	onunload(): void {}
 }

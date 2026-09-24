@@ -51,7 +51,12 @@ describe('buildFolderTreeEntries', () => {
 		const korean = fakeFolder('Korean');
 
 		// Deliberately out of order, as returned from the vault.
-		const entries = buildFolderTreeEntries([korean, vocab, japanese, n2] as never);
+		const entries = buildFolderTreeEntries([
+			korean,
+			vocab,
+			japanese,
+			n2,
+		] as never);
 
 		expect(entries.map((e) => e.value)).toEqual([
 			'Japanese',
@@ -66,7 +71,11 @@ describe('buildFolderTreeEntries', () => {
 		const zebra = fakeFolder('Japanese/Zebra', japanese);
 		const apple = fakeFolder('Japanese/Apple', japanese);
 
-		const entries = buildFolderTreeEntries([japanese, zebra, apple] as never);
+		const entries = buildFolderTreeEntries([
+			japanese,
+			zebra,
+			apple,
+		] as never);
 
 		expect(entries.map((e) => e.value)).toEqual([
 			'Japanese',
@@ -85,7 +94,11 @@ describe('buildFolderTreeEntries', () => {
 		const japaneseAdvanced = fakeFolder('Japanese Advanced');
 		const n2 = fakeFolder('Japanese/N2', japanese);
 
-		const entries = buildFolderTreeEntries([japaneseAdvanced, japanese, n2] as never);
+		const entries = buildFolderTreeEntries([
+			japaneseAdvanced,
+			japanese,
+			n2,
+		] as never);
 
 		expect(entries.map((e) => e.value)).toEqual([
 			'Japanese',

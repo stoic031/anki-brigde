@@ -1,20 +1,10 @@
-import { ProviderError } from '../../types';
 import type { ProviderConfig } from '../providerManager';
 import type { TextProvider } from '../types';
-import { postJson } from './http';
+import { badShape, isLocalUrl, postJson, str, trimSlash } from '../http';
 import { runText } from './runText';
 
-export const str = (v: unknown): string => (typeof v === 'string' ? v : '');
-
-const LOCAL_HOST = /^https?:\/\/(localhost|127\.0\.0\.1)(?=[:/]|$)/i;
-
-// docs/design/06-settings.md §6.2 — Cloud/Local label is derived from the Base URL.
-export function isLocalUrl(baseUrl: string): boolean {
-	return LOCAL_HOST.test(baseUrl);
-}
-
 export function createOpenAiCompatible(config: ProviderConfig): TextProvider {
-	const baseUrl = str(config.baseUrl).replace(/\/+$/, '');
+	const baseUrl = trimSlash(str(config.baseUrl));
 	const model = str(config.model);
 	const apiKey = str(config.apiKey).trim();
 	const id = 'openai-compatible';
@@ -34,10 +24,7 @@ export function createOpenAiCompatible(config: ProviderConfig): TextProvider {
 			data as { choices?: { message?: { content?: unknown } }[] }
 		).choices?.[0]?.message?.content;
 		if (typeof content !== 'string') {
-			throw new ProviderError(
-				id,
-				`unexpected response shape from ${url}`,
-			);
+			throw badShape(id, url);
 		}
 		return content;
 	}

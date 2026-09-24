@@ -11,7 +11,7 @@ import {
 	resolveAnkiConnectUrl,
 	resolveMediaPrefix,
 	saveSettings,
-	type AnkiBridgeSettings,
+	type VocabWeaveSettings,
 	type ImageProviderConfig,
 	type TextProviderConfig,
 } from './settings';
@@ -189,7 +189,7 @@ describe('getActiveProfile', () => {
 describe('saveSettings', () => {
 	it('writes the settings object via plugin.saveData', async () => {
 		const { plugin, saveData } = fakePlugin(null);
-		const settings: AnkiBridgeSettings = {
+		const settings: VocabWeaveSettings = {
 			ankiConnectUrl: 'http://localhost:1234',
 			profiles: DEFAULT_SETTINGS.profiles,
 			activeProfileId: DEFAULT_SETTINGS.activeProfileId,

@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import type { App, FrontMatterCache, TFile } from 'obsidian';
-import { parseSections, readAnkiFrontmatter, replaceSection, writeAnkiFrontmatter } from './parser';
+import {
+	parseSections,
+	readAnkiFrontmatter,
+	replaceSection,
+	writeAnkiFrontmatter,
+} from './parser';
 
 function fakeReaderApp(frontmatter: FrontMatterCache | undefined): App {
 	return {
@@ -14,7 +19,10 @@ function fakeWriterApp(initial: Record<string, unknown>) {
 	const frontmatter: Record<string, unknown> = { ...initial };
 	const app = {
 		fileManager: {
-			processFrontMatter: async (_file: TFile, fn: (fm: Record<string, unknown>) => void) => {
+			processFrontMatter: async (
+				_file: TFile,
+				fn: (fm: Record<string, unknown>) => void,
+			) => {
 				fn(frontmatter);
 			},
 		},
@@ -26,11 +34,16 @@ const file = {} as unknown as TFile;
 
 describe('readAnkiFrontmatter', () => {
 	it('returns undefined when the note has no frontmatter block at all', () => {
-		expect(readAnkiFrontmatter(fakeReaderApp(undefined), file)).toBeUndefined();
+		expect(
+			readAnkiFrontmatter(fakeReaderApp(undefined), file),
+		).toBeUndefined();
 	});
 
 	it('reads a note without anki_note_id as undefined for that field, without throwing', () => {
-		const app = fakeReaderApp({ anki_deck: 'Japanese::N2', anki_model: 'Basic' });
+		const app = fakeReaderApp({
+			anki_deck: 'Japanese::N2',
+			anki_model: 'Basic',
+		});
 		expect(() => readAnkiFrontmatter(app, file)).not.toThrow();
 		expect(readAnkiFrontmatter(app, file)).toEqual({
 			anki_note_id: undefined,
@@ -59,7 +72,11 @@ describe('readAnkiFrontmatter', () => {
 	});
 
 	it('ignores frontmatter keys unrelated to Anki', () => {
-		const app = fakeReaderApp({ anki_deck: 'Deck', anki_model: 'Model', custom_key: 'foo' });
+		const app = fakeReaderApp({
+			anki_deck: 'Deck',
+			anki_model: 'Model',
+			custom_key: 'foo',
+		});
 		expect(readAnkiFrontmatter(app, file)).not.toHaveProperty('custom_key');
 	});
 });
@@ -78,7 +95,12 @@ describe('writeAnkiFrontmatter', () => {
 			anki_model: 'Basic',
 			anki_note_id: 1698765432109,
 		});
-		expect(Object.keys(frontmatter)).toEqual(['custom_key', 'anki_deck', 'anki_model', 'anki_note_id']);
+		expect(Object.keys(frontmatter)).toEqual([
+			'custom_key',
+			'anki_deck',
+			'anki_model',
+			'anki_note_id',
+		]);
 	});
 
 	it('stores last_synced exactly as the ISO 8601 string it is given', async () => {
@@ -89,7 +111,10 @@ describe('writeAnkiFrontmatter', () => {
 	});
 
 	it('deletes a key when its update value is undefined', async () => {
-		const { app, frontmatter } = fakeWriterApp({ anki_note_id: 123, anki_deck: 'Deck' });
+		const { app, frontmatter } = fakeWriterApp({
+			anki_note_id: 123,
+			anki_deck: 'Deck',
+		});
 		await writeAnkiFrontmatter(app, file, { anki_note_id: undefined });
 		expect(frontmatter).toEqual({ anki_deck: 'Deck' });
 	});
@@ -97,24 +122,39 @@ describe('writeAnkiFrontmatter', () => {
 
 describe('parseSections', () => {
 	it('extracts a text section as a trimmed string', () => {
-		const sections = parseSections('## Word\n\n診察\n\n## Meaning\n\nKhám bệnh\n');
+		const sections = parseSections(
+			'## Word\n\n診察\n\n## Meaning\n\nKhám bệnh\n',
+		);
 		expect(sections.get('word')).toBe('診察');
 		expect(sections.get('meaning')).toBe('Khám bệnh');
 	});
 
 	it('extracts a list section as an array of trimmed items with the marker stripped', () => {
-		const sections = parseSections('## Collocations\n\n- 診察を受ける\n- 診察室\n');
-		expect(sections.get('collocations')).toEqual(['診察を受ける', '診察室']);
+		const sections = parseSections(
+			'## Collocations\n\n- 診察を受ける\n- 診察室\n',
+		);
+		expect(sections.get('collocations')).toEqual([
+			'診察を受ける',
+			'診察室',
+		]);
 	});
 
 	it('extracts a [sound:...] section verbatim as a string, not a list', () => {
-		const sections = parseSections('## Audio\n\n[sound:_obsidian_診察_audio_1698765432.mp3]\n');
-		expect(sections.get('audio')).toBe('[sound:_obsidian_診察_audio_1698765432.mp3]');
+		const sections = parseSections(
+			'## Audio\n\n[sound:_obsidian_診察_audio_1698765432.mp3]\n',
+		);
+		expect(sections.get('audio')).toBe(
+			'[sound:_obsidian_診察_audio_1698765432.mp3]',
+		);
 	});
 
 	it('extracts an <img src="..."> section verbatim as a string', () => {
-		const sections = parseSections('## Image\n\n<img src="_obsidian_診察_image_1698765433.png">\n');
-		expect(sections.get('image')).toBe('<img src="_obsidian_診察_image_1698765433.png">');
+		const sections = parseSections(
+			'## Image\n\n<img src="_obsidian_診察_image_1698765433.png">\n',
+		);
+		expect(sections.get('image')).toBe(
+			'<img src="_obsidian_診察_image_1698765433.png">',
+		);
 	});
 
 	it('maps an empty section to "", not undefined, and keeps the key present', () => {
@@ -124,31 +164,43 @@ describe('parseSections', () => {
 	});
 
 	it('ends the current section at a heading of the same or higher level', () => {
-		const sections = parseSections('## Word\n\n診察\n\n# Unrelated\n\nnot a section\n');
+		const sections = parseSections(
+			'## Word\n\n診察\n\n# Unrelated\n\nnot a section\n',
+		);
 		expect(sections.get('word')).toBe('診察');
 		expect(sections.has('unrelated')).toBe(false);
 	});
 
 	it('keeps a deeper heading (###) as part of the enclosing section content', () => {
-		const sections = parseSections('## Example\n\n診察を受けました。\n\n### Note\n\nInformal register.\n');
-		expect(sections.get('example')).toBe('診察を受けました。\n\n### Note\n\nInformal register.');
+		const sections = parseSections(
+			'## Example\n\n診察を受けました。\n\n### Note\n\nInformal register.\n',
+		);
+		expect(sections.get('example')).toBe(
+			'診察を受けました。\n\n### Note\n\nInformal register.',
+		);
 	});
 });
 
 describe('parseSections edge cases', () => {
 	it('returns an empty map for content with no headings at all', () => {
-		const sections = parseSections('just some prose, no headings anywhere\nmore text\n');
+		const sections = parseSections(
+			'just some prose, no headings anywhere\nmore text\n',
+		);
 		expect(sections.size).toBe(0);
 	});
 
 	it('ignores content before the first heading', () => {
-		const sections = parseSections('orphan text before any heading\n\n## Word\n\n診察\n');
+		const sections = parseSections(
+			'orphan text before any heading\n\n## Word\n\n診察\n',
+		);
 		expect(sections.size).toBe(1);
 		expect(sections.get('word')).toBe('診察');
 	});
 
 	it('does not treat a hashes-plus-whitespace-only line as a section heading', () => {
-		const sections = parseSections('## Word\n\n診察\n\n##   \n\nstray text\n');
+		const sections = parseSections(
+			'## Word\n\n診察\n\n##   \n\nstray text\n',
+		);
 		expect(sections.has('')).toBe(false);
 		expect(sections.get('word')).toBe('診察\n\n##   \n\nstray text');
 	});
@@ -160,45 +212,68 @@ describe('parseSections edge cases', () => {
 	});
 
 	it('keeps only the last occurrence of a duplicate heading, case-insensitively', () => {
-		const sections = parseSections('## Example\n\nfirst\n\n## EXAMPLE\n\nsecond\n');
+		const sections = parseSections(
+			'## Example\n\nfirst\n\n## EXAMPLE\n\nsecond\n',
+		);
 		expect(sections.size).toBe(1);
 		expect(sections.get('example')).toBe('second');
 	});
 
 	it('maps a whitespace-only section body to "", not the whitespace itself', () => {
-		const sections = parseSections('## Word\n\n   \n\t\n   \n\n## Meaning\n\nKhám bệnh\n');
+		const sections = parseSections(
+			'## Word\n\n   \n\t\n   \n\n## Meaning\n\nKhám bệnh\n',
+		);
 		expect(sections.get('word')).toBe('');
 	});
 
 	it('preserves multi-line Japanese text and normalizes a Japanese heading key', () => {
-		const sections = parseSections('## 読み方\n\nしんさつ\n診察を受けました。\n');
+		const sections = parseSections(
+			'## 読み方\n\nしんさつ\n診察を受けました。\n',
+		);
 		expect(sections.get('読み方')).toBe('しんさつ\n診察を受けました。');
 	});
 
 	it('recognizes a Japanese list item with no space after the dash', () => {
-		const sections = parseSections('## Collocations\n\n-診察を受ける\n-診察室\n');
-		expect(sections.get('collocations')).toEqual(['診察を受ける', '診察室']);
+		const sections = parseSections(
+			'## Collocations\n\n-診察を受ける\n-診察室\n',
+		);
+		expect(sections.get('collocations')).toEqual([
+			'診察を受ける',
+			'診察室',
+		]);
 	});
 });
 
 describe('replaceSection', () => {
 	it('replaces a section body matched case-insensitively, keeping the heading', () => {
-		expect(replaceSection('## Word\n\nold\n\n## Meaning\n\nm\n', 'word', 'new')).toBe(
-			'## Word\n\nnew\n\n## Meaning\n\nm\n',
-		);
+		expect(
+			replaceSection(
+				'## Word\n\nold\n\n## Meaning\n\nm\n',
+				'word',
+				'new',
+			),
+		).toBe('## Word\n\nnew\n\n## Meaning\n\nm\n');
 	});
 
 	it('replaces the last section up to the end of the file', () => {
-		expect(replaceSection('## Word\n\nw\n\n## Meaning\n\nold\n', 'meaning', 'a\nb')).toBe(
-			'## Word\n\nw\n\n## Meaning\n\na\nb\n',
-		);
+		expect(
+			replaceSection(
+				'## Word\n\nw\n\n## Meaning\n\nold\n',
+				'meaning',
+				'a\nb',
+			),
+		).toBe('## Word\n\nw\n\n## Meaning\n\na\nb\n');
 	});
 
 	it('stops at a # heading and leaves content after it', () => {
-		expect(replaceSection('## Word\n\nold\n# Top\nrest', 'word', 'new')).toBe('## Word\n\nnew\n\n# Top\nrest');
+		expect(
+			replaceSection('## Word\n\nold\n# Top\nrest', 'word', 'new'),
+		).toBe('## Word\n\nnew\n\n# Top\nrest');
 	});
 
 	it('returns the content unchanged when the section is missing', () => {
-		expect(replaceSection('## Word\n\nw\n', 'meaning', 'x')).toBe('## Word\n\nw\n');
+		expect(replaceSection('## Word\n\nw\n', 'meaning', 'x')).toBe(
+			'## Word\n\nw\n',
+		);
 	});
 });

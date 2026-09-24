@@ -260,7 +260,7 @@ interface Profile {
 	targetLanguage: string; // '' = unset — AI context (TextContext.targetLanguage), docs/design/06-settings.md §6.1
 }
 
-interface AnkiBridgeSettings {
+interface VocabWeaveSettings {
 	ankiConnectUrl: string; // '' = unset, resolves to DEFAULT_ANKI_CONNECT_URL at use time
 	profiles: Profile[]; // always >= 1 — a named Deck+Model+Folder bundle for NEW notes, docs/design/06-settings.md §6.1
 	activeProfileId: string; // always an id in `profiles` — selected in both Settings Tab and Sidebar Tab 1

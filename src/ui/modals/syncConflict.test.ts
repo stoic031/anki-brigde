@@ -9,7 +9,7 @@ class FakeButtonComponent {
 		this.text = t;
 		return this;
 	}
-	setWarning() {
+	setDestructive() {
 		this.warning = true;
 		return this;
 	}
@@ -98,7 +98,11 @@ describe('SyncConflictModal', () => {
 	it('renders Cancel, Use Anki version and a warning-styled Keep Obsidian version', () => {
 		openModal(vi.fn());
 		const buttons = settings[0]?.buttonComponents ?? [];
-		expect(buttons.map((b) => b.text)).toEqual(['Cancel', 'Use Anki version', 'Keep Obsidian version']);
+		expect(buttons.map((b) => b.text)).toEqual([
+			'Cancel',
+			'Use Anki version',
+			'Keep Obsidian version',
+		]);
 		expect(buttons[2]?.warning).toBe(true);
 	});
 
@@ -106,15 +110,18 @@ describe('SyncConflictModal', () => {
 		[0, null],
 		[1, 'anki'],
 		[2, 'obsidian'],
-	])('button %i closes and reports %s exactly once', async (index, choice) => {
-		const onChoice = vi.fn();
-		const modal = openModal(onChoice);
-		await settings[0]?.buttonComponents[index]?.triggerClick();
-		modal.onClose(); // Obsidian calls onClose after close()
-		expect(modalState.closeCalled).toBe(true);
-		expect(onChoice).toHaveBeenCalledTimes(1);
-		expect(onChoice).toHaveBeenCalledWith(choice);
-	});
+	])(
+		'button %i closes and reports %s exactly once',
+		async (index, choice) => {
+			const onChoice = vi.fn();
+			const modal = openModal(onChoice);
+			await settings[0]?.buttonComponents[index]?.triggerClick();
+			modal.onClose(); // Obsidian calls onClose after close()
+			expect(modalState.closeCalled).toBe(true);
+			expect(onChoice).toHaveBeenCalledTimes(1);
+			expect(onChoice).toHaveBeenCalledWith(choice);
+		},
+	);
 
 	it('reports a cancel when closed without choosing', () => {
 		const onChoice = vi.fn();

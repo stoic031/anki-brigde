@@ -3,11 +3,11 @@ import type { App } from 'obsidian';
 import {
 	DEFAULT_SETTINGS,
 	fieldConfigKey,
-	type AnkiBridgeSettings,
+	type VocabWeaveSettings,
 	type Profile,
 } from '../settings';
 import { DEFAULT_MEDIA_PREFIX } from '../utils/constants';
-import type AnkiBridgePlugin from '../main';
+import type VocabWeavePlugin from '../main';
 
 const { MarkdownView, Notice } = vi.hoisted(() => ({
 	MarkdownView: class FakeMarkdownView {},
@@ -40,26 +40,26 @@ vi.mock('../ui/sidebarView', () => ({ revealSidebarView }));
 import {
 	getQuickCaptureFilename,
 	getSelectedText,
-	getUniqueNotePath,
 	resolveMainField,
 	resolveQuickCaptureTarget,
 	runQuickCapture,
 } from './quickCapture';
+import { getUniqueNotePath } from './noteName';
 
 afterEach(() => {
 	vi.clearAllMocks();
 });
 
 // Settings whose active (and only) profile has the given values.
-function withProfile(profile: Partial<Profile>): Partial<AnkiBridgeSettings> {
+function withProfile(profile: Partial<Profile>): Partial<VocabWeaveSettings> {
 	return {
 		profiles: [{ ...DEFAULT_SETTINGS.profiles[0]!, ...profile }],
 	};
 }
 
 function fakeSettings(
-	overrides: Partial<AnkiBridgeSettings> = {},
-): AnkiBridgeSettings {
+	overrides: Partial<VocabWeaveSettings> = {},
+): VocabWeaveSettings {
 	return {
 		ankiConnectUrl: '',
 		profiles: DEFAULT_SETTINGS.profiles,
@@ -100,7 +100,7 @@ function fakePlugin(
 	options: {
 		view?: { editor: { getSelection: () => string } } | null;
 		existingPaths?: string[];
-		settings?: Partial<AnkiBridgeSettings>;
+		settings?: Partial<VocabWeaveSettings>;
 	} = {},
 ) {
 	const {
@@ -132,8 +132,8 @@ function fakePlugin(
 		},
 		settings,
 		saveSettings,
-		manifest: { id: 'anki-bridge' },
-	} as unknown as AnkiBridgePlugin;
+		manifest: { id: 'vocabweave' },
+	} as unknown as VocabWeavePlugin;
 
 	return {
 		plugin,
@@ -389,10 +389,10 @@ describe('runQuickCapture', () => {
 		await runQuickCapture(plugin);
 
 		expect(Notice).toHaveBeenCalledWith(
-			'Please set up a profile in Settings first',
+			'Please set up a profile in settings first',
 		);
 		expect(settingOpen).toHaveBeenCalled();
-		expect(openTabById).toHaveBeenCalledWith('anki-bridge');
+		expect(openTabById).toHaveBeenCalledWith('vocabweave');
 		expect(vaultCreate).not.toHaveBeenCalled();
 	});
 

@@ -15,10 +15,13 @@ export function createActionButton(
 	parent: HTMLElement,
 	opts: { icon: string; label: string; variant?: 'primary' | 'danger' },
 ): ActionButton {
-	const cls = ['anki-bridge-sidebar__action'];
-	if (opts.variant) cls.push(`anki-bridge-sidebar__action--${opts.variant}`);
+	const cls = ['vocabweave-sidebar__action'];
+	if (opts.variant) cls.push(`vocabweave-sidebar__action--${opts.variant}`);
 	const el = parent.createEl('button', { cls, attr: { type: 'button' } });
-	setIcon(el.createSpan({ cls: 'anki-bridge-sidebar__action-icon' }), opts.icon);
+	setIcon(
+		el.createSpan({ cls: 'vocabweave-sidebar__action-icon' }),
+		opts.icon,
+	);
 	const label = el.createSpan({ text: opts.label });
 	return { el, label, idleLabel: opts.label, busy: false };
 }

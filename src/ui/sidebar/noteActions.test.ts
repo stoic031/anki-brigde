@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import type AnkiBridgePlugin from '../../main';
+import type VocabWeavePlugin from '../../main';
 import type { TFile } from 'obsidian';
 import { FakeEl } from '../../test/fakeDom';
 
@@ -46,12 +46,22 @@ const { deleteModal, rebuildModal } = vi.hoisted(() => ({
 		open: vi.fn(),
 	},
 }));
-vi.mock('../modals/confirmDelete', () => ({
-	ConfirmDeleteModal: class {
-		constructor(_app: unknown, onConfirm: () => void) {
-			deleteModal.onConfirm = onConfirm;
+vi.mock('../modals/confirm', () => ({
+	DELETE_COPY: { button: 'Delete' },
+	REBUILD_COPY: { button: 'Rebuild' },
+	ConfirmModal: class {
+		private modal: typeof deleteModal;
+		constructor(
+			_app: unknown,
+			copy: { button: string },
+			onConfirm: () => void,
+		) {
+			this.modal = copy.button === 'Delete' ? deleteModal : rebuildModal;
+			this.modal.onConfirm = onConfirm;
 		}
-		open = deleteModal.open;
+		open = () => {
+			this.modal.open();
+		};
 	},
 }));
 const { conflictModal } = vi.hoisted(() => ({
@@ -67,14 +77,6 @@ vi.mock('../modals/syncConflict', () => ({
 			conflictModal.open();
 			this.onChoice(conflictModal.choice);
 		};
-	},
-}));
-vi.mock('../modals/confirmRebuildFields', () => ({
-	ConfirmRebuildFieldsModal: class {
-		constructor(_app: unknown, onConfirm: () => void) {
-			rebuildModal.onConfirm = onConfirm;
-		}
-		open = rebuildModal.open;
 	},
 }));
 
@@ -100,7 +102,7 @@ function setup(
 	const plugin = {
 		app: { vault: { process } },
 		settings: { ankiConnectUrl: 'http://localhost:1234', mainFieldConfig },
-	} as unknown as AnkiBridgePlugin;
+	} as unknown as VocabWeavePlugin;
 	const actions = renderNoteActions(parent as unknown as HTMLElement, plugin);
 	actions.update({
 		note,
@@ -110,7 +112,7 @@ function setup(
 		...state,
 	});
 	const [sync, rebuild, del] = parent.byClass(
-		'anki-bridge-sidebar__action',
+		'vocabweave-sidebar__action',
 	) as [FakeEl, FakeEl, FakeEl];
 	const label = (b: FakeEl) => b.children[1]?.text;
 	return { parent, actions, sync, rebuild, del, label };
@@ -133,7 +135,7 @@ describe('renderNoteActions — layout and state', () => {
 	it('renders Sync | Rebuild | Delete on one row, each with an icon and text', () => {
 		const { parent, sync, rebuild, del, label } = setup();
 
-		expect(parent.byClass('anki-bridge-sidebar__actions')).toHaveLength(1);
+		expect(parent.byClass('vocabweave-sidebar__actions')).toHaveLength(1);
 		expect([sync, rebuild, del].map(label)).toEqual([
 			'Sync',
 			'Rebuild',
@@ -218,7 +220,11 @@ describe('Sync button', () => {
 
 		await sync.click();
 
-		expect(syncNoteName).toHaveBeenCalledWith(expect.anything(), note, 'Front');
+		expect(syncNoteName).toHaveBeenCalledWith(
+			expect.anything(),
+			note,
+			'Front',
+		);
 	});
 
 	it('shows a SyncError’s own message, then restores after 3s', async () => {
@@ -312,7 +318,9 @@ describe('Sync button — note edited in Anki', () => {
 
 	it('Use Anki version pulls and surfaces its warning', async () => {
 		syncNote.mockRejectedValueOnce(conflict);
-		pullNote.mockResolvedValue('1 Anki field has no section in this note: Back');
+		pullNote.mockResolvedValue(
+			'1 Anki field has no section in this note: Back',
+		);
 		conflictModal.choice = 'anki';
 		const { sync } = setup();
 
@@ -324,7 +332,11 @@ describe('Sync button — note edited in Anki', () => {
 		expect(toastError).toHaveBeenCalledWith(
 			'⚠️ 1 Anki field has no section in this note: Back',
 		);
-		expect(syncNoteName).toHaveBeenCalledWith(expect.anything(), note, 'Front');
+		expect(syncNoteName).toHaveBeenCalledWith(
+			expect.anything(),
+			note,
+			'Front',
+		);
 		expect(toastSuccess).toHaveBeenCalledWith('✅ Note updated from Anki!');
 	});
 

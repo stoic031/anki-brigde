@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import type AnkiBridgePlugin from '../../main';
+import type VocabWeavePlugin from '../../main';
 import { defaultInstruction } from '../../providers/text/prompt';
 import { DEFAULT_SETTINGS, examplesKey, fieldConfigKey } from '../../settings';
 import { FakeEl } from '../../test/fakeDom';
@@ -16,13 +16,13 @@ function setup() {
 	const plugin = {
 		settings: structuredClone(DEFAULT_SETTINGS),
 		saveSettings,
-	} as unknown as AnkiBridgePlugin;
+	} as unknown as VocabWeavePlugin;
 	const box = renderPromptBox(parent as unknown as HTMLElement, plugin);
 	const details = parent.children[0] as FakeEl;
-	const badge = () => parent.byClass('anki-bridge-sidebar__badge')[0];
+	const badge = () => parent.byClass('vocabweave-sidebar__badge')[0];
 	const area = () => parent.findAll((el) => el.tag === 'textarea')[0];
-	const reset = () => parent.byClass('anki-bridge-sidebar__prompt-reset')[0];
-	const hint = () => parent.byClass('anki-bridge-sidebar__hint')[0]?.text;
+	const reset = () => parent.byClass('vocabweave-sidebar__prompt-reset')[0];
+	const hint = () => parent.byClass('vocabweave-sidebar__hint')[0]?.text;
 	return { box, plugin, saveSettings, details, badge, area, reset, hint };
 }
 

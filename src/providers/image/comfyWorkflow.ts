@@ -1,18 +1,15 @@
 import { ProviderError } from '../../types';
-import { requestJson } from '../text/http';
+import { obj, requestJson, trimSlash } from '../http';
 
 const ID = 'comfyui';
 const TIMEOUT_MS = 15_000;
-const trim = (url: string) => url.replace(/\/+$/, '');
 const get = (url: string) =>
 	requestJson('GET', ID, url, {}, undefined, TIMEOUT_MS);
-const obj = (v: unknown): Record<string, unknown> =>
-	typeof v === 'object' && v !== null ? (v as Record<string, unknown>) : {};
 
 // docs/design/06-settings.md §6.2 — the workflows saved in the user's ComfyUI (its `workflows/`
 // folder, UI format). Newer builds serve them under /api/userdata; older ones under /userdata.
 export async function listWorkflows(baseUrl: string): Promise<string[]> {
-	const root = trim(baseUrl);
+	const root = trimSlash(baseUrl);
 	const url = `${root}/api/userdata?dir=workflows&recurse=true`;
 	let data: unknown;
 	try {
@@ -39,7 +36,7 @@ export async function listWorkflows(baseUrl: string): Promise<string[]> {
 
 export function fetchWorkflow(baseUrl: string, path: string): Promise<unknown> {
 	return get(
-		`${trim(baseUrl)}/api/userdata/${encodeURIComponent(`workflows/${path}`)}`,
+		`${trimSlash(baseUrl)}/api/userdata/${encodeURIComponent(`workflows/${path}`)}`,
 	);
 }
 

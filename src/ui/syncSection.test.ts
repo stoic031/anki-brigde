@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import type AnkiBridgePlugin from '../main';
-import { DEFAULT_SETTINGS, type AnkiBridgeSettings } from '../settings';
+import type VocabWeavePlugin from '../main';
+import { DEFAULT_SETTINGS, type VocabWeaveSettings } from '../settings';
 
 class FakeToggleComponent {
 	value = false;
@@ -55,16 +55,16 @@ vi.mock('obsidian', () => ({
 
 import { renderSyncSection } from './syncSection';
 
-function fakePlugin(overrides: Partial<AnkiBridgeSettings> = {}) {
+function fakePlugin(overrides: Partial<VocabWeaveSettings> = {}) {
 	const saveSettings = vi.fn().mockResolvedValue(undefined);
 	const plugin = {
 		settings: { ...DEFAULT_SETTINGS, ...overrides },
 		saveSettings,
-	} as unknown as AnkiBridgePlugin;
+	} as unknown as VocabWeavePlugin;
 	return { plugin, saveSettings };
 }
 
-function render(plugin: AnkiBridgePlugin) {
+function render(plugin: VocabWeavePlugin) {
 	renderSyncSection({} as HTMLElement, plugin);
 }
 

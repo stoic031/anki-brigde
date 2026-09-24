@@ -1,13 +1,12 @@
 import { Notice, type TFile } from 'obsidian';
-import type AnkiBridgePlugin from '../../main';
+import type VocabWeavePlugin from '../../main';
 import { rebuildContent } from '../../note/contentTemplate';
 import { syncNoteName } from '../../note/noteName';
 import { fieldConfigKey, resolveAnkiConnectUrl } from '../../settings';
 import { AnkiConnectClient } from '../../sync/ankiConnect';
 import { deleteNote, pullNote, syncNote } from '../../sync/syncEngine';
 import { SyncError } from '../../types';
-import { ConfirmDeleteModal } from '../modals/confirmDelete';
-import { ConfirmRebuildFieldsModal } from '../modals/confirmRebuildFields';
+import { ConfirmModal, DELETE_COPY, REBUILD_COPY } from '../modals/confirm';
 import { SyncConflictModal, type ConflictChoice } from '../modals/syncConflict';
 import { toastError, toastSuccess } from '../toast';
 import { createActionButton, runAction } from './actionButton';
@@ -28,9 +27,9 @@ export interface NoteActions {
 // note or its frontmatter changes — so Delete appears right after the first sync.
 export function renderNoteActions(
 	parent: HTMLElement,
-	plugin: AnkiBridgePlugin,
+	plugin: VocabWeavePlugin,
 ): NoteActions {
-	const row = parent.createDiv({ cls: 'anki-bridge-sidebar__actions' });
+	const row = parent.createDiv({ cls: 'vocabweave-sidebar__actions' });
 	const sync = createActionButton(row, {
 		icon: 'refresh-cw',
 		label: 'Sync',
@@ -70,27 +69,42 @@ export function renderNoteActions(
 				try {
 					await syncNote(plugin.app, note, client());
 				} catch (err) {
-					if (!(err instanceof SyncError) || err.reason !== 'anki-edited') throw err;
+					if (
+						!(err instanceof SyncError) ||
+						err.reason !== 'anki-edited'
+					)
+						throw err;
 					// docs/design/01-sync.md §1.1 — Anki was edited since the last sync: ask.
-					const choice = await new Promise<ConflictChoice>((resolve) =>
-						new SyncConflictModal(plugin.app, resolve).open(),
+					const choice = await new Promise<ConflictChoice>(
+						(resolve) =>
+							new SyncConflictModal(plugin.app, resolve).open(),
 					);
 					if (choice === null) throw err;
 					if (choice === 'anki') {
-						const warning = await pullNote(plugin.app, note, client());
+						const warning = await pullNote(
+							plugin.app,
+							note,
+							client(),
+						);
 						if (warning) toastError(`⚠️ ${warning}`);
 						done = '✅ Note updated from Anki!';
 					} else {
-						await syncNote(plugin.app, note, client(), { force: true });
+						await syncNote(plugin.app, note, client(), {
+							force: true,
+						});
 					}
 				}
 				// docs/design/03-note.md §3.2 — the note name follows its Main Field.
 				await syncNoteName(
 					plugin.app,
 					note,
-					plugin.settings.mainFieldConfig[fieldConfigKey(deck, model)],
+					plugin.settings.mainFieldConfig[
+						fieldConfigKey(deck, model)
+					],
 				).catch((err: unknown) =>
-					toastError(`❌ Synced, but couldn't rename the note: ${String(err)}`),
+					toastError(
+						`❌ Synced, but couldn't rename the note: ${String(err)}`,
+					),
 				);
 				toastSuccess(done);
 			},
@@ -114,8 +128,9 @@ export function renderNoteActions(
 			return;
 		}
 		// Destructive: replaces everything below the frontmatter. Always confirm.
-		new ConfirmRebuildFieldsModal(
+		new ConfirmModal(
 			plugin.app,
+			REBUILD_COPY,
 			() =>
 				void runAction(rebuild, {
 					work: async () => {
@@ -138,8 +153,9 @@ export function renderNoteActions(
 	del.el.addEventListener('click', () => {
 		const { note } = state;
 		if (!note || del.el.disabled) return;
-		new ConfirmDeleteModal(
+		new ConfirmModal(
 			plugin.app,
+			DELETE_COPY,
 			() =>
 				void runAction(del, {
 					work: async () => {

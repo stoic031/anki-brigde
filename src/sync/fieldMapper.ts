@@ -50,7 +50,9 @@ export function mapContentToFields(
 			sources[field] = sectionKey;
 			usedSections.add(sectionKey);
 		}
-		warnings.push('Pass 1 and 2 mapped no fields; used positional fallback.');
+		warnings.push(
+			'Pass 1 and 2 mapped no fields; used positional fallback.',
+		);
 	}
 
 	// Unmapped fields default to empty string, docs/contracts.md §3 "Afterwards"
@@ -59,7 +61,9 @@ export function mapContentToFields(
 	}
 
 	// Unmapped sections — collapse into ONE warning, never drop silently (docs/contracts.md §3)
-	const unmapped = [...sections.keys()].filter((key) => !usedSections.has(key));
+	const unmapped = [...sections.keys()].filter(
+		(key) => !usedSections.has(key),
+	);
 	if (unmapped.length > 0) {
 		const noun = unmapped.length === 1 ? 'section' : 'sections';
 		const message = `${unmapped.length} ${noun} not mapped to model '${model}': ${unmapped.join(', ')}`;

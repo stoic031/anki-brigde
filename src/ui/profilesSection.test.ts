@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import type AnkiBridgePlugin from '../main';
-import { DEFAULT_SETTINGS, type AnkiBridgeSettings } from '../settings';
+import type VocabWeavePlugin from '../main';
+import { DEFAULT_SETTINGS, type VocabWeaveSettings } from '../settings';
 import { FakeEl } from '../test/fakeDom';
 import { LANGUAGES } from '../utils/constants';
 
@@ -73,7 +73,7 @@ class FakeButton {
 		this.text = t;
 		return this;
 	}
-	setWarning() {
+	setDestructive() {
 		this.warning = true;
 		return this;
 	}
@@ -157,7 +157,7 @@ function latestRow(name: string): FakeSetting | undefined {
 	return [...settings].reverse().find((s) => s.name === name);
 }
 
-function setup(overrides: Partial<AnkiBridgeSettings> = {}) {
+function setup(overrides: Partial<VocabWeaveSettings> = {}) {
 	const parent = new FakeEl();
 	const saveSettings = vi.fn().mockResolvedValue(undefined);
 	const settingsObj = {
@@ -181,7 +181,7 @@ function setup(overrides: Partial<AnkiBridgeSettings> = {}) {
 			workspace: { on, offref: vi.fn() },
 			vault: { getAllFolders: vi.fn().mockReturnValue([]) },
 		},
-	} as unknown as AnkiBridgePlugin;
+	} as unknown as VocabWeavePlugin;
 	const section = renderProfilesSection(
 		parent as unknown as HTMLElement,
 		plugin,

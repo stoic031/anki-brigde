@@ -1,7 +1,7 @@
 {
-	"name": "anki-bridge",
-	"version": "1.1.0",
-	"description": "This is a sample plugin for Obsidian (https://obsidian.md)",
+	"name": "vocabweave",
+	"version": "2.0.0",
+	"description": "Turn vocabulary notes into Anki flashcards, with optional AI-generated text and images.",
 	"main": "main.js",
 	"type": "module",
 	"scripts": {

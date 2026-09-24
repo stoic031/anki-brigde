@@ -14,7 +14,9 @@ function fakeApp(
 	const fm: Record<string, unknown> = { ...frontmatter };
 	let current = content;
 	const app = {
-		metadataCache: { getFileCache: () => (frontmatter ? { frontmatter: fm } : null) },
+		metadataCache: {
+			getFileCache: () => (frontmatter ? { frontmatter: fm } : null),
+		},
 		vault: {
 			cachedRead: async () => current,
 			process: async (_file: TFile, fn: (data: string) => string) => {
@@ -23,7 +25,10 @@ function fakeApp(
 			},
 		},
 		fileManager: {
-			processFrontMatter: async (_file: TFile, fn: (fm: Record<string, unknown>) => void) => {
+			processFrontMatter: async (
+				_file: TFile,
+				fn: (fm: Record<string, unknown>) => void,
+			) => {
 				fn(fm);
 			},
 		},
@@ -50,17 +55,27 @@ function fakeClient(
 	updateNoteFields: ReturnType<typeof vi.fn>;
 	deleteNotes: ReturnType<typeof vi.fn>;
 } {
-	const modelFieldNames = overrides.modelFieldNames ?? vi.fn().mockResolvedValue(['Front', 'Back']);
+	const modelFieldNames =
+		overrides.modelFieldNames ??
+		vi.fn().mockResolvedValue(['Front', 'Back']);
 	const addNote = overrides.addNote ?? vi.fn().mockResolvedValue(999);
-	const updateNoteFields = overrides.updateNoteFields ?? vi.fn().mockResolvedValue(undefined);
-	const deleteNotes = overrides.deleteNotes ?? vi.fn().mockResolvedValue(undefined);
+	const updateNoteFields =
+		overrides.updateNoteFields ?? vi.fn().mockResolvedValue(undefined);
+	const deleteNotes =
+		overrides.deleteNotes ?? vi.fn().mockResolvedValue(undefined);
 	// By default Anki keeps what was sent, so the read-back after an update matches; before
 	// any update it reports the note unchanged since the baseline (mod 100).
 	const noteInfo =
 		overrides.noteInfo ??
 		vi.fn(async () => {
-			const calls = updateNoteFields.mock.calls as [number, Record<string, string>][];
-			return { fields: calls[calls.length - 1]?.[1] ?? {}, mod: calls.length > 0 ? 200 : 100 };
+			const calls = updateNoteFields.mock.calls as [
+				number,
+				Record<string, string>,
+			][];
+			return {
+				fields: calls[calls.length - 1]?.[1] ?? {},
+				mod: calls.length > 0 ? 200 : 100,
+			};
 		});
 	const client = {
 		modelFieldNames,
@@ -76,7 +91,10 @@ const file = {} as unknown as TFile;
 
 describe('syncNote', () => {
 	it('creates a new note when anki_note_id is absent, writes the returned id back', async () => {
-		const { app, frontmatter } = fakeApp(CONTENT, { anki_deck: 'Japanese::N2', anki_model: 'Basic' });
+		const { app, frontmatter } = fakeApp(CONTENT, {
+			anki_deck: 'Japanese::N2',
+			anki_model: 'Basic',
+		});
 		const { client, addNote, updateNoteFields } = fakeClient();
 
 		await syncNote(app, file, client);
@@ -115,7 +133,12 @@ describe('syncNote', () => {
 		const { client, addNote } = fakeClient({
 			updateNoteFields: vi
 				.fn()
-				.mockRejectedValue(new AnkiConnectError('updateNoteFields', 'Note was not found: 123')),
+				.mockRejectedValue(
+					new AnkiConnectError(
+						'updateNoteFields',
+						'Note was not found: 123',
+					),
+				),
 			addNote: vi.fn().mockResolvedValue(456),
 		});
 
@@ -134,35 +157,66 @@ describe('syncNote', () => {
 		it.each([
 			['unreachable', 'could not reach AnkiConnect — is Anki running?'],
 			['timeout', 'timed out after 5000ms'],
-		])('maps AnkiConnect %s to the offline SyncError', async (_label, ankiMessage) => {
-			const { app } = fakeApp(CONTENT, { anki_deck: 'Deck', anki_model: 'Basic' });
-			const { client } = fakeClient({
-				modelFieldNames: vi.fn().mockRejectedValue(new AnkiConnectError('modelFieldNames', ankiMessage)),
-			});
-			const err = await syncNote(app, file, client).catch((e: unknown) => e);
-			expect(err).toBeInstanceOf(SyncError);
-			expect(err).toMatchObject({
-				reason: 'offline',
-				message: 'Anki is not running. Please start Anki and AnkiConnect.',
-			});
-		});
+		])(
+			'maps AnkiConnect %s to the offline SyncError',
+			async (_label, ankiMessage) => {
+				const { app } = fakeApp(CONTENT, {
+					anki_deck: 'Deck',
+					anki_model: 'Basic',
+				});
+				const { client } = fakeClient({
+					modelFieldNames: vi
+						.fn()
+						.mockRejectedValue(
+							new AnkiConnectError(
+								'modelFieldNames',
+								ankiMessage,
+							),
+						),
+				});
+				const err = await syncNote(app, file, client).catch(
+					(e: unknown) => e,
+				);
+				expect(err).toBeInstanceOf(SyncError);
+				expect(err).toMatchObject({
+					reason: 'offline',
+					message:
+						'Anki is not running. Please start Anki and AnkiConnect.',
+				});
+			},
+		);
 
 		it('maps a duplicate-note failure on addNote to the duplicate SyncError', async () => {
-			const { app } = fakeApp(CONTENT, { anki_deck: 'Deck', anki_model: 'Basic' });
+			const { app } = fakeApp(CONTENT, {
+				anki_deck: 'Deck',
+				anki_model: 'Basic',
+			});
 			const { client } = fakeClient({
 				addNote: vi
 					.fn()
-					.mockRejectedValue(new AnkiConnectError('addNote', 'cannot create note because it is a duplicate')),
+					.mockRejectedValue(
+						new AnkiConnectError(
+							'addNote',
+							'cannot create note because it is a duplicate',
+						),
+					),
 			});
-			const err = await syncNote(app, file, client).catch((e: unknown) => e);
+			const err = await syncNote(app, file, client).catch(
+				(e: unknown) => e,
+			);
 			expect(err).toBeInstanceOf(SyncError);
-			expect(err).toMatchObject({ reason: 'duplicate', message: 'Note already exists in Anki' });
+			expect(err).toMatchObject({
+				reason: 'duplicate',
+				message: 'Note already exists in Anki',
+			});
 		});
 
 		it('maps a note with no frontmatter block to the parse-error SyncError', async () => {
 			const { app } = fakeApp(CONTENT, undefined);
 			const { client } = fakeClient();
-			const err = await syncNote(app, file, client).catch((e: unknown) => e);
+			const err = await syncNote(app, file, client).catch(
+				(e: unknown) => e,
+			);
 			expect(err).toBeInstanceOf(SyncError);
 			expect(err).toMatchObject({
 				reason: 'parse-error',
@@ -171,11 +225,23 @@ describe('syncNote', () => {
 		});
 
 		it('maps a model-not-found failure to the model-not-found SyncError', async () => {
-			const { app } = fakeApp(CONTENT, { anki_deck: 'Deck', anki_model: 'Ghost' });
-			const { client } = fakeClient({
-				modelFieldNames: vi.fn().mockRejectedValue(new AnkiConnectError('modelFieldNames', 'model was not found: Ghost')),
+			const { app } = fakeApp(CONTENT, {
+				anki_deck: 'Deck',
+				anki_model: 'Ghost',
 			});
-			const err = await syncNote(app, file, client).catch((e: unknown) => e);
+			const { client } = fakeClient({
+				modelFieldNames: vi
+					.fn()
+					.mockRejectedValue(
+						new AnkiConnectError(
+							'modelFieldNames',
+							'model was not found: Ghost',
+						),
+					),
+			});
+			const err = await syncNote(app, file, client).catch(
+				(e: unknown) => e,
+			);
 			expect(err).toBeInstanceOf(SyncError);
 			expect(err).toMatchObject({
 				reason: 'model-not-found',
@@ -184,9 +250,17 @@ describe('syncNote', () => {
 		});
 
 		it('propagates an unrecognized AnkiConnectError unchanged instead of mislabeling it', async () => {
-			const { app } = fakeApp(CONTENT, { anki_deck: 'Deck', anki_model: 'Basic' });
-			const original = new AnkiConnectError('modelFieldNames', 'something unexpected happened');
-			const { client } = fakeClient({ modelFieldNames: vi.fn().mockRejectedValue(original) });
+			const { app } = fakeApp(CONTENT, {
+				anki_deck: 'Deck',
+				anki_model: 'Basic',
+			});
+			const original = new AnkiConnectError(
+				'modelFieldNames',
+				'something unexpected happened',
+			);
+			const { client } = fakeClient({
+				modelFieldNames: vi.fn().mockRejectedValue(original),
+			});
 			await expect(syncNote(app, file, client)).rejects.toBe(original);
 		});
 	});
@@ -208,10 +282,15 @@ describe('deleteNote', () => {
 	});
 
 	it('maps a note with no anki_note_id to the parse-error SyncError, without calling deleteNotes', async () => {
-		const { app } = fakeApp(CONTENT, { anki_deck: 'Deck', anki_model: 'Basic' });
+		const { app } = fakeApp(CONTENT, {
+			anki_deck: 'Deck',
+			anki_model: 'Basic',
+		});
 		const { client, deleteNotes } = fakeClient();
 
-		const err = await deleteNote(app, file, client).catch((e: unknown) => e);
+		const err = await deleteNote(app, file, client).catch(
+			(e: unknown) => e,
+		);
 
 		expect(err).toBeInstanceOf(SyncError);
 		expect(err).toMatchObject({
@@ -225,7 +304,9 @@ describe('deleteNote', () => {
 		const { app } = fakeApp(CONTENT, undefined);
 		const { client } = fakeClient();
 
-		const err = await deleteNote(app, file, client).catch((e: unknown) => e);
+		const err = await deleteNote(app, file, client).catch(
+			(e: unknown) => e,
+		);
 
 		expect(err).toBeInstanceOf(SyncError);
 		expect(err).toMatchObject({
@@ -235,14 +316,25 @@ describe('deleteNote', () => {
 	});
 
 	it('maps an AnkiConnect offline failure on deleteNotes to the offline SyncError', async () => {
-		const { app } = fakeApp(CONTENT, { anki_note_id: 123, anki_deck: 'Deck', anki_model: 'Basic' });
+		const { app } = fakeApp(CONTENT, {
+			anki_note_id: 123,
+			anki_deck: 'Deck',
+			anki_model: 'Basic',
+		});
 		const { client } = fakeClient({
 			deleteNotes: vi
 				.fn()
-				.mockRejectedValue(new AnkiConnectError('deleteNotes', 'could not reach AnkiConnect — is Anki running?')),
+				.mockRejectedValue(
+					new AnkiConnectError(
+						'deleteNotes',
+						'could not reach AnkiConnect — is Anki running?',
+					),
+				),
 		});
 
-		const err = await deleteNote(app, file, client).catch((e: unknown) => e);
+		const err = await deleteNote(app, file, client).catch(
+			(e: unknown) => e,
+		);
 
 		expect(err).toBeInstanceOf(SyncError);
 		expect(err).toMatchObject({
@@ -252,9 +344,18 @@ describe('deleteNote', () => {
 	});
 
 	it('propagates an unrecognized AnkiConnectError unchanged instead of mislabeling it', async () => {
-		const { app } = fakeApp(CONTENT, { anki_note_id: 123, anki_deck: 'Deck', anki_model: 'Basic' });
-		const original = new AnkiConnectError('deleteNotes', 'something unexpected happened');
-		const { client } = fakeClient({ deleteNotes: vi.fn().mockRejectedValue(original) });
+		const { app } = fakeApp(CONTENT, {
+			anki_note_id: 123,
+			anki_deck: 'Deck',
+			anki_model: 'Basic',
+		});
+		const original = new AnkiConnectError(
+			'deleteNotes',
+			'something unexpected happened',
+		);
+		const { client } = fakeClient({
+			deleteNotes: vi.fn().mockRejectedValue(original),
+		});
 
 		await expect(deleteNote(app, file, client)).rejects.toBe(original);
 	});
@@ -262,27 +363,55 @@ describe('deleteNote', () => {
 
 describe('syncNote read-back after update', () => {
 	it('fails with stale-editor when Anki kept the old field values', async () => {
-		const { app } = fakeApp(CONTENT, { anki_deck: 'D', anki_model: 'M', anki_note_id: 42, anki_mod: 5 });
-		const { client } = fakeClient({
-			noteInfo: vi.fn().mockResolvedValue({ fields: { Front: '診察', Back: '' }, mod: 5 }),
+		const { app } = fakeApp(CONTENT, {
+			anki_deck: 'D',
+			anki_model: 'M',
+			anki_note_id: 42,
+			anki_mod: 5,
 		});
-		const err = await syncNote(app, {} as TFile, client).catch((e: unknown) => e);
+		const { client } = fakeClient({
+			noteInfo: vi
+				.fn()
+				.mockResolvedValue({
+					fields: { Front: '診察', Back: '' },
+					mod: 5,
+				}),
+		});
+		const err = await syncNote(app, {} as TFile, client).catch(
+			(e: unknown) => e,
+		);
 		expect(err).toBeInstanceOf(SyncError);
 		expect((err as SyncError).reason).toBe('stale-editor');
 	});
 
 	it('succeeds when the stored values match, ignoring surrounding whitespace', async () => {
-		const { app } = fakeApp(CONTENT, { anki_deck: 'D', anki_model: 'M', anki_note_id: 42 });
-		const { client, updateNoteFields } = fakeClient({
-			noteInfo: vi.fn().mockResolvedValue({ fields: { Front: ' 診察', Back: 'medical examination\n' }, mod: 5 }),
+		const { app } = fakeApp(CONTENT, {
+			anki_deck: 'D',
+			anki_model: 'M',
+			anki_note_id: 42,
 		});
-		await expect(syncNote(app, {} as TFile, client)).resolves.toBeUndefined();
+		const { client, updateNoteFields } = fakeClient({
+			noteInfo: vi
+				.fn()
+				.mockResolvedValue({
+					fields: { Front: ' 診察', Back: 'medical examination\n' },
+					mod: 5,
+				}),
+		});
+		await expect(
+			syncNote(app, {} as TFile, client),
+		).resolves.toBeUndefined();
 		expect(updateNoteFields).toHaveBeenCalledWith(42, FIELDS);
 	});
 });
 
 describe('syncNote Anki-edit detection (docs/design/01-sync.md §1.1)', () => {
-	const synced = { anki_note_id: 42, anki_deck: 'D', anki_model: 'Basic', anki_mod: 100 };
+	const synced = {
+		anki_note_id: 42,
+		anki_deck: 'D',
+		anki_model: 'Basic',
+		anki_mod: 100,
+	};
 	const ankiInfo = (fields: Record<string, string>, mod: number) =>
 		vi
 			.fn()
@@ -295,36 +424,53 @@ describe('syncNote Anki-edit detection (docs/design/01-sync.md §1.1)', () => {
 			noteInfo: ankiInfo({ Front: '診察', Back: 'edited in Anki' }, 150),
 		});
 		const err = await syncNote(app, file, client).catch((e: unknown) => e);
-		expect(err).toMatchObject({ reason: 'anki-edited', message: 'This note was edited in Anki since the last sync.' });
+		expect(err).toMatchObject({
+			reason: 'anki-edited',
+			message: 'This note was edited in Anki since the last sync.',
+		});
 		expect(updateNoteFields).not.toHaveBeenCalled();
 		expect(frontmatter.anki_mod).toBe(100);
 	});
 
 	it('updates normally when Anki changed but already holds the same fields', async () => {
 		const { app } = fakeApp(CONTENT, synced);
-		const { client, updateNoteFields } = fakeClient({ noteInfo: ankiInfo(FIELDS, 150) });
+		const { client, updateNoteFields } = fakeClient({
+			noteInfo: ankiInfo(FIELDS, 150),
+		});
 		await syncNote(app, file, client);
 		expect(updateNoteFields).toHaveBeenCalledWith(42, FIELDS);
 	});
 
 	it('updates when fields differ but Anki is unchanged since the baseline', async () => {
 		const { app, frontmatter } = fakeApp(CONTENT, synced);
-		const { client, updateNoteFields } = fakeClient({ noteInfo: ankiInfo({ Front: 'old', Back: '' }, 100) });
+		const { client, updateNoteFields } = fakeClient({
+			noteInfo: ankiInfo({ Front: 'old', Back: '' }, 100),
+		});
 		await syncNote(app, file, client);
 		expect(updateNoteFields).toHaveBeenCalledWith(42, FIELDS);
 		expect(frontmatter.anki_mod).toBe(101);
 	});
 
 	it('treats a note with no anki_mod baseline and different fields as edited', async () => {
-		const { app } = fakeApp(CONTENT, { anki_note_id: 42, anki_deck: 'D', anki_model: 'Basic' });
-		const { client } = fakeClient({ noteInfo: ankiInfo({ Front: 'old', Back: '' }, 1) });
-		await expect(syncNote(app, file, client)).rejects.toMatchObject({ reason: 'anki-edited' });
+		const { app } = fakeApp(CONTENT, {
+			anki_note_id: 42,
+			anki_deck: 'D',
+			anki_model: 'Basic',
+		});
+		const { client } = fakeClient({
+			noteInfo: ankiInfo({ Front: 'old', Back: '' }, 1),
+		});
+		await expect(syncNote(app, file, client)).rejects.toMatchObject({
+			reason: 'anki-edited',
+		});
 	});
 
 	it('pushes anyway with force', async () => {
 		const { app } = fakeApp(CONTENT, synced);
 		// With force there is no pre-check read: the only notesInfo call is the read-back.
-		const noteInfo = vi.fn().mockResolvedValue({ fields: FIELDS, mod: 150 });
+		const noteInfo = vi
+			.fn()
+			.mockResolvedValue({ fields: FIELDS, mod: 150 });
 		const { client, updateNoteFields } = fakeClient({ noteInfo });
 		await syncNote(app, file, client, { force: true });
 		expect(updateNoteFields).toHaveBeenCalledWith(42, FIELDS);
@@ -332,38 +478,74 @@ describe('syncNote Anki-edit detection (docs/design/01-sync.md §1.1)', () => {
 	});
 
 	it('writes anki_mod after creating a note', async () => {
-		const { app, frontmatter } = fakeApp(CONTENT, { anki_deck: 'D', anki_model: 'Basic' });
-		const { client } = fakeClient({ noteInfo: vi.fn().mockResolvedValue({ fields: FIELDS, mod: 77 }) });
+		const { app, frontmatter } = fakeApp(CONTENT, {
+			anki_deck: 'D',
+			anki_model: 'Basic',
+		});
+		const { client } = fakeClient({
+			noteInfo: vi.fn().mockResolvedValue({ fields: FIELDS, mod: 77 }),
+		});
 		await syncNote(app, file, client);
 		expect(frontmatter).toMatchObject({ anki_note_id: 999, anki_mod: 77 });
 	});
 });
 
 describe('pullNote', () => {
-	const LIST = '## Front\n\n診察\n\n## Back\n\n- one\n- two\n\n## Notes\n\nkeep me\n';
+	const LIST =
+		'## Front\n\n診察\n\n## Back\n\n- one\n- two\n\n## Notes\n\nkeep me\n';
 
 	it('replaces mapped sections with Anki fields, keeps lists as lists, writes anki_mod', async () => {
-		const { app, frontmatter, body } = fakeApp(LIST, { anki_note_id: 42, anki_deck: 'D', anki_model: 'Basic' });
+		const { app, frontmatter, body } = fakeApp(LIST, {
+			anki_note_id: 42,
+			anki_deck: 'D',
+			anki_model: 'Basic',
+		});
 		const { client } = fakeClient({
-			noteInfo: vi.fn().mockResolvedValue({ fields: { Front: '診察&nbsp;室', Back: 'a<br>b' }, mod: 300 }),
+			noteInfo: vi
+				.fn()
+				.mockResolvedValue({
+					fields: { Front: '診察&nbsp;室', Back: 'a<br>b' },
+					mod: 300,
+				}),
 		});
 		await expect(pullNote(app, file, client)).resolves.toBeUndefined();
-		expect(body()).toBe('## Front\n\n診察 室\n\n## Back\n\n- a\n- b\n\n## Notes\n\nkeep me\n');
+		expect(body()).toBe(
+			'## Front\n\n診察 室\n\n## Back\n\n- a\n- b\n\n## Notes\n\nkeep me\n',
+		);
 		expect(frontmatter.anki_mod).toBe(300);
 	});
 
 	it('warns about Anki fields with no section instead of dropping them silently', async () => {
-		const { app } = fakeApp('## Front\n\nx\n', { anki_note_id: 42, anki_deck: 'D', anki_model: 'Basic' });
-		const { client } = fakeClient({
-			noteInfo: vi.fn().mockResolvedValue({ fields: { Front: 'y', Back: 'lost?' }, mod: 1 }),
+		const { app } = fakeApp('## Front\n\nx\n', {
+			anki_note_id: 42,
+			anki_deck: 'D',
+			anki_model: 'Basic',
 		});
-		await expect(pullNote(app, file, client)).resolves.toBe('1 Anki field has no section in this note: Back');
+		const { client } = fakeClient({
+			noteInfo: vi
+				.fn()
+				.mockResolvedValue({
+					fields: { Front: 'y', Back: 'lost?' },
+					mod: 1,
+				}),
+		});
+		await expect(pullNote(app, file, client)).resolves.toBe(
+			'1 Anki field has no section in this note: Back',
+		);
 	});
 
 	it('fails with note-not-found when the Anki note is gone, leaving the note untouched', async () => {
-		const { app, body } = fakeApp(CONTENT, { anki_note_id: 42, anki_deck: 'D', anki_model: 'Basic' });
-		const { client } = fakeClient({ noteInfo: vi.fn().mockResolvedValue({ fields: {}, mod: 0 }) });
-		await expect(pullNote(app, file, client)).rejects.toMatchObject({ reason: 'note-not-found' });
+		const { app, body } = fakeApp(CONTENT, {
+			anki_note_id: 42,
+			anki_deck: 'D',
+			anki_model: 'Basic',
+		});
+		const { client } = fakeClient({
+			noteInfo: vi.fn().mockResolvedValue({ fields: {}, mod: 0 }),
+		});
+		await expect(pullNote(app, file, client)).rejects.toMatchObject({
+			reason: 'note-not-found',
+		});
 		expect(body()).toBe(CONTENT);
 	});
 });

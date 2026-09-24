@@ -1,8 +1,7 @@
 import { Notice } from 'obsidian';
-import { noteFilename } from './noteName';
+import { getUniqueNotePath, noteFilename } from './noteName';
 import { generateContentSkeleton } from './contentTemplate';
 import {
-	getUniqueNotePath,
 	openPluginSettings,
 	resolveMainField,
 	resolveQuickCaptureTarget,
@@ -13,15 +12,15 @@ import { writeAnkiFrontmatter } from '../sync/parser';
 import { toastError } from '../ui/toast';
 import { revealSidebarView } from '../ui/sidebarView';
 import { NoteNameModal } from '../ui/modals/noteNameModal';
-import type AnkiBridgePlugin from '../main';
+import type VocabWeavePlugin from '../main';
 
 // docs/design/07-sidebar.md §7.3 — Ribbon icon / "Anki: Create new note" command.
 // Deck/Model/Folder come from the active profile via resolveQuickCaptureTarget,
 // shared with the hotkey flow (docs/design/03-note.md §3.7 step 4).
-export async function runCreateNote(plugin: AnkiBridgePlugin): Promise<void> {
+export async function runCreateNote(plugin: VocabWeavePlugin): Promise<void> {
 	const target = resolveQuickCaptureTarget(plugin.settings);
 	if (!target) {
-		new Notice('Please set up a profile in Settings first');
+		new Notice('Please set up a profile in settings first');
 		openPluginSettings(plugin.app, plugin.manifest.id);
 		return;
 	}

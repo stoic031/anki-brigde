@@ -25,7 +25,7 @@ lấy từ **profile đang chọn** (Settings Tab hoặc dropdown Profile ở Si
     ↓
 [2] Lấy profile đang chọn (`06-settings.md` §6.1):
     ├─ Có cả Deck và Model → sang [3]
-    └─ Thiếu Deck hoặc Model → Notice "Please set up a profile in Settings first", tự mở
+    └─ Thiếu Deck hoặc Model → Notice "Please set up a profile in settings first", tự mở
        Settings tới tab của plugin, KHÔNG tạo note, dừng lại tại đây
     ↓
 [3] Plugin hỏi tên note: "Enter note name:"

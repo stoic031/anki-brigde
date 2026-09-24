@@ -22,7 +22,10 @@ const anki = { frontmatter: { anki_deck: 'D' }, sourcePath: 'n.md' };
 
 function setup(retrieve = vi.fn().mockResolvedValue('AQID')) {
 	const isVaultFile = vi.fn((src: string) => src === 'in-vault.png');
-	return { retrieve, run: createAnkiImageProcessor({ retrieve, isVaultFile }) };
+	return {
+		retrieve,
+		run: createAnkiImageProcessor({ retrieve, isVaultFile }),
+	};
 }
 
 describe('Anki image post-processor', () => {
@@ -40,16 +43,25 @@ describe('Anki image post-processor', () => {
 
 	it('ignores notes that are not Anki notes', async () => {
 		const { retrieve, run } = setup();
-		await run(container(new FakeImg('a.png')), { frontmatter: {}, sourcePath: 'n.md' });
-		await run(container(new FakeImg('a.png')), { frontmatter: undefined, sourcePath: 'n.md' });
+		await run(container(new FakeImg('a.png')), {
+			frontmatter: {},
+			sourcePath: 'n.md',
+		});
+		await run(container(new FakeImg('a.png')), {
+			frontmatter: undefined,
+			sourcePath: 'n.md',
+		});
 		expect(retrieve).not.toHaveBeenCalled();
 	});
 
 	it('leaves URLs, paths and vault files alone', async () => {
 		const { retrieve, run } = setup();
-		const imgs = ['https://x.org/a.png', 'img/a.png', 'app://a.png', 'in-vault.png'].map(
-			(s) => new FakeImg(s),
-		);
+		const imgs = [
+			'https://x.org/a.png',
+			'img/a.png',
+			'app://a.png',
+			'in-vault.png',
+		].map((s) => new FakeImg(s));
 		await run(container(...imgs), anki);
 		expect(retrieve).not.toHaveBeenCalled();
 		expect(imgs.map((i) => i.attrs.src)).toEqual([

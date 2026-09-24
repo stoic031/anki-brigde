@@ -77,7 +77,7 @@ Save notes to: [/ (vault root) ▼]
   dropdown chỉ liệt kê giá trị đã lưu của profile, nên vẫn thấy profile đang set gì. Giá
   trị đã lưu mà Anki không còn liệt kê (VD deck đã bị xoá) vẫn được hiển thị. Có lựa chọn
   trống ("Select deck…") — profile thiếu Deck hoặc Model thì không tạo được note (hiện
-  Notice "Please set up a profile in Settings first" và mở Settings).
+  Notice "Please set up a profile in settings first" và mở Settings).
 - **Main field:** dropdown lấy field từ `modelFieldNames(model)` của profile này — chỉ
   tải/hiện khi profile đã có Model (giống cơ chế Deck/Model ở trên, kể cả việc giữ hiển
   thị giá trị đã lưu dù model không còn field đó). Đây **không** phải Main Field thật sự

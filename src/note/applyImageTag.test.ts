@@ -5,7 +5,12 @@ const tag = '<img src="new.png">';
 
 describe('applyImageTag', () => {
 	it('append: fills an empty section with the new tag', () => {
-		const r = applyImageTag('## Word\n薬\n\n## Image\n\n', 'Image', tag, 'append');
+		const r = applyImageTag(
+			'## Word\n薬\n\n## Image\n\n',
+			'Image',
+			tag,
+			'append',
+		);
 
 		expect(r).toBe('## Word\n薬\n\n## Image\n\n<img src="new.png">');
 	});

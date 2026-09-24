@@ -1,7 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 const { Notice, notices } = vi.hoisted(() => {
-	const notices: { setMessage: ReturnType<typeof vi.fn>; hide: ReturnType<typeof vi.fn> }[] = [];
+	const notices: {
+		setMessage: ReturnType<typeof vi.fn>;
+		hide: ReturnType<typeof vi.fn>;
+	}[] = [];
 	const Notice = vi.fn(function (this: unknown, message: string) {
 		const n = { message, setMessage: vi.fn(), hide: vi.fn() };
 		notices.push(n);

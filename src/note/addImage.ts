@@ -1,5 +1,5 @@
 import type { TFile } from 'obsidian';
-import type AnkiBridgePlugin from '../main';
+import type VocabWeavePlugin from '../main';
 import {
 	fieldConfigKey,
 	resolveAnkiConnectUrl,
@@ -39,7 +39,7 @@ function sectionText(
 // docs/design/03-note.md §3.2 — everything that can be checked before spending a model
 // call. Throws for real failures (AnkiConnect down, ProviderError building a provider).
 export async function planAddImage(
-	plugin: AnkiBridgePlugin,
+	plugin: VocabWeavePlugin,
 	note: TFile,
 	deck: string,
 	model: string,
@@ -138,7 +138,7 @@ export async function writeImagePrompt(
 // given), AnkiConnect stores the file, then one atomic write into the note. Anki's card
 // fields are never touched — the user syncs explicitly afterwards.
 export async function runAddImage(
-	plugin: AnkiBridgePlugin,
+	plugin: VocabWeavePlugin,
 	note: TFile,
 	plan: Exclude<AddImagePlan, { stop: string }>,
 	givenPrompt: string,

@@ -18,7 +18,8 @@ export function buildFolderTreeEntries(folders: TFolder[]): FolderTreeEntry[] {
 	for (const folder of folders) {
 		// A top-level folder's .parent is the vault root TFolder itself (path "/"),
 		// never null — so it must be normalized to '' to match walk('', 0) below.
-		const parentPath = folder.parent && !folder.parent.isRoot() ? folder.parent.path : '';
+		const parentPath =
+			folder.parent && !folder.parent.isRoot() ? folder.parent.path : '';
 		const siblings = byParent.get(parentPath) ?? [];
 		siblings.push(folder);
 		byParent.set(parentPath, siblings);

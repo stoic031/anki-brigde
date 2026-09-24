@@ -1,8 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import type AnkiBridgePlugin from '../../main';
+import type VocabWeavePlugin from '../../main';
 import {
 	fieldConfigKey,
-	type AnkiBridgeSettings,
+	type VocabWeaveSettings,
 	type ImageFieldConfig,
 } from '../../settings';
 import { FakeEl } from '../../test/fakeDom';
@@ -108,22 +108,22 @@ function setup(imageConfigs: Record<string, ImageFieldConfig> = {}) {
 	const parent = new FakeEl();
 	const saveSettings = vi.fn().mockResolvedValue(undefined);
 	const plugin = {
-		settings: { ankiConnectUrl: '', imageConfigs } as AnkiBridgeSettings,
+		settings: { ankiConnectUrl: '', imageConfigs } as VocabWeaveSettings,
 		saveSettings,
-	} as unknown as AnkiBridgePlugin;
+	} as unknown as VocabWeavePlugin;
 	const tab = renderImageTab(
 		parent as unknown as HTMLElement,
 		plugin,
 		() => note as never,
 	);
-	const addImage = parent.byClass('anki-bridge-sidebar__action')[0] as FakeEl;
+	const addImage = parent.byClass('vocabweave-sidebar__action')[0] as FakeEl;
 	const writePrompt = parent.byClass(
-		'anki-bridge-sidebar__action',
+		'vocabweave-sidebar__action',
 	)[1] as FakeEl;
-	const promptEl = parent.byClass('anki-bridge-sidebar__prompt')[0] as FakeEl;
+	const promptEl = parent.byClass('vocabweave-sidebar__prompt')[0] as FakeEl;
 	const promptArea = () => promptEl.findAll((el) => el.tag === 'textarea')[0];
 	const promptStatus = () =>
-		promptEl.byClass('anki-bridge-sidebar__hint')[0]?.text;
+		promptEl.byClass('vocabweave-sidebar__hint')[0]?.text;
 	const rows = () => settings as FakeSetting[];
 	const lastRow = () => rows()[rows().length - 1];
 	return {
@@ -145,7 +145,7 @@ describe('renderImageTab', () => {
 	it('renders the title with Add image and Write prompt (icon + text) next to it', () => {
 		const { parent, addImage, writePrompt, promptEl } = setup();
 
-		const header = parent.byClass('anki-bridge-sidebar__section-header')[0];
+		const header = parent.byClass('vocabweave-sidebar__section-header')[0];
 		expect(header?.children.map((c) => c.text || c.tag)).toEqual([
 			'Image field mapping',
 			'button',
@@ -168,8 +168,8 @@ describe('renderImageTab', () => {
 
 		expect(modelFieldNames).not.toHaveBeenCalled();
 		expect(rows()).toHaveLength(0);
-		expect(parent.byClass('anki-bridge-sidebar__hint')[0]?.text).toBe(
-			'Set a Deck and Model above first.',
+		expect(parent.byClass('vocabweave-sidebar__hint')[0]?.text).toBe(
+			'Set a deck and model above first.',
 		);
 	});
 
@@ -390,7 +390,10 @@ describe('renderImageTab', () => {
 		it('surfaces a thrown ProviderError from building the image provider', async () => {
 			const { ProviderError } = await import('../../types');
 			planAddImage.mockRejectedValue(
-				new ProviderError('comfyui', 'no adapter for this provider type'),
+				new ProviderError(
+					'comfyui',
+					'no adapter for this provider type',
+				),
 			);
 			const { addImage } = await ready();
 
@@ -418,7 +421,10 @@ describe('renderImageTab', () => {
 		it('shows an unrecognized AnkiConnectError’s own message instead of the generic one', async () => {
 			const { AnkiConnectError } = await import('../../types');
 			planAddImage.mockRejectedValue(
-				new AnkiConnectError('modelFieldNames', 'some Anki-side message'),
+				new AnkiConnectError(
+					'modelFieldNames',
+					'some Anki-side message',
+				),
 			);
 			const { addImage } = await ready();
 

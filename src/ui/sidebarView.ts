@@ -7,7 +7,7 @@ import {
 	TFile,
 	WorkspaceLeaf,
 } from 'obsidian';
-import type AnkiBridgePlugin from '../main';
+import type VocabWeavePlugin from '../main';
 import { AnkiConnectClient } from '../sync/ankiConnect';
 import { readAnkiFrontmatter, writeAnkiFrontmatter } from '../sync/parser';
 import { resolveAnkiConnectUrl } from '../settings';
@@ -23,7 +23,7 @@ import {
 	type MainFieldControl,
 } from './sidebar/mainField';
 
-export const VIEW_TYPE_SIDEBAR = 'anki-bridge-sidebar';
+export const VIEW_TYPE_SIDEBAR = 'vocabweave-sidebar';
 
 // docs/design/07-sidebar.md §7.1 — registered unconditionally on load; opening it
 // (ribbon icon / commands) is handled by sibling tasks #134-#136.
@@ -42,7 +42,7 @@ export class SidebarView extends ItemView {
 
 	constructor(
 		leaf: WorkspaceLeaf,
-		private plugin: AnkiBridgePlugin,
+		private plugin: VocabWeavePlugin,
 	) {
 		super(leaf);
 	}
@@ -52,7 +52,7 @@ export class SidebarView extends ItemView {
 	}
 
 	getDisplayText(): string {
-		return 'Anki Bridge';
+		return 'VocabWeave';
 	}
 
 	getIcon(): string {
@@ -61,7 +61,7 @@ export class SidebarView extends ItemView {
 
 	async onOpen(): Promise<void> {
 		this.contentEl.empty();
-		this.contentEl.createEl('h4', { text: 'Anki Bridge' });
+		this.contentEl.createEl('h4', { text: 'VocabWeave' });
 		this.renderProfileDropdown();
 
 		// docs/design/07-sidebar.md §7.2 — Profile, Deck, Model, and the note-action
@@ -296,7 +296,7 @@ export class SidebarView extends ItemView {
 	}
 }
 
-export function registerSidebarView(plugin: AnkiBridgePlugin): void {
+export function registerSidebarView(plugin: VocabWeavePlugin): void {
 	plugin.registerView(
 		VIEW_TYPE_SIDEBAR,
 		(leaf: WorkspaceLeaf) => new SidebarView(leaf, plugin),

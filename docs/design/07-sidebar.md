@@ -15,7 +15,7 @@ chỉ cần mở ra để xem/sửa).
   như trước).
 - Command palette: **"Anki: Create new note"** (id `create-note`) — hành vi giống bấm
   icon Ribbon, dùng cho user thích gán hotkey riêng.
-- Command palette: **"Anki: Open Deck & Model Selector"** — chỉ mở Sidebar Modal, **không**
+- Command palette: **"Anki: Open deck and model selector"** — chỉ mở Sidebar Modal, **không**
   tạo note (dùng khi user chỉ muốn xem/sửa cấu hình).
 - Hotkey tạo note từ text bôi đen (`create-note-from-selection`) — xem
   [`03-note.md`](03-note.md) §3.7, dùng chung Sidebar Modal theo cùng cơ chế ở §7.3.
@@ -23,7 +23,7 @@ chỉ cần mở ra để xem/sửa).
 ## 7.2. Cấu trúc Sidebar: Profile + Tab
 
 ```
-Anki Bridge
+VocabWeave
 Profile [Japanese ▼]          ← luôn hiện, trên tab (dùng cho note MỚI)
 Deck:  [Japanese::N2 ▼]       ← luôn hiện, trên tab (note đang mở)
 Model: [Basic (and reversed card) ▼]
@@ -165,10 +165,10 @@ Furigana                                                             [×]
 
 - Bốn nút **Generate | Write | Add field | Clear** nằm cùng một hàng (giống hàng
   Sync|Rebuild|Delete ở §7.2.1 — cùng dùng icon + chữ, cùng CSS
-  `anki-bridge-sidebar__actions`/`__action`). Chữ "Fields to generate with AI" nằm
+  `vocabweave-sidebar__actions`/`__action`). Chữ "Fields to generate with AI" nằm
   riêng một dòng ngay dưới hàng nút.
 - Chỉ hoạt động khi note đang mở có cả `anki_deck` và `anki_model` (không thì hiện gợi ý
-  "Set a Deck and Model above first." và cả 4 nút Generate/Write/Add field/Clear bị vô hiệu).
+  "Set a deck and model above first." và cả 4 nút Generate/Write/Add field/Clear bị vô hiệu).
   Danh sách field cho **Add field** lấy từ `modelFieldNames(model)` của note đang mở, **trừ
   Main Field** (input — không có gì để sinh, xem phần Main Field ở trên) và trừ field đã
   thêm rồi. Tự cập nhật khi user chuyển sang note khác, khi cặp Deck+Model của note đổi
@@ -246,7 +246,7 @@ Deck/Model/Folder của note mới lấy từ **profile đang chọn** (§7.2.1;
     ↓
 [2] Lấy profile đang chọn:
     ├─ Có cả Deck và Model → sang [3]
-    └─ Thiếu Deck hoặc Model → hiện Notice "Please set up a profile in Settings first",
+    └─ Thiếu Deck hoặc Model → hiện Notice "Please set up a profile in settings first",
        tự mở Obsidian Settings tới tab của plugin, KHÔNG tạo note, dừng lại
     ↓
 [3] Plugin hỏi tên note: "Enter note name:"

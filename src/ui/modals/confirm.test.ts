@@ -71,9 +71,9 @@ vi.mock('obsidian', () => ({
 	},
 }));
 
-import { DeckModelChangeWarningModal } from './deckModelChangeWarning';
+import { ConfirmModal, DELETE_COPY, REBUILD_COPY } from './confirm';
 
-describe('DeckModelChangeWarningModal', () => {
+describe.each([DELETE_COPY, REBUILD_COPY])('ConfirmModal: $button', (copy) => {
 	beforeEach(() => {
 		settings.length = 0;
 		modalState.title = '';
@@ -81,62 +81,51 @@ describe('DeckModelChangeWarningModal', () => {
 		modalState.closeCalled = false;
 	});
 
-	function openModal(onKeepOld: () => void, onUpdate: () => void) {
-		const modal = new DeckModelChangeWarningModal(
-			{} as never,
-			onKeepOld,
-			onUpdate,
-		);
+	function openModal(onConfirm: () => void) {
+		const modal = new ConfirmModal({} as never, copy, onConfirm);
 		modal.onOpen();
 		return modal;
 	}
 
 	it('sets the title and body copy', () => {
-		openModal(vi.fn(), vi.fn());
+		openModal(vi.fn());
 
-		expect(modalState.title).toBe('Change deck/model for this note?');
-		expect(modalState.texts).toContain(
-			'This note is already synced to Anki under a different deck/model. Updating will create a new note in Anki the next time you sync.',
-		);
+		expect(modalState.title).toBe(copy.title);
+		expect(modalState.texts).toContain(copy.text);
 	});
 
-	it('renders Keep old and a warning-styled Update button, in that order', () => {
-		openModal(vi.fn(), vi.fn());
+	it('renders Cancel and a warning-styled confirm button', () => {
+		openModal(vi.fn());
 
 		const [buttons] = settings.map((s) => s.buttonComponents);
-		expect(buttons?.map((b) => b.text)).toEqual(['Keep old', 'Update']);
-		expect(buttons?.[0]?.warning).toBe(false);
+		expect(buttons?.map((b) => b.text)).toEqual(['Cancel', copy.button]);
 		expect(buttons?.[1]?.warning).toBe(true);
 	});
 
-	it('closes and calls onKeepOld, not onUpdate, when Keep old is clicked', async () => {
-		const onKeepOld = vi.fn();
-		const onUpdate = vi.fn();
-		openModal(onKeepOld, onUpdate);
+	it('closes without calling onConfirm when Cancel is clicked', async () => {
+		const onConfirm = vi.fn();
+		openModal(onConfirm);
 
-		const [keepOld] = settings[0]?.buttonComponents ?? [];
-		await keepOld?.triggerClick();
+		const [cancel] = settings[0]?.buttonComponents ?? [];
+		await cancel?.triggerClick();
 
 		expect(modalState.closeCalled).toBe(true);
-		expect(onKeepOld).toHaveBeenCalledTimes(1);
-		expect(onUpdate).not.toHaveBeenCalled();
+		expect(onConfirm).not.toHaveBeenCalled();
 	});
 
-	it('closes and calls onUpdate, not onKeepOld, when Update is clicked', async () => {
-		const onKeepOld = vi.fn();
-		const onUpdate = vi.fn();
-		openModal(onKeepOld, onUpdate);
+	it('closes and calls onConfirm when the confirm button is clicked', async () => {
+		const onConfirm = vi.fn();
+		openModal(onConfirm);
 
-		const [, update] = settings[0]?.buttonComponents ?? [];
-		await update?.triggerClick();
+		const [, del] = settings[0]?.buttonComponents ?? [];
+		await del?.triggerClick();
 
 		expect(modalState.closeCalled).toBe(true);
-		expect(onUpdate).toHaveBeenCalledTimes(1);
-		expect(onKeepOld).not.toHaveBeenCalled();
+		expect(onConfirm).toHaveBeenCalledTimes(1);
 	});
 
 	it('empties contentEl on close', () => {
-		const modal = openModal(vi.fn(), vi.fn());
+		const modal = openModal(vi.fn());
 		modal.onClose();
 		expect(modalState.texts).toEqual([]);
 	});

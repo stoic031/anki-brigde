@@ -1,10 +1,10 @@
 import { Setting } from 'obsidian';
-import type AnkiBridgePlugin from '../main';
+import type VocabWeavePlugin from '../main';
 
 // docs/design/06-settings.md §6.3
 export function renderSyncSection(
 	containerEl: HTMLElement,
-	plugin: AnkiBridgePlugin,
+	plugin: VocabWeavePlugin,
 ): void {
 	new Setting(containerEl)
 		.setName('Auto sync on save')

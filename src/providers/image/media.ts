@@ -1,3 +1,4 @@
+import { badShape } from '../http';
 import { ProviderError } from '../../types';
 import type { MediaResult } from '../types';
 
@@ -20,17 +21,11 @@ export function fromDataUrl(
 ): MediaResult {
 	const m = /^data:([^;,]+);base64,(.+)$/s.exec(url);
 	if (!m?.[1] || !m[2]) {
-		throw new ProviderError(
-			providerId,
-			`unexpected response shape from ${source}`,
-		);
+		throw badShape(providerId, source);
 	}
 	return media(m[2], m[1]);
 }
 
 export function noImage(providerId: string, url: string): ProviderError {
-	return new ProviderError(
-		providerId,
-		`unexpected response shape from ${url}`,
-	);
+	return badShape(providerId, url);
 }

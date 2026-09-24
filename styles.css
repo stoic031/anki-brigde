@@ -1,13 +1,13 @@
 /* docs/design/07-sidebar.md §7.2 — sidebar tabs, action row, section header.
    Theme variables only, so it follows light/dark and community themes. */
-.anki-bridge-sidebar__tabs {
+.vocabweave-sidebar__tabs {
 	display: flex;
 	gap: var(--size-4-1);
 	margin: var(--size-4-2) 0 var(--size-4-3);
 	border-bottom: 1px solid var(--background-modifier-border);
 }
 
-.anki-bridge-sidebar__tab {
+.vocabweave-sidebar__tab {
 	margin-bottom: -1px;
 	padding: var(--size-4-1) var(--size-4-3);
 	border: none;
@@ -19,28 +19,28 @@
 	cursor: pointer;
 }
 
-.anki-bridge-sidebar__tab:hover {
+.vocabweave-sidebar__tab:hover {
 	color: var(--text-normal);
 }
 
-.anki-bridge-sidebar__tab.is-active {
+.vocabweave-sidebar__tab.is-active {
 	border-bottom-color: var(--interactive-accent);
 	color: var(--text-accent);
 	font-weight: var(--font-semibold);
 }
 
-.anki-bridge-sidebar__panel--hidden {
+.vocabweave-sidebar__panel--hidden {
 	display: none;
 }
 
-.anki-bridge-sidebar__actions {
+.vocabweave-sidebar__actions {
 	display: flex;
 	flex-wrap: wrap;
 	gap: var(--size-4-2);
 	margin-top: var(--size-4-3);
 }
 
-.anki-bridge-sidebar__action {
+.vocabweave-sidebar__action {
 	display: inline-flex;
 	flex: 1 1 auto;
 	align-items: center;
@@ -48,38 +48,38 @@
 	gap: var(--size-4-1);
 }
 
-.anki-bridge-sidebar__action[hidden] {
+.vocabweave-sidebar__action[hidden] {
 	display: none;
 }
 
-.anki-bridge-sidebar__action:disabled {
+.vocabweave-sidebar__action:disabled {
 	opacity: 0.6;
 	cursor: not-allowed;
 }
 
-.anki-bridge-sidebar__action--primary {
+.vocabweave-sidebar__action--primary {
 	background-color: var(--interactive-accent);
 	color: var(--text-on-accent);
 }
 
-.anki-bridge-sidebar__action--primary:hover:not(:disabled) {
+.vocabweave-sidebar__action--primary:hover:not(:disabled) {
 	background-color: var(--interactive-accent-hover);
 }
 
-.anki-bridge-sidebar__action--danger {
+.vocabweave-sidebar__action--danger {
 	color: var(--text-error);
 }
 
-.anki-bridge-sidebar__action-icon {
+.vocabweave-sidebar__action-icon {
 	display: inline-flex;
 }
 
-.anki-bridge-sidebar__action-icon svg {
+.vocabweave-sidebar__action-icon svg {
 	width: var(--icon-s);
 	height: var(--icon-s);
 }
 
-.anki-bridge-sidebar__section-header {
+.vocabweave-sidebar__section-header {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -87,7 +87,7 @@
 	margin-bottom: var(--size-4-2);
 }
 
-.anki-bridge-sidebar__section-title {
+.vocabweave-sidebar__section-title {
 	color: var(--text-normal);
 	font-weight: var(--font-semibold);
 }
@@ -95,24 +95,24 @@
 /* Text tab: the title stands alone on its own line below the Generate/Write/Add
    field row, unlike imageTab's title (still a flex-row item next to its button) —
    needs its own breathing room instead of relying on a row's margin-bottom. */
-.anki-bridge-sidebar__section-title--block {
+.vocabweave-sidebar__section-title--block {
 	display: block;
 	margin: var(--size-4-3) 0 var(--size-4-2);
 }
 
-.anki-bridge-sidebar__hint {
+.vocabweave-sidebar__hint {
 	color: var(--text-muted);
 	font-size: var(--font-ui-smaller);
 }
 
 /* docs/design/06-settings.md — Settings tab collapsible sections (native <details>). */
-.anki-bridge-settings__section {
+.vocabweave-settings__section {
 	margin-bottom: var(--size-4-2);
 	padding-bottom: var(--size-4-2);
 	border-bottom: 1px solid var(--background-modifier-border);
 }
 
-.anki-bridge-settings__section-summary {
+.vocabweave-settings__section-summary {
 	display: flex;
 	align-items: center;
 	gap: var(--size-4-2);
@@ -123,52 +123,52 @@
 	list-style: none;
 }
 
-.anki-bridge-settings__section-summary::-webkit-details-marker {
+.vocabweave-settings__section-summary::-webkit-details-marker {
 	display: none;
 }
 
-.anki-bridge-settings__section-summary:hover {
+.vocabweave-settings__section-summary:hover {
 	color: var(--text-accent);
 }
 
-.anki-bridge-settings__section-chevron {
+.vocabweave-settings__section-chevron {
 	display: inline-flex;
 	transition: transform 0.1s ease-in-out;
 }
 
-.anki-bridge-settings__section-chevron svg {
+.vocabweave-settings__section-chevron svg {
 	width: var(--icon-s);
 	height: var(--icon-s);
 }
 
-.anki-bridge-settings__section[open]
-	> .anki-bridge-settings__section-summary
-	.anki-bridge-settings__section-chevron {
+.vocabweave-settings__section[open]
+	> .vocabweave-settings__section-summary
+	.vocabweave-settings__section-chevron {
 	transform: rotate(90deg);
 }
 
-.anki-bridge-settings__section-body {
+.vocabweave-settings__section-body {
 	padding-top: var(--size-4-1);
 }
 
 /* docs/design/06-settings.md §6.2 — Cloud/Local label under the text provider fields. */
-.anki-bridge-provider-badge {
+.vocabweave-provider-badge {
 	margin: var(--size-4-2) 0;
 	color: var(--text-muted);
 	font-size: var(--font-ui-smaller);
 }
 
-.anki-bridge-provider-badge.is-cloud {
+.vocabweave-provider-badge.is-cloud {
 	color: var(--text-warning);
 }
 
 /* docs/design/07-sidebar.md §7.2.1/§7.2.2 — editable prompts. The textarea grows with
    its content (native field-sizing, no JS) up to a cap, then scrolls. */
-.anki-bridge-sidebar__prompt {
+.vocabweave-sidebar__prompt {
 	margin-top: var(--size-4-3);
 }
 
-.anki-bridge-sidebar__prompt-input {
+.vocabweave-sidebar__prompt-input {
 	display: block;
 	width: 100%;
 	min-height: 4lh;
@@ -179,12 +179,12 @@
 	margin: var(--size-4-2) 0 var(--size-4-1);
 }
 
-.anki-bridge-sidebar__prompt-reset {
+.vocabweave-sidebar__prompt-reset {
 	font-size: var(--font-ui-smaller);
 	margin-bottom: var(--size-4-1);
 }
 
-.anki-bridge-sidebar__badge {
+.vocabweave-sidebar__badge {
 	margin-left: auto;
 	padding: 0 var(--size-4-2);
 	border-radius: var(--radius-s);
@@ -194,17 +194,17 @@
 	font-weight: var(--font-normal);
 }
 
-.anki-bridge-sidebar__badge--accent {
+.vocabweave-sidebar__badge--accent {
 	background: var(--interactive-accent);
 	color: var(--text-on-accent);
 }
 
 /* Image tab header now holds two buttons: keep them together on the right, wrapping
    below the title in a narrow sidebar. */
-.anki-bridge-sidebar__section-header {
+.vocabweave-sidebar__section-header {
 	flex-wrap: wrap;
 }
 
-.anki-bridge-sidebar__section-header > .anki-bridge-sidebar__section-title {
+.vocabweave-sidebar__section-header > .vocabweave-sidebar__section-title {
 	margin-right: auto;
 }

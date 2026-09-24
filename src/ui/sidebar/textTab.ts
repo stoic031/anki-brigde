@@ -1,22 +1,17 @@
 import { Menu, Notice, Setting, type TFile } from 'obsidian';
-import type AnkiBridgePlugin from '../../main';
+import type VocabWeavePlugin from '../../main';
 import {
 	applyGenerated,
 	generateDraft,
 	planGenerate,
 } from '../../note/generateFields';
-import {
-	examplesKey,
-	fieldConfigKey,
-	rememberExample,
-	resolveAnkiConnectUrl,
-} from '../../settings';
-import { AnkiConnectClient } from '../../sync/ankiConnect';
+import { examplesKey, fieldConfigKey, rememberExample } from '../../settings';
 import { AnkiConnectError, ProviderError } from '../../types';
 import { toastError, toastSuccess } from '../toast';
 import { createActionButton, runAction } from './actionButton';
 import { startProgressNotice } from './progressNotice';
 import { renderPromptBox } from './promptBox';
+import { loadFields } from './loadFields';
 
 export interface TextTab {
 	// Called whenever the active note's Deck+Model may have changed. Only re-fetches the
@@ -57,11 +52,11 @@ function reportOutcome({
 // touches vault content.
 export function renderTextTab(
 	parent: HTMLElement,
-	plugin: AnkiBridgePlugin,
+	plugin: VocabWeavePlugin,
 	getNote: () => TFile | null,
 ): TextTab {
 	const actionsRow = parent.createDiv({
-		cls: 'anki-bridge-sidebar__actions',
+		cls: 'vocabweave-sidebar__actions',
 	});
 	const generate = createActionButton(actionsRow, {
 		icon: 'sparkles',
@@ -88,13 +83,13 @@ export function renderTextTab(
 
 	parent.createDiv({
 		cls: [
-			'anki-bridge-sidebar__section-title',
-			'anki-bridge-sidebar__section-title--block',
+			'vocabweave-sidebar__section-title',
+			'vocabweave-sidebar__section-title--block',
 		],
 		text: 'Fields to generate with AI',
 	});
 	const fieldsEl = parent.createDiv({
-		cls: 'anki-bridge-sidebar__field-checkboxes',
+		cls: 'vocabweave-sidebar__field-checkboxes',
 	});
 	const promptBox = renderPromptBox(parent, plugin);
 
@@ -311,24 +306,14 @@ export function renderTextTab(
 			promptBox.render('', '', 0);
 			addField.el.disabled = true;
 			fieldsEl.createEl('p', {
-				cls: 'anki-bridge-sidebar__hint',
-				text: 'Set a Deck and Model above first.',
+				cls: 'vocabweave-sidebar__hint',
+				text: 'Set a deck and model above first.',
 			});
 			return;
 		}
 
-		let fields: string[];
-		try {
-			const client = new AnkiConnectClient(
-				resolveAnkiConnectUrl(plugin.settings),
-			);
-			fields = await client.modelFieldNames(model);
-		} catch {
-			toastError(
-				'❌ Failed to load fields. Please check Anki connection.',
-			);
-			return;
-		}
+		const fields = await loadFields(plugin, model);
+		if (!fields) return;
 		// The note changed while fields were loading — a newer sync owns the list.
 		if (renderedKey !== key) return;
 

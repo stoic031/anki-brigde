@@ -1,6 +1,11 @@
 import type { App, TFile } from 'obsidian';
 import type { AnkiConnectClient } from './ankiConnect';
-import { readAnkiFrontmatter, parseSections, replaceSection, writeAnkiFrontmatter } from './parser';
+import {
+	readAnkiFrontmatter,
+	parseSections,
+	replaceSection,
+	writeAnkiFrontmatter,
+} from './parser';
 import { mapContentToFields } from './fieldMapper';
 import { ankiHtmlToMarkdown } from './ankiHtml';
 import { AnkiConnectError, SyncError, type AnkiFrontmatter } from '../types';
@@ -15,14 +20,23 @@ export async function syncNote(
 ): Promise<void> {
 	const frontmatter = readAnkiFrontmatter(app, file);
 	if (!frontmatter) {
-		throw new SyncError('parse-error', 'Cannot parse note content. Please check format.');
+		throw new SyncError(
+			'parse-error',
+			'Cannot parse note content. Please check format.',
+		);
 	}
 
 	try {
 		const content = await app.vault.cachedRead(file);
 		const sections = parseSections(content);
-		const modelFields = await client.modelFieldNames(frontmatter.anki_model);
-		const { fields } = mapContentToFields(sections, modelFields, frontmatter.anki_model);
+		const modelFields = await client.modelFieldNames(
+			frontmatter.anki_model,
+		);
+		const { fields } = mapContentToFields(
+			sections,
+			modelFields,
+			frontmatter.anki_model,
+		);
 
 		if (frontmatter.anki_note_id === undefined) {
 			await createNote(app, file, client, frontmatter, fields);
@@ -37,19 +51,31 @@ export async function syncNote(
 			if (!isNoteNotFound(err)) throw err;
 			// AnkiConnect reports the note is gone — clear the stale ID and recreate it
 			// so sync stays idempotent instead of surfacing a hard error (#56).
-			await writeAnkiFrontmatter(app, file, { anki_note_id: undefined, anki_mod: undefined });
+			await writeAnkiFrontmatter(app, file, {
+				anki_note_id: undefined,
+				anki_mod: undefined,
+			});
 			await createNote(app, file, client, frontmatter, fields);
 			return;
 		}
-		const mod = await verifyUpdate(client, frontmatter.anki_note_id, fields);
+		const mod = await verifyUpdate(
+			client,
+			frontmatter.anki_note_id,
+			fields,
+		);
 		await writeAnkiFrontmatter(app, file, { anki_mod: mod });
 	} catch (err) {
 		throw toSyncError(err);
 	}
 }
 
-const sameFields = (a: Record<string, string>, b: Record<string, string>): boolean =>
-	Object.entries(a).every(([name, value]) => (b[name] ?? '').trim() === value.trim());
+const sameFields = (
+	a: Record<string, string>,
+	b: Record<string, string>,
+): boolean =>
+	Object.entries(a).every(
+		([name, value]) => (b[name] ?? '').trim() === value.trim(),
+	);
 
 // Anki was edited since the plugin last wrote it and now holds something other than what
 // we're about to send. No baseline (synced by an older version) counts as edited when the
@@ -63,30 +89,50 @@ async function checkAnkiEdits(
 	const info = await client.noteInfo(frontmatter.anki_note_id);
 	// notesInfo returns an empty entry for a deleted note — the update path recreates it.
 	if (Object.keys(info.fields).length === 0) return;
-	const edited = frontmatter.anki_mod === undefined || info.mod > frontmatter.anki_mod;
+	const edited =
+		frontmatter.anki_mod === undefined || info.mod > frontmatter.anki_mod;
 	if (edited && !sameFields(fields, info.fields)) {
-		throw new SyncError('anki-edited', 'This note was edited in Anki since the last sync.');
+		throw new SyncError(
+			'anki-edited',
+			'This note was edited in Anki since the last sync.',
+		);
 	}
 }
 
 // docs/design/01-sync.md §1.3 — replace each mapped section's body with its Anki field.
 // Returns a warning naming Anki fields with no section in the note, if any.
-export async function pullNote(app: App, file: TFile, client: AnkiConnectClient): Promise<string | undefined> {
+export async function pullNote(
+	app: App,
+	file: TFile,
+	client: AnkiConnectClient,
+): Promise<string | undefined> {
 	const frontmatter = readAnkiFrontmatter(app, file);
 	if (frontmatter?.anki_note_id === undefined) {
-		throw new SyncError('parse-error', 'Cannot parse note content. Please check format.');
+		throw new SyncError(
+			'parse-error',
+			'Cannot parse note content. Please check format.',
+		);
 	}
 
 	try {
 		const info = await client.noteInfo(frontmatter.anki_note_id);
 		if (Object.keys(info.fields).length === 0) {
-			throw new SyncError('note-not-found', 'Note not found in Anki. Sync it again to recreate it.');
+			throw new SyncError(
+				'note-not-found',
+				'Note not found in Anki. Sync it again to recreate it.',
+			);
 		}
-		const modelFields = await client.modelFieldNames(frontmatter.anki_model);
+		const modelFields = await client.modelFieldNames(
+			frontmatter.anki_model,
+		);
 		const missing: string[] = [];
 		await app.vault.process(file, (content) => {
 			const sections = parseSections(content);
-			const { sources } = mapContentToFields(sections, modelFields, frontmatter.anki_model);
+			const { sources } = mapContentToFields(
+				sections,
+				modelFields,
+				frontmatter.anki_model,
+			);
 			for (const field of modelFields) {
 				const key = sources[field];
 				const value = ankiHtmlToMarkdown(info.fields[field] ?? '');
@@ -121,18 +167,32 @@ export async function pullNote(app: App, file: TFile, client: AnkiConnectClient)
 // ponytail: compares every field after trimming; narrow to changed fields if Anki's own
 // normalization ever causes false alarms.
 // Returns the note's `mod` after the update, the new conflict baseline.
-async function verifyUpdate(client: AnkiConnectClient, noteId: number, fields: Record<string, string>): Promise<number> {
+async function verifyUpdate(
+	client: AnkiConnectClient,
+	noteId: number,
+	fields: Record<string, string>,
+): Promise<number> {
 	const stored = await client.noteInfo(noteId);
 	if (!sameFields(fields, stored.fields)) {
-		throw new SyncError('stale-editor', 'Anki kept the old content. Close this note in the Anki Browser and sync again.');
+		throw new SyncError(
+			'stale-editor',
+			'Anki kept the old content. Close this note in the Anki Browser and sync again.',
+		);
 	}
 	return stored.mod;
 }
 
-export async function deleteNote(app: App, file: TFile, client: AnkiConnectClient): Promise<void> {
+export async function deleteNote(
+	app: App,
+	file: TFile,
+	client: AnkiConnectClient,
+): Promise<void> {
 	const frontmatter = readAnkiFrontmatter(app, file);
 	if (frontmatter?.anki_note_id === undefined) {
-		throw new SyncError('parse-error', 'Cannot parse note content. Please check format.');
+		throw new SyncError(
+			'parse-error',
+			'Cannot parse note content. Please check format.',
+		);
 	}
 
 	try {
@@ -141,7 +201,10 @@ export async function deleteNote(app: App, file: TFile, client: AnkiConnectClien
 		throw toSyncError(err);
 	}
 
-	await writeAnkiFrontmatter(app, file, { anki_note_id: undefined, anki_mod: undefined });
+	await writeAnkiFrontmatter(app, file, {
+		anki_note_id: undefined,
+		anki_mod: undefined,
+	});
 }
 
 function isNoteNotFound(err: unknown): boolean {
@@ -162,13 +225,19 @@ function toSyncError(err: unknown): unknown {
 		err.ankiMessage === 'could not reach AnkiConnect — is Anki running?' ||
 		err.ankiMessage.startsWith('timed out after')
 	) {
-		return new SyncError('offline', 'Anki is not running. Please start Anki and AnkiConnect.');
+		return new SyncError(
+			'offline',
+			'Anki is not running. Please start Anki and AnkiConnect.',
+		);
 	}
 	if (err.ankiMessage === 'cannot create note because it is a duplicate') {
 		return new SyncError('duplicate', 'Note already exists in Anki');
 	}
 	if (err.ankiMessage.startsWith('model was not found:')) {
-		return new SyncError('model-not-found', 'Model not found in Anki. Please select it again.');
+		return new SyncError(
+			'model-not-found',
+			'Model not found in Anki. Please select it again.',
+		);
 	}
 	return err;
 }
@@ -187,5 +256,8 @@ async function createNote(
 		tags: frontmatter.tags,
 	});
 	const { mod } = await client.noteInfo(noteId);
-	await writeAnkiFrontmatter(app, file, { anki_note_id: noteId, anki_mod: mod });
+	await writeAnkiFrontmatter(app, file, {
+		anki_note_id: noteId,
+		anki_mod: mod,
+	});
 }

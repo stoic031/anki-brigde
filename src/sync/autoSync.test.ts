@@ -1,6 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import type AnkiBridgePlugin from '../main';
-import { DEFAULT_SETTINGS, fieldConfigKey, type AnkiBridgeSettings } from '../settings';
+import type VocabWeavePlugin from '../main';
+import {
+	DEFAULT_SETTINGS,
+	fieldConfigKey,
+	type VocabWeaveSettings,
+} from '../settings';
 
 vi.mock('obsidian', () => ({ TFile: class FakeTFile {} }));
 
@@ -38,12 +42,14 @@ function fakeTFile(overrides: Record<string, unknown> = {}): TFile {
 	);
 }
 
-function fakePlugin(overrides: Partial<AnkiBridgeSettings> = {}) {
+function fakePlugin(overrides: Partial<VocabWeaveSettings> = {}) {
 	const handlers: ((file: TFile) => void)[] = [];
 	const getActiveFile = vi.fn<() => TFile | null>();
+	const cleanups: (() => void)[] = [];
 	const plugin = {
 		settings: { ...DEFAULT_SETTINGS, autoSyncOnSave: true, ...overrides },
 		registerEvent: vi.fn(),
+		register: (cb: () => void) => cleanups.push(cb),
 		app: {
 			vault: {
 				on: (name: string, cb: (file: TFile) => void) => {
@@ -54,11 +60,12 @@ function fakePlugin(overrides: Partial<AnkiBridgeSettings> = {}) {
 			},
 			workspace: { getActiveFile },
 		},
-	} as unknown as AnkiBridgePlugin;
+	} as unknown as VocabWeavePlugin;
 	return {
 		plugin,
 		getActiveFile,
 		fireModify: (file: TFile) => handlers.forEach((h) => h(file)),
+		unload: () => cleanups.forEach((cb) => cb()),
 	};
 }
 
@@ -132,6 +139,19 @@ describe('registerAutoSync', () => {
 		await vi.advanceTimersByTimeAsync(2000);
 
 		expect(syncNote).toHaveBeenCalledTimes(1);
+	});
+
+	it('drops a pending sync when the plugin unloads', async () => {
+		const { plugin, getActiveFile, fireModify, unload } = fakePlugin();
+		const file = fakeTFile();
+		getActiveFile.mockReturnValue(file);
+		registerAutoSync(plugin);
+
+		fireModify(file);
+		unload();
+		await vi.advanceTimersByTimeAsync(3000);
+
+		expect(syncNote).not.toHaveBeenCalled();
 	});
 
 	it('skips silently when the note has no Deck/Model configured', async () => {
@@ -226,7 +246,9 @@ describe('registerAutoSync', () => {
 	});
 
 	it('toasts the SyncError message on a known failure', async () => {
-		syncNote.mockRejectedValue(new SyncError('offline', 'Anki is not running.'));
+		syncNote.mockRejectedValue(
+			new SyncError('offline', 'Anki is not running.'),
+		);
 		const { plugin, getActiveFile, fireModify } = fakePlugin();
 		const file = fakeTFile();
 		getActiveFile.mockReturnValue(file);
@@ -241,7 +263,10 @@ describe('registerAutoSync', () => {
 
 	it('never resolves an Anki-edited conflict itself, only points at the Sync button', async () => {
 		syncNote.mockRejectedValue(
-			new SyncError('anki-edited', 'This note was edited in Anki since the last sync.'),
+			new SyncError(
+				'anki-edited',
+				'This note was edited in Anki since the last sync.',
+			),
 		);
 		const { plugin, getActiveFile, fireModify } = fakePlugin();
 		const file = fakeTFile();

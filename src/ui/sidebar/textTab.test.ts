@@ -1,9 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import type AnkiBridgePlugin from '../../main';
+import type VocabWeavePlugin from '../../main';
 import {
 	examplesKey,
 	fieldConfigKey,
-	type AnkiBridgeSettings,
+	type VocabWeaveSettings,
 } from '../../settings';
 import { FakeEl } from '../../test/fakeDom';
 
@@ -191,7 +191,7 @@ async function addFieldViaMenu(addField: FakeEl, field: string): Promise<void> {
 	await item?.click();
 }
 
-function setup(overrides: Partial<AnkiBridgeSettings> = {}) {
+function setup(overrides: Partial<VocabWeaveSettings> = {}) {
 	const parent = new FakeEl();
 	const saveSettings = vi.fn().mockResolvedValue(undefined);
 	const plugin = {
@@ -205,19 +205,19 @@ function setup(overrides: Partial<AnkiBridgeSettings> = {}) {
 			...overrides,
 		},
 		saveSettings,
-	} as unknown as AnkiBridgePlugin;
+	} as unknown as VocabWeavePlugin;
 	const tab = renderTextTab(
 		parent as unknown as HTMLElement,
 		plugin,
 		() => note as never,
 	);
-	const actions = parent.byClass('anki-bridge-sidebar__action');
+	const actions = parent.byClass('vocabweave-sidebar__action');
 	const generate = actions[0] as FakeEl;
 	const write = actions[1] as FakeEl;
 	const addField = actions[2] as FakeEl;
 	const clear = actions[3] as FakeEl;
 	const fieldsEl = parent.byClass(
-		'anki-bridge-sidebar__field-checkboxes',
+		'vocabweave-sidebar__field-checkboxes',
 	)[0] as FakeEl;
 	return {
 		parent,
@@ -236,7 +236,7 @@ describe('renderTextTab', () => {
 	it('renders Generate, Write, Add field and Clear on one row (icon + text), all disabled, title below', () => {
 		const { parent, generate, write, addField, clear } = setup();
 
-		const row = parent.byClass('anki-bridge-sidebar__actions')[0];
+		const row = parent.byClass('vocabweave-sidebar__actions')[0];
 		expect(row?.children.map((c) => c.tag)).toEqual([
 			'button',
 			'button',
@@ -256,7 +256,7 @@ describe('renderTextTab', () => {
 		expect(write.disabled).toBe(true);
 		expect(addField.disabled).toBe(true);
 
-		const title = parent.byClass('anki-bridge-sidebar__section-title')[0];
+		const title = parent.byClass('vocabweave-sidebar__section-title')[0];
 		expect(title?.text).toBe('Fields to generate with AI');
 	});
 
@@ -267,7 +267,7 @@ describe('renderTextTab', () => {
 
 		expect(modelFieldNames).not.toHaveBeenCalled();
 		expect(fieldsEl.children[0]?.text).toBe(
-			'Set a Deck and Model above first.',
+			'Set a deck and model above first.',
 		);
 		expect(generate.disabled).toBe(true);
 		expect(write.disabled).toBe(true);

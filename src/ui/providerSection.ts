@@ -1,6 +1,6 @@
 import { Setting } from 'obsidian';
-import type AnkiBridgePlugin from '../main';
-import type { AnkiBridgeSettings } from '../settings';
+import type VocabWeavePlugin from '../main';
+import type { VocabWeaveSettings } from '../settings';
 import {
 	renderEditor,
 	type AnyProviderConfig,
@@ -14,8 +14,8 @@ export interface ProviderSectionSpec<C extends AnyProviderConfig> {
 	kind: ProviderKindSpec<C>;
 	defaultType: C['type'];
 	// Where this kind's list and active id live in the settings object.
-	read: (s: AnkiBridgeSettings) => { list: C[]; activeId: string };
-	write: (s: AnkiBridgeSettings, list: C[], activeId: string) => void;
+	read: (s: VocabWeaveSettings) => { list: C[]; activeId: string };
+	write: (s: VocabWeaveSettings, list: C[], activeId: string) => void;
 	// The fields every new config starts with, beyond the shared ones.
 	extraDefaults?: Omit<C, keyof AnyProviderConfig | 'type'>;
 }
@@ -24,7 +24,7 @@ export interface ProviderSectionSpec<C extends AnyProviderConfig> {
 // active dropdown is also the config being edited below it. Shared by Text and Image.
 export function renderProviderSection<C extends AnyProviderConfig>(
 	containerEl: HTMLElement,
-	plugin: AnkiBridgePlugin,
+	plugin: VocabWeavePlugin,
 	spec: ProviderSectionSpec<C>,
 ): void {
 	const el = containerEl.createDiv({ cls: spec.cssClass });
@@ -73,7 +73,7 @@ export function renderProviderSection<C extends AnyProviderConfig>(
 			.addButton((button) =>
 				button
 					.setButtonText('Delete')
-					.setWarning()
+					.setDestructive()
 					.setDisabled(!active)
 					.onClick(async () => {
 						const { list: current, activeId: id } =

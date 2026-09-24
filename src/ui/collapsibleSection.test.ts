@@ -28,7 +28,7 @@ describe('renderCollapsibleSection', () => {
 
 		const el = details(parent);
 		expect(el.tag).toBe('details');
-		expect(el.classes.has('anki-bridge-settings__section')).toBe(true);
+		expect(el.classes.has('vocabweave-settings__section')).toBe(true);
 		expect(el.attrs.open).toBe('');
 	});
 
@@ -75,7 +75,7 @@ describe('renderCollapsibleSection', () => {
 		body.createDiv({ text: 'a field' });
 
 		const el = details(parent);
-		expect(el.classes.has('anki-bridge-settings__section')).toBe(true);
+		expect(el.classes.has('vocabweave-settings__section')).toBe(true);
 		// body is the details' second child (after summary) and now holds what the
 		// caller rendered into it.
 		expect(el.children[1]).toBe(body);

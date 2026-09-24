@@ -1,29 +1,26 @@
-# Anki Bridge
+# VocabWeave
 
 An [Obsidian](https://obsidian.md) plugin that syncs vocabulary notes from your vault
 to [Anki](https://apps.ankiweb.net/) via [AnkiConnect](https://foosoft.net/projects/anki-connect/),
 and can generate image media for those notes through pluggable AI providers
 (cloud or local).
 
-Anki Bridge is an **orchestrator only** — it calls AnkiConnect and whatever AI
+VocabWeave is an **orchestrator only** — it calls AnkiConnect and whatever AI
 provider you configure; it never runs or bundles models itself, and it never writes
 AI-generated media into your vault (media goes straight to Anki's media folder).
 
-> **Status:** early development. The behavior described below is the design target —
-> see [`docs/design/`](docs/design/README.md) for the full spec and
-> [`docs/design/roadmap.md`](docs/design/roadmap.md) for what's built vs. planned.
-
-## Features (target)
+## Features
 
 - Sync a note's content to an Anki note via AnkiConnect, with dynamic field mapping
-  based on the Anki model you select (no hardcoded deck/model/field names).
+  based on the Anki model you select (no hardcoded deck/model/field names). Edits made
+  in Anki are detected on the next sync.
 - A sidebar with sync / rebuild / delete buttons and AI generation controls for the
-  active note, plus quick Deck/Model editing. Notes stay clean: just properties and
+  active note, plus quick deck/model editing. Notes stay clean: just properties and
   `## Field` sections.
-- Profiles (Deck + Model + save folder) for creating new notes.
-- Pluggable AI providers for text and image generation — bring your
-  own API key, nothing is bundled or hardcoded.
-- Works entirely on your machine: Anki + AnkiConnect must be running locally.
+- Profiles (deck + model + save folder) for creating new notes, from scratch or from a
+  text selection.
+- Optional AI providers for text and image generation — bring your own API key,
+  nothing is bundled or hardcoded.
 
 ## Requirements
 
@@ -32,13 +29,31 @@ AI-generated media into your vault (media goes straight to Anki's media folder).
 - Desktop only — this plugin talks to a local Anki instance and does not support
   Obsidian Mobile.
 
-## Installation (manual, until this is on the community plugin list)
+## Installation
 
-1. Download `main.js`, `manifest.json`, and `styles.css` from a
-   [release](../../releases), or build them yourself (see below).
-2. Copy them into `<YourVault>/.obsidian/plugins/anki-bridge/`.
-3. Reload Obsidian and enable **Anki Bridge** under **Settings → Community plugins**.
-4. Make sure Anki is running with AnkiConnect before using the plugin.
+Install **VocabWeave** from **Settings → Community plugins → Browse**, then enable it.
+
+Manual install: download `main.js`, `manifest.json`, and `styles.css` from the latest
+[release](https://github.com/stoic031/vocabweave/releases) into
+`<YourVault>/.obsidian/plugins/vocabweave/`, reload Obsidian, and enable **VocabWeave**
+under **Settings → Community plugins**.
+
+## Network use and privacy
+
+- **AnkiConnect** — the plugin talks to AnkiConnect on your machine
+  (`http://localhost:8765` by default) to read decks/models and create, update, or
+  delete notes and media.
+- **AI providers are off by default.** Nothing is sent anywhere until you add a
+  provider in settings. Each provider is labelled **cloud** or **local**:
+  - Cloud: OpenAI, Anthropic, Gemini, Groq, OpenRouter, Together, Pollinations, or any
+    OpenAI-compatible endpoint you enter.
+  - Local: Ollama, Automatic1111, ComfyUI (or any `localhost` URL).
+- **What is sent:** when you press Generate or Add image, the active note's word and
+  fields, your prompt, your language settings, and examples you approved earlier go to
+  the one provider you picked. No other notes are read.
+- **API keys** are kept in Obsidian's secret storage and sent only to that provider.
+- Generated images are stored in Anki's media folder, never in your vault.
+- No telemetry, analytics, or ads.
 
 ## Development
 
@@ -59,7 +74,7 @@ npm run lint && npm run type-check && npm run test:unit
 ```
 
 For manual integration testing, copy `main.js`, `manifest.json`, `styles.css` into
-`<Vault>/.obsidian/plugins/anki-bridge/` and reload Obsidian, with Anki + AnkiConnect
+`<Vault>/.obsidian/plugins/vocabweave/` and reload Obsidian, with Anki + AnkiConnect
 running.
 
 ## Documentation
