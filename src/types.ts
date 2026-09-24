@@ -43,7 +43,7 @@ export class ProviderError extends Error {
 
 export class SyncError extends Error {
 	constructor(
-		public reason: 'offline' | 'duplicate' | 'parse-error' | 'model-not-found',
+		public reason: 'offline' | 'duplicate' | 'parse-error' | 'model-not-found' | 'stale-editor',
 		message: string,
 	) {
 		super(message);

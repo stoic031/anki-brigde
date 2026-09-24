@@ -94,6 +94,16 @@ export class AnkiConnectClient {
 		});
 	}
 
+	// Current field values of one note, keyed by field name.
+	async noteFields(noteId: number): Promise<Record<string, string>> {
+		const [info] = await this.invoke<
+			{ fields?: Record<string, { value: string }> }[]
+		>('notesInfo', { notes: [noteId] });
+		return Object.fromEntries(
+			Object.entries(info?.fields ?? {}).map(([k, f]) => [k, f.value]),
+		);
+	}
+
 	async deleteNotes(noteIds: number[]): Promise<void> {
 		await this.invoke<null>('deleteNotes', { notes: noteIds });
 	}

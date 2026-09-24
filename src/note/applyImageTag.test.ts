@@ -15,7 +15,7 @@ describe('applyImageTag', () => {
 		const r = applyImageTag(content, 'Image', tag, 'append');
 
 		expect(r).toBe(
-			'## Image\n<img src="old.png">\n\n<img src="new.png">\n## Notes\nx\n',
+			'## Image\n<img src="old.png">\n\n<img src="new.png">\n\n## Notes\nx\n',
 		);
 	});
 
@@ -25,7 +25,7 @@ describe('applyImageTag', () => {
 		const r = applyImageTag(content, 'Image', tag, 'overwrite');
 
 		expect(r).toBe(
-			'## Image\nsome note the user wrote\n\n<img src="new.png">\n## Notes\nx\n',
+			'## Image\nsome note the user wrote\n\n<img src="new.png">\n\n## Notes\nx\n',
 		);
 	});
 

@@ -34,6 +34,7 @@ function fakeClient(
 		addNote: ReturnType<typeof vi.fn>;
 		updateNoteFields: ReturnType<typeof vi.fn>;
 		deleteNotes: ReturnType<typeof vi.fn>;
+		noteFields: ReturnType<typeof vi.fn>;
 	}> = {},
 ): {
 	client: AnkiConnectClient;
@@ -46,7 +47,14 @@ function fakeClient(
 	const addNote = overrides.addNote ?? vi.fn().mockResolvedValue(999);
 	const updateNoteFields = overrides.updateNoteFields ?? vi.fn().mockResolvedValue(undefined);
 	const deleteNotes = overrides.deleteNotes ?? vi.fn().mockResolvedValue(undefined);
-	const client = { modelFieldNames, addNote, updateNoteFields, deleteNotes } as unknown as AnkiConnectClient;
+	// By default Anki keeps what was sent, so the read-back after an update matches.
+	const noteFields =
+		overrides.noteFields ??
+		vi.fn(async () => {
+			const calls = updateNoteFields.mock.calls as [number, Record<string, string>][];
+			return calls[calls.length - 1]?.[1] ?? {};
+		});
+	const client = { modelFieldNames, addNote, updateNoteFields, deleteNotes, noteFields } as unknown as AnkiConnectClient;
 	return { client, modelFieldNames, addNote, updateNoteFields, deleteNotes };
 }
 
@@ -235,5 +243,24 @@ describe('deleteNote', () => {
 		const { client } = fakeClient({ deleteNotes: vi.fn().mockRejectedValue(original) });
 
 		await expect(deleteNote(app, file, client)).rejects.toBe(original);
+	});
+});
+
+describe('syncNote read-back after update', () => {
+	it('fails with stale-editor when Anki kept the old field values', async () => {
+		const { app } = fakeApp(CONTENT, { anki_deck: 'D', anki_model: 'M', anki_note_id: 42 });
+		const { client } = fakeClient({ noteFields: vi.fn().mockResolvedValue({ Front: '診察', Back: '' }) });
+		const err = await syncNote(app, {} as TFile, client).catch((e: unknown) => e);
+		expect(err).toBeInstanceOf(SyncError);
+		expect((err as SyncError).reason).toBe('stale-editor');
+	});
+
+	it('succeeds when the stored values match, ignoring surrounding whitespace', async () => {
+		const { app } = fakeApp(CONTENT, { anki_deck: 'D', anki_model: 'M', anki_note_id: 42 });
+		const { client, updateNoteFields } = fakeClient({
+			noteFields: vi.fn().mockResolvedValue({ Front: ' 診察', Back: 'medical examination\n' }),
+		});
+		await expect(syncNote(app, {} as TFile, client)).resolves.toBeUndefined();
+		expect(updateNoteFields).toHaveBeenCalledWith(42, FIELDS);
 	});
 });

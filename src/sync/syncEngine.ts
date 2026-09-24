@@ -29,9 +29,24 @@ export async function syncNote(app: App, file: TFile, client: AnkiConnectClient)
 			// so sync stays idempotent instead of surfacing a hard error (#56).
 			await writeAnkiFrontmatter(app, file, { anki_note_id: undefined });
 			await createNote(app, file, client, frontmatter, fields);
+			return;
 		}
+		await verifyUpdate(client, frontmatter.anki_note_id, fields);
 	} catch (err) {
 		throw toSyncError(err);
+	}
+}
+
+// updateNoteFields reports success even when Anki keeps the old values — AnkiConnect's
+// documented caveat: a note open in Anki's Browser/editor gets its stale content saved
+// back over the update. Read the note back so that case isn't reported as synced.
+// ponytail: compares every field after trimming; narrow to changed fields if Anki's own
+// normalization ever causes false alarms.
+async function verifyUpdate(client: AnkiConnectClient, noteId: number, fields: Record<string, string>): Promise<void> {
+	const stored = await client.noteFields(noteId);
+	const stale = Object.entries(fields).some(([name, value]) => (stored[name] ?? '').trim() !== value.trim());
+	if (stale) {
+		throw new SyncError('stale-editor', 'Anki kept the old content. Close this note in the Anki Browser and sync again.');
 	}
 }
 
