@@ -95,6 +95,25 @@ async function request(
 		window.clearTimeout(timer);
 	}
 
+	// Account-side limits (OpenRouter credits, free-tier rate limits) — say it's the
+	// provider's limit and what to do, rather than a bare status that reads like our
+	// failure. No auto-retry: it would only spend more of the same quota.
+	const host = new URL(url).host;
+	const accountHint: Record<number, string> = {
+		402: `out of credits at ${host} (HTTP 402). Add credits there, or pick a cheaper or free model in settings.`,
+		429: `rate-limited by ${host} (HTTP 429). Wait a minute, then try again — free models have low limits.`,
+	};
+	const hint = accountHint[response.status];
+	if (hint !== undefined) {
+		const retryAfter = Number(
+			Object.entries(response.headers ?? {}).find(
+				([k]) => k.toLowerCase() === 'retry-after',
+			)?.[1],
+		);
+		const wait =
+			retryAfter > 0 ? ` Try again in ${Math.ceil(retryAfter)} s.` : '';
+		throw new ProviderError(providerId, `${hint}${wait}`);
+	}
 	if (response.status < 200 || response.status >= 300) {
 		throw new ProviderError(
 			providerId,

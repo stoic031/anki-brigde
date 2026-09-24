@@ -154,6 +154,29 @@ describe.each(cases)('%s adapter', (_name, make, reply) => {
 		);
 	});
 
+	it('explains a 429 as the provider’s rate limit, with Retry-After if sent', async () => {
+		requestUrl.mockResolvedValue({ status: 429, text: '' });
+		await expect(make().generateImage('a cat', {})).rejects.toThrow(
+			/rate-limited by .+ \(HTTP 429\)\. Wait a minute/,
+		);
+
+		requestUrl.mockResolvedValue({
+			status: 429,
+			text: '',
+			headers: { 'Retry-After': '20' },
+		});
+		await expect(make().generateImage('a cat', {})).rejects.toThrow(
+			/Try again in 20 s\.$/,
+		);
+	});
+
+	it('explains a 402 as running out of credits at the provider', async () => {
+		requestUrl.mockResolvedValue({ status: 402, text: '' });
+		await expect(make().generateImage('a cat', {})).rejects.toThrow(
+			/out of credits at .+ \(HTTP 402\)\. Add credits/,
+		);
+	});
+
 	it('throws ProviderError when the reply has no image', async () => {
 		requestUrl.mockResolvedValue(
 			_name === 'pollinations' ? bytes('text/html') : ok({}),
