@@ -4,6 +4,7 @@ export interface AnkiFrontmatter {
 	anki_deck: string; // "Japanese::N2"
 	anki_model: string; // "Basic (and reversed card)"
 	last_synced?: string; // ISO 8601 UTC
+	anki_mod?: number; // Anki note `mod` (seconds) after the plugin's last push/pull — conflict baseline
 	tags?: string[];
 }
 
@@ -19,6 +20,7 @@ export interface ParsedNote {
 // §3 Field mapping
 export interface FieldMappingResult {
 	fields: Record<string, string>;
+	sources: Record<string, string>; // field → section key it was filled from
 	warnings: string[];
 }
 
@@ -43,7 +45,7 @@ export class ProviderError extends Error {
 
 export class SyncError extends Error {
 	constructor(
-		public reason: 'offline' | 'duplicate' | 'parse-error' | 'model-not-found' | 'stale-editor',
+		public reason: 'offline' | 'duplicate' | 'parse-error' | 'model-not-found' | 'stale-editor' | 'anki-edited' | 'note-not-found',
 		message: string,
 	) {
 		super(message);

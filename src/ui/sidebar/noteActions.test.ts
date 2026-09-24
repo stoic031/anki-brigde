@@ -9,11 +9,15 @@ const { setIcon, Notice } = vi.hoisted(() => ({
 }));
 vi.mock('obsidian', () => ({ setIcon, Notice }));
 
-const { syncNote, deleteNote } = vi.hoisted(() => ({
+const { syncNote, deleteNote, pullNote } = vi.hoisted(() => ({
 	syncNote: vi.fn(),
 	deleteNote: vi.fn(),
+	pullNote: vi.fn(),
 }));
-vi.mock('../../sync/syncEngine', () => ({ syncNote, deleteNote }));
+vi.mock('../../sync/syncEngine', () => ({ syncNote, deleteNote, pullNote }));
+
+const { syncNoteName } = vi.hoisted(() => ({ syncNoteName: vi.fn() }));
+vi.mock('../../note/noteName', () => ({ syncNoteName }));
 
 const { modelFieldNames, AnkiConnectClient } = vi.hoisted(() => {
 	const modelFieldNames = vi.fn();
@@ -48,6 +52,21 @@ vi.mock('../modals/confirmDelete', () => ({
 			deleteModal.onConfirm = onConfirm;
 		}
 		open = deleteModal.open;
+	},
+}));
+const { conflictModal } = vi.hoisted(() => ({
+	conflictModal: { choice: null as string | null, open: vi.fn() },
+}));
+vi.mock('../modals/syncConflict', () => ({
+	SyncConflictModal: class {
+		constructor(
+			_app: unknown,
+			private onChoice: (c: string | null) => void,
+		) {}
+		open = () => {
+			conflictModal.open();
+			this.onChoice(conflictModal.choice);
+		};
 	},
 }));
 vi.mock('../modals/confirmRebuildFields', () => ({
@@ -98,6 +117,7 @@ function setup(
 }
 
 beforeEach(() => {
+	syncNoteName.mockResolvedValue(undefined);
 	vi.useFakeTimers();
 	vi.stubGlobal('window', globalThis);
 });
@@ -172,6 +192,7 @@ describe('Sync button', () => {
 
 		resolve();
 		await click;
+		await vi.advanceTimersByTimeAsync(0); // let the post-sync rename settle
 		expect(label(sync)).toBe('✅ Done!');
 		expect(toastSuccess).toHaveBeenCalledWith('✅ Note synced to Anki!');
 
@@ -189,6 +210,15 @@ describe('Sync button', () => {
 		const client = syncNote.mock.calls[0]?.[2] as { url: string };
 		expect(syncNote.mock.calls[0]?.[1]).toBe(note);
 		expect(client.url).toBe('http://localhost:1234');
+	});
+
+	it('renames the note to its Main Field after syncing', async () => {
+		syncNote.mockResolvedValue(undefined);
+		const { sync } = setup();
+
+		await sync.click();
+
+		expect(syncNoteName).toHaveBeenCalledWith(expect.anything(), note, 'Front');
 	});
 
 	it('shows a SyncError’s own message, then restores after 3s', async () => {
@@ -256,6 +286,63 @@ describe('Sync button', () => {
 
 		resolve();
 		await click;
+	});
+});
+
+describe('Sync button — note edited in Anki', () => {
+	const conflict = new SyncError(
+		'anki-edited',
+		'This note was edited in Anki since the last sync.',
+	);
+
+	it('Keep Obsidian version re-syncs with force', async () => {
+		syncNote.mockRejectedValueOnce(conflict).mockResolvedValue(undefined);
+		conflictModal.choice = 'obsidian';
+		const { sync } = setup();
+
+		await sync.click();
+		await vi.advanceTimersByTimeAsync(0); // modal → re-sync/pull → rename
+
+		expect(conflictModal.open).toHaveBeenCalledTimes(1);
+		expect(syncNote.mock.calls[1]?.[3]).toEqual({ force: true });
+		expect(pullNote).not.toHaveBeenCalled();
+		expect(syncNoteName).toHaveBeenCalledTimes(1);
+		expect(toastSuccess).toHaveBeenCalledWith('✅ Note synced to Anki!');
+	});
+
+	it('Use Anki version pulls and surfaces its warning', async () => {
+		syncNote.mockRejectedValueOnce(conflict);
+		pullNote.mockResolvedValue('1 Anki field has no section in this note: Back');
+		conflictModal.choice = 'anki';
+		const { sync } = setup();
+
+		await sync.click();
+		await vi.advanceTimersByTimeAsync(0); // modal → re-sync/pull → rename
+
+		expect(pullNote.mock.calls[0]?.[1]).toBe(note);
+		expect(syncNote).toHaveBeenCalledTimes(1);
+		expect(toastError).toHaveBeenCalledWith(
+			'⚠️ 1 Anki field has no section in this note: Back',
+		);
+		expect(syncNoteName).toHaveBeenCalledWith(expect.anything(), note, 'Front');
+		expect(toastSuccess).toHaveBeenCalledWith('✅ Note updated from Anki!');
+	});
+
+	it('Cancel writes nothing and reports the conflict', async () => {
+		syncNote.mockRejectedValueOnce(conflict);
+		conflictModal.choice = null;
+		const { sync, label } = setup();
+
+		await sync.click();
+		await vi.advanceTimersByTimeAsync(0); // modal → re-sync/pull → rename
+
+		expect(syncNote).toHaveBeenCalledTimes(1);
+		expect(pullNote).not.toHaveBeenCalled();
+		expect(syncNoteName).not.toHaveBeenCalled();
+		expect(label(sync)).toBe('❌ Error');
+		expect(toastError).toHaveBeenCalledWith(
+			'❌ This note was edited in Anki since the last sync.',
+		);
 	});
 });
 

@@ -153,3 +153,12 @@ Resolved:
   documented — `analyzeWorkflow` doesn't follow them and reports it via its
   `problems` array; no further decision needed here.
 
+
+### 22. Edits made directly in Anki were silently overwritten by Sync — resolved
+
+Sync used to be strictly one-way (`01-sync.md` §1.1). Resolved as **detect + ask**, not an
+automatic merge: Sync compares the note's Anki `mod` with the `anki_mod` baseline stored in
+frontmatter, and when Anki was edited and its fields differ, the Sync button asks
+Keep Obsidian / Use Anki / Cancel; Auto Sync only shows a toast. Pulling does a basic
+HTML → Markdown conversion. Per-field merge was rejected: when both sides edited the same
+field it would silently lose one of them.

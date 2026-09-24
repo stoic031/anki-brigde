@@ -1,5 +1,5 @@
 import { Notice } from 'obsidian';
-import { sanitizeForFilename } from './mediaNaming';
+import { noteFilename } from './noteName';
 import { generateContentSkeleton } from './contentTemplate';
 import {
 	getUniqueNotePath,
@@ -37,7 +37,7 @@ export async function runCreateNote(plugin: AnkiBridgePlugin): Promise<void> {
 		);
 		const fields = await client.modelFieldNames(target.model);
 
-		const filename = `${sanitizeForFilename(name)}.md`;
+		const filename = `${noteFilename(name)}.md`;
 		const path = getUniqueNotePath(plugin.app, target.folder, filename);
 		// Main Field isn't required here — a fresh Deck+Model pair has no note open
 		// yet to have configured it from (docs/design/03-note.md §3.6/§3.7). Falls

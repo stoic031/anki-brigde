@@ -130,11 +130,14 @@ describe('AnkiConnectClient action methods', () => {
 		});
 	});
 
-	it('noteFields asks notesInfo for one note and flattens the field values', async () => {
+	it('noteInfo asks notesInfo for one note and flattens the field values', async () => {
 		requestUrl.mockResolvedValue(
-			jsonResponse({ result: [{ fields: { Front: { value: 'x', order: 0 }, Back: { value: '', order: 1 } } }], error: null }),
+			jsonResponse({
+				result: [{ mod: 1700000000, fields: { Front: { value: 'x', order: 0 }, Back: { value: '', order: 1 } } }],
+				error: null,
+			}),
 		);
-		await expect(client().noteFields(123)).resolves.toEqual({ Front: 'x', Back: '' });
+		await expect(client().noteInfo(123)).resolves.toEqual({ fields: { Front: 'x', Back: '' }, mod: 1700000000 });
 		expect(sentBody()).toEqual({ action: 'notesInfo', version: 6, params: { notes: [123] } });
 	});
 

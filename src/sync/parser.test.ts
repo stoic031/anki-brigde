@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { App, FrontMatterCache, TFile } from 'obsidian';
-import { parseSections, readAnkiFrontmatter, writeAnkiFrontmatter } from './parser';
+import { parseSections, readAnkiFrontmatter, replaceSection, writeAnkiFrontmatter } from './parser';
 
 function fakeReaderApp(frontmatter: FrontMatterCache | undefined): App {
 	return {
@@ -178,5 +178,27 @@ describe('parseSections edge cases', () => {
 	it('recognizes a Japanese list item with no space after the dash', () => {
 		const sections = parseSections('## Collocations\n\n-診察を受ける\n-診察室\n');
 		expect(sections.get('collocations')).toEqual(['診察を受ける', '診察室']);
+	});
+});
+
+describe('replaceSection', () => {
+	it('replaces a section body matched case-insensitively, keeping the heading', () => {
+		expect(replaceSection('## Word\n\nold\n\n## Meaning\n\nm\n', 'word', 'new')).toBe(
+			'## Word\n\nnew\n\n## Meaning\n\nm\n',
+		);
+	});
+
+	it('replaces the last section up to the end of the file', () => {
+		expect(replaceSection('## Word\n\nw\n\n## Meaning\n\nold\n', 'meaning', 'a\nb')).toBe(
+			'## Word\n\nw\n\n## Meaning\n\na\nb\n',
+		);
+	});
+
+	it('stops at a # heading and leaves content after it', () => {
+		expect(replaceSection('## Word\n\nold\n# Top\nrest', 'word', 'new')).toBe('## Word\n\nnew\n\n# Top\nrest');
+	});
+
+	it('returns the content unchanged when the section is missing', () => {
+		expect(replaceSection('## Word\n\nw\n', 'meaning', 'x')).toBe('## Word\n\nw\n');
 	});
 });

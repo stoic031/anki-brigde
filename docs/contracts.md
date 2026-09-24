@@ -15,11 +15,14 @@ interface AnkiFrontmatter {
 	anki_deck: string; // "Japanese::N2"
 	anki_model: string; // "Basic (and reversed card)"
 	last_synced?: string; // ISO 8601 UTC
+	anki_mod?: number; // Anki note `mod` (seconds) after the plugin's last push/pull
 	tags?: string[];
 }
 ```
 
-`last_synced` is display-only and must **not** drive any sync decision.
+`last_synced` is display-only and must **not** drive any sync decision. `anki_mod` is the
+opposite: it is the baseline for detecting edits made in Anki (`design/01-sync.md` §1.1),
+written after every create/update/pull and cleared together with `anki_note_id`.
 
 All frontmatter writes go through `app.fileManager.processFrontMatter()`, never string
 manipulation.
@@ -195,10 +198,17 @@ export function sanitizeForFilename(word: string): string {
 Unicode is preserved — a filename containing 診察 is valid. Square brackets must be
 stripped: one that survives into a filename breaks the `[sound:...]` syntax.
 
-`sanitizeForFilename` is also reused, unmodified, by the hotkey/quick-capture flow
-(`docs/design/03-note.md` §3.7) to turn the user's selected text into a new **note**
-filename — the same 40-char truncation and Unicode-preservation rules apply there as to
-media filenames.
+`sanitizeForFilename` is for **media** filenames only. **Note** filenames (Create new note,
+quick capture `docs/design/03-note.md` §3.7, and the rename after Sync §3.2) use
+`noteFilename` (`src/note/noteName.ts`), which keeps the text as written — spaces, Unicode,
+punctuation — and only:
+
+- strips control characters; replaces `\ / : * ? " < > |` (not allowed in file names) and
+  `# ^ [ ]` (break Obsidian `[[links]]`) with full-width lookalikes (`？ ： ／ ［ ］` …), so
+  `おなまえは ?` names the note `おなまえは ？`;
+- collapses whitespace runs (incl. line breaks) to one space and trims;
+- drops leading dots; empty → `note`; Windows reserved names get a `_` suffix;
+- caps at 80 code points (stays under the 255-byte file-name limit for CJK).
 
 Required test cases:
 

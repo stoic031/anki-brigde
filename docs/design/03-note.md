@@ -43,6 +43,16 @@ một hàng, tab Note), **Generate** (tab Text, cạnh phần chọn field), và
 
 - Điều kiện hiển thị: Luôn hiện; vô hiệu khi không có note markdown đang mở
 - Action: Đọc frontmatter + content → Gọi AnkiConnect addNote/updateNoteFields → Lưu anki_note_id vào frontmatter
+  (Anki đã bị sửa từ lần sync trước → hỏi, xem `01-sync.md` §1.1)
+- **Tên note theo Main Field:** sau mỗi lần Sync thành công (đẩy lên, Keep Obsidian version, Use
+  Anki version, cả Auto Sync on Save), file note được đổi tên thành
+  `noteFilename(<dòng đầu không rỗng của section Main Field, bỏ tag HTML>)` — giữ nguyên giá trị
+  (khoảng trắng, ký tự đặc biệt); ký tự file/link không chứa được như `?` `:` `/` đổi sang bản full-width `？` `：` `／` (`../contracts.md` §5); cùng quy tắc
+  đặt tên lúc tạo note (§3.7) — qua `fileManager.renameFile` (link tới note được cập nhật theo).
+  Giữ nguyên tên khi: chưa chọn Main Field cho cặp Deck+Model, section Main Field rỗng/không có,
+  hoặc tên đã đúng (kể cả dạng có hậu tố trùng tên `word 1`). Trùng tên note khác → thêm hậu tố
+  số như §3.7 bước 5. Đổi tên lỗi không làm Sync thất bại: toast "❌ Synced, but couldn't rename
+  the note: …". Code: `syncNoteName`, `src/note/noteName.ts`
 - Visual feedback: "⏳ Processing..." → "✅ Done!" trong 2 giây (lỗi: "❌ Error" 3 giây, kèm toast)
 
 **Rebuild Button** (icon `hammer`):
@@ -256,9 +266,8 @@ khác biệt duy nhất so với §7.3: filename lấy từ text đã bôi đen 
 
 1. User bôi đen text trong note markdown đang mở.
 2. Bấm hotkey đã gán cho command `create-note-from-selection`.
-3. Plugin tính filename = `sanitizeForFilename(selectedText)` + `.md` (tái dùng hàm từ
-   `../contracts.md` §5 — vốn trước đây chỉ dùng cho tên file media, nay dùng chung cho
-   tên note).
+3. Plugin tính filename = `noteFilename(selectedText)` + `.md` (`../contracts.md` §5 — giữ
+   nguyên text kể cả khoảng trắng; khác `sanitizeForFilename` dành cho file media).
 4. Plugin lấy Deck/Model/Folder từ profile đang chọn (không có ô nhập tên note — tên đã có
    từ text bôi đen):
     - **Profile có cả Deck và Model** → tạo note ngay, sang bước 5.

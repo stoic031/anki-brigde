@@ -5,14 +5,26 @@
 
 ## 1.1. Chức năng chính
 
-- **Sync 1 chiều (Obsidian → Anki):** Tạo/cập nhật thẻ Anki từ note Obsidian
-- **ID Mapping:** Quản lý `anki_note_id` trong frontmatter
+- **Sync Obsidian → Anki:** Tạo/cập nhật thẻ Anki từ note Obsidian
+- **Phát hiện sửa trên Anki + hỏi (sync 2 chiều):** Sync không ghi đè âm thầm nội dung đã sửa trên Anki
+- **ID Mapping:** Quản lý `anki_note_id` + `anki_mod` trong frontmatter
 - **Dynamic Field Mapping:** Tự động map content sang Anki fields dựa trên Model được chọn
 
-> **Không có Conflict Resolution ở M1-2.** Sync là một chiều tuyệt đối: mỗi lần bấm
-> "🔄 Sync", plugin ghi đè fields trên Anki bằng content hiện tại trong Obsidian. Plugin
-> không bao giờ đọc field content ngược lại từ Anki, nên sửa trực tiếp trên Anki sẽ mất
-> khi note được sync lại. Xem `docs/design-open-questions.md` lịch sử cho lý do.
+**Phát hiện sửa trên Anki.** Sau mỗi lần plugin ghi (tạo/cập nhật/kéo về), frontmatter lưu
+`anki_mod` = `mod` (giây) của note trong `notesInfo`. Trước khi `updateNoteFields`, Sync đọc
+`notesInfo`; coi là **xung đột** khi fields trên Anki khác fields sắp gửi (so sau khi trim)
+**và** (`mod` > `anki_mod` **hoặc** chưa có `anki_mod` — note sync bởi bản cũ). Sửa chỉ tag
+hay ôn thẻ không tính vì fields vẫn giống. Note đã bị xoá trên Anki (notesInfo rỗng) → không
+phải xung đột, đi đường "Note not found" như cũ.
+
+Khi xung đột:
+- **Nút Sync:** modal "Note changed in Anki" với 3 lựa chọn — **Keep Obsidian version** (sync
+  lại, bỏ qua kiểm tra, ghi đè Anki), **Use Anki version** (kéo về, xem §1.3), **Cancel** (không
+  ghi gì; Esc/× cũng là Cancel; toast lỗi xung đột).
+- **Auto Sync on Save:** không tự quyết, không ghi gì — toast "❌ This note was edited in Anki
+  since the last sync. Use the Sync button to resolve."
+
+Không merge theo từng field: một lần chọn áp cho cả note.
 
 ## 1.2. Cấu trúc Note
 
@@ -24,6 +36,7 @@ anki_note_id: 1698765432109
 anki_deck: 'Japanese::N2'
 anki_model: 'Basic (and reversed card)'
 last_synced: 2023-10-27T10:30:00Z # display-only, does not drive sync logic
+anki_mod: 1698765432 # Anki note mod at the last push/pull — detects edits made in Anki
 tags: [vocabulary, medical]
 ---
 ```
@@ -84,6 +97,22 @@ Obsidian Note (.md)
     ↓
 [4] Hiển thị toast: "✅ Synced successfully"
 ```
+
+**Kéo về (Use Anki version)** — `pullNote`, `src/sync/syncEngine.ts`:
+
+1. `notesInfo` lấy fields Anki; note đã bị xoá → toast "Note not found in Anki. Sync it again
+   to recreate it.", không sửa note.
+2. Chạy lại field mapping (§1.5) trên note hiện tại để biết field nào lấy từ section nào
+   (`sources`), rồi thay **thân** section đó (giữ heading) bằng giá trị field. Section không
+   map field nào giữ nguyên.
+3. HTML → Markdown cơ bản (`src/sync/ankiHtml.ts`): `<br>`, `<div>` → xuống dòng; decode
+   `&nbsp; &amp; &lt; &gt; &quot; &#39;`; gộp ≥ 3 dòng trống; `[sound:]`, `<img>` và mọi tag
+   khác giữ nguyên (Obsidian render HTML). Section dạng bullet list giữ dạng list: mỗi dòng
+   thành `- item`.
+4. Field Anki có nội dung nhưng note không có section tương ứng → không bỏ âm thầm: một
+   toast "⚠️ N Anki field(s) have no section in this note: X, Y".
+5. Ghi `anki_mod` = `mod` vừa đọc; toast "✅ Note updated from Anki!".
+6. Tên file note đổi theo Main Field (như mọi lần Sync, `03-note.md` §3.2).
 
 ## 1.4. AnkiConnect API Calls
 
@@ -159,7 +188,9 @@ bỏ qua âm thầm**: gộp lại và hiển thị **một** warning duy nhất
 > hiển thị cho user trong code luôn viết bằng tiếng Anh.
 
 - **AnkiConnect offline:** Hiển thị modal "Anki is not running. Please start Anki and AnkiConnect."
-- **Note not found in Anki:** Xóa `anki_note_id` trong frontmatter, tạo note mới
+- **Note not found in Anki:** Xóa `anki_note_id` (và `anki_mod`) trong frontmatter, tạo note mới
+- **Note bị sửa trên Anki từ lần sync trước:** modal/toast "This note was edited in Anki since
+  the last sync." — xem §1.1
 - **Duplicate note:** Hiển thị toast "Note already exists in Anki"
 - **Parse error:** Hiển thị toast "Cannot parse note content. Please check format."
 - **Model not found:** Hiển thị toast "Model not found in Anki. Please select it again."

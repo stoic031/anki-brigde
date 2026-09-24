@@ -94,14 +94,19 @@ export class AnkiConnectClient {
 		});
 	}
 
-	// Current field values of one note, keyed by field name.
-	async noteFields(noteId: number): Promise<Record<string, string>> {
+	// Current field values of one note, keyed by field name, plus its `mod` (seconds).
+	async noteInfo(
+		noteId: number,
+	): Promise<{ fields: Record<string, string>; mod: number }> {
 		const [info] = await this.invoke<
-			{ fields?: Record<string, { value: string }> }[]
+			{ fields?: Record<string, { value: string }>; mod?: number }[]
 		>('notesInfo', { notes: [noteId] });
-		return Object.fromEntries(
-			Object.entries(info?.fields ?? {}).map(([k, f]) => [k, f.value]),
-		);
+		return {
+			fields: Object.fromEntries(
+				Object.entries(info?.fields ?? {}).map(([k, f]) => [k, f.value]),
+			),
+			mod: info?.mod ?? 0,
+		};
 	}
 
 	async deleteNotes(noteIds: number[]): Promise<void> {

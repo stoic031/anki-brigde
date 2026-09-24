@@ -145,8 +145,8 @@
     "semantic_hash": ""
   },
   "docs/contracts.md": {
-    "mtime": 1790272517.0604293,
-    "ast_hash": "9fafc918d0c6748af8955a52370ee3aa",
+    "mtime": 1790272292.7541425,
+    "ast_hash": "0f096c9ed50f46d08fcd384f81d163be",
     "semantic_hash": ""
   },
   "docs/design-open-questions.md": {
@@ -165,8 +165,8 @@
     "semantic_hash": ""
   },
   "docs/design/03-note.md": {
-    "mtime": 1790272517.0607154,
-    "ast_hash": "e40e961b53fdaf60586f18ee8b1da94c",
+    "mtime": 1790272292.7544913,
+    "ast_hash": "be5b5558b522c571c611ea443b6e433f",
     "semantic_hash": ""
   },
   "docs/design/05-ui.md": {
@@ -390,8 +390,8 @@
     "semantic_hash": ""
   },
   "src/note/quickCapture.test.ts": {
-    "mtime": 1790272517.0602088,
-    "ast_hash": "2c6bb03b9757d4b56ca1c0a418c17bcc",
+    "mtime": 1790272273.3455465,
+    "ast_hash": "25c0f6c262e9f7e4020b9ea01d2eedf0",
     "semantic_hash": ""
   },
   "src/note/quickCapture.ts": {
@@ -855,13 +855,13 @@
     "semantic_hash": ""
   },
   "src/note/noteName.test.ts": {
-    "mtime": 1790272517.060046,
-    "ast_hash": "021a19cbfcdc8121d7b4435895e985ab",
+    "mtime": 1790272273.345749,
+    "ast_hash": "13b92c31b72d83b82ae5d87ce8e1baf4",
     "semantic_hash": ""
   },
   "src/note/noteName.ts": {
-    "mtime": 1790272517.0598614,
-    "ast_hash": "e3790c82b80f77955f7ac51d16fbcb81",
+    "mtime": 1790272273.3447251,
+    "ast_hash": "4e22a1a7248be597379a29f43d03dce5",
     "semantic_hash": ""
   }
 }
