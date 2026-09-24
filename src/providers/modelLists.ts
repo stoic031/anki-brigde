@@ -1,5 +1,5 @@
 import { ProviderError } from '../types';
-import { requestJson } from './text/http';
+import { badShape, obj, requestJson, trimSlash } from './http';
 
 export type ModelKind = 'text' | 'image';
 
@@ -25,11 +25,6 @@ const get = (id: string, url: string, headers: Record<string, string>) =>
 	requestJson('GET', id, url, headers, undefined, LIST_TIMEOUT_MS);
 const bearer = (key: string): Record<string, string> =>
 	key ? { Authorization: `Bearer ${key}` } : {};
-const shape = (id: string, url: string) =>
-	new ProviderError(id, `unexpected response shape from ${url}`);
-const trim = (url: string) => url.replace(/\/+$/, '');
-const obj = (v: unknown): Record<string, unknown> =>
-	typeof v === 'object' && v !== null ? (v as Record<string, unknown>) : {};
 
 // docs/design/06-settings.md §6.2 — how each fixed provider reports its models.
 type Fetcher = (baseUrl: string, key: string) => Promise<Entry[]>;
@@ -38,10 +33,10 @@ type Fetcher = (baseUrl: string, key: string) => Promise<Entry[]>;
 const openAiStyle =
 	(id: string, stripPrefix = ''): Fetcher =>
 	async (baseUrl, key) => {
-		const url = `${trim(baseUrl)}/models`;
+		const url = `${trimSlash(baseUrl)}/models`;
 		const data = await get(id, url, bearer(key));
 		const items = Array.isArray(data) ? data : obj(data).data;
-		if (!Array.isArray(items)) throw shape(id, url);
+		if (!Array.isArray(items)) throw badShape(id, url);
 		return items.flatMap((m: unknown) => {
 			const row = obj(m);
 			if (typeof row.id !== 'string' || row.id === '') return [];
@@ -72,27 +67,27 @@ const FETCHERS: Record<string, Fetcher> = {
 	// a different shape and doesn't take a Bearer key, so both list through the compat endpoint.
 	gemini: (baseUrl, key) =>
 		openAiStyle('gemini', 'models/')(
-			`${trim(baseUrl).replace(/\/openai$/, '')}/openai`,
+			`${trimSlash(baseUrl).replace(/\/openai$/, '')}/openai`,
 			key,
 		),
 
 	anthropic: async (baseUrl, key) => {
-		const url = `${trim(baseUrl)}/v1/models?limit=1000`;
+		const url = `${trimSlash(baseUrl)}/v1/models?limit=1000`;
 		const data = await get('anthropic', url, {
 			'x-api-key': key,
 			'anthropic-version': '2023-06-01',
 		});
 		const items = obj(data).data;
-		if (!Array.isArray(items)) throw shape('anthropic', url);
+		if (!Array.isArray(items)) throw badShape('anthropic', url);
 		return items.flatMap((m: unknown) =>
 			typeof obj(m).id === 'string' ? [{ id: obj(m).id as string }] : [],
 		);
 	},
 
 	ollama: async (host) => {
-		const url = `${trim(host)}/api/tags`;
+		const url = `${trimSlash(host)}/api/tags`;
 		const items = obj(await get('ollama', url, {})).models;
-		if (!Array.isArray(items)) throw shape('ollama', url);
+		if (!Array.isArray(items)) throw badShape('ollama', url);
 		return items.flatMap((m: unknown) =>
 			typeof obj(m).name === 'string'
 				? [{ id: obj(m).name as string }]
@@ -103,9 +98,9 @@ const FETCHERS: Record<string, Fetcher> = {
 	// The old image.pollinations.ai/models now lists a single model; gen.pollinations.ai/image/models
 	// is the current catalogue (image and video, official and community entries).
 	pollinations: async (baseUrl, key) => {
-		const url = `${trim(baseUrl)}/image/models`;
+		const url = `${trimSlash(baseUrl)}/image/models`;
 		const data = await get('pollinations', url, bearer(key));
-		if (!Array.isArray(data)) throw shape('pollinations', url);
+		if (!Array.isArray(data)) throw badShape('pollinations', url);
 		return data.flatMap((m: unknown): Entry[] => {
 			const row = obj(m);
 			const name = typeof m === 'string' ? m : row.name;
@@ -134,9 +129,9 @@ const FETCHERS: Record<string, Fetcher> = {
 	},
 
 	automatic1111: async (baseUrl) => {
-		const url = `${trim(baseUrl)}/sdapi/v1/sd-models`;
+		const url = `${trimSlash(baseUrl)}/sdapi/v1/sd-models`;
 		const data = await get('automatic1111', url, {});
-		if (!Array.isArray(data)) throw shape('automatic1111', url);
+		if (!Array.isArray(data)) throw badShape('automatic1111', url);
 		return data.flatMap((m: unknown) =>
 			typeof obj(m).model_name === 'string' && obj(m).model_name !== ''
 				? [{ id: obj(m).model_name as string }]

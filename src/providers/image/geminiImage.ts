@@ -1,7 +1,6 @@
 import type { ProviderConfig } from '../providerManager';
 import type { ImageProvider } from '../types';
-import { IMAGE_TIMEOUT_MS, postJson } from '../text/http';
-import { str } from '../text/openaiCompatible';
+import { IMAGE_TIMEOUT_MS, postJson, str, trimSlash } from '../http';
 import { media, noImage } from './media';
 
 interface Part {
@@ -11,7 +10,7 @@ interface Part {
 // Native generateContent (…/v1beta), not the OpenAI-compatible endpoint: Gemini image
 // models return the picture as an inlineData part next to optional text.
 export function createGeminiImage(config: ProviderConfig): ImageProvider {
-	const baseUrl = str(config.baseUrl).replace(/\/+$/, '');
+	const baseUrl = trimSlash(str(config.baseUrl));
 	const model = str(config.model).replace(/^models\//, '');
 	const apiKey = str(config.apiKey).trim();
 	const id = 'gemini-image';

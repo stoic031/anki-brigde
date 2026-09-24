@@ -1,8 +1,7 @@
 import { Notice } from 'obsidian';
-import { noteFilename } from './noteName';
+import { getUniqueNotePath, noteFilename } from './noteName';
 import { generateContentSkeleton } from './contentTemplate';
 import {
-	getUniqueNotePath,
 	openPluginSettings,
 	resolveMainField,
 	resolveQuickCaptureTarget,

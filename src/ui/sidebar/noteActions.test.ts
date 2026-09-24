@@ -46,12 +46,22 @@ const { deleteModal, rebuildModal } = vi.hoisted(() => ({
 		open: vi.fn(),
 	},
 }));
-vi.mock('../modals/confirmDelete', () => ({
-	ConfirmDeleteModal: class {
-		constructor(_app: unknown, onConfirm: () => void) {
-			deleteModal.onConfirm = onConfirm;
+vi.mock('../modals/confirm', () => ({
+	DELETE_COPY: { button: 'Delete' },
+	REBUILD_COPY: { button: 'Rebuild' },
+	ConfirmModal: class {
+		private modal: typeof deleteModal;
+		constructor(
+			_app: unknown,
+			copy: { button: string },
+			onConfirm: () => void,
+		) {
+			this.modal = copy.button === 'Delete' ? deleteModal : rebuildModal;
+			this.modal.onConfirm = onConfirm;
 		}
-		open = deleteModal.open;
+		open = () => {
+			this.modal.open();
+		};
 	},
 }));
 const { conflictModal } = vi.hoisted(() => ({
@@ -67,14 +77,6 @@ vi.mock('../modals/syncConflict', () => ({
 			conflictModal.open();
 			this.onChoice(conflictModal.choice);
 		};
-	},
-}));
-vi.mock('../modals/confirmRebuildFields', () => ({
-	ConfirmRebuildFieldsModal: class {
-		constructor(_app: unknown, onConfirm: () => void) {
-			rebuildModal.onConfirm = onConfirm;
-		}
-		open = rebuildModal.open;
 	},
 }));
 
@@ -218,7 +220,11 @@ describe('Sync button', () => {
 
 		await sync.click();
 
-		expect(syncNoteName).toHaveBeenCalledWith(expect.anything(), note, 'Front');
+		expect(syncNoteName).toHaveBeenCalledWith(
+			expect.anything(),
+			note,
+			'Front',
+		);
 	});
 
 	it('shows a SyncError’s own message, then restores after 3s', async () => {
@@ -312,7 +318,9 @@ describe('Sync button — note edited in Anki', () => {
 
 	it('Use Anki version pulls and surfaces its warning', async () => {
 		syncNote.mockRejectedValueOnce(conflict);
-		pullNote.mockResolvedValue('1 Anki field has no section in this note: Back');
+		pullNote.mockResolvedValue(
+			'1 Anki field has no section in this note: Back',
+		);
 		conflictModal.choice = 'anki';
 		const { sync } = setup();
 
@@ -324,7 +332,11 @@ describe('Sync button — note edited in Anki', () => {
 		expect(toastError).toHaveBeenCalledWith(
 			'⚠️ 1 Anki field has no section in this note: Back',
 		);
-		expect(syncNoteName).toHaveBeenCalledWith(expect.anything(), note, 'Front');
+		expect(syncNoteName).toHaveBeenCalledWith(
+			expect.anything(),
+			note,
+			'Front',
+		);
 		expect(toastSuccess).toHaveBeenCalledWith('✅ Note updated from Anki!');
 	});
 

@@ -11,12 +11,6 @@ export interface AnkiFrontmatter {
 // §2 Parsed note
 export type SectionValue = string | string[]; // list sections (lines starting with '-') are string[]; everything else is string
 
-export interface ParsedNote {
-	frontmatter: AnkiFrontmatter;
-	sections: Map<string, SectionValue>; // key = normalized heading (lowercased, trimmed)
-	raw: string;
-}
-
 // §3 Field mapping
 export interface FieldMappingResult {
 	fields: Record<string, string>;

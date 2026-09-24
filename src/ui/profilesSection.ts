@@ -66,6 +66,7 @@ export function renderProfilesSection(
 			.addButton((button) =>
 				button
 					.setButtonText('Delete')
+					// eslint-disable-next-line @typescript-eslint/no-deprecated -- setDestructive() is 1.13.0+, above minAppVersion
 					.setWarning()
 					.setDisabled(settings.profiles.length <= 1)
 					.onClick(() => {

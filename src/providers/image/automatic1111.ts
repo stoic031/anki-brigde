@@ -1,13 +1,18 @@
 import type { ProviderConfig } from '../providerManager';
 import type { ImageProvider } from '../types';
-import { IMAGE_TIMEOUT_MS, postJson } from '../text/http';
-import { isLocalUrl, str } from '../text/openaiCompatible';
+import {
+	IMAGE_TIMEOUT_MS,
+	isLocalUrl,
+	postJson,
+	str,
+	trimSlash,
+} from '../http';
 import { media, noImage } from './media';
 
 // Stable Diffusion WebUI API (started with --api). An empty model keeps whatever
 // checkpoint is loaded.
 export function createAutomatic1111(config: ProviderConfig): ImageProvider {
-	const baseUrl = str(config.baseUrl).replace(/\/+$/, '');
+	const baseUrl = trimSlash(str(config.baseUrl));
 	const model = str(config.model);
 	const id = 'automatic1111';
 	const url = `${baseUrl}/sdapi/v1/txt2img`;

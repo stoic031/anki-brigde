@@ -60,9 +60,6 @@ export async function resolveMainField(
 	return target.mainField;
 }
 
-// Lives in noteName.ts (sync renames notes too); re-exported for existing callers.
-export { getUniqueNotePath };
-
 interface AppWithSettingTab {
 	setting: { open: () => void; openTabById: (id: string) => void };
 }

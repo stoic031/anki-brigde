@@ -29,7 +29,9 @@ export class NoteNameModal extends Modal {
 			});
 		});
 		new Setting(this.contentEl)
-			.addButton((btn) => btn.setButtonText('Cancel').onClick(() => this.close()))
+			.addButton((btn) =>
+				btn.setButtonText('Cancel').onClick(() => this.close()),
+			)
 			.addButton((btn) =>
 				btn
 					.setButtonText('Create')

@@ -21,12 +21,19 @@ export class SyncConflictModal extends Modal {
 			text: 'This note was edited in Anki since the last sync. Which version do you want to keep?',
 		});
 		new Setting(this.contentEl)
-			.addButton((btn) => btn.setButtonText('Cancel').onClick(() => this.choose(null)))
-			.addButton((btn) => btn.setButtonText('Use Anki version').onClick(() => this.choose('anki')))
+			.addButton((btn) =>
+				btn.setButtonText('Cancel').onClick(() => this.choose(null)),
+			)
+			.addButton((btn) =>
+				btn
+					.setButtonText('Use Anki version')
+					.onClick(() => this.choose('anki')),
+			)
 			.addButton((btn) =>
 				btn
 					.setButtonText('Keep Obsidian version')
-					// Overwrites the Anki edits. setWarning(): see confirmDelete.ts.
+					// Overwrites the Anki edits.
+					// eslint-disable-next-line @typescript-eslint/no-deprecated -- setDestructive() is 1.13.0+, above minAppVersion
 					.setWarning()
 					.onClick(() => this.choose('obsidian')),
 			);

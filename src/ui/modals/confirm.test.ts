@@ -71,9 +71,9 @@ vi.mock('obsidian', () => ({
 	},
 }));
 
-import { ConfirmDeleteModal } from './confirmDelete';
+import { ConfirmModal, DELETE_COPY, REBUILD_COPY } from './confirm';
 
-describe('ConfirmDeleteModal', () => {
+describe.each([DELETE_COPY, REBUILD_COPY])('ConfirmModal: $button', (copy) => {
 	beforeEach(() => {
 		settings.length = 0;
 		modalState.title = '';
@@ -82,7 +82,7 @@ describe('ConfirmDeleteModal', () => {
 	});
 
 	function openModal(onConfirm: () => void) {
-		const modal = new ConfirmDeleteModal({} as never, onConfirm);
+		const modal = new ConfirmModal({} as never, copy, onConfirm);
 		modal.onOpen();
 		return modal;
 	}
@@ -90,17 +90,15 @@ describe('ConfirmDeleteModal', () => {
 	it('sets the title and body copy', () => {
 		openModal(vi.fn());
 
-		expect(modalState.title).toBe('Delete note from Anki?');
-		expect(modalState.texts).toContain(
-			'This will permanently delete the note from Anki. This cannot be undone.',
-		);
+		expect(modalState.title).toBe(copy.title);
+		expect(modalState.texts).toContain(copy.text);
 	});
 
-	it('renders Cancel and a warning-styled Delete button', () => {
+	it('renders Cancel and a warning-styled confirm button', () => {
 		openModal(vi.fn());
 
 		const [buttons] = settings.map((s) => s.buttonComponents);
-		expect(buttons?.map((b) => b.text)).toEqual(['Cancel', 'Delete']);
+		expect(buttons?.map((b) => b.text)).toEqual(['Cancel', copy.button]);
 		expect(buttons?.[1]?.warning).toBe(true);
 	});
 
@@ -115,7 +113,7 @@ describe('ConfirmDeleteModal', () => {
 		expect(onConfirm).not.toHaveBeenCalled();
 	});
 
-	it('closes and calls onConfirm when Delete is clicked', async () => {
+	it('closes and calls onConfirm when the confirm button is clicked', async () => {
 		const onConfirm = vi.fn();
 		openModal(onConfirm);
 

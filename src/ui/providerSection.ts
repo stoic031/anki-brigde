@@ -73,6 +73,7 @@ export function renderProviderSection<C extends AnyProviderConfig>(
 			.addButton((button) =>
 				button
 					.setButtonText('Delete')
+					// eslint-disable-next-line @typescript-eslint/no-deprecated -- setDestructive() is 1.13.0+, above minAppVersion
 					.setWarning()
 					.setDisabled(!active)
 					.onClick(async () => {

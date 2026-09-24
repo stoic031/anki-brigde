@@ -1,13 +1,12 @@
 import type { ProviderConfig } from '../providerManager';
 import type { ImageProvider } from '../types';
-import { IMAGE_TIMEOUT_MS, postJson } from '../text/http';
-import { str } from '../text/openaiCompatible';
+import { IMAGE_TIMEOUT_MS, postJson, str, trimSlash } from '../http';
 import { fromDataUrl, noImage } from './media';
 
 // OpenRouter image models answer through chat/completions with `modalities`, the
 // picture coming back as a data URL in message.images.
 export function createOpenRouterImage(config: ProviderConfig): ImageProvider {
-	const baseUrl = str(config.baseUrl).replace(/\/+$/, '');
+	const baseUrl = trimSlash(str(config.baseUrl));
 	const model = str(config.model);
 	const apiKey = str(config.apiKey).trim();
 	const id = 'openrouter-image';

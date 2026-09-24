@@ -1,8 +1,6 @@
-import { ProviderError } from '../../types';
 import type { ProviderConfig } from '../providerManager';
 import type { TextProvider } from '../types';
-import { postJson } from './http';
-import { isLocalUrl, str } from './openaiCompatible';
+import { badShape, isLocalUrl, postJson, str } from '../http';
 import { runText } from './runText';
 
 const DEFAULT_BASE_URL = 'https://api.anthropic.com';
@@ -33,10 +31,7 @@ export function createAnthropic(config: ProviderConfig): TextProvider {
 		const text = (data as { content?: { text?: unknown }[] }).content?.[0]
 			?.text;
 		if (typeof text !== 'string') {
-			throw new ProviderError(
-				id,
-				`unexpected response shape from ${url}`,
-			);
+			throw badShape(id, url);
 		}
 		return text;
 	}

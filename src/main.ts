@@ -76,6 +76,4 @@ export default class AnkiBridgePlugin extends Plugin {
 		await this.saveSettings();
 		this.app.workspace.trigger(PROFILE_CHANGED_EVENT);
 	}
-
-	onunload(): void {}
 }

@@ -1,8 +1,7 @@
 import { Setting, type DropdownComponent } from 'obsidian';
 import type AnkiBridgePlugin from '../../main';
-import { fieldConfigKey, resolveAnkiConnectUrl } from '../../settings';
-import { AnkiConnectClient } from '../../sync/ankiConnect';
-import { toastError } from '../toast';
+import { fieldConfigKey } from '../../settings';
+import { loadFields } from './loadFields';
 
 export interface MainFieldControl {
 	// Called whenever the active note's Deck+Model may have changed. Only re-fetches
@@ -42,18 +41,8 @@ export function renderMainFieldDropdown(
 				return;
 			}
 
-			let fields: string[];
-			try {
-				const client = new AnkiConnectClient(
-					resolveAnkiConnectUrl(plugin.settings),
-				);
-				fields = await client.modelFieldNames(model);
-			} catch {
-				toastError(
-					'❌ Failed to load fields. Please check Anki connection.',
-				);
-				return;
-			}
+			const fields = await loadFields(plugin, model);
+			if (!fields) return;
 			// The note changed while fields were loading — a newer sync owns the dropdown.
 			if (renderedKey !== key) return;
 

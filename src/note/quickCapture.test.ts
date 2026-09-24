@@ -40,11 +40,11 @@ vi.mock('../ui/sidebarView', () => ({ revealSidebarView }));
 import {
 	getQuickCaptureFilename,
 	getSelectedText,
-	getUniqueNotePath,
 	resolveMainField,
 	resolveQuickCaptureTarget,
 	runQuickCapture,
 } from './quickCapture';
+import { getUniqueNotePath } from './noteName';
 
 afterEach(() => {
 	vi.clearAllMocks();

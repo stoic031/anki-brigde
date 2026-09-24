@@ -1,5 +1,6 @@
 import { requestUrl } from 'obsidian';
 import { AnkiConnectError } from '../types';
+import { TimeoutError, withTimeout } from '../utils/timeout';
 
 interface AnkiConnectResponse<T> {
 	result: T;
@@ -16,20 +17,9 @@ export class AnkiConnectClient {
 		action: string,
 		params: Record<string, unknown> = {},
 	): Promise<T> {
-		// requestUrl (not fetch) — bypasses CORS restrictions fetch hits in Obsidian's
-		// renderer, and requestUrl has no built-in timeout, so we race one ourselves.
-		const timeoutError = new Error('timeout');
-		let timer: ReturnType<typeof window.setTimeout> | undefined;
-		const timeout = new Promise<never>((_, reject) => {
-			timer = window.setTimeout(
-				() => reject(timeoutError),
-				this.timeoutMs,
-			);
-		});
-
 		let text: string;
 		try {
-			const response = await Promise.race([
+			const response = await withTimeout(
 				requestUrl({
 					url: this.url,
 					method: 'POST',
@@ -37,11 +27,11 @@ export class AnkiConnectClient {
 					body: JSON.stringify({ action, version: 6, params }),
 					throw: false,
 				}),
-				timeout,
-			]);
+				this.timeoutMs,
+			);
 			text = response.text;
 		} catch (err) {
-			if (err === timeoutError) {
+			if (err instanceof TimeoutError) {
 				throw new AnkiConnectError(
 					action,
 					`timed out after ${this.timeoutMs}ms`,
@@ -51,8 +41,6 @@ export class AnkiConnectClient {
 				action,
 				'could not reach AnkiConnect — is Anki running?',
 			);
-		} finally {
-			window.clearTimeout(timer);
 		}
 
 		let data: AnkiConnectResponse<T>;
@@ -103,7 +91,10 @@ export class AnkiConnectClient {
 		>('notesInfo', { notes: [noteId] });
 		return {
 			fields: Object.fromEntries(
-				Object.entries(info?.fields ?? {}).map(([k, f]) => [k, f.value]),
+				Object.entries(info?.fields ?? {}).map(([k, f]) => [
+					k,
+					f.value,
+				]),
 			),
 			mod: info?.mod ?? 0,
 		};
@@ -129,12 +120,12 @@ export class AnkiConnectClient {
 		return this.invoke<number>('version');
 	}
 
-	// Returns the filename Anki actually stored under (it renames on a collision).
 	// Raw base64 of a file in Anki's media folder; false when there is no such file.
 	async retrieveMediaFile(filename: string): Promise<string | false> {
 		return this.invoke<string | false>('retrieveMediaFile', { filename });
 	}
 
+	// Returns the filename Anki actually stored under (it renames on a collision).
 	async storeMediaFile(
 		filename: string,
 		base64Data: string,

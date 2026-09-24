@@ -5,18 +5,13 @@ import {
 	generateDraft,
 	planGenerate,
 } from '../../note/generateFields';
-import {
-	examplesKey,
-	fieldConfigKey,
-	rememberExample,
-	resolveAnkiConnectUrl,
-} from '../../settings';
-import { AnkiConnectClient } from '../../sync/ankiConnect';
+import { examplesKey, fieldConfigKey, rememberExample } from '../../settings';
 import { AnkiConnectError, ProviderError } from '../../types';
 import { toastError, toastSuccess } from '../toast';
 import { createActionButton, runAction } from './actionButton';
 import { startProgressNotice } from './progressNotice';
 import { renderPromptBox } from './promptBox';
+import { loadFields } from './loadFields';
 
 export interface TextTab {
 	// Called whenever the active note's Deck+Model may have changed. Only re-fetches the
@@ -317,18 +312,8 @@ export function renderTextTab(
 			return;
 		}
 
-		let fields: string[];
-		try {
-			const client = new AnkiConnectClient(
-				resolveAnkiConnectUrl(plugin.settings),
-			);
-			fields = await client.modelFieldNames(model);
-		} catch {
-			toastError(
-				'❌ Failed to load fields. Please check Anki connection.',
-			);
-			return;
-		}
+		const fields = await loadFields(plugin, model);
+		if (!fields) return;
 		// The note changed while fields were loading — a newer sync owns the list.
 		if (renderedKey !== key) return;
 

@@ -82,7 +82,11 @@ describe('DeckModelChangeWarningModal', () => {
 	});
 
 	function openModal(onKeepOld: () => void, onUpdate: () => void) {
-		const modal = new DeckModelChangeWarningModal({} as never, onKeepOld, onUpdate);
+		const modal = new DeckModelChangeWarningModal(
+			{} as never,
+			onKeepOld,
+			onUpdate,
+		);
 		modal.onOpen();
 		return modal;
 	}

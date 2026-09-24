@@ -390,7 +390,10 @@ describe('renderImageTab', () => {
 		it('surfaces a thrown ProviderError from building the image provider', async () => {
 			const { ProviderError } = await import('../../types');
 			planAddImage.mockRejectedValue(
-				new ProviderError('comfyui', 'no adapter for this provider type'),
+				new ProviderError(
+					'comfyui',
+					'no adapter for this provider type',
+				),
 			);
 			const { addImage } = await ready();
 
@@ -418,7 +421,10 @@ describe('renderImageTab', () => {
 		it('shows an unrecognized AnkiConnectError’s own message instead of the generic one', async () => {
 			const { AnkiConnectError } = await import('../../types');
 			planAddImage.mockRejectedValue(
-				new AnkiConnectError('modelFieldNames', 'some Anki-side message'),
+				new AnkiConnectError(
+					'modelFieldNames',
+					'some Anki-side message',
+				),
 			);
 			const { addImage } = await ready();
 

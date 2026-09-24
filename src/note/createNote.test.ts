@@ -42,8 +42,11 @@ const {
 vi.mock('./quickCapture', () => ({
 	resolveQuickCaptureTarget,
 	resolveMainField,
-	getUniqueNotePath,
 	openPluginSettings,
+}));
+vi.mock('./noteName', async (importOriginal) => ({
+	...(await importOriginal<typeof import('./noteName')>()),
+	getUniqueNotePath,
 }));
 
 const { NoteNameModal, submitNoteName, resetCapturedSubmit } = vi.hoisted(

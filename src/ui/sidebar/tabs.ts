@@ -22,7 +22,10 @@ export function renderTabs(
 			const active = tab.id === id;
 			buttons[tab.id]?.toggleClass('is-active', active);
 			buttons[tab.id]?.setAttr('aria-selected', String(active));
-			panels[tab.id]?.toggleClass('anki-bridge-sidebar__panel--hidden', !active);
+			panels[tab.id]?.toggleClass(
+				'anki-bridge-sidebar__panel--hidden',
+				!active,
+			);
 		}
 	};
 

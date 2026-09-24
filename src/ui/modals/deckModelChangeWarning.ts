@@ -28,9 +28,7 @@ export class DeckModelChangeWarningModal extends Modal {
 			.addButton((btn) =>
 				btn
 					.setButtonText('Update')
-					// setWarning() needs Obsidian 1.13.0+; manifest.json's minAppVersion is
-					// 1.7.2, so this uses the deprecated-but-supported setWarning() instead
-					// (same tradeoff as ConfirmDeleteModal's Delete button).
+					// eslint-disable-next-line @typescript-eslint/no-deprecated -- setDestructive() is 1.13.0+, above minAppVersion
 					.setWarning()
 					.onClick(() => {
 						this.close();
