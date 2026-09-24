@@ -1,4 +1,4 @@
-import { Notice, Setting, type TFile } from 'obsidian';
+import { Menu, Notice, Setting, type TFile } from 'obsidian';
 import type AnkiBridgePlugin from '../../main';
 import {
 	applyGenerated,
@@ -54,26 +54,34 @@ export function renderTextTab(
 	plugin: AnkiBridgePlugin,
 	getNote: () => TFile | null,
 ): TextTab {
-	const header = parent.createDiv({
-		cls: 'anki-bridge-sidebar__section-header',
+	const actionsRow = parent.createDiv({
+		cls: 'anki-bridge-sidebar__actions',
 	});
-	header.createSpan({
-		cls: 'anki-bridge-sidebar__section-title',
-		text: 'Fields to generate with AI',
-	});
-	const generate = createActionButton(header, {
+	const generate = createActionButton(actionsRow, {
 		icon: 'sparkles',
 		label: 'Generate',
 		variant: 'primary',
 	});
-	const write = createActionButton(header, {
+	const write = createActionButton(actionsRow, {
 		icon: 'save',
 		label: 'Write',
 		variant: 'primary',
 	});
+	const addField = createActionButton(actionsRow, {
+		icon: 'plus',
+		label: 'Add field',
+	});
 	generate.el.disabled = true;
 	write.el.disabled = true;
-	const addFieldEl = parent.createDiv();
+	addField.el.disabled = true;
+
+	parent.createDiv({
+		cls: [
+			'anki-bridge-sidebar__section-title',
+			'anki-bridge-sidebar__section-title--block',
+		],
+		text: 'Fields to generate with AI',
+	});
 	const fieldsEl = parent.createDiv({
 		cls: 'anki-bridge-sidebar__field-checkboxes',
 	});
@@ -102,24 +110,12 @@ export function renderTextTab(
 
 	const renderFields = (): void => {
 		fieldsEl.empty();
-		addFieldEl.empty();
 		if (!current.deck || !current.model) return;
 
 		const remaining = allFields.filter(
 			(f) => f !== inputField && !addedFields.includes(f),
 		);
-		new Setting(addFieldEl).addDropdown((dropdown) => {
-			dropdown.addOption('', '+ add field');
-			for (const field of remaining) dropdown.addOption(field, field);
-			dropdown.setValue('');
-			dropdown.setDisabled(remaining.length === 0);
-			dropdown.onChange(async (value) => {
-				if (value === '') return;
-				addedFields.push(value);
-				await persist();
-				renderFields();
-			});
-		});
+		addField.el.disabled = remaining.length === 0;
 
 		for (const field of addedFields) {
 			const row = new Setting(fieldsEl)
@@ -149,6 +145,27 @@ export function renderTextTab(
 			}
 		}
 	};
+
+	// docs/design/07-sidebar.md §7.2.1 — opens a Menu of the fields not yet added
+	// (same list the old dropdown offered), instead of a <select>, so this button can
+	// look like Generate/Write.
+	addField.el.addEventListener('click', (evt) => {
+		if (addField.el.disabled) return;
+		const remaining = allFields.filter(
+			(f) => f !== inputField && !addedFields.includes(f),
+		);
+		const menu = new Menu();
+		for (const field of remaining) {
+			menu.addItem((item) =>
+				item.setTitle(field).onClick(async () => {
+					addedFields.push(field);
+					await persist();
+					renderFields();
+				}),
+			);
+		}
+		menu.showAtMouseEvent(evt);
+	});
 
 	// docs/design/03-note.md §3.2 — checks that don't need the model run first and end in a
 	// plain Notice; only the model call cycles the button through ⏳/✅/❌.
@@ -249,7 +266,7 @@ export function renderTextTab(
 			addedFields = [];
 			drafts = {};
 			fieldsEl.empty();
-			addFieldEl.empty();
+			addField.el.disabled = true;
 			fieldsEl.createEl('p', {
 				cls: 'anki-bridge-sidebar__hint',
 				text: 'Set a Deck and Model above first.',

@@ -3,32 +3,34 @@ import type AnkiBridgePlugin from '../../main';
 import { fieldConfigKey, type AnkiBridgeSettings } from '../../settings';
 import { FakeEl } from '../../test/fakeDom';
 
-class FakeDropdown {
-	options: Record<string, string> = {};
-	optionOrder: string[] = [];
-	value = '';
-	disabled = false;
-	private cb: ((v: string) => unknown) | null = null;
-	addOption(value: string, display: string) {
-		this.options[value] = display;
-		this.optionOrder.push(value);
+class FakeMenuItem {
+	title = '';
+	private cb: (() => unknown) | null = null;
+	setTitle(t: string) {
+		this.title = t;
 		return this;
 	}
-	setValue(v: string) {
-		this.value = v;
-		return this;
-	}
-	setDisabled(d: boolean) {
-		this.disabled = d;
-		return this;
-	}
-	onChange(cb: (v: string) => unknown) {
+	onClick(cb: () => unknown) {
 		this.cb = cb;
 		return this;
 	}
-	async select(v: string) {
-		this.value = v;
-		await this.cb?.(v);
+	async click() {
+		await this.cb?.();
+	}
+}
+
+// "Add field" opens a Menu instead of a <select> — one FakeMenu is created per click;
+// tests grab the latest one via the offeredFields()/addFieldViaMenu() helpers below.
+class FakeMenu {
+	items: FakeMenuItem[] = [];
+	addItem(cb: (item: FakeMenuItem) => unknown) {
+		const item = new FakeMenuItem();
+		cb(item);
+		this.items.push(item);
+		return this;
+	}
+	showAtMouseEvent() {
+		return this;
 	}
 }
 
@@ -74,16 +76,10 @@ class FakeTextArea {
 
 class FakeSetting {
 	name = '';
-	dropdown?: FakeDropdown;
 	extraButtons: FakeExtraButton[] = [];
 	textArea?: FakeTextArea;
 	setName(n: string) {
 		this.name = n;
-		return this;
-	}
-	addDropdown(cb: (d: FakeDropdown) => unknown) {
-		this.dropdown = new FakeDropdown();
-		cb(this.dropdown);
 		return this;
 	}
 	addExtraButton(cb: (b: FakeExtraButton) => unknown) {
@@ -99,12 +95,13 @@ class FakeSetting {
 	}
 }
 
-const { Notice, setIcon, settings } = vi.hoisted(() => ({
+const { Notice, setIcon, settings, menus } = vi.hoisted(() => ({
 	Notice: vi.fn(function () {
 		return { hide: vi.fn() };
 	}),
 	setIcon: vi.fn(),
 	settings: [] as FakeSetting[],
+	menus: [] as FakeMenu[],
 }));
 vi.mock('obsidian', () => ({
 	Notice,
@@ -114,6 +111,13 @@ vi.mock('obsidian', () => ({
 			const s = new FakeSetting();
 			settings.push(s);
 			return s;
+		}
+	},
+	Menu: class {
+		constructor() {
+			const m = new FakeMenu();
+			menus.push(m);
+			return m;
 		}
 	},
 }));
@@ -158,16 +162,29 @@ afterEach(() => {
 	vi.unstubAllGlobals();
 	vi.clearAllMocks();
 	settings.length = 0;
+	menus.length = 0;
 });
 
 // Settings are re-created on every render without clearing old ones (they live on a
 // fake, not real DOM) — the freshest one for a given name/kind is always the current
 // render's, same convention as settingsTab.test.ts's `latest()`.
-function latestDropdown(): FakeDropdown | undefined {
-	return [...settings].reverse().find((s) => s.dropdown)?.dropdown;
-}
 function latestRow(name: string): FakeSetting | undefined {
 	return [...settings].reverse().find((s) => s.name === name);
+}
+
+// Clicks "Add field" and returns the field names offered in the Menu that opens.
+async function offeredFields(addField: FakeEl): Promise<string[]> {
+	await addField.click();
+	const menu = menus[menus.length - 1];
+	return menu?.items.map((i) => i.title) ?? [];
+}
+
+// Clicks "Add field", then picks the given field from the Menu that opens.
+async function addFieldViaMenu(addField: FakeEl, field: string): Promise<void> {
+	await addField.click();
+	const menu = menus[menus.length - 1];
+	const item = menu?.items.find((i) => i.title === field);
+	await item?.click();
 }
 
 function setup(overrides: Partial<AnkiBridgeSettings> = {}) {
@@ -189,6 +206,7 @@ function setup(overrides: Partial<AnkiBridgeSettings> = {}) {
 	const actions = parent.byClass('anki-bridge-sidebar__action');
 	const generate = actions[0] as FakeEl;
 	const write = actions[1] as FakeEl;
+	const addField = actions[2] as FakeEl;
 	const fieldsEl = parent.byClass(
 		'anki-bridge-sidebar__field-checkboxes',
 	)[0] as FakeEl;
@@ -199,30 +217,37 @@ function setup(overrides: Partial<AnkiBridgeSettings> = {}) {
 		saveSettings,
 		generate,
 		write,
+		addField,
 		fieldsEl,
 	};
 }
 
 describe('renderTextTab', () => {
-	it('renders the title with Generate and Write buttons (icon + text), both disabled', () => {
-		const { parent, generate, write } = setup();
+	it('renders Generate, Write and Add field on one row (icon + text), all disabled, title below', () => {
+		const { parent, generate, write, addField } = setup();
 
-		const header = parent.byClass('anki-bridge-sidebar__section-header')[0];
-		expect(header?.children.map((c) => c.text || c.tag)).toEqual([
-			'Fields to generate with AI',
+		const row = parent.byClass('anki-bridge-sidebar__actions')[0];
+		expect(row?.children.map((c) => c.tag)).toEqual([
+			'button',
 			'button',
 			'button',
 		]);
 		expect(generate.children[1]?.text).toBe('Generate');
 		expect(write.children[1]?.text).toBe('Write');
+		expect(addField.children[1]?.text).toBe('Add field');
 		expect(setIcon.mock.calls[0]?.[1]).toBe('sparkles');
 		expect(setIcon.mock.calls[1]?.[1]).toBe('save');
+		expect(setIcon.mock.calls[2]?.[1]).toBe('plus');
 		expect(generate.disabled).toBe(true);
 		expect(write.disabled).toBe(true);
+		expect(addField.disabled).toBe(true);
+
+		const title = parent.byClass('anki-bridge-sidebar__section-title')[0];
+		expect(title?.text).toBe('Fields to generate with AI');
 	});
 
-	it('shows a hint and keeps both buttons disabled until the note has Deck and Model', async () => {
-		const { tab, generate, write, fieldsEl } = setup();
+	it('shows a hint and keeps all three buttons disabled until the note has Deck and Model', async () => {
+		const { tab, generate, write, addField, fieldsEl } = setup();
 
 		await tab.sync('Japanese', '');
 
@@ -232,29 +257,35 @@ describe('renderTextTab', () => {
 		);
 		expect(generate.disabled).toBe(true);
 		expect(write.disabled).toBe(true);
+		expect(addField.disabled).toBe(true);
 	});
 
-	it('offers every field but the Main Field to add, and enables both buttons', async () => {
+	it('does nothing when Add field is clicked while disabled', async () => {
+		const { addField } = setup();
+
+		await addField.click();
+
+		expect(menus).toHaveLength(0);
+	});
+
+	it('offers every field but the Main Field to add, and enables all three buttons', async () => {
 		modelFieldNames.mockResolvedValue(['Word', 'Meaning', 'Furigana']);
-		const { tab, generate, write } = setup({
+		const { tab, generate, write, addField } = setup({
 			mainFieldConfig: { [fieldConfigKey('Japanese', 'Basic')]: 'Word' },
 		});
 
 		await tab.sync('Japanese', 'Basic');
 
 		expect(modelFieldNames).toHaveBeenCalledWith('Basic');
-		expect(latestDropdown()?.optionOrder).toEqual([
-			'',
-			'Meaning',
-			'Furigana',
-		]);
+		expect(addField.disabled).toBe(false);
+		expect(await offeredFields(addField)).toEqual(['Meaning', 'Furigana']);
 		expect(generate.disabled).toBe(false);
 		expect(write.disabled).toBe(false);
 	});
 
 	it('restores fields already added for that Deck+Model pair only, excluding the Main Field', async () => {
 		modelFieldNames.mockResolvedValue(['Word', 'Meaning', 'Furigana']);
-		const { tab } = setup({
+		const { tab, addField } = setup({
 			generateWithAiFields: {
 				[fieldConfigKey('Japanese', 'Basic')]: ['Word', 'Furigana'],
 				[fieldConfigKey('Spanish', 'Cloze')]: ['Meaning'],
@@ -267,29 +298,29 @@ describe('renderTextTab', () => {
 		expect(latestRow('Furigana')).toBeDefined();
 		expect(latestRow('Word')).toBeUndefined(); // Main Field, never addable
 		expect(latestRow('Meaning')).toBeUndefined(); // belongs to a different pair
-		// Already-added fields are no longer offered in the dropdown.
-		expect(latestDropdown()?.optionOrder).toEqual(['', 'Meaning']);
+		// Already-added fields are no longer offered in the menu.
+		expect(await offeredFields(addField)).toEqual(['Meaning']);
 	});
 
-	it('adding a field persists it and removes it from the dropdown', async () => {
+	it('adding a field persists it and removes it from the menu', async () => {
 		modelFieldNames.mockResolvedValue(['Word', 'Meaning', 'Furigana']);
-		const { tab, plugin, saveSettings } = setup({
+		const { tab, plugin, saveSettings, addField } = setup({
 			mainFieldConfig: { [fieldConfigKey('Japanese', 'Basic')]: 'Word' },
 		});
 		await tab.sync('Japanese', 'Basic');
 
-		await latestDropdown()?.select('Meaning');
+		await addFieldViaMenu(addField, 'Meaning');
 
 		const key = fieldConfigKey('Japanese', 'Basic');
 		expect(plugin.settings.generateWithAiFields[key]).toEqual(['Meaning']);
 		expect(saveSettings).toHaveBeenCalledTimes(1);
 		expect(latestRow('Meaning')).toBeDefined();
-		expect(latestDropdown()?.optionOrder).toEqual(['', 'Furigana']);
+		expect(await offeredFields(addField)).toEqual(['Furigana']);
 	});
 
 	it('removing a field persists it and drops its draft', async () => {
 		modelFieldNames.mockResolvedValue(['Word', 'Meaning']);
-		const { tab, plugin } = setup({
+		const { tab, plugin, addField } = setup({
 			generateWithAiFields: {
 				[fieldConfigKey('Japanese', 'Basic')]: ['Meaning'],
 			},
@@ -307,7 +338,7 @@ describe('renderTextTab', () => {
 		expect(settings.slice(before).some((s) => s.name === 'Meaning')).toBe(
 			false,
 		);
-		expect(latestDropdown()?.optionOrder).toEqual(['', 'Meaning']);
+		expect(await offeredFields(addField)).toEqual(['Meaning']);
 	});
 
 	it('does not re-fetch fields when the pair has not changed', async () => {
@@ -322,7 +353,7 @@ describe('renderTextTab', () => {
 
 	it('re-fetches and resets added fields when the pair changes', async () => {
 		modelFieldNames.mockResolvedValueOnce(['Word', 'Meaning']);
-		const { tab } = setup({
+		const { tab, addField } = setup({
 			generateWithAiFields: {
 				[fieldConfigKey('Japanese', 'Basic')]: ['Meaning'],
 			},
@@ -338,7 +369,7 @@ describe('renderTextTab', () => {
 		await tab.sync('Japanese', 'Cloze');
 
 		expect(modelFieldNames).toHaveBeenLastCalledWith('Cloze');
-		expect(latestDropdown()?.optionOrder).toEqual(['', 'Back']);
+		expect(await offeredFields(addField)).toEqual(['Back']);
 	});
 
 	it('drops a slow response for a pair that is no longer current', async () => {
@@ -348,7 +379,7 @@ describe('renderTextTab', () => {
 				new Promise<string[]>((r) => (resolveSlow = r)),
 			)
 			.mockResolvedValueOnce(['Front', 'Back']);
-		const { tab } = setup({
+		const { tab, addField } = setup({
 			mainFieldConfig: { [fieldConfigKey('Spanish', 'Cloze')]: 'Front' },
 		});
 
@@ -357,28 +388,24 @@ describe('renderTextTab', () => {
 		resolveSlow(['Stale']);
 		await slow;
 
-		expect(latestDropdown()?.optionOrder).toEqual(['', 'Back']);
+		expect(await offeredFields(addField)).toEqual(['Back']);
 	});
 
 	it('refresh() re-reads Main Field for the same pair, unlike sync() which dedupes', async () => {
 		modelFieldNames.mockResolvedValue(['Word', 'Meaning', 'Furigana']);
 		const key = fieldConfigKey('Japanese', 'Basic');
-		const { tab, plugin } = setup({
+		const { tab, plugin, addField } = setup({
 			mainFieldConfig: { [key]: 'Word' },
 		});
 		await tab.sync('Japanese', 'Basic');
-		expect(latestDropdown()?.optionOrder).toEqual([
-			'',
-			'Meaning',
-			'Furigana',
-		]);
+		expect(await offeredFields(addField)).toEqual(['Meaning', 'Furigana']);
 
 		// Main Field changes for the same pair (sidebar's Main Field dropdown) — a
 		// plain sync() would no-op here since the pair itself didn't change.
 		plugin.settings.mainFieldConfig[key] = 'Meaning';
 		await tab.refresh('Japanese', 'Basic');
 
-		expect(latestDropdown()?.optionOrder).toEqual(['', 'Word', 'Furigana']);
+		expect(await offeredFields(addField)).toEqual(['Word', 'Furigana']);
 	});
 
 	it('shows an error toast when loading fields fails, without throwing', async () => {
@@ -495,7 +522,10 @@ describe('renderTextTab', () => {
 		it('shows an unrecognized AnkiConnectError’s own message instead of the generic one', async () => {
 			const { AnkiConnectError } = await import('../../types');
 			planGenerate.mockRejectedValue(
-				new AnkiConnectError('modelFieldNames', 'some Anki-side message'),
+				new AnkiConnectError(
+					'modelFieldNames',
+					'some Anki-side message',
+				),
 			);
 			const { generate } = await ready();
 

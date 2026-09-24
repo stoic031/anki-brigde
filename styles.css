@@ -92,9 +92,63 @@
 	font-weight: var(--font-semibold);
 }
 
+/* Text tab: the title stands alone on its own line below the Generate/Write/Add
+   field row, unlike imageTab's title (still a flex-row item next to its button) —
+   needs its own breathing room instead of relying on a row's margin-bottom. */
+.anki-bridge-sidebar__section-title--block {
+	display: block;
+	margin: var(--size-4-3) 0 var(--size-4-2);
+}
+
 .anki-bridge-sidebar__hint {
 	color: var(--text-muted);
 	font-size: var(--font-ui-smaller);
+}
+
+/* docs/design/06-settings.md — Settings tab collapsible sections (native <details>). */
+.anki-bridge-settings__section {
+	margin-bottom: var(--size-4-2);
+	padding-bottom: var(--size-4-2);
+	border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.anki-bridge-settings__section-summary {
+	display: flex;
+	align-items: center;
+	gap: var(--size-4-2);
+	padding: var(--size-4-2) 0;
+	color: var(--text-normal);
+	font-weight: var(--font-semibold);
+	cursor: pointer;
+	list-style: none;
+}
+
+.anki-bridge-settings__section-summary::-webkit-details-marker {
+	display: none;
+}
+
+.anki-bridge-settings__section-summary:hover {
+	color: var(--text-accent);
+}
+
+.anki-bridge-settings__section-chevron {
+	display: inline-flex;
+	transition: transform 0.1s ease-in-out;
+}
+
+.anki-bridge-settings__section-chevron svg {
+	width: var(--icon-s);
+	height: var(--icon-s);
+}
+
+.anki-bridge-settings__section[open]
+	> .anki-bridge-settings__section-summary
+	.anki-bridge-settings__section-chevron {
+	transform: rotate(90deg);
+}
+
+.anki-bridge-settings__section-body {
+	padding-top: var(--size-4-1);
 }
 
 /* docs/design/06-settings.md §6.2 — Cloud/Local label under the text provider fields. */

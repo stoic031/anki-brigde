@@ -116,7 +116,7 @@ Main field: [Word ▼]
       hoàn toàn mới, nên 2 nút này không bắt buộc — xem §7.4).
     - **Generate** (`03-note.md` §3.2) đọc "word" để gửi AI từ section của field này,
       thay cho quy ước field đầu tiên (`fields[0]`) trước đây.
-    - Dropdown "+ add field" ở tab Text (bên dưới) loại Main Field ra khỏi danh sách có
+    - Nút **Add field** ở tab Text (bên dưới) loại Main Field ra khỏi Menu có
       thể thêm — không có gì để AI sinh cho field đã chứa tiêu đề.
 - Không có Deck/Model (note chưa mở hoặc chưa set) → dropdown vô hiệu, hiện "Not set",
   giống Deck/Model ở trên.
@@ -154,7 +154,8 @@ chi tiết: `03-note.md` §3.2):
 **Tab Text — Fields to generate with AI:**
 
 ```
-Fields to generate with AI      [+ add field ▾] [✨ Generate] [💾 Write]
+[✨ Generate] [💾 Write] [＋ Add field]
+Fields to generate with AI
 Meaning                                                              [×]
 ┌─ (sau khi Generate) ────────────────────────────────────────────────┐
 │ medicine (có thể sửa trước khi Write)                                │
@@ -162,18 +163,23 @@ Meaning                                                              [×]
 Furigana                                                             [×]
 ```
 
+- Ba nút **Generate | Write | Add field** nằm cùng một hàng (giống hàng
+  Sync|Rebuild|Delete ở §7.2.1 — cùng dùng icon + chữ, cùng CSS
+  `anki-bridge-sidebar__actions`/`__action`). Chữ "Fields to generate with AI" nằm
+  riêng một dòng ngay dưới hàng nút.
 - Chỉ hoạt động khi note đang mở có cả `anki_deck` và `anki_model` (không thì hiện gợi ý
-  "Set a Deck and Model above first." và cả 2 nút Generate/Write bị vô hiệu).
-  Danh sách field cho dropdown lấy từ `modelFieldNames(model)` của note đang mở, **trừ
+  "Set a Deck and Model above first." và cả 3 nút Generate/Write/Add field bị vô hiệu).
+  Danh sách field cho **Add field** lấy từ `modelFieldNames(model)` của note đang mở, **trừ
   Main Field** (input — không có gì để sinh, xem phần Main Field ở trên) và trừ field đã
   thêm rồi. Tự cập nhật khi user chuyển sang note khác, khi cặp Deck+Model của note đổi
   (danh sách field đã thêm reset theo cấu hình đã lưu cho cặp mới), hoặc ngay khi user đổi
   Main Field cho cặp hiện tại; gõ nội dung trong note không kéo theo tải lại.
-- **Dropdown "+ add field"**: chọn một field từ danh sách trên để thêm vào — field đó biến
-  mất khỏi dropdown và xuất hiện thành 1 dòng dưới, kèm nút `[×]` để bỏ field đó (bỏ luôn
-  nội dung preview nếu có). Danh sách field đã thêm lưu theo cặp Deck+Model, giống hệt cách
-  lưu cũ (§7.4) — chỉ đổi cách UI dựng danh sách này (thêm/bớt từng field) thay vì tick
-  checkbox hàng loạt.
+- **Nút Add field** (icon `plus` + chữ, giống Generate/Write): bấm mở một Menu (Obsidian
+  `Menu`, không phải dropdown `<select>`) liệt kê các field còn lại — chọn 1 field trong
+  Menu để thêm vào. Field đó biến mất khỏi Menu lần mở kế tiếp và xuất hiện thành 1 dòng
+  dưới, kèm nút `[×]` để bỏ field đó (bỏ luôn nội dung preview nếu có). Nút bị vô hiệu khi
+  không còn field nào để thêm. Danh sách field đã thêm lưu theo cặp Deck+Model, giống hệt
+  cách lưu cũ (§7.4).
 - Nút **Generate** (icon + chữ): gọi AI Provider cho toàn bộ field đã thêm trong 1 lần gọi —
   xem [`03-note.md`](03-note.md) §3.2. **Không ghi vào note** — chỉ điền/ghi đè nội dung
   preview (có thể sửa tay) dưới mỗi field đã thêm. Chưa thêm field nào → coi như chưa cấu
