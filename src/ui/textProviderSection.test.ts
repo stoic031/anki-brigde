@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
 	DEFAULT_SETTINGS,
-	type AnkiBridgeSettings,
+	type VocabWeaveSettings,
 	type TextProviderConfig,
 } from '../settings';
 
@@ -86,7 +86,7 @@ class FakeButton {
 		this.text = t;
 		return this;
 	}
-	setWarning() {
+	setDestructive() {
 		return this;
 	}
 	setDisabled(d: boolean) {
@@ -190,9 +190,9 @@ const flush = () => new Promise((r) => setTimeout(r, 0));
 const latest = (name: string) =>
 	[...(rendered as FakeSetting[])].reverse().find((s) => s.name === name);
 
-function setup(overrides: Partial<AnkiBridgeSettings> = {}) {
+function setup(overrides: Partial<VocabWeaveSettings> = {}) {
 	const saveSettings = vi.fn().mockResolvedValue(undefined);
-	const settings: AnkiBridgeSettings = {
+	const settings: VocabWeaveSettings = {
 		...structuredClone(DEFAULT_SETTINGS),
 		...overrides,
 	};

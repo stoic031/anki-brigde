@@ -56,7 +56,7 @@ export interface ImageFieldConfig {
 	onExisting: 'append' | 'overwrite';
 }
 
-export interface AnkiBridgeSettings {
+export interface VocabWeaveSettings {
 	ankiConnectUrl: string; // '' = unset — resolves to DEFAULT_ANKI_CONNECT_URL at use time, docs/design/06-settings.md §6.1
 	profiles: Profile[]; // always >= 1 after loadSettings
 	activeProfileId: string; // always an id in `profiles` after loadSettings
@@ -100,7 +100,7 @@ const DEFAULT_PROFILE: Profile = {
 	targetLanguage: '',
 };
 
-export const DEFAULT_SETTINGS: AnkiBridgeSettings = {
+export const DEFAULT_SETTINGS: VocabWeaveSettings = {
 	ankiConnectUrl: '',
 	profiles: [DEFAULT_PROFILE],
 	activeProfileId: DEFAULT_PROFILE_ID,
@@ -130,9 +130,9 @@ interface LegacyFields {
 
 export async function loadSettings(
 	plugin: Plugin,
-): Promise<AnkiBridgeSettings> {
+): Promise<VocabWeaveSettings> {
 	const data = ((await plugin.loadData()) ??
-		{}) as Partial<AnkiBridgeSettings> & LegacyFields;
+		{}) as Partial<VocabWeaveSettings> & LegacyFields;
 	const {
 		defaultDeck,
 		defaultModel,
@@ -142,7 +142,7 @@ export async function loadSettings(
 		currentFolder,
 		...rest
 	} = data;
-	const settings: AnkiBridgeSettings = {
+	const settings: VocabWeaveSettings = {
 		...structuredClone(DEFAULT_SETTINGS),
 		...rest,
 	};
@@ -242,7 +242,7 @@ function isComplete(
 // What ProviderManager's `text.getConfig` reads: the adapter type + endpoint for the chosen
 // provider. An incomplete active config counts as not configured, so nothing is called.
 export function getActiveTextConfig(
-	settings: AnkiBridgeSettings,
+	settings: VocabWeaveSettings,
 	getSecret: SecretLookup,
 ): ProviderConfig | null {
 	const active = settings.textProviders.find(
@@ -260,7 +260,7 @@ export function getActiveTextConfig(
 
 // What ProviderManager's `image.getConfig` reads. No image adapter exists yet (#17).
 export function getActiveImageConfig(
-	settings: AnkiBridgeSettings,
+	settings: VocabWeaveSettings,
 	getSecret: SecretLookup,
 ): ProviderConfig | null {
 	const active = settings.imageProviders.find(
@@ -278,7 +278,7 @@ export function getActiveImageConfig(
 	};
 }
 
-export function getActiveProfile(settings: AnkiBridgeSettings): Profile {
+export function getActiveProfile(settings: VocabWeaveSettings): Profile {
 	return (
 		settings.profiles.find((p) => p.id === settings.activeProfileId) ??
 		settings.profiles[0] ??
@@ -288,12 +288,12 @@ export function getActiveProfile(settings: AnkiBridgeSettings): Profile {
 
 export async function saveSettings(
 	plugin: Plugin,
-	settings: AnkiBridgeSettings,
+	settings: VocabWeaveSettings,
 ): Promise<void> {
 	await plugin.saveData(settings);
 }
 
-export function resolveAnkiConnectUrl(settings: AnkiBridgeSettings): string {
+export function resolveAnkiConnectUrl(settings: VocabWeaveSettings): string {
 	const trimmed = settings.ankiConnectUrl.trim();
 	return trimmed === '' ? DEFAULT_ANKI_CONNECT_URL : trimmed;
 }
@@ -301,7 +301,7 @@ export function resolveAnkiConnectUrl(settings: AnkiBridgeSettings): string {
 // docs/contracts.md §5 — the prefix is never empty. Settings Tab already rejects an
 // empty/invalid value before save (isValidMediaPrefix); this is defense-in-depth against
 // a hand-edited data.json.
-export function resolveMediaPrefix(settings: AnkiBridgeSettings): string {
+export function resolveMediaPrefix(settings: VocabWeaveSettings): string {
 	return settings.mediaPrefix.trim() || DEFAULT_MEDIA_PREFIX;
 }
 
@@ -328,7 +328,7 @@ export const MAX_EXAMPLES = 3;
 // Rolling window: the newest approved card goes last, the oldest drops out, so one
 // bad example doesn't stick around.
 export function rememberExample(
-	settings: AnkiBridgeSettings,
+	settings: VocabWeaveSettings,
 	key: string,
 	card: ApprovedCard,
 ): void {

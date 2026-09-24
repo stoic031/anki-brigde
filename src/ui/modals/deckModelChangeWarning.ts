@@ -14,9 +14,9 @@ export class DeckModelChangeWarningModal extends Modal {
 	}
 
 	onOpen(): void {
-		this.setTitle('Change Deck/Model for this note?');
+		this.setTitle('Change deck/model for this note?');
 		this.contentEl.createEl('p', {
-			text: 'This note is already synced to Anki under a different Deck/Model. Updating will create a new note in Anki the next time you sync.',
+			text: 'This note is already synced to Anki under a different deck/model. Updating will create a new note in Anki the next time you sync.',
 		});
 		new Setting(this.contentEl)
 			.addButton((btn) =>
@@ -28,8 +28,7 @@ export class DeckModelChangeWarningModal extends Modal {
 			.addButton((btn) =>
 				btn
 					.setButtonText('Update')
-					// eslint-disable-next-line @typescript-eslint/no-deprecated -- setDestructive() is 1.13.0+, above minAppVersion
-					.setWarning()
+					.setDestructive()
 					.onClick(() => {
 						this.close();
 						this.onUpdate();

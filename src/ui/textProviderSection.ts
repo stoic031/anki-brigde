@@ -1,4 +1,4 @@
-import type AnkiBridgePlugin from '../main';
+import type VocabWeavePlugin from '../main';
 import { TEXT_PRESETS } from '../providers/presets';
 import type { TextProviderConfig } from '../settings';
 import { renderProviderSection } from './providerSection';
@@ -6,10 +6,10 @@ import { renderProviderSection } from './providerSection';
 // docs/design/06-settings.md §6.2 — Text providers.
 export function renderTextProviderSection(
 	containerEl: HTMLElement,
-	plugin: AnkiBridgePlugin,
+	plugin: VocabWeavePlugin,
 ): void {
 	renderProviderSection<TextProviderConfig>(containerEl, plugin, {
-		cssClass: 'anki-bridge-settings__text-provider',
+		cssClass: 'vocabweave-settings__text-provider',
 		heading: 'AI text provider',
 		activeDesc:
 			'Used to fill fields and write image prompts. None means no AI calls.',

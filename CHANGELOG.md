@@ -2,10 +2,16 @@
 
 All notable changes to this project are documented in this file.
 
-## [Unreleased]
+## [2.0.0] - 2026-09-25
 
 ### Changed
 
+- **Renamed to VocabWeave.** Plugin id is now `vocabweave` (was `anki-bridge`). If you
+  installed an earlier version manually, move `.obsidian/plugins/anki-bridge/` to
+  `.obsidian/plugins/vocabweave/` (your settings in `data.json` move with it) and
+  re-assign any hotkeys for the plugin's commands.
+- Requires Obsidian 1.13.0 or newer.
+- Command "Open Deck & Model Selector" is now "Open deck and model selector".
 - Sidebar: Deck, Model, and the Sync | Rebuild | Delete buttons moved out of their own
   "Note" tab — they're now always visible above the tabs, alongside Profile. Only
   **Text** and **Image** remain as tabs.
@@ -16,6 +22,7 @@ All notable changes to this project are documented in this file.
 
 ### Fixed
 
+- Auto sync on save no longer fires a pending sync after the plugin is disabled.
 - Sync, Rebuild, Delete, Generate, and Add image now show AnkiConnect's own error
   message when it's not one of the few specifically-recognized cases (offline,
   duplicate, model not found), instead of always falling back to a generic "check
@@ -129,5 +136,6 @@ All notable changes to this project are documented in this file.
 - `anki_note_id` is read via `metadataCache` instead of `ctx.frontmatter`.
 - Sync failures surface the underlying `SyncError` message instead of a generic toast.
 
-[1.1.0]: https://github.com/stoic031/anki-brigde/releases/tag/1.1.0
-[1.0.0]: https://github.com/stoic031/anki-bridge/releases/tag/1.0.0
+[2.0.0]: https://github.com/stoic031/vocabweave/releases/tag/2.0.0
+[1.1.0]: https://github.com/stoic031/vocabweave/releases/tag/1.1.0
+[1.0.0]: https://github.com/stoic031/vocabweave/releases/tag/1.0.0

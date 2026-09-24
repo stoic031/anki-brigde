@@ -5,13 +5,13 @@ import {
 	fieldConfigKey,
 	getActiveProfile,
 	resolveAnkiConnectUrl,
-	type AnkiBridgeSettings,
+	type VocabWeaveSettings,
 } from '../settings';
 import { AnkiConnectClient } from '../sync/ankiConnect';
 import { writeAnkiFrontmatter } from '../sync/parser';
 import { toastError } from '../ui/toast';
 import { revealSidebarView } from '../ui/sidebarView';
-import type AnkiBridgePlugin from '../main';
+import type VocabWeavePlugin from '../main';
 
 // docs/design/03-note.md §3.7 — selection source is the active markdown note only.
 export function getSelectedText(app: App): string | null {
@@ -37,7 +37,7 @@ export interface QuickCaptureTarget {
 // null when it has no Deck/Model — caller shows a Notice and opens Settings instead
 // of creating a note.
 export function resolveQuickCaptureTarget(
-	settings: AnkiBridgeSettings,
+	settings: VocabWeaveSettings,
 ): QuickCaptureTarget | null {
 	const { deck, model, folder, mainField } = getActiveProfile(settings);
 	return deck && model ? { deck, model, folder, mainField } : null;
@@ -48,7 +48,7 @@ export function resolveQuickCaptureTarget(
 // pair that's already configured, e.g. from the sidebar). Shared by runCreateNote and
 // runQuickCapture — both create notes from a resolved QuickCaptureTarget.
 export async function resolveMainField(
-	plugin: AnkiBridgePlugin,
+	plugin: VocabWeavePlugin,
 	target: QuickCaptureTarget,
 ): Promise<string> {
 	const key = fieldConfigKey(target.deck, target.model);
@@ -73,7 +73,7 @@ export function openPluginSettings(app: App, pluginId: string): void {
 }
 
 // docs/design/03-note.md §3.7 steps 1-8.
-export async function runQuickCapture(plugin: AnkiBridgePlugin): Promise<void> {
+export async function runQuickCapture(plugin: VocabWeavePlugin): Promise<void> {
 	const selectedText = getSelectedText(plugin.app);
 	if (selectedText === null) {
 		toastError('❌ No active markdown note to capture from.');
@@ -82,7 +82,7 @@ export async function runQuickCapture(plugin: AnkiBridgePlugin): Promise<void> {
 
 	const target = resolveQuickCaptureTarget(plugin.settings);
 	if (!target) {
-		new Notice('Please set up a profile in Settings first');
+		new Notice('Please set up a profile in settings first');
 		openPluginSettings(plugin.app, plugin.manifest.id);
 		return;
 	}

@@ -1,5 +1,5 @@
 import { Notice, type TFile } from 'obsidian';
-import type AnkiBridgePlugin from '../../main';
+import type VocabWeavePlugin from '../../main';
 import { rebuildContent } from '../../note/contentTemplate';
 import { syncNoteName } from '../../note/noteName';
 import { fieldConfigKey, resolveAnkiConnectUrl } from '../../settings';
@@ -27,9 +27,9 @@ export interface NoteActions {
 // note or its frontmatter changes — so Delete appears right after the first sync.
 export function renderNoteActions(
 	parent: HTMLElement,
-	plugin: AnkiBridgePlugin,
+	plugin: VocabWeavePlugin,
 ): NoteActions {
-	const row = parent.createDiv({ cls: 'anki-bridge-sidebar__actions' });
+	const row = parent.createDiv({ cls: 'vocabweave-sidebar__actions' });
 	const sync = createActionButton(row, {
 		icon: 'refresh-cw',
 		label: 'Sync',

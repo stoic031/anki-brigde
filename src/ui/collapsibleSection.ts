@@ -11,18 +11,18 @@ export function renderCollapsibleSection(
 	defaultOpen: boolean,
 ): HTMLElement {
 	const details = containerEl.createEl('details', {
-		cls: 'anki-bridge-settings__section',
+		cls: 'vocabweave-settings__section',
 	});
 	if (defaultOpen) details.setAttr('open', '');
 
 	const summary = details.createEl('summary', {
-		cls: 'anki-bridge-settings__section-summary',
+		cls: 'vocabweave-settings__section-summary',
 	});
 	const chevron = summary.createSpan({
-		cls: 'anki-bridge-settings__section-chevron',
+		cls: 'vocabweave-settings__section-chevron',
 	});
 	setIcon(chevron, 'chevron-right');
 	summary.createSpan({ text: title });
 
-	return details.createDiv({ cls: 'anki-bridge-settings__section-body' });
+	return details.createDiv({ cls: 'vocabweave-settings__section-body' });
 }

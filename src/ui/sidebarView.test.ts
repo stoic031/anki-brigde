@@ -2,12 +2,12 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { App, WorkspaceLeaf } from 'obsidian';
 import {
 	DEFAULT_SETTINGS,
-	type AnkiBridgeSettings,
+	type VocabWeaveSettings,
 	type Profile,
 } from '../settings';
 import { PROFILE_CHANGED_EVENT } from '../utils/constants';
 import type { FakeEl } from '../test/fakeDom';
-import type AnkiBridgePlugin from '../main';
+import type VocabWeavePlugin from '../main';
 
 class FakeDropdownComponent {
 	options: Record<string, string> = {};
@@ -253,8 +253,8 @@ const profileA: Profile = {
 const profileB: Profile = { ...profileA, id: 'b', name: 'Spanish' };
 
 function fakeSettings(
-	overrides: Partial<AnkiBridgeSettings> = {},
-): AnkiBridgeSettings {
+	overrides: Partial<VocabWeaveSettings> = {},
+): VocabWeaveSettings {
 	return {
 		...DEFAULT_SETTINGS,
 		profiles: [{ ...profileA }, { ...profileB }],
@@ -316,7 +316,7 @@ function fakeTFile(overrides: Record<string, unknown> = {}): TFile {
 }
 
 function fakePlugin(
-	overrides: Partial<AnkiBridgeSettings> = {},
+	overrides: Partial<VocabWeaveSettings> = {},
 	appOptions: Parameters<typeof fakeApp>[0] = {},
 ) {
 	const saveSettings = vi.fn().mockResolvedValue(undefined);
@@ -327,7 +327,7 @@ function fakePlugin(
 		settings: fakeSettings(overrides),
 		saveSettings,
 		setActiveProfile,
-	} as unknown as AnkiBridgePlugin;
+	} as unknown as VocabWeavePlugin;
 	return { plugin, saveSettings, setActiveProfile, ...appParts };
 }
 
@@ -355,7 +355,7 @@ const MODEL_IDX = 2;
 const deckDropdown = () => settings[DECK_IDX]?.dropdownComponents[0];
 const modelDropdown = () => settings[MODEL_IDX]?.dropdownComponents[0];
 
-function openView(plugin: AnkiBridgePlugin) {
+function openView(plugin: VocabWeavePlugin) {
 	const view = new SidebarView({} as WorkspaceLeaf, plugin);
 	return { view, opened: view.onOpen() };
 }
@@ -372,7 +372,7 @@ describe('SidebarView', () => {
 		const { plugin } = fakePlugin();
 		const view = new SidebarView({} as WorkspaceLeaf, plugin);
 
-		expect(view.getDisplayText()).toBe('Anki Bridge');
+		expect(view.getDisplayText()).toBe('VocabWeave');
 		expect(view.getIcon()).toBeTruthy();
 	});
 
@@ -383,9 +383,9 @@ describe('SidebarView', () => {
 		await expect(opened).resolves.toBeUndefined();
 
 		const contentEl = view.contentEl as unknown as FakeEl;
-		expect(contentEl.children[0]?.text).toBe('Anki Bridge');
+		expect(contentEl.children[0]?.text).toBe('VocabWeave');
 		expect(
-			contentEl.byClass('anki-bridge-sidebar__tab').map((t) => t.text),
+			contentEl.byClass('vocabweave-sidebar__tab').map((t) => t.text),
 		).toEqual(['Text', 'Image']);
 		expect(settings.map((s) => s.name)).toEqual([
 			'Profile',
@@ -925,7 +925,7 @@ describe('Deck/Model change warning', () => {
 describe('registerSidebarView', () => {
 	it('registers the sidebar view type with a factory function', () => {
 		const registerView = vi.fn();
-		const plugin = { registerView } as unknown as AnkiBridgePlugin;
+		const plugin = { registerView } as unknown as VocabWeavePlugin;
 
 		registerSidebarView(plugin);
 

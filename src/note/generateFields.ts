@@ -1,5 +1,5 @@
 import type { TFile } from 'obsidian';
-import type AnkiBridgePlugin from '../main';
+import type VocabWeavePlugin from '../main';
 import { examplesKey, fieldConfigKey, getActiveProfile } from '../settings';
 import { parseSections } from '../sync/parser';
 import type { TextContext, TextProvider } from '../providers/types';
@@ -19,7 +19,7 @@ export type GeneratePlan =
 // docs/design/03-note.md §3.2 — everything that can be checked before spending a model call.
 // Throws for real failures (AnkiConnect down, ProviderError building the provider).
 export async function planGenerate(
-	plugin: AnkiBridgePlugin,
+	plugin: VocabWeavePlugin,
 	note: TFile,
 	deck: string,
 	model: string,
@@ -98,7 +98,7 @@ export async function generateDraft(
 // One atomic write into the note from a (possibly user-edited) results map. Anki is
 // never touched — the user syncs explicitly afterwards.
 export async function applyGenerated(
-	plugin: AnkiBridgePlugin,
+	plugin: VocabWeavePlugin,
 	note: TFile,
 	results: Record<string, string>,
 ): Promise<GenerateOutcome> {

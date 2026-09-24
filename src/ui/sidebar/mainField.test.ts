@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import type AnkiBridgePlugin from '../../main';
-import { fieldConfigKey, type AnkiBridgeSettings } from '../../settings';
+import type VocabWeavePlugin from '../../main';
+import { fieldConfigKey, type VocabWeaveSettings } from '../../settings';
 
 class FakeDropdown {
 	options: Record<string, string> = {};
@@ -81,13 +81,13 @@ afterEach(() => {
 	settings.length = 0;
 });
 
-function setup(overrides: Partial<AnkiBridgeSettings> = {}) {
+function setup(overrides: Partial<VocabWeaveSettings> = {}) {
 	const parent = {} as HTMLElement;
 	const saveSettings = vi.fn().mockResolvedValue(undefined);
 	const plugin = {
 		settings: { ankiConnectUrl: '', mainFieldConfig: {}, ...overrides },
 		saveSettings,
-	} as unknown as AnkiBridgePlugin;
+	} as unknown as VocabWeavePlugin;
 	const onChange = vi.fn();
 	const control = renderMainFieldDropdown(parent, plugin, onChange);
 	const dropdown = settings[0]?.dropdown as FakeDropdown;

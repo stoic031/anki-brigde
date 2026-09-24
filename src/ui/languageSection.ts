@@ -1,4 +1,4 @@
-import type AnkiBridgePlugin from '../main';
+import type VocabWeavePlugin from '../main';
 import { LANGUAGES } from '../utils/constants';
 import { renderPicker } from './profilesSection';
 
@@ -6,7 +6,7 @@ import { renderPicker } from './profilesSection';
 // context alongside each profile's Learning language (docs/design/02-providers.md §2.4).
 export function renderLanguageSection(
 	containerEl: HTMLElement,
-	plugin: AnkiBridgePlugin,
+	plugin: VocabWeavePlugin,
 ): void {
 	renderPicker(
 		containerEl,

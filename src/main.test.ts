@@ -36,7 +36,7 @@ const { runCreateNote } = vi.hoisted(() => ({
 }));
 vi.mock('./note/createNote', () => ({ runCreateNote }));
 
-vi.mock('./ui/settingsTab', () => ({ AnkiBridgeSettingTab: vi.fn() }));
+vi.mock('./ui/settingsTab', () => ({ VocabWeaveSettingTab: vi.fn() }));
 
 const { registerSidebarView, revealSidebarView } = vi.hoisted(() => ({
 	registerSidebarView: vi.fn(),
@@ -50,15 +50,15 @@ vi.mock('./sync/autoSync', () => ({ registerAutoSync }));
 const { registerAnkiImages } = vi.hoisted(() => ({ registerAnkiImages: vi.fn() }));
 vi.mock('./note/ankiImages', () => ({ registerAnkiImages }));
 
-import AnkiBridgePlugin from './main';
+import VocabWeavePlugin from './main';
 
-describe('AnkiBridgePlugin.onload', () => {
+describe('VocabWeavePlugin.onload', () => {
 	afterEach(() => {
 		vi.clearAllMocks();
 	});
 
 	it('registers the create-note-from-selection command with no default hotkey', async () => {
-		const plugin = new AnkiBridgePlugin(
+		const plugin = new VocabWeavePlugin(
 			{} as App,
 			{} as PluginManifest,
 		);
@@ -79,7 +79,7 @@ describe('AnkiBridgePlugin.onload', () => {
 	});
 
 	it("delegates the command's callback to runQuickCapture", async () => {
-		const plugin = new AnkiBridgePlugin(
+		const plugin = new VocabWeavePlugin(
 			{} as App,
 			{} as PluginManifest,
 		);
@@ -95,7 +95,7 @@ describe('AnkiBridgePlugin.onload', () => {
 	});
 
 	it('registers the create-note command with no default hotkey', async () => {
-		const plugin = new AnkiBridgePlugin(
+		const plugin = new VocabWeavePlugin(
 			{} as App,
 			{} as PluginManifest,
 		);
@@ -116,7 +116,7 @@ describe('AnkiBridgePlugin.onload', () => {
 	});
 
 	it("delegates the create-note command's callback to runCreateNote", async () => {
-		const plugin = new AnkiBridgePlugin(
+		const plugin = new VocabWeavePlugin(
 			{} as App,
 			{} as PluginManifest,
 		);
@@ -132,7 +132,7 @@ describe('AnkiBridgePlugin.onload', () => {
 	});
 
 	it('registers the open-deck-model-selector command with no default hotkey', async () => {
-		const plugin = new AnkiBridgePlugin(
+		const plugin = new VocabWeavePlugin(
 			{} as App,
 			{} as PluginManifest,
 		);
@@ -142,7 +142,7 @@ describe('AnkiBridgePlugin.onload', () => {
 		expect(addCommandSpy).toHaveBeenCalledWith(
 			expect.objectContaining({
 				id: 'open-deck-model-selector',
-				name: 'Open Deck & Model Selector',
+				name: 'Open deck and model selector',
 			}),
 		);
 		const registeredCommand = addCommandSpy.mock.calls[2]?.[0] as Record<
@@ -153,7 +153,7 @@ describe('AnkiBridgePlugin.onload', () => {
 	});
 
 	it("delegates the open-deck-model-selector command's callback to revealSidebarView", async () => {
-		const plugin = new AnkiBridgePlugin(
+		const plugin = new VocabWeavePlugin(
 			{} as App,
 			{} as PluginManifest,
 		);
@@ -169,7 +169,7 @@ describe('AnkiBridgePlugin.onload', () => {
 	});
 
 	it('registers the sidebar view', async () => {
-		const plugin = new AnkiBridgePlugin(
+		const plugin = new VocabWeavePlugin(
 			{} as App,
 			{} as PluginManifest,
 		);
@@ -180,7 +180,7 @@ describe('AnkiBridgePlugin.onload', () => {
 	});
 
 	it('registers auto-sync', async () => {
-		const plugin = new AnkiBridgePlugin(
+		const plugin = new VocabWeavePlugin(
 			{} as App,
 			{} as PluginManifest,
 		);
@@ -191,7 +191,7 @@ describe('AnkiBridgePlugin.onload', () => {
 	});
 
 	it('registers the Anki image renderer', async () => {
-		const plugin = new AnkiBridgePlugin(
+		const plugin = new VocabWeavePlugin(
 			{} as App,
 			{} as PluginManifest,
 		);
@@ -200,7 +200,7 @@ describe('AnkiBridgePlugin.onload', () => {
 	});
 
 	it('exposes a ProviderManager that builds nothing until asked and reads config at call time', async () => {
-		const plugin = new AnkiBridgePlugin({} as App, {} as PluginManifest);
+		const plugin = new VocabWeavePlugin({} as App, {} as PluginManifest);
 		plugin.app = {
 			secretStorage: { getSecret: (id: string) => (id === 'my-key' ? 'test-secret' : null) },
 			vault: { on: vi.fn() },

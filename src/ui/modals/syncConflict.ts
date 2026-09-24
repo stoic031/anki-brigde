@@ -33,8 +33,7 @@ export class SyncConflictModal extends Modal {
 				btn
 					.setButtonText('Keep Obsidian version')
 					// Overwrites the Anki edits.
-					// eslint-disable-next-line @typescript-eslint/no-deprecated -- setDestructive() is 1.13.0+, above minAppVersion
-					.setWarning()
+					.setDestructive()
 					.onClick(() => this.choose('obsidian')),
 			);
 	}

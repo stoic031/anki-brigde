@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import type AnkiBridgePlugin from '../main';
-import { DEFAULT_SETTINGS, type AnkiBridgeSettings } from '../settings';
+import type VocabWeavePlugin from '../main';
+import { DEFAULT_SETTINGS, type VocabWeaveSettings } from '../settings';
 import { LANGUAGES } from '../utils/constants';
 
 class FakeDropdown {
@@ -64,12 +64,12 @@ afterEach(() => {
 	settings.length = 0;
 });
 
-function setup(overrides: Partial<AnkiBridgeSettings> = {}) {
+function setup(overrides: Partial<VocabWeaveSettings> = {}) {
 	const saveSettings = vi.fn().mockResolvedValue(undefined);
 	const plugin = {
 		settings: { ...structuredClone(DEFAULT_SETTINGS), ...overrides },
 		saveSettings,
-	} as unknown as AnkiBridgePlugin;
+	} as unknown as VocabWeavePlugin;
 	renderLanguageSection({} as HTMLElement, plugin);
 	return { plugin, saveSettings, row: settings[0] };
 }

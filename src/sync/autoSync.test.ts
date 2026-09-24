@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import type AnkiBridgePlugin from '../main';
-import { DEFAULT_SETTINGS, fieldConfigKey, type AnkiBridgeSettings } from '../settings';
+import type VocabWeavePlugin from '../main';
+import { DEFAULT_SETTINGS, fieldConfigKey, type VocabWeaveSettings } from '../settings';
 
 vi.mock('obsidian', () => ({ TFile: class FakeTFile {} }));
 
@@ -38,7 +38,7 @@ function fakeTFile(overrides: Record<string, unknown> = {}): TFile {
 	);
 }
 
-function fakePlugin(overrides: Partial<AnkiBridgeSettings> = {}) {
+function fakePlugin(overrides: Partial<VocabWeaveSettings> = {}) {
 	const handlers: ((file: TFile) => void)[] = [];
 	const getActiveFile = vi.fn<() => TFile | null>();
 	const cleanups: (() => void)[] = [];
@@ -56,7 +56,7 @@ function fakePlugin(overrides: Partial<AnkiBridgeSettings> = {}) {
 			},
 			workspace: { getActiveFile },
 		},
-	} as unknown as AnkiBridgePlugin;
+	} as unknown as VocabWeavePlugin;
 	return {
 		plugin,
 		getActiveFile,

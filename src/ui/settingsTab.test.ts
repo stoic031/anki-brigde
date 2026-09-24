@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import type AnkiBridgePlugin from '../main';
+import type VocabWeavePlugin from '../main';
 import {
 	DEFAULT_SETTINGS,
-	type AnkiBridgeSettings,
+	type VocabWeaveSettings,
 	type Profile,
 } from '../settings';
 import {
@@ -60,7 +60,7 @@ class FakeButtonComponent {
 		this.disabled = d;
 		return this;
 	}
-	setWarning() {
+	setDestructive() {
 		return this;
 	}
 	onClick(cb: () => unknown) {
@@ -242,12 +242,12 @@ const profileB: Profile = {
 // The plugin's settings carry the given profiles (default: just profile A, active).
 // setActiveProfile mirrors the real one: set id, save, then notify listeners.
 function fakePlugin(
-	overrides: Partial<AnkiBridgeSettings> = {},
+	overrides: Partial<VocabWeaveSettings> = {},
 	folders: FakeFolder[] = [],
 ) {
 	const saveSettings = vi.fn().mockResolvedValue(undefined);
 	const handlers = new Set<() => void>();
-	const settings: AnkiBridgeSettings = {
+	const settings: VocabWeaveSettings = {
 		...DEFAULT_SETTINGS,
 		ankiConnectUrl: '',
 		profiles: [{ ...profileA }],
@@ -275,7 +275,7 @@ function fakePlugin(
 				offref: (cb: () => void) => handlers.delete(cb),
 			},
 		},
-	} as unknown as AnkiBridgePlugin;
+	} as unknown as VocabWeavePlugin;
 	return { plugin, saveSettings, setActiveProfile, handlers };
 }
 
@@ -289,7 +289,7 @@ function latest(name: string): FakeSetting {
 
 const flush = () => new Promise((resolve) => setTimeout(resolve, 0));
 
-function render(plugin: AnkiBridgePlugin) {
+function render(plugin: VocabWeavePlugin) {
 	return renderConnectionSection(fakeDiv() as unknown as HTMLElement, plugin);
 }
 
@@ -356,7 +356,7 @@ describe('renderConnectionSection — URL field', () => {
 });
 
 describe('renderConnectionSection — Connect button', () => {
-	function renderAndConnect(overrides: Partial<AnkiBridgeSettings> = {}) {
+	function renderAndConnect(overrides: Partial<VocabWeaveSettings> = {}) {
 		const { plugin, saveSettings } = fakePlugin({
 			ankiConnectUrl: 'http://localhost:8765',
 			...overrides,

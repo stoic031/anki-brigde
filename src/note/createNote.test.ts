@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { DEFAULT_SETTINGS, type AnkiBridgeSettings } from '../settings';
+import { DEFAULT_SETTINGS, type VocabWeaveSettings } from '../settings';
 import { DEFAULT_MEDIA_PREFIX } from '../utils/constants';
-import type AnkiBridgePlugin from '../main';
+import type VocabWeavePlugin from '../main';
 
 const { Notice } = vi.hoisted(() => ({ Notice: vi.fn() }));
 vi.mock('obsidian', () => ({ Notice }));
@@ -87,8 +87,8 @@ afterEach(() => {
 });
 
 function fakeSettings(
-	overrides: Partial<AnkiBridgeSettings> = {},
-): AnkiBridgeSettings {
+	overrides: Partial<VocabWeaveSettings> = {},
+): VocabWeaveSettings {
 	return {
 		ankiConnectUrl: '',
 		profiles: DEFAULT_SETTINGS.profiles,
@@ -109,7 +109,7 @@ function fakeSettings(
 	};
 }
 
-function fakePlugin(settingsOverrides: Partial<AnkiBridgeSettings> = {}) {
+function fakePlugin(settingsOverrides: Partial<VocabWeaveSettings> = {}) {
 	const settings = fakeSettings(settingsOverrides);
 	const saveSettings = vi.fn().mockResolvedValue(undefined);
 	const createdFile = { path: 'created' };
@@ -123,8 +123,8 @@ function fakePlugin(settingsOverrides: Partial<AnkiBridgeSettings> = {}) {
 		},
 		settings,
 		saveSettings,
-		manifest: { id: 'anki-bridge' },
-	} as unknown as AnkiBridgePlugin;
+		manifest: { id: 'vocabweave' },
+	} as unknown as VocabWeavePlugin;
 
 	return { plugin, saveSettings, vaultCreate, openFile, createdFile };
 }
@@ -222,11 +222,11 @@ describe('runCreateNote', () => {
 		await runCreateNote(plugin);
 
 		expect(Notice).toHaveBeenCalledWith(
-			'Please set up a profile in Settings first',
+			'Please set up a profile in settings first',
 		);
 		expect(openPluginSettings).toHaveBeenCalledWith(
 			plugin.app,
-			'anki-bridge',
+			'vocabweave',
 		);
 		expect(vaultCreate).not.toHaveBeenCalled();
 	});

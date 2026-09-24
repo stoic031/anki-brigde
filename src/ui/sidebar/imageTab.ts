@@ -1,5 +1,5 @@
 import { Notice, Setting, setIcon, type TFile } from 'obsidian';
-import type AnkiBridgePlugin from '../../main';
+import type VocabWeavePlugin from '../../main';
 import {
 	planAddImage,
 	runAddImage,
@@ -23,14 +23,14 @@ export interface ImageTab {
 // the Add image button (docs/design/03-note.md §3.2).
 export function renderImageTab(
 	parent: HTMLElement,
-	plugin: AnkiBridgePlugin,
+	plugin: VocabWeavePlugin,
 	getNote: () => TFile | null,
 ): ImageTab {
 	const header = parent.createDiv({
-		cls: 'anki-bridge-sidebar__section-header',
+		cls: 'vocabweave-sidebar__section-header',
 	});
 	header.createSpan({
-		cls: 'anki-bridge-sidebar__section-title',
+		cls: 'vocabweave-sidebar__section-title',
 		text: 'Image field mapping',
 	});
 	const addImage = createActionButton(header, {
@@ -45,11 +45,11 @@ export function renderImageTab(
 	addImage.el.disabled = true;
 	writePrompt.el.disabled = true;
 	const configEl = parent.createDiv({
-		cls: 'anki-bridge-sidebar__image-config',
+		cls: 'vocabweave-sidebar__image-config',
 	});
 	// docs/design/07-sidebar.md §7.2.2 — only shown once a prompt exists, so the tab
 	// stays as short as before until the user asks for one.
-	const promptEl = parent.createDiv({ cls: 'anki-bridge-sidebar__prompt' });
+	const promptEl = parent.createDiv({ cls: 'vocabweave-sidebar__prompt' });
 	promptEl.hidden = true;
 
 	let current = { deck: '', model: '' };
@@ -83,10 +83,10 @@ export function renderImageTab(
 		if (promptEl.hidden) return;
 
 		const head = promptEl.createDiv({
-			cls: 'anki-bridge-sidebar__section-header',
+			cls: 'vocabweave-sidebar__section-header',
 		});
 		head.createSpan({
-			cls: 'anki-bridge-sidebar__section-title',
+			cls: 'vocabweave-sidebar__section-title',
 			text: 'Image prompt',
 		});
 		const discard = head.createEl('button', {
@@ -97,12 +97,12 @@ export function renderImageTab(
 		discard.addEventListener('click', () => setPrompt('', 'written', ''));
 
 		const area = promptEl.createEl('textarea', {
-			cls: 'anki-bridge-sidebar__prompt-input',
+			cls: 'vocabweave-sidebar__prompt-input',
 			attr: { rows: '3' },
 		});
 		area.value = prompt;
 		const status = promptEl.createEl('p', {
-			cls: 'anki-bridge-sidebar__hint',
+			cls: 'vocabweave-sidebar__hint',
 			text: STATE_TEXT[promptState],
 		});
 		// Per keystroke, but only the in-memory value and the status line — no
@@ -271,8 +271,8 @@ export function renderImageTab(
 
 			if (!deck || !model) {
 				configEl.createEl('p', {
-					cls: 'anki-bridge-sidebar__hint',
-					text: 'Set a Deck and Model above first.',
+					cls: 'vocabweave-sidebar__hint',
+					text: 'Set a deck and model above first.',
 				});
 				return;
 			}

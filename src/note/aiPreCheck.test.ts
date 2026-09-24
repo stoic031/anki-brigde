@@ -2,14 +2,14 @@ import { describe, expect, it } from 'vitest';
 import {
 	DEFAULT_SETTINGS,
 	fieldConfigKey,
-	type AnkiBridgeSettings,
+	type VocabWeaveSettings,
 } from '../settings';
 import { DEFAULT_MEDIA_PREFIX } from '../utils/constants';
 import { runAiPreCheck } from './aiPreCheck';
 
 function fakeSettings(
-	overrides: Partial<AnkiBridgeSettings> = {},
-): AnkiBridgeSettings {
+	overrides: Partial<VocabWeaveSettings> = {},
+): VocabWeaveSettings {
 	return {
 		ankiConnectUrl: '',
 		profiles: DEFAULT_SETTINGS.profiles,

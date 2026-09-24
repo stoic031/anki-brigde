@@ -1,5 +1,5 @@
 import { TFile } from 'obsidian';
-import type AnkiBridgePlugin from '../main';
+import type VocabWeavePlugin from '../main';
 import { syncNoteName } from '../note/noteName';
 import { fieldConfigKey, resolveAnkiConnectUrl } from '../settings';
 import { SyncError } from '../types';
@@ -13,7 +13,7 @@ import { syncNote } from './syncEngine';
 // doesn't fire a real AnkiConnect call on every autosave tick.
 const DEBOUNCE_MS = 2000;
 
-export function registerAutoSync(plugin: AnkiBridgePlugin): void {
+export function registerAutoSync(plugin: VocabWeavePlugin): void {
 	const timers = new Map<string, ReturnType<typeof window.setTimeout>>();
 	// Guards against syncNote's own frontmatter write (writeAnkiFrontmatter) re-firing
 	// 'modify' and triggering a second, overlapping auto-sync of the same file.
@@ -43,7 +43,7 @@ export function registerAutoSync(plugin: AnkiBridgePlugin): void {
 }
 
 async function trigger(
-	plugin: AnkiBridgePlugin,
+	plugin: VocabWeavePlugin,
 	file: TFile,
 	inFlight: Set<string>,
 ): Promise<void> {

@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
 	DEFAULT_SETTINGS,
-	type AnkiBridgeSettings,
+	type VocabWeaveSettings,
 	type ImageProviderConfig,
 } from '../settings';
 
@@ -86,7 +86,7 @@ class FakeButton {
 		this.text = t;
 		return this;
 	}
-	setWarning() {
+	setDestructive() {
 		return this;
 	}
 	setDisabled(d: boolean) {
@@ -230,9 +230,9 @@ import { renderImageProviderSection } from './imageProviderSection';
 const latest = (name: string) =>
 	[...(rendered as FakeSetting[])].reverse().find((s) => s.name === name);
 
-function setup(overrides: Partial<AnkiBridgeSettings> = {}) {
+function setup(overrides: Partial<VocabWeaveSettings> = {}) {
 	const saveSettings = vi.fn().mockResolvedValue(undefined);
-	const settings: AnkiBridgeSettings = {
+	const settings: VocabWeaveSettings = {
 		...structuredClone(DEFAULT_SETTINGS),
 		...overrides,
 	};
@@ -414,7 +414,7 @@ describe('renderImageProviderSection', () => {
 		});
 		const area = latest('Negative prompt')?.areas[0];
 
-		expect(area?.placeholder).toContain('text, letters, watermark');
+		expect(area?.placeholder).toContain('Text, letters, watermark');
 		expect(settings.imageProviders[0]?.negativePrompt).toBe('');
 	});
 

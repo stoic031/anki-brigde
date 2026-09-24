@@ -1,4 +1,4 @@
-import { fieldConfigKey, type AnkiBridgeSettings } from '../settings';
+import { fieldConfigKey, type VocabWeaveSettings } from '../settings';
 
 export type AiButtonAction = 'generate-ai' | 'add-image';
 
@@ -10,7 +10,7 @@ export type AiPreCheckResult =
 // before doing anything, and stops with this Notice if it's unconfigured.
 export function runAiPreCheck(
 	action: AiButtonAction,
-	settings: AnkiBridgeSettings,
+	settings: VocabWeaveSettings,
 	deck: string,
 	model: string,
 ): AiPreCheckResult {

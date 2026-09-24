@@ -39,8 +39,7 @@ export class ConfirmModal extends Modal {
 			.addButton((btn) =>
 				btn
 					.setButtonText(this.copy.button)
-					// eslint-disable-next-line @typescript-eslint/no-deprecated -- setDestructive() is 1.13.0+, above minAppVersion
-					.setWarning()
+					.setDestructive()
 					.onClick(() => {
 						this.close();
 						this.onConfirm();

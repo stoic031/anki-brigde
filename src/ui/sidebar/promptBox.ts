@@ -1,5 +1,5 @@
 import { setIcon } from 'obsidian';
-import type AnkiBridgePlugin from '../../main';
+import type VocabWeavePlugin from '../../main';
 import { defaultInstruction } from '../../providers/text/prompt';
 import { examplesKey, fieldConfigKey, getActiveProfile } from '../../settings';
 
@@ -15,24 +15,24 @@ export interface PromptBox {
 // listed read-only below, reflecting what the next Generate will actually send.
 export function renderPromptBox(
 	parent: HTMLElement,
-	plugin: AnkiBridgePlugin,
+	plugin: VocabWeavePlugin,
 ): PromptBox {
 	// Same native <details> look as the Settings tab sections (collapsibleSection.ts),
 	// built here because the summary also carries the badge.
 	const details = parent.createEl('details', {
-		cls: ['anki-bridge-settings__section', 'anki-bridge-sidebar__prompt'],
+		cls: ['vocabweave-settings__section', 'vocabweave-sidebar__prompt'],
 	});
 	const summary = details.createEl('summary', {
-		cls: 'anki-bridge-settings__section-summary',
+		cls: 'vocabweave-settings__section-summary',
 	});
 	setIcon(
-		summary.createSpan({ cls: 'anki-bridge-settings__section-chevron' }),
+		summary.createSpan({ cls: 'vocabweave-settings__section-chevron' }),
 		'chevron-right',
 	);
 	summary.createSpan({ text: 'Prompt' });
-	const badge = summary.createSpan({ cls: 'anki-bridge-sidebar__badge' });
+	const badge = summary.createSpan({ cls: 'vocabweave-sidebar__badge' });
 	const body = details.createDiv({
-		cls: 'anki-bridge-settings__section-body',
+		cls: 'vocabweave-settings__section-body',
 	});
 
 	const render = (deck: string, model: string, fieldCount: number): void => {
@@ -44,12 +44,12 @@ export function renderPromptBox(
 		const custom = plugin.settings.textInstructions[key];
 		badge.setText(custom === undefined ? 'Default' : 'Custom');
 		badge.toggleClass(
-			'anki-bridge-sidebar__badge--accent',
+			'vocabweave-sidebar__badge--accent',
 			custom !== undefined,
 		);
 
 		const area = body.createEl('textarea', {
-			cls: 'anki-bridge-sidebar__prompt-input',
+			cls: 'vocabweave-sidebar__prompt-input',
 			attr: { rows: '4', spellcheck: 'false' },
 		});
 		area.value = custom ?? defaultInstruction('extract-vocabulary');
@@ -71,7 +71,7 @@ export function renderPromptBox(
 
 		if (custom !== undefined) {
 			const reset = body.createEl('button', {
-				cls: 'anki-bridge-sidebar__prompt-reset',
+				cls: 'vocabweave-sidebar__prompt-reset',
 				text: 'Reset to default',
 				attr: { type: 'button' },
 			});
@@ -98,7 +98,7 @@ export function renderPromptBox(
 			`JSON format for ${fieldCount} field${fieldCount === 1 ? '' : 's'}`,
 		];
 		body.createEl('p', {
-			cls: 'anki-bridge-sidebar__hint',
+			cls: 'vocabweave-sidebar__hint',
 			text: `Also sent automatically: ${parts.join(', ')}.`,
 		});
 	};

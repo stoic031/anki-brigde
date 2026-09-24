@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { FakeEl } from '../../test/fakeDom';
 import { renderTabs } from './tabs';
 
-const HIDDEN = 'anki-bridge-sidebar__panel--hidden';
+const HIDDEN = 'vocabweave-sidebar__panel--hidden';
 const tabs = [
 	{ id: 'note', label: 'Note' },
 	{ id: 'text', label: 'Text' },
@@ -14,7 +14,7 @@ function render() {
 		parent as unknown as HTMLElement,
 		tabs,
 	) as unknown as Record<string, FakeEl>;
-	const buttons = parent.byClass('anki-bridge-sidebar__tab');
+	const buttons = parent.byClass('vocabweave-sidebar__tab');
 	return { parent, panels, buttons };
 }
 

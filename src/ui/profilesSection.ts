@@ -1,5 +1,5 @@
 import { Notice, Setting, type Events } from 'obsidian';
-import type AnkiBridgePlugin from '../main';
+import type VocabWeavePlugin from '../main';
 import {
 	getActiveProfile,
 	resolveAnkiConnectUrl,
@@ -19,9 +19,9 @@ export interface ProfilesSection {
 // Re-renders when the sidebar (or anything else) fires PROFILE_CHANGED_EVENT.
 export function renderProfilesSection(
 	containerEl: HTMLElement,
-	plugin: AnkiBridgePlugin,
+	plugin: VocabWeavePlugin,
 ): ProfilesSection {
-	const el = containerEl.createDiv({ cls: 'anki-bridge-settings__profiles' });
+	const el = containerEl.createDiv({ cls: 'vocabweave-settings__profiles' });
 	let names: { decks: string[]; models: string[] } | null = null;
 	let disposed = false;
 	// Main field options depend on the active profile's Model — fetched lazily and
@@ -66,8 +66,7 @@ export function renderProfilesSection(
 			.addButton((button) =>
 				button
 					.setButtonText('Delete')
-					// eslint-disable-next-line @typescript-eslint/no-deprecated -- setDestructive() is 1.13.0+, above minAppVersion
-					.setWarning()
+					.setDestructive()
 					.setDisabled(settings.profiles.length <= 1)
 					.onClick(() => {
 						settings.profiles = settings.profiles.filter(
@@ -233,7 +232,7 @@ export function renderPicker(
 // Doesn't depend on AnkiConnect, so it's always visible (no Connect gating).
 function renderFolderPicker(
 	el: HTMLElement,
-	plugin: AnkiBridgePlugin,
+	plugin: VocabWeavePlugin,
 	profile: Profile,
 ): void {
 	new Setting(el).setName('Save notes to').addDropdown((dropdown) => {

@@ -1,5 +1,5 @@
 import { Setting, type DropdownComponent } from 'obsidian';
-import type AnkiBridgePlugin from '../../main';
+import type VocabWeavePlugin from '../../main';
 import { fieldConfigKey } from '../../settings';
 import { loadFields } from './loadFields';
 
@@ -14,7 +14,7 @@ export interface MainFieldControl {
 // pair, not read from the active note's frontmatter.
 export function renderMainFieldDropdown(
 	parent: HTMLElement,
-	plugin: AnkiBridgePlugin,
+	plugin: VocabWeavePlugin,
 	// Lets the sidebar force the Text tab to re-read the new value immediately,
 	// without waiting for a note/pair switch (its own sync() is deduped by pair).
 	onChange: () => void,

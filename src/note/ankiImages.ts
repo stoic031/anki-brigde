@@ -1,5 +1,5 @@
 import type { MarkdownPostProcessorContext } from 'obsidian';
-import type AnkiBridgePlugin from '../main';
+import type VocabWeavePlugin from '../main';
 import { resolveAnkiConnectUrl } from '../settings';
 import { AnkiConnectClient } from '../sync/ankiConnect';
 
@@ -67,7 +67,7 @@ export function createAnkiImageProcessor(deps: AnkiImageDeps) {
 	};
 }
 
-export function registerAnkiImages(plugin: AnkiBridgePlugin): void {
+export function registerAnkiImages(plugin: VocabWeavePlugin): void {
 	plugin.registerMarkdownPostProcessor(
 		createAnkiImageProcessor({
 			retrieve: (name) =>

@@ -9,7 +9,7 @@ class FakeButtonComponent {
 		this.text = t;
 		return this;
 	}
-	setWarning() {
+	setDestructive() {
 		this.warning = true;
 		return this;
 	}

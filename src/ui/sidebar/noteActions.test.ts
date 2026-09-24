@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import type AnkiBridgePlugin from '../../main';
+import type VocabWeavePlugin from '../../main';
 import type { TFile } from 'obsidian';
 import { FakeEl } from '../../test/fakeDom';
 
@@ -102,7 +102,7 @@ function setup(
 	const plugin = {
 		app: { vault: { process } },
 		settings: { ankiConnectUrl: 'http://localhost:1234', mainFieldConfig },
-	} as unknown as AnkiBridgePlugin;
+	} as unknown as VocabWeavePlugin;
 	const actions = renderNoteActions(parent as unknown as HTMLElement, plugin);
 	actions.update({
 		note,
@@ -112,7 +112,7 @@ function setup(
 		...state,
 	});
 	const [sync, rebuild, del] = parent.byClass(
-		'anki-bridge-sidebar__action',
+		'vocabweave-sidebar__action',
 	) as [FakeEl, FakeEl, FakeEl];
 	const label = (b: FakeEl) => b.children[1]?.text;
 	return { parent, actions, sync, rebuild, del, label };
@@ -135,7 +135,7 @@ describe('renderNoteActions — layout and state', () => {
 	it('renders Sync | Rebuild | Delete on one row, each with an icon and text', () => {
 		const { parent, sync, rebuild, del, label } = setup();
 
-		expect(parent.byClass('anki-bridge-sidebar__actions')).toHaveLength(1);
+		expect(parent.byClass('vocabweave-sidebar__actions')).toHaveLength(1);
 		expect([sync, rebuild, del].map(label)).toEqual([
 			'Sync',
 			'Rebuild',

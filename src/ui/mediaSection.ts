@@ -1,12 +1,12 @@
 import { Notice, Setting } from 'obsidian';
-import type AnkiBridgePlugin from '../main';
+import type VocabWeavePlugin from '../main';
 import { DEFAULT_MEDIA_PREFIX } from '../utils/constants';
 import { isValidMediaPrefix } from '../utils/validation';
 
 // docs/design/06-settings.md §6.4
 export function renderMediaSection(
 	containerEl: HTMLElement,
-	plugin: AnkiBridgePlugin,
+	plugin: VocabWeavePlugin,
 ): void {
 	new Setting(containerEl)
 		.setName('Media prefix')

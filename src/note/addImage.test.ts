@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { TFile } from 'obsidian';
-import type AnkiBridgePlugin from '../main';
+import type VocabWeavePlugin from '../main';
 import { DEFAULT_SETTINGS, fieldConfigKey, type ImageFieldConfig } from '../settings';
 import { ProviderError } from '../types';
 import { IMAGE_PROMPT_KEY } from '../providers/text/prompt';
@@ -63,7 +63,7 @@ function setup(
 				process,
 			},
 		},
-	} as unknown as AnkiBridgePlugin;
+	} as unknown as VocabWeavePlugin;
 	return { plugin, process, getContent: () => content };
 }
 

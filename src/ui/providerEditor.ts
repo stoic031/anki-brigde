@@ -1,5 +1,5 @@
 import { Notice, SecretComponent, Setting } from 'obsidian';
-import type AnkiBridgePlugin from '../main';
+import type VocabWeavePlugin from '../main';
 import { listModels, type ModelKind } from '../providers/modelLists';
 import { presetLabel, type ProviderPreset } from '../providers/presets';
 import {
@@ -41,7 +41,7 @@ export const clearModelCache = (): void => modelStates.clear();
 
 export function renderEditor<C extends AnyProviderConfig>(
 	el: HTMLElement,
-	plugin: AnkiBridgePlugin,
+	plugin: VocabWeavePlugin,
 	spec: ProviderKindSpec<C>,
 	config: C,
 	save: () => Promise<void>,
@@ -139,7 +139,7 @@ export function renderEditor<C extends AnyProviderConfig>(
 	spec.extraRows?.(el, config, save);
 
 	el.createDiv({
-		cls: `anki-bridge-provider-badge ${preset.cloud ? 'is-cloud' : 'is-local'}`,
+		cls: `vocabweave-provider-badge ${preset.cloud ? 'is-cloud' : 'is-local'}`,
 		text: preset.cloud
 			? `Cloud: your ${spec.sends} and API key are sent to ${preset.label}.`
 			: 'Local: requests stay on your machine.',
@@ -148,7 +148,7 @@ export function renderEditor<C extends AnyProviderConfig>(
 
 function renderApiKeyRows<C extends AnyProviderConfig>(
 	el: HTMLElement,
-	plugin: AnkiBridgePlugin,
+	plugin: VocabWeavePlugin,
 	spec: ProviderKindSpec<C>,
 	config: C,
 	preset: ProviderPreset,
@@ -204,7 +204,7 @@ function renderApiKeyRows<C extends AnyProviderConfig>(
 
 function renderModelRow<C extends AnyProviderConfig>(
 	el: HTMLElement,
-	plugin: AnkiBridgePlugin,
+	plugin: VocabWeavePlugin,
 	spec: ProviderKindSpec<C>,
 	config: C,
 	preset: ProviderPreset,
@@ -282,7 +282,7 @@ function renderModelRow<C extends AnyProviderConfig>(
 }
 
 async function refreshModels<C extends AnyProviderConfig>(
-	plugin: AnkiBridgePlugin,
+	plugin: VocabWeavePlugin,
 	spec: ProviderKindSpec<C>,
 	config: C,
 	render: () => void,

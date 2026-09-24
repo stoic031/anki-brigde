@@ -9,7 +9,7 @@ class FakeButtonComponent {
 		this.text = t;
 		return this;
 	}
-	setWarning() {
+	setDestructive() {
 		this.warning = true;
 		return this;
 	}
@@ -94,9 +94,9 @@ describe('DeckModelChangeWarningModal', () => {
 	it('sets the title and body copy', () => {
 		openModal(vi.fn(), vi.fn());
 
-		expect(modalState.title).toBe('Change Deck/Model for this note?');
+		expect(modalState.title).toBe('Change deck/model for this note?');
 		expect(modalState.texts).toContain(
-			'This note is already synced to Anki under a different Deck/Model. Updating will create a new note in Anki the next time you sync.',
+			'This note is already synced to Anki under a different deck/model. Updating will create a new note in Anki the next time you sync.',
 		);
 	});
 

@@ -11,7 +11,7 @@ export function renderTabs(
 	tabs: Tab[],
 ): Record<string, HTMLElement> {
 	const bar = parent.createDiv({
-		cls: 'anki-bridge-sidebar__tabs',
+		cls: 'vocabweave-sidebar__tabs',
 		attr: { role: 'tablist' },
 	});
 	const buttons: Record<string, HTMLElement> = {};
@@ -23,7 +23,7 @@ export function renderTabs(
 			buttons[tab.id]?.toggleClass('is-active', active);
 			buttons[tab.id]?.setAttr('aria-selected', String(active));
 			panels[tab.id]?.toggleClass(
-				'anki-bridge-sidebar__panel--hidden',
+				'vocabweave-sidebar__panel--hidden',
 				!active,
 			);
 		}
@@ -31,7 +31,7 @@ export function renderTabs(
 
 	for (const tab of tabs) {
 		const button = bar.createEl('button', {
-			cls: 'anki-bridge-sidebar__tab',
+			cls: 'vocabweave-sidebar__tab',
 			text: tab.label,
 			attr: { type: 'button', role: 'tab' },
 		});
@@ -41,7 +41,7 @@ export function renderTabs(
 	// Panels come after the whole bar so the DOM order is bar, then panels.
 	for (const tab of tabs) {
 		panels[tab.id] = parent.createDiv({
-			cls: 'anki-bridge-sidebar__panel',
+			cls: 'vocabweave-sidebar__panel',
 			attr: { role: 'tabpanel' },
 		});
 	}
