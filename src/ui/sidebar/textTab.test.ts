@@ -1,6 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type AnkiBridgePlugin from '../../main';
-import { fieldConfigKey, type AnkiBridgeSettings } from '../../settings';
+import {
+	examplesKey,
+	fieldConfigKey,
+	type AnkiBridgeSettings,
+} from '../../settings';
 import { FakeEl } from '../../test/fakeDom';
 
 class FakeMenuItem {
@@ -194,6 +198,7 @@ function setup(overrides: Partial<AnkiBridgeSettings> = {}) {
 		settings: {
 			ankiConnectUrl: '',
 			generateWithAiFields: {},
+			generateExamples: {},
 			...overrides,
 		},
 		saveSettings,
@@ -207,6 +212,7 @@ function setup(overrides: Partial<AnkiBridgeSettings> = {}) {
 	const generate = actions[0] as FakeEl;
 	const write = actions[1] as FakeEl;
 	const addField = actions[2] as FakeEl;
+	const clear = actions[3] as FakeEl;
 	const fieldsEl = parent.byClass(
 		'anki-bridge-sidebar__field-checkboxes',
 	)[0] as FakeEl;
@@ -218,16 +224,18 @@ function setup(overrides: Partial<AnkiBridgeSettings> = {}) {
 		generate,
 		write,
 		addField,
+		clear,
 		fieldsEl,
 	};
 }
 
 describe('renderTextTab', () => {
-	it('renders Generate, Write and Add field on one row (icon + text), all disabled, title below', () => {
-		const { parent, generate, write, addField } = setup();
+	it('renders Generate, Write, Add field and Clear on one row (icon + text), all disabled, title below', () => {
+		const { parent, generate, write, addField, clear } = setup();
 
 		const row = parent.byClass('anki-bridge-sidebar__actions')[0];
 		expect(row?.children.map((c) => c.tag)).toEqual([
+			'button',
 			'button',
 			'button',
 			'button',
@@ -238,6 +246,9 @@ describe('renderTextTab', () => {
 		expect(setIcon.mock.calls[0]?.[1]).toBe('sparkles');
 		expect(setIcon.mock.calls[1]?.[1]).toBe('save');
 		expect(setIcon.mock.calls[2]?.[1]).toBe('plus');
+		expect(clear.children[1]?.text).toBe('Clear');
+		expect(setIcon.mock.calls[3]?.[1]).toBe('eraser');
+		expect(clear.disabled).toBe(true);
 		expect(generate.disabled).toBe(true);
 		expect(write.disabled).toBe(true);
 		expect(addField.disabled).toBe(true);
@@ -420,7 +431,12 @@ describe('renderTextTab', () => {
 	});
 
 	describe('Generate button', () => {
-		const plan = { provider: {}, word: 'w', targetFields: ['Meaning'] };
+		const plan = {
+			provider: {},
+			word: 'w',
+			targetFields: ['Meaning'],
+			context: { targetLanguage: 'English' },
+		};
 
 		async function ready() {
 			modelFieldNames.mockResolvedValue(['Word', 'Meaning']);
@@ -561,7 +577,12 @@ describe('renderTextTab', () => {
 	});
 
 	describe('Write button', () => {
-		const plan = { provider: {}, word: 'w', targetFields: ['Meaning'] };
+		const plan = {
+			provider: {},
+			word: 'w',
+			targetFields: ['Meaning'],
+			context: { targetLanguage: 'English' },
+		};
 
 		async function readyWithDraft(draft = 'medicine') {
 			modelFieldNames.mockResolvedValue(['Word', 'Meaning']);
@@ -610,6 +631,26 @@ describe('renderTextTab', () => {
 			expect(write.children[1]?.text).toBe('✅ Done!');
 		});
 
+		it('remembers the written card as a Generate example for this pair', async () => {
+			const { write, plugin, saveSettings } =
+				await readyWithDraft('medicine');
+			applyGenerated.mockResolvedValue({
+				filled: ['Meaning'],
+				skipped: [],
+			});
+
+			await latestRow('Meaning')?.textArea?.edit('edited by hand');
+			await write.click();
+			await flush();
+
+			expect(
+				plugin.settings.generateExamples[
+					examplesKey('Japanese', 'Basic', 'English')
+				],
+			).toEqual([{ word: 'w', fields: { Meaning: 'edited by hand' } }]);
+			expect(saveSettings).toHaveBeenCalled();
+		});
+
 		it('clears the draft after a successful write', async () => {
 			const { write } = await readyWithDraft('medicine');
 			applyGenerated.mockResolvedValue({
@@ -621,6 +662,21 @@ describe('renderTextTab', () => {
 			await flush();
 
 			expect(latestRow('Meaning')?.textArea).toBeUndefined();
+		});
+
+		it('Clear drops every preview without touching the note', async () => {
+			const { write, clear } = await readyWithDraft('medicine');
+			expect(clear.disabled).toBe(false);
+
+			await clear.click();
+			await flush();
+
+			expect(latestRow('Meaning')?.textArea).toBeUndefined();
+			expect(clear.disabled).toBe(true);
+			await write.click();
+			await flush();
+			expect(Notice).toHaveBeenCalledWith('Generate content first.');
+			expect(applyGenerated).not.toHaveBeenCalled();
 		});
 
 		it('keeps the draft when the write fails', async () => {

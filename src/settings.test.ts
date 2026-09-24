@@ -7,6 +7,7 @@ import {
 	getActiveImageConfig,
 	getActiveTextConfig,
 	loadSettings,
+	rememberExample,
 	resolveAnkiConnectUrl,
 	resolveMediaPrefix,
 	saveSettings,
@@ -195,6 +196,7 @@ describe('saveSettings', () => {
 			generateWithAiFields: {},
 			imageConfigs: {},
 			mainFieldConfig: {},
+			generateExamples: {},
 			textProviders: [],
 			activeTextProviderId: '',
 			imageProviders: [],
@@ -220,6 +222,7 @@ describe('resolveAnkiConnectUrl', () => {
 				generateWithAiFields: {},
 				imageConfigs: {},
 				mainFieldConfig: {},
+				generateExamples: {},
 				textProviders: [],
 				activeTextProviderId: '',
 				imageProviders: [],
@@ -240,6 +243,7 @@ describe('resolveAnkiConnectUrl', () => {
 				generateWithAiFields: {},
 				imageConfigs: {},
 				mainFieldConfig: {},
+				generateExamples: {},
 				textProviders: [],
 				activeTextProviderId: '',
 				imageProviders: [],
@@ -260,6 +264,7 @@ describe('resolveAnkiConnectUrl', () => {
 				generateWithAiFields: {},
 				imageConfigs: {},
 				mainFieldConfig: {},
+				generateExamples: {},
 				textProviders: [],
 				activeTextProviderId: '',
 				imageProviders: [],
@@ -690,5 +695,18 @@ describe('image provider settings', () => {
 				'test-secret',
 			);
 		});
+	});
+});
+
+describe('rememberExample', () => {
+	it('keeps only the newest 3 cards per key', () => {
+		const settings = structuredClone(DEFAULT_SETTINGS);
+		for (const word of ['a', 'b', 'c', 'd'])
+			rememberExample(settings, 'k', { word, fields: {} });
+		expect(settings.generateExamples.k?.map((c) => c.word)).toEqual([
+			'b',
+			'c',
+			'd',
+		]);
 	});
 });

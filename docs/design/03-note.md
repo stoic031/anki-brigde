@@ -91,8 +91,8 @@ trước khi nó chạm vào note.
   §4) một lần cho toàn bộ `targetFields` → nhận `TextResult` (key = đúng tên field) →
   điền vào ô preview (editable) ngay dưới field tương ứng ở tab Text — **chưa đụng tới
   note**. Bấm Generate lần sau ghi đè preview cũ (regenerate toàn bộ, không giữ phần đã
-  sửa tay). `context` (`02-providers.md` §2.4) gồm Learning language của profile khớp
-  Deck+Model của note và Your language toàn cục (`06-settings.md` §6.1/§6.2) — cả hai
+  sửa tay). `context` (`02-providers.md` §2.4) gồm Learning language của profile đang chọn
+  (không phụ thuộc Deck+Model của note) và Your language toàn cục (`06-settings.md` §6.1/§6.2) — cả hai
   không bắt buộc, không có thì `context` rỗng, prompt không đổi so với trước.
 - Kết quả: không có preview nào có nội dung (mọi key trả về rỗng) → Notice "The text model
   returned nothing to add. Try again or check the model." Lỗi provider → toast "❌

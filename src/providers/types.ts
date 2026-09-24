@@ -13,6 +13,13 @@ export interface MediaResult {
 export interface TextContext {
 	targetLanguage?: string; // profile's Learning language, docs/design/06-settings.md §6.1
 	nativeLanguage?: string; // global "Your language", docs/design/06-settings.md §6.2
+	examples?: ApprovedCard[]; // recent cards the user wrote for this Deck+Model, few-shot
+}
+
+// A card the user approved via Write — the (possibly edited) Generate result.
+export interface ApprovedCard {
+	word: string;
+	fields: Record<string, string>;
 }
 
 export interface TextProvider {

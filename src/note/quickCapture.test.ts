@@ -67,6 +67,7 @@ function fakeSettings(
 		generateWithAiFields: {},
 		imageConfigs: {},
 		mainFieldConfig: {},
+		generateExamples: {},
 		textProviders: [],
 		activeTextProviderId: '',
 		imageProviders: [],

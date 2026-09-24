@@ -154,7 +154,7 @@ chi tiết: `03-note.md` §3.2):
 **Tab Text — Fields to generate with AI:**
 
 ```
-[✨ Generate] [💾 Write] [＋ Add field]
+[✨ Generate] [💾 Write] [＋ Add field] [⌫ Clear]
 Fields to generate with AI
 Meaning                                                              [×]
 ┌─ (sau khi Generate) ────────────────────────────────────────────────┐
@@ -163,12 +163,12 @@ Meaning                                                              [×]
 Furigana                                                             [×]
 ```
 
-- Ba nút **Generate | Write | Add field** nằm cùng một hàng (giống hàng
+- Bốn nút **Generate | Write | Add field | Clear** nằm cùng một hàng (giống hàng
   Sync|Rebuild|Delete ở §7.2.1 — cùng dùng icon + chữ, cùng CSS
   `anki-bridge-sidebar__actions`/`__action`). Chữ "Fields to generate with AI" nằm
   riêng một dòng ngay dưới hàng nút.
 - Chỉ hoạt động khi note đang mở có cả `anki_deck` và `anki_model` (không thì hiện gợi ý
-  "Set a Deck and Model above first." và cả 3 nút Generate/Write/Add field bị vô hiệu).
+  "Set a Deck and Model above first." và cả 4 nút Generate/Write/Add field/Clear bị vô hiệu).
   Danh sách field cho **Add field** lấy từ `modelFieldNames(model)` của note đang mở, **trừ
   Main Field** (input — không có gì để sinh, xem phần Main Field ở trên) và trừ field đã
   thêm rồi. Tự cập nhật khi user chuyển sang note khác, khi cặp Deck+Model của note đổi
@@ -188,6 +188,13 @@ Furigana                                                             [×]
   thêm vào note — 1 lần, áp dụng đúng quy tắc Content Update Logic ở §3.4 (section đang rỗng
   mới điền, section đã có nội dung thì bỏ qua). Chưa Generate lần nào (không có preview nào
   có nội dung) → hiện Notice "Generate content first." và không làm gì khác.
+  Write thành công → lưu thẻ vừa ghi (giá trị Main Field + các field có nội dung, gồm cả
+  phần user đã sửa) vào `settings.generateExamples` theo Deck+Model + Learning language
+  lúc Generate, chỉ giữ 3 thẻ mới nhất — dùng làm ví dụ few-shot cho lần Generate sau
+  (`02-providers.md` §2.4).
+- Nút **Clear** (icon `eraser` + chữ): xoá hết nội dung preview của mọi field (không đụng
+  note, không hỏi xác nhận — preview chỉ nằm trong bộ nhớ, Generate lại được). Bị vô hiệu
+  khi chưa có preview nào.
 
 ### 7.2.2. Tab Image
 

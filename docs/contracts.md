@@ -115,8 +115,14 @@ interface ImageOptions {
 }
 
 interface TextContext {
-	targetLanguage?: string; // the profile's Learning language, docs/design/06-settings.md §6.1
+	targetLanguage?: string; // the selected profile's Learning language, docs/design/06-settings.md §6.1
 	nativeLanguage?: string; // global "Your language", docs/design/06-settings.md §6.2
+	examples?: ApprovedCard[]; // last ≤3 cards the user wrote for this Deck+Model
+}
+
+interface ApprovedCard {
+	word: string; // Main Field value
+	fields: Record<string, string>; // field name → value the user wrote
 }
 
 interface TextProvider {

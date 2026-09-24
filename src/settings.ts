@@ -1,5 +1,6 @@
 import type { Plugin } from 'obsidian';
 import type { ProviderConfig } from './providers/providerManager';
+import type { ApprovedCard } from './providers/types';
 import {
 	IMAGE_PRESETS,
 	TEXT_PRESETS,
@@ -67,6 +68,9 @@ export interface AnkiBridgeSettings {
 	// Main Field dropdown (below Model), keyed by fieldConfigKey(deck, model). '' /
 	// absent = not configured. docs/design/07-sidebar.md §7.2.1/§7.4.
 	mainFieldConfig: Record<string, string>;
+	// Last few cards the user wrote from Generate, keyed by examplesKey(deck, model, lang) —
+	// fed back as few-shot examples. docs/design/02-providers.md §2.4.
+	generateExamples: Record<string, ApprovedCard[]>;
 	textProviders: TextProviderConfig[];
 	activeTextProviderId: string; // '' = none configured = no AI calls; else an id in `textProviders`
 	imageProviders: ImageProviderConfig[];
@@ -100,6 +104,7 @@ export const DEFAULT_SETTINGS: AnkiBridgeSettings = {
 	generateWithAiFields: {},
 	imageConfigs: {},
 	mainFieldConfig: {},
+	generateExamples: {},
 	textProviders: [],
 	activeTextProviderId: '',
 	imageProviders: [],
@@ -302,4 +307,27 @@ export function resolveMediaPrefix(settings: AnkiBridgeSettings): string {
 // (deck, model) pairs colliding on the same string key.
 export function fieldConfigKey(deck: string, model: string): string {
 	return JSON.stringify([deck, model]);
+}
+
+// Few-shot examples are per Deck+Model *and* Learning language, so cards written while
+// learning English never steer a Japanese Generate.
+export function examplesKey(
+	deck: string,
+	model: string,
+	targetLanguage = '',
+): string {
+	return JSON.stringify([deck, model, targetLanguage]);
+}
+
+export const MAX_EXAMPLES = 3;
+
+// Rolling window: the newest approved card goes last, the oldest drops out, so one
+// bad example doesn't stick around.
+export function rememberExample(
+	settings: AnkiBridgeSettings,
+	key: string,
+	card: ApprovedCard,
+): void {
+	const list = [...(settings.generateExamples[key] ?? []), card];
+	settings.generateExamples[key] = list.slice(-MAX_EXAMPLES);
 }

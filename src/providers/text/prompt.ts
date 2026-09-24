@@ -1,8 +1,14 @@
-import type { TextContext, TextTask } from '../types';
+import type { ApprovedCard, TextContext, TextTask } from '../types';
 
 const TASK_INSTRUCTION: Record<TextTask, string> = {
-	'extract-vocabulary':
-		'Given a vocabulary word or phrase, fill in the requested fields (meaning, reading, notes, etc.).',
+	'extract-vocabulary': [
+		'You fill in the fields of a vocabulary flashcard used for spaced-repetition review. The input is the word or phrase.',
+		'Rules:',
+		'- Be brief: a card is read in seconds. A meaning field = the 1-3 most common senses, a few words each. An example field = ONE short natural sentence. Any other field = one short line.',
+		'- Infer each field\'s purpose from its name (e.g. Definition or a field ending in "meaning" = explanation/translation, POS = part of speech, Ex1/Example = an example sentence).',
+		'- No filler, no labels like "Meaning:", no repeating the word unless the field asks for it, no markdown.',
+		"- If a field doesn't apply or you are unsure, omit it.",
+	].join('\n'),
 	'generate-example':
 		'Given a vocabulary word or phrase, write natural example content for the requested fields.',
 	rewrite:
@@ -35,6 +41,44 @@ function buildContextLine(
 	return `Context: the user ${parts.join(' and ')}.`;
 }
 
+// docs/design/02-providers.md §2.4 — the Learning language wins over the input word's
+// own language, so switching profile switches the output even for the same word.
+function buildLanguageRule(
+	task: TextTask,
+	target?: string,
+): string | undefined {
+	if (task !== 'extract-vocabulary') return undefined;
+	const examplesIn = target?.trim()
+		? `${target.trim()}, even if the input word is in another language (use the ${target.trim()} equivalent)`
+		: 'the same language as the input word';
+	return `- Example sentences are in ${examplesIn}. Definitions, meanings and translations are in the user's language.`;
+}
+
+// Keeps a few long approved values from blowing up every prompt.
+const EXAMPLE_VALUE_MAX = 300;
+
+// docs/design/02-providers.md §2.4 — cards the user already wrote for this Deck+Model,
+// so the model copies their style and length. Only for extract-vocabulary.
+function buildExamplesBlock(
+	task: TextTask,
+	examples?: ApprovedCard[],
+): string | undefined {
+	if (task !== 'extract-vocabulary' || !examples?.length) return undefined;
+	const lines = examples.map((ex) => {
+		const fields = Object.fromEntries(
+			Object.entries(ex.fields).map(([k, v]) => [
+				k,
+				v.slice(0, EXAMPLE_VALUE_MAX),
+			]),
+		);
+		return `${ex.word} → ${JSON.stringify(fields)}`;
+	});
+	return [
+		'Cards this user approved. Match their style and length:',
+		...lines,
+	].join('\n');
+}
+
 export function buildMessages(
 	input: string,
 	task: TextTask,
@@ -42,10 +86,14 @@ export function buildMessages(
 	context?: TextContext,
 ): { system: string; user: string } {
 	const keys = resultKeys(task, targetFields);
+	const languageRule = buildLanguageRule(task, context?.targetLanguage);
 	const contextLine = buildContextLine(task, context);
+	const examples = buildExamplesBlock(task, context?.examples);
 	const system = [
 		TASK_INSTRUCTION[task],
+		...(languageRule ? [languageRule] : []),
 		...(contextLine ? [contextLine] : []),
+		...(examples ? [examples] : []),
 		`Reply with ONLY a JSON object whose keys are exactly: ${JSON.stringify(keys)}.`,
 		'Every value is a string. Omit a key if you cannot fill it. No markdown, no commentary.',
 	].join('\n');

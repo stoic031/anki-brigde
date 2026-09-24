@@ -95,4 +95,57 @@ describe('buildMessages', () => {
 			'Reply with ONLY a JSON object whose keys are exactly: ["Front","Back"]',
 		);
 	});
+
+	it('tells extract-vocabulary to keep flashcard fields brief', () => {
+		const { system } = buildMessages('薬', 'extract-vocabulary', [
+			'Meaning',
+		]);
+		expect(system).toContain('Be brief');
+		expect(system).toContain(
+			'Example sentences are in the same language as the input word.',
+		);
+	});
+
+	it('writes examples in the Learning language even for a word in another language', () => {
+		const { system } = buildMessages(
+			'note',
+			'extract-vocabulary',
+			['Ex1'],
+			{ targetLanguage: 'Japanese' },
+		);
+		expect(system).toContain(
+			'Example sentences are in Japanese, even if the input word is in another language',
+		);
+		expect(system).not.toContain('same language as the input word');
+		expect(system).not.toContain('Furigana');
+	});
+
+	it("adds the user's approved cards as examples, truncating long values", () => {
+		const { system } = buildMessages(
+			'水',
+			'extract-vocabulary',
+			['Meaning'],
+			{
+				examples: [
+					{ word: '薬', fields: { Meaning: 'medicine' } },
+					{ word: '火', fields: { Meaning: 'x'.repeat(400) } },
+				],
+			},
+		);
+		expect(system).toContain('Match their style and length');
+		expect(system).toContain('薬 → {"Meaning":"medicine"}');
+		expect(system).toContain(`"${'x'.repeat(300)}"`);
+		expect(system).not.toContain('x'.repeat(301));
+	});
+
+	it('has no examples block without examples or for other tasks', () => {
+		const examples = [{ word: '薬', fields: { Meaning: 'medicine' } }];
+		expect(
+			buildMessages('薬', 'extract-vocabulary', ['Meaning']).system,
+		).not.toContain('approved');
+		expect(
+			buildMessages('Word: 薬', 'build-image-prompt', [], { examples })
+				.system,
+		).not.toContain('approved');
+	});
 });
