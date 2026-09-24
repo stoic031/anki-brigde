@@ -74,7 +74,9 @@ async function trigger(
 				fieldConfigKey(frontmatter.anki_deck, frontmatter.anki_model)
 			],
 		).catch((err: unknown) =>
-			toastError(`❌ Synced, but couldn't rename the note: ${String(err)}`),
+			toastError(
+				`❌ Synced, but couldn't rename the note: ${String(err)}`,
+			),
 		);
 		toastSuccess('✅ Note synced to Anki!');
 	} catch (err) {

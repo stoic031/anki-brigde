@@ -1,6 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type VocabWeavePlugin from '../main';
-import { DEFAULT_SETTINGS, fieldConfigKey, type VocabWeaveSettings } from '../settings';
+import {
+	DEFAULT_SETTINGS,
+	fieldConfigKey,
+	type VocabWeaveSettings,
+} from '../settings';
 
 vi.mock('obsidian', () => ({ TFile: class FakeTFile {} }));
 
@@ -242,7 +246,9 @@ describe('registerAutoSync', () => {
 	});
 
 	it('toasts the SyncError message on a known failure', async () => {
-		syncNote.mockRejectedValue(new SyncError('offline', 'Anki is not running.'));
+		syncNote.mockRejectedValue(
+			new SyncError('offline', 'Anki is not running.'),
+		);
 		const { plugin, getActiveFile, fireModify } = fakePlugin();
 		const file = fakeTFile();
 		getActiveFile.mockReturnValue(file);
@@ -257,7 +263,10 @@ describe('registerAutoSync', () => {
 
 	it('never resolves an Anki-edited conflict itself, only points at the Sync button', async () => {
 		syncNote.mockRejectedValue(
-			new SyncError('anki-edited', 'This note was edited in Anki since the last sync.'),
+			new SyncError(
+				'anki-edited',
+				'This note was edited in Anki since the last sync.',
+			),
 		);
 		const { plugin, getActiveFile, fireModify } = fakePlugin();
 		const file = fakeTFile();

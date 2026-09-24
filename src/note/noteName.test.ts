@@ -3,7 +3,10 @@ import type { App, TFile } from 'obsidian';
 
 import { noteFilename, syncNoteName } from './noteName';
 
-function setup(content: string, opts: { basename?: string; folder?: string; taken?: string[] } = {}) {
+function setup(
+	content: string,
+	opts: { basename?: string; folder?: string; taken?: string[] } = {},
+) {
 	const basename = opts.basename ?? 'old';
 	const folder = opts.folder ?? 'Vocab';
 	const file = { basename, parent: { path: folder } } as unknown as TFile;
@@ -41,13 +44,17 @@ describe('syncNoteName', () => {
 	});
 
 	it('adds a numeric suffix when the name is taken by another note', async () => {
-		const { app, file, renameFile } = setup(NOTE, { taken: ['Vocab/診察 室.md'] });
+		const { app, file, renameFile } = setup(NOTE, {
+			taken: ['Vocab/診察 室.md'],
+		});
 		await syncNoteName(app, file, 'Front');
 		expect(renameFile).toHaveBeenCalledWith(file, 'Vocab/診察 室 1.md');
 	});
 
 	it('strips HTML and uses the first non-empty line', async () => {
-		const { app, file, renameFile } = setup('## Front\n\n<b>薬</b>\nsecond line\n');
+		const { app, file, renameFile } = setup(
+			'## Front\n\n<b>薬</b>\nsecond line\n',
+		);
 		await syncNoteName(app, file, 'Front');
 		expect(renameFile).toHaveBeenCalledWith(file, 'Vocab/薬.md');
 	});
@@ -71,12 +78,16 @@ describe('syncNoteName', () => {
 
 describe('noteFilename', () => {
 	it('keeps spaces, Unicode and ordinary punctuation', () => {
-		expect(noteFilename("look up, isn't (it)! 診察")).toBe("look up, isn't (it)! 診察");
+		expect(noteFilename("look up, isn't (it)! 診察")).toBe(
+			"look up, isn't (it)! 診察",
+		);
 	});
 
 	it('swaps characters a file name or an Obsidian link cannot hold for full-width ones', () => {
 		expect(noteFilename('おなまえは ?')).toBe('おなまえは ？');
-		expect(noteFilename('a/b\\c:d*e?f"g<h>i|j#k^l[m]n')).toBe('a／b＼c：d＊e？f＂g＜h＞i｜j＃k＾l［m］n');
+		expect(noteFilename('a/b\\c:d*e?f"g<h>i|j#k^l[m]n')).toBe(
+			'a／b＼c：d＊e？f＂g＜h＞i｜j＃k＾l［m］n',
+		);
 	});
 
 	it('turns line breaks and whitespace runs into one space, trimmed', () => {

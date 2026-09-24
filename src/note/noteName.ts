@@ -36,7 +36,8 @@ export function noteFilename(text: string): string {
 		.replace(/\s+/g, ' ')
 		.trim()
 		.replace(/^\.+/, ''); // no hidden files
-	const truncated = Array.from(name).slice(0, MAX_NAME_LENGTH).join('').trim() || 'note';
+	const truncated =
+		Array.from(name).slice(0, MAX_NAME_LENGTH).join('').trim() || 'note';
 	return WINDOWS_RESERVED_NAME.test(truncated) ? `${truncated}_` : truncated;
 }
 
@@ -45,7 +46,11 @@ const escapeRegExp = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 // docs/design/03-note.md §3.2 — after each Sync the note's file name follows its Main
 // Field value, named the same way as at creation (noteFilename). No Main Field
 // configured, or an empty one → the name is left alone.
-export async function syncNoteName(app: App, file: TFile, mainField: string | undefined): Promise<void> {
+export async function syncNoteName(
+	app: App,
+	file: TFile,
+	mainField: string | undefined,
+): Promise<void> {
 	if (!mainField) return;
 	const sections = parseSections(await app.vault.read(file));
 	const key = resolveSectionKey(sections.keys(), mainField);
@@ -59,10 +64,15 @@ export async function syncNoteName(app: App, file: TFile, mainField: string | un
 
 	const base = noteFilename(text);
 	// "word 1" is already this name with Obsidian's collision suffix — don't bounce it.
-	if (new RegExp(`^${escapeRegExp(base)}( \\d+)?$`).test(file.basename)) return;
+	if (new RegExp(`^${escapeRegExp(base)}( \\d+)?$`).test(file.basename))
+		return;
 
-	const folder = !file.parent || file.parent.path === '/' ? '' : file.parent.path;
-	await app.fileManager.renameFile(file, getUniqueNotePath(app, folder, `${base}.md`));
+	const folder =
+		!file.parent || file.parent.path === '/' ? '' : file.parent.path;
+	await app.fileManager.renameFile(
+		file,
+		getUniqueNotePath(app, folder, `${base}.md`),
+	);
 }
 
 // docs/design/03-note.md §3.7 step 5 — Obsidian's own numeric-suffix convention

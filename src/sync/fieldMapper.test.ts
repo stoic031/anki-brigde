@@ -2,29 +2,47 @@ import { describe, expect, it } from 'vitest';
 import type { SectionValue } from '../types';
 import { mapContentToFields } from './fieldMapper';
 
-function sections(entries: [string, SectionValue][]): Map<string, SectionValue> {
+function sections(
+	entries: [string, SectionValue][],
+): Map<string, SectionValue> {
 	return new Map(entries);
 }
 
 describe('mapContentToFields — Pass 1 exact match', () => {
 	it('matches a section case-insensitively', () => {
-		const result = mapContentToFields(sections([['front', '診察']]), ['Front'], 'Basic');
+		const result = mapContentToFields(
+			sections([['front', '診察']]),
+			['Front'],
+			'Basic',
+		);
 		expect(result.fields.Front).toBe('診察');
 	});
 
 	it('trims whitespace from the field name before matching', () => {
-		const result = mapContentToFields(sections([['front', '診察']]), [' Front '], 'Basic');
+		const result = mapContentToFields(
+			sections([['front', '診察']]),
+			[' Front '],
+			'Basic',
+		);
 		expect(result.fields[' Front ']).toBe('診察');
 	});
 
 	it('leaves a field with no matching section unmapped by this pass', () => {
 		// A second, matching field keeps Pass 3 (which needs *nothing* mapped at all) from firing.
-		const result = mapContentToFields(sections([['back', 'Khám bệnh']]), ['Back', 'Front'], 'Basic');
+		const result = mapContentToFields(
+			sections([['back', 'Khám bệnh']]),
+			['Back', 'Front'],
+			'Basic',
+		);
 		expect(result.fields.Front).toBe('');
 	});
 
 	it('only lets the first of two fields that normalize to the same key claim the section', () => {
-		const result = mapContentToFields(sections([['front', '診察']]), ['Front', 'front'], 'Basic');
+		const result = mapContentToFields(
+			sections([['front', '診察']]),
+			['Front', 'front'],
+			'Basic',
+		);
 		expect(result.fields.Front).toBe('診察');
 		expect(result.fields.front).toBe('');
 	});
@@ -32,7 +50,11 @@ describe('mapContentToFields — Pass 1 exact match', () => {
 
 describe('mapContentToFields — Pass 2 alias match', () => {
 	it('maps a field via alias when no exact match exists', () => {
-		const result = mapContentToFields(sections([['word', '診察']]), ['Front'], 'Basic');
+		const result = mapContentToFields(
+			sections([['word', '診察']]),
+			['Front'],
+			'Basic',
+		);
 		expect(result.fields.Front).toBe('診察');
 	});
 
@@ -75,7 +97,11 @@ describe('mapContentToFields — Pass 2 alias match', () => {
 	});
 
 	it('applies alias lookup case-insensitively on the field name', () => {
-		const result = mapContentToFields(sections([['word', '診察']]), ['FRONT'], 'Basic');
+		const result = mapContentToFields(
+			sections([['word', '診察']]),
+			['FRONT'],
+			'Basic',
+		);
 		expect(result.fields.FRONT).toBe('診察');
 	});
 });
@@ -95,8 +121,14 @@ describe('mapContentToFields — Pass 3 positional fallback', () => {
 	});
 
 	it('emits the exact fallback warning when it fires', () => {
-		const result = mapContentToFields(sections([['unrelated', 'value']]), ['FieldA'], 'Basic');
-		expect(result.warnings).toContain('Pass 1 and 2 mapped no fields; used positional fallback.');
+		const result = mapContentToFields(
+			sections([['unrelated', 'value']]),
+			['FieldA'],
+			'Basic',
+		);
+		expect(result.warnings).toContain(
+			'Pass 1 and 2 mapped no fields; used positional fallback.',
+		);
 	});
 
 	it('does not fire if Pass 1/2 mapped at least one field elsewhere', () => {
@@ -110,11 +142,17 @@ describe('mapContentToFields — Pass 3 positional fallback', () => {
 		);
 		expect(result.fields.Front).toBe('診察');
 		expect(result.fields.Notes).toBe('');
-		expect(result.warnings).not.toContain('Pass 1 and 2 mapped no fields; used positional fallback.');
+		expect(result.warnings).not.toContain(
+			'Pass 1 and 2 mapped no fields; used positional fallback.',
+		);
 	});
 
 	it('defaults extra fields to empty string when there are more fields than sections', () => {
-		const result = mapContentToFields(sections([['unrelated', 'only one']]), ['FieldA', 'FieldB'], 'Basic');
+		const result = mapContentToFields(
+			sections([['unrelated', 'only one']]),
+			['FieldA', 'FieldB'],
+			'Basic',
+		);
 		expect(result.fields.FieldA).toBe('only one');
 		expect(result.fields.FieldB).toBe('');
 	});
@@ -129,13 +167,19 @@ describe('mapContentToFields — Pass 3 positional fallback', () => {
 			'Basic',
 		);
 		expect(result.fields.FieldA).toBe('first');
-		expect(result.warnings.some((w) => w.includes('unrelated2'))).toBe(true);
+		expect(result.warnings.some((w) => w.includes('unrelated2'))).toBe(
+			true,
+		);
 	});
 });
 
 describe('mapContentToFields — afterwards: defaults and warnings', () => {
 	it('defaults an unmapped field to empty string while keeping the key present', () => {
-		const result = mapContentToFields(sections([['front', '診察']]), ['Front', 'Notes'], 'Basic');
+		const result = mapContentToFields(
+			sections([['front', '診察']]),
+			['Front', 'Notes'],
+			'Basic',
+		);
 		expect(result.fields.Notes).toBe('');
 		expect('Notes' in result.fields).toBe(true);
 	});
@@ -149,7 +193,9 @@ describe('mapContentToFields — afterwards: defaults and warnings', () => {
 			['Front'],
 			'Basic',
 		);
-		expect(result.warnings).toEqual(["1 section not mapped to model 'Basic': collocations"]);
+		expect(result.warnings).toEqual([
+			"1 section not mapped to model 'Basic': collocations",
+		]);
 	});
 
 	it('emits a pluralized warning listing normalized (lowercased) keys for multiple unmapped sections', () => {
@@ -192,20 +238,34 @@ describe('mapContentToFields — afterwards: defaults and warnings', () => {
 	});
 
 	it('passes a plain string section through unchanged when mapped into a field', () => {
-		const result = mapContentToFields(sections([['front', '診察']]), ['Front'], 'Basic');
+		const result = mapContentToFields(
+			sections([['front', '診察']]),
+			['Front'],
+			'Basic',
+		);
 		expect(result.fields.Front).toBe('診察');
 	});
 });
 
 describe('mapContentToFields — edge cases', () => {
 	it('defaults every field to empty string when there are no sections at all', () => {
-		const result = mapContentToFields(sections([]), ['Front', 'Back'], 'Basic');
+		const result = mapContentToFields(
+			sections([]),
+			['Front', 'Back'],
+			'Basic',
+		);
 		expect(result.fields).toEqual({ Front: '', Back: '' });
-		expect(result.warnings).toEqual(['Pass 1 and 2 mapped no fields; used positional fallback.']);
+		expect(result.warnings).toEqual([
+			'Pass 1 and 2 mapped no fields; used positional fallback.',
+		]);
 	});
 
 	it('returns an empty fields object for an empty fields list, still firing the fallback warning', () => {
-		const result = mapContentToFields(sections([['front', '診察']]), [], 'Basic');
+		const result = mapContentToFields(
+			sections([['front', '診察']]),
+			[],
+			'Basic',
+		);
 		expect(result.fields).toEqual({});
 		expect(result.warnings).toEqual([
 			'Pass 1 and 2 mapped no fields; used positional fallback.',
@@ -235,7 +295,9 @@ describe('mapContentToFields — end to end', () => {
 			Furigana: 'しんさつ',
 			Notes: '',
 		});
-		expect(result.warnings).toEqual(["1 section not mapped to model 'Vocab': collocations"]);
+		expect(result.warnings).toEqual([
+			"1 section not mapped to model 'Vocab': collocations",
+		]);
 	});
 });
 
@@ -251,7 +313,11 @@ describe('mapContentToFields — sources', () => {
 		);
 		expect(exactAndAlias.sources).toEqual({ Front: 'word', Back: 'back' });
 
-		const positional = mapContentToFields(sections([['unrelated', 'v']]), ['FieldA'], 'Basic');
+		const positional = mapContentToFields(
+			sections([['unrelated', 'v']]),
+			['FieldA'],
+			'Basic',
+		);
 		expect(positional.sources).toEqual({ FieldA: 'unrelated' });
 	});
 });

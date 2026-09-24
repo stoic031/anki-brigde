@@ -1,7 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { TFile } from 'obsidian';
 import type VocabWeavePlugin from '../main';
-import { DEFAULT_SETTINGS, fieldConfigKey, type ImageFieldConfig } from '../settings';
+import {
+	DEFAULT_SETTINGS,
+	fieldConfigKey,
+	type ImageFieldConfig,
+} from '../settings';
 import { ProviderError } from '../types';
 import { IMAGE_PROMPT_KEY } from '../providers/text/prompt';
 import {
@@ -51,7 +55,9 @@ function setup(
 		},
 		providers: {
 			getTextProvider: () =>
-				opts.textProvider === undefined ? textProvider : opts.textProvider,
+				opts.textProvider === undefined
+					? textProvider
+					: opts.textProvider,
 			getImageProvider: () =>
 				opts.imageProvider === undefined
 					? imageProvider
@@ -135,7 +141,9 @@ describe('planAddImage', () => {
 		});
 		const plan = await planAddImage(plugin, note, 'D', 'M');
 
-		expect(plan).toMatchObject({ fieldsInput: 'Word: 薬\nMeaning: medicine' });
+		expect(plan).toMatchObject({
+			fieldsInput: 'Word: 薬\nMeaning: medicine',
+		});
 	});
 
 	it('stops when no field besides Output has content', async () => {
@@ -181,7 +189,13 @@ describe('runAddImage', () => {
 		const onPromptBuilt = vi.fn();
 		const { plugin, getContent } = setup();
 
-		const outcome = await runAddImage(plugin, note, plan, '', onPromptBuilt);
+		const outcome = await runAddImage(
+			plugin,
+			note,
+			plan,
+			'',
+			onPromptBuilt,
+		);
 
 		expect(textProvider.processText).toHaveBeenCalledWith(
 			'Word: 薬\nMeaning: medicine',
@@ -232,7 +246,10 @@ describe('runAddImage', () => {
 		const outcome = await runAddImage(plugin, note, plan, '  my prompt \n');
 
 		expect(textProvider.processText).not.toHaveBeenCalled();
-		expect(imageProvider.generateImage).toHaveBeenCalledWith('my prompt', {});
+		expect(imageProvider.generateImage).toHaveBeenCalledWith(
+			'my prompt',
+			{},
+		);
 		expect(outcome.prompt).toBe('my prompt');
 	});
 
@@ -240,9 +257,9 @@ describe('runAddImage', () => {
 		textProvider.processText.mockResolvedValue({});
 		const { plugin } = setup();
 
-		await expect(runAddImage(plugin, note, plan, '')).rejects.toBeInstanceOf(
-			ProviderError,
-		);
+		await expect(
+			runAddImage(plugin, note, plan, ''),
+		).rejects.toBeInstanceOf(ProviderError);
 		expect(imageProvider.generateImage).not.toHaveBeenCalled();
 		expect(storeMediaFile).not.toHaveBeenCalled();
 	});
@@ -254,9 +271,9 @@ describe('runAddImage', () => {
 		);
 		const { plugin, process } = setup();
 
-		await expect(runAddImage(plugin, note, plan, '')).rejects.toBeInstanceOf(
-			ProviderError,
-		);
+		await expect(
+			runAddImage(plugin, note, plan, ''),
+		).rejects.toBeInstanceOf(ProviderError);
 		expect(process).not.toHaveBeenCalled();
 	});
 
@@ -270,7 +287,9 @@ describe('runAddImage', () => {
 		storeMediaFile.mockRejectedValue(new Error('offline'));
 		const { plugin, process } = setup();
 
-		await expect(runAddImage(plugin, note, plan, '')).rejects.toThrow('offline');
+		await expect(runAddImage(plugin, note, plan, '')).rejects.toThrow(
+			'offline',
+		);
 		expect(process).not.toHaveBeenCalled();
 	});
 });
@@ -316,7 +335,9 @@ describe('cleanImagePrompt / writeImagePrompt', () => {
 	});
 
 	it('throws when nothing is left after cleaning', async () => {
-		textProvider.processText.mockResolvedValue({ [IMAGE_PROMPT_KEY]: '""' });
+		textProvider.processText.mockResolvedValue({
+			[IMAGE_PROMPT_KEY]: '""',
+		});
 		await expect(writeImagePrompt(plan)).rejects.toBeInstanceOf(
 			ProviderError,
 		);

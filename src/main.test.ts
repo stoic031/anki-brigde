@@ -13,7 +13,12 @@ const { PluginBase, addCommandSpy } = vi.hoisted(() => {
 });
 vi.mock('obsidian', () => ({ Plugin: PluginBase }));
 
-const { loadSettings, saveSettings, getActiveTextConfig, getActiveImageConfig } = vi.hoisted(() => ({
+const {
+	loadSettings,
+	saveSettings,
+	getActiveTextConfig,
+	getActiveImageConfig,
+} = vi.hoisted(() => ({
 	loadSettings: vi.fn().mockResolvedValue({}),
 	getActiveImageConfig: vi.fn().mockReturnValue(null),
 	getActiveTextConfig: vi.fn().mockReturnValue(null),
@@ -47,7 +52,9 @@ vi.mock('./ui/sidebarView', () => ({ registerSidebarView, revealSidebarView }));
 const { registerAutoSync } = vi.hoisted(() => ({ registerAutoSync: vi.fn() }));
 vi.mock('./sync/autoSync', () => ({ registerAutoSync }));
 
-const { registerAnkiImages } = vi.hoisted(() => ({ registerAnkiImages: vi.fn() }));
+const { registerAnkiImages } = vi.hoisted(() => ({
+	registerAnkiImages: vi.fn(),
+}));
 vi.mock('./note/ankiImages', () => ({ registerAnkiImages }));
 
 import VocabWeavePlugin from './main';
@@ -58,10 +65,7 @@ describe('VocabWeavePlugin.onload', () => {
 	});
 
 	it('registers the create-note-from-selection command with no default hotkey', async () => {
-		const plugin = new VocabWeavePlugin(
-			{} as App,
-			{} as PluginManifest,
-		);
+		const plugin = new VocabWeavePlugin({} as App, {} as PluginManifest);
 
 		await plugin.onload();
 
@@ -79,10 +83,7 @@ describe('VocabWeavePlugin.onload', () => {
 	});
 
 	it("delegates the command's callback to runQuickCapture", async () => {
-		const plugin = new VocabWeavePlugin(
-			{} as App,
-			{} as PluginManifest,
-		);
+		const plugin = new VocabWeavePlugin({} as App, {} as PluginManifest);
 
 		await plugin.onload();
 
@@ -95,10 +96,7 @@ describe('VocabWeavePlugin.onload', () => {
 	});
 
 	it('registers the create-note command with no default hotkey', async () => {
-		const plugin = new VocabWeavePlugin(
-			{} as App,
-			{} as PluginManifest,
-		);
+		const plugin = new VocabWeavePlugin({} as App, {} as PluginManifest);
 
 		await plugin.onload();
 
@@ -116,10 +114,7 @@ describe('VocabWeavePlugin.onload', () => {
 	});
 
 	it("delegates the create-note command's callback to runCreateNote", async () => {
-		const plugin = new VocabWeavePlugin(
-			{} as App,
-			{} as PluginManifest,
-		);
+		const plugin = new VocabWeavePlugin({} as App, {} as PluginManifest);
 
 		await plugin.onload();
 
@@ -132,10 +127,7 @@ describe('VocabWeavePlugin.onload', () => {
 	});
 
 	it('registers the open-deck-model-selector command with no default hotkey', async () => {
-		const plugin = new VocabWeavePlugin(
-			{} as App,
-			{} as PluginManifest,
-		);
+		const plugin = new VocabWeavePlugin({} as App, {} as PluginManifest);
 
 		await plugin.onload();
 
@@ -153,10 +145,7 @@ describe('VocabWeavePlugin.onload', () => {
 	});
 
 	it("delegates the open-deck-model-selector command's callback to revealSidebarView", async () => {
-		const plugin = new VocabWeavePlugin(
-			{} as App,
-			{} as PluginManifest,
-		);
+		const plugin = new VocabWeavePlugin({} as App, {} as PluginManifest);
 
 		await plugin.onload();
 
@@ -169,10 +158,7 @@ describe('VocabWeavePlugin.onload', () => {
 	});
 
 	it('registers the sidebar view', async () => {
-		const plugin = new VocabWeavePlugin(
-			{} as App,
-			{} as PluginManifest,
-		);
+		const plugin = new VocabWeavePlugin({} as App, {} as PluginManifest);
 
 		await plugin.onload();
 
@@ -180,10 +166,7 @@ describe('VocabWeavePlugin.onload', () => {
 	});
 
 	it('registers auto-sync', async () => {
-		const plugin = new VocabWeavePlugin(
-			{} as App,
-			{} as PluginManifest,
-		);
+		const plugin = new VocabWeavePlugin({} as App, {} as PluginManifest);
 
 		await plugin.onload();
 
@@ -191,10 +174,7 @@ describe('VocabWeavePlugin.onload', () => {
 	});
 
 	it('registers the Anki image renderer', async () => {
-		const plugin = new VocabWeavePlugin(
-			{} as App,
-			{} as PluginManifest,
-		);
+		const plugin = new VocabWeavePlugin({} as App, {} as PluginManifest);
 		await plugin.onload();
 		expect(registerAnkiImages).toHaveBeenCalledWith(plugin);
 	});
@@ -202,7 +182,10 @@ describe('VocabWeavePlugin.onload', () => {
 	it('exposes a ProviderManager that builds nothing until asked and reads config at call time', async () => {
 		const plugin = new VocabWeavePlugin({} as App, {} as PluginManifest);
 		plugin.app = {
-			secretStorage: { getSecret: (id: string) => (id === 'my-key' ? 'test-secret' : null) },
+			secretStorage: {
+				getSecret: (id: string) =>
+					id === 'my-key' ? 'test-secret' : null,
+			},
 			vault: { on: vi.fn() },
 		} as unknown as App;
 		await plugin.onload();
@@ -211,7 +194,9 @@ describe('VocabWeavePlugin.onload', () => {
 		expect(plugin.providers.getTextProvider()).toBeNull();
 		expect(getActiveTextConfig).toHaveBeenCalledTimes(1);
 		// The lookup handed to settings reads Obsidian's keychain.
-		const getSecret = getActiveTextConfig.mock.calls[0]?.[1] as (id: string) => string | null;
+		const getSecret = getActiveTextConfig.mock.calls[0]?.[1] as (
+			id: string,
+		) => string | null;
 		expect(getSecret('my-key')).toBe('test-secret');
 
 		getActiveTextConfig.mockReturnValue({
@@ -219,12 +204,20 @@ describe('VocabWeavePlugin.onload', () => {
 			baseUrl: 'http://localhost:11434/v1',
 			model: 'm',
 		});
-		expect(plugin.providers.getTextProvider()?.id).toBe('openai-compatible');
+		expect(plugin.providers.getTextProvider()?.id).toBe(
+			'openai-compatible',
+		);
 		expect(plugin.providers.getImageProvider()).toBeNull();
 		expect(getActiveImageConfig).toHaveBeenCalled();
 
 		// No image adapter is registered yet (#17), so an active image config is a clear error.
-		getActiveImageConfig.mockReturnValue({ type: 'openai-compatible', baseUrl: 'https://x', model: 'm' });
-		expect(() => plugin.providers.getImageProvider()).toThrow('no adapter for this provider type');
+		getActiveImageConfig.mockReturnValue({
+			type: 'openai-compatible',
+			baseUrl: 'https://x',
+			model: 'm',
+		});
+		expect(() => plugin.providers.getImageProvider()).toThrow(
+			'no adapter for this provider type',
+		);
 	});
 });

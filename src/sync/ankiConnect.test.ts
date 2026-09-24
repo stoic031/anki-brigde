@@ -3,15 +3,16 @@ import { AnkiConnectClient } from './ankiConnect';
 import { AnkiConnectError } from '../types';
 
 const { requestUrl } = vi.hoisted(() => ({
-	requestUrl: vi.fn<
-		(params: {
-			url: string;
-			method?: string;
-			contentType?: string;
-			body?: string;
-			throw?: boolean;
-		}) => Promise<{ text: string }>
-	>(),
+	requestUrl:
+		vi.fn<
+			(params: {
+				url: string;
+				method?: string;
+				contentType?: string;
+				body?: string;
+				throw?: boolean;
+			}) => Promise<{ text: string }>
+		>(),
 }));
 
 vi.mock('obsidian', () => ({ requestUrl }));
@@ -36,33 +37,44 @@ function jsonResponse(body: unknown): { text: string } {
 
 function sentBody(): unknown {
 	const call = requestUrl.mock.calls[0];
-	if (!call?.[0].body) throw new Error('requestUrl was not called with a body');
+	if (!call?.[0].body)
+		throw new Error('requestUrl was not called with a body');
 	return JSON.parse(call[0].body);
 }
 
 describe('AnkiConnectClient.invoke', () => {
 	it('resolves with the result on success', async () => {
-		requestUrl.mockResolvedValue(jsonResponse({ result: ['Default'], error: null }));
+		requestUrl.mockResolvedValue(
+			jsonResponse({ result: ['Default'], error: null }),
+		);
 		const client = new AnkiConnectClient('http://localhost:8765');
 		await expect(client.invoke('deckNames')).resolves.toEqual(['Default']);
 	});
 
 	it('throws AnkiConnectError when AnkiConnect returns an error field', async () => {
-		requestUrl.mockResolvedValue(jsonResponse({ result: null, error: 'model was not found' }));
+		requestUrl.mockResolvedValue(
+			jsonResponse({ result: null, error: 'model was not found' }),
+		);
 		const client = new AnkiConnectClient('http://localhost:8765');
-		await expect(client.invoke('modelNames')).rejects.toThrow(AnkiConnectError);
+		await expect(client.invoke('modelNames')).rejects.toThrow(
+			AnkiConnectError,
+		);
 	});
 
 	it('throws AnkiConnectError when AnkiConnect is unreachable', async () => {
 		requestUrl.mockRejectedValue(new Error('ECONNREFUSED'));
 		const client = new AnkiConnectClient('http://localhost:8765');
-		await expect(client.invoke('deckNames')).rejects.toThrow(AnkiConnectError);
+		await expect(client.invoke('deckNames')).rejects.toThrow(
+			AnkiConnectError,
+		);
 	});
 
 	it('throws AnkiConnectError on a non-JSON response body', async () => {
 		requestUrl.mockResolvedValue({ text: 'not json' });
 		const client = new AnkiConnectClient('http://localhost:8765');
-		await expect(client.invoke('deckNames')).rejects.toThrow(AnkiConnectError);
+		await expect(client.invoke('deckNames')).rejects.toThrow(
+			AnkiConnectError,
+		);
 	});
 
 	it('throws AnkiConnectError when the request times out', async () => {
@@ -73,7 +85,9 @@ describe('AnkiConnectClient.invoke', () => {
 			// Attach the rejection handler synchronously, before advancing fake
 			// timers — otherwise the promise can reject before anything is
 			// listening, which vitest/Node reports as an unhandled rejection.
-			const captured = client.invoke('deckNames').catch((err: unknown) => err);
+			const captured = client
+				.invoke('deckNames')
+				.catch((err: unknown) => err);
 			await vi.advanceTimersByTimeAsync(1000);
 
 			const error = await captured;
@@ -91,7 +105,9 @@ describe('AnkiConnectClient action methods', () => {
 	}
 
 	it('addNote sends deck/model/fields/tags and resolves to the new noteId', async () => {
-		requestUrl.mockResolvedValue(jsonResponse({ result: 1698765432109, error: null }));
+		requestUrl.mockResolvedValue(
+			jsonResponse({ result: 1698765432109, error: null }),
+		);
 		const result = await client().addNote({
 			deckName: 'Japanese::N2',
 			modelName: 'Basic',
@@ -115,14 +131,22 @@ describe('AnkiConnectClient action methods', () => {
 
 	it('addNote defaults tags to an empty array when omitted', async () => {
 		requestUrl.mockResolvedValue(jsonResponse({ result: 1, error: null }));
-		await client().addNote({ deckName: 'Deck', modelName: 'Model', fields: {} });
+		await client().addNote({
+			deckName: 'Deck',
+			modelName: 'Model',
+			fields: {},
+		});
 		const body = sentBody() as { params: { note: { tags: string[] } } };
 		expect(body.params.note.tags).toEqual([]);
 	});
 
 	it('updateNoteFields sends noteId + fields and resolves void', async () => {
-		requestUrl.mockResolvedValue(jsonResponse({ result: null, error: null }));
-		await expect(client().updateNoteFields(123, { Front: 'x' })).resolves.toBeUndefined();
+		requestUrl.mockResolvedValue(
+			jsonResponse({ result: null, error: null }),
+		);
+		await expect(
+			client().updateNoteFields(123, { Front: 'x' }),
+		).resolves.toBeUndefined();
 		expect(sentBody()).toEqual({
 			action: 'updateNoteFields',
 			version: 6,
@@ -133,16 +157,33 @@ describe('AnkiConnectClient action methods', () => {
 	it('noteInfo asks notesInfo for one note and flattens the field values', async () => {
 		requestUrl.mockResolvedValue(
 			jsonResponse({
-				result: [{ mod: 1700000000, fields: { Front: { value: 'x', order: 0 }, Back: { value: '', order: 1 } } }],
+				result: [
+					{
+						mod: 1700000000,
+						fields: {
+							Front: { value: 'x', order: 0 },
+							Back: { value: '', order: 1 },
+						},
+					},
+				],
 				error: null,
 			}),
 		);
-		await expect(client().noteInfo(123)).resolves.toEqual({ fields: { Front: 'x', Back: '' }, mod: 1700000000 });
-		expect(sentBody()).toEqual({ action: 'notesInfo', version: 6, params: { notes: [123] } });
+		await expect(client().noteInfo(123)).resolves.toEqual({
+			fields: { Front: 'x', Back: '' },
+			mod: 1700000000,
+		});
+		expect(sentBody()).toEqual({
+			action: 'notesInfo',
+			version: 6,
+			params: { notes: [123] },
+		});
 	});
 
 	it('deleteNotes sends the noteIds array and resolves void', async () => {
-		requestUrl.mockResolvedValue(jsonResponse({ result: null, error: null }));
+		requestUrl.mockResolvedValue(
+			jsonResponse({ result: null, error: null }),
+		);
 		await expect(client().deleteNotes([1, 2, 3])).resolves.toBeUndefined();
 		expect(sentBody()).toEqual({
 			action: 'deleteNotes',
@@ -152,18 +193,30 @@ describe('AnkiConnectClient action methods', () => {
 	});
 
 	it('deckNames resolves the returned string array', async () => {
-		requestUrl.mockResolvedValue(jsonResponse({ result: ['Default', 'Japanese::N2'], error: null }));
-		await expect(client().deckNames()).resolves.toEqual(['Default', 'Japanese::N2']);
+		requestUrl.mockResolvedValue(
+			jsonResponse({ result: ['Default', 'Japanese::N2'], error: null }),
+		);
+		await expect(client().deckNames()).resolves.toEqual([
+			'Default',
+			'Japanese::N2',
+		]);
 	});
 
 	it('modelNames resolves the returned string array', async () => {
-		requestUrl.mockResolvedValue(jsonResponse({ result: ['Basic'], error: null }));
+		requestUrl.mockResolvedValue(
+			jsonResponse({ result: ['Basic'], error: null }),
+		);
 		await expect(client().modelNames()).resolves.toEqual(['Basic']);
 	});
 
 	it('modelFieldNames sends modelName and resolves the returned string array', async () => {
-		requestUrl.mockResolvedValue(jsonResponse({ result: ['Front', 'Back'], error: null }));
-		await expect(client().modelFieldNames('Basic')).resolves.toEqual(['Front', 'Back']);
+		requestUrl.mockResolvedValue(
+			jsonResponse({ result: ['Front', 'Back'], error: null }),
+		);
+		await expect(client().modelFieldNames('Basic')).resolves.toEqual([
+			'Front',
+			'Back',
+		]);
 		expect(sentBody()).toEqual({
 			action: 'modelFieldNames',
 			version: 6,
@@ -182,18 +235,24 @@ describe('AnkiConnectClient action methods', () => {
 	});
 
 	it('retrieveMediaFile sends the filename and resolves base64 or false', async () => {
-		requestUrl.mockResolvedValue(jsonResponse({ result: false, error: null }));
+		requestUrl.mockResolvedValue(
+			jsonResponse({ result: false, error: null }),
+		);
 		await expect(client().retrieveMediaFile('x.png')).resolves.toBe(false);
-		expect(sentBody()).toEqual({ action: 'retrieveMediaFile', version: 6, params: { filename: 'x.png' } });
+		expect(sentBody()).toEqual({
+			action: 'retrieveMediaFile',
+			version: 6,
+			params: { filename: 'x.png' },
+		});
 	});
 
 	it('storeMediaFile sends filename + base64 data and resolves the stored filename', async () => {
 		requestUrl.mockResolvedValue(
 			jsonResponse({ result: 'x_1.png', error: null }),
 		);
-		await expect(
-			client().storeMediaFile('x.png', 'YWJj'),
-		).resolves.toBe('x_1.png');
+		await expect(client().storeMediaFile('x.png', 'YWJj')).resolves.toBe(
+			'x_1.png',
+		);
 		expect(sentBody()).toEqual({
 			action: 'storeMediaFile',
 			version: 6,

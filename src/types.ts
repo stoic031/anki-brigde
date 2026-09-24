@@ -39,7 +39,14 @@ export class ProviderError extends Error {
 
 export class SyncError extends Error {
 	constructor(
-		public reason: 'offline' | 'duplicate' | 'parse-error' | 'model-not-found' | 'stale-editor' | 'anki-edited' | 'note-not-found',
+		public reason:
+			| 'offline'
+			| 'duplicate'
+			| 'parse-error'
+			| 'model-not-found'
+			| 'stale-editor'
+			| 'anki-edited'
+			| 'note-not-found',
 		message: string,
 	) {
 		super(message);
