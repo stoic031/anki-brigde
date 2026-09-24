@@ -36,6 +36,11 @@ export function renderImageProviderSection(
 						'Things to keep out of the image. Used by providers that support it, such as Automatic1111. ComfyUI workflows have their own negative prompt node.',
 					)
 					.addTextArea((area) => {
+						// A suggestion, not a saved default — SD-style models need text kept
+						// out here, since the image prompt never names it.
+						area.setPlaceholder(
+							'text, letters, watermark, signature, blurry, lowres, extra fingers',
+						);
 						area.setValue(config.negativePrompt);
 						area.inputEl.addEventListener('change', () => {
 							config.negativePrompt = area.getValue().trim();

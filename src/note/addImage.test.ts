@@ -4,7 +4,12 @@ import type AnkiBridgePlugin from '../main';
 import { DEFAULT_SETTINGS, fieldConfigKey, type ImageFieldConfig } from '../settings';
 import { ProviderError } from '../types';
 import { IMAGE_PROMPT_KEY } from '../providers/text/prompt';
-import { planAddImage, runAddImage } from './addImage';
+import {
+	cleanImagePrompt,
+	planAddImage,
+	runAddImage,
+	writeImagePrompt,
+} from './addImage';
 
 const { modelFieldNames, storeMediaFile } = vi.hoisted(() => ({
 	modelFieldNames: vi.fn(),
@@ -81,6 +86,19 @@ describe('planAddImage', () => {
 			word: '薬',
 			outputField: 'Image',
 			onExisting: 'append',
+		});
+	});
+
+	it('lists the Main Field first, keeping the filename word from the first field', async () => {
+		const { plugin } = setup();
+		plugin.settings.mainFieldConfig = {
+			[fieldConfigKey('D', 'M')]: 'Meaning',
+		};
+		const plan = await planAddImage(plugin, note, 'D', 'M');
+
+		expect(plan).toMatchObject({
+			fieldsInput: 'Meaning: medicine\nWord: 薬',
+			word: '薬',
 		});
 	});
 
@@ -163,7 +181,7 @@ describe('runAddImage', () => {
 		const onPromptBuilt = vi.fn();
 		const { plugin, getContent } = setup();
 
-		const outcome = await runAddImage(plugin, note, plan, onPromptBuilt);
+		const outcome = await runAddImage(plugin, note, plan, '', onPromptBuilt);
 
 		expect(textProvider.processText).toHaveBeenCalledWith(
 			'Word: 薬\nMeaning: medicine',
@@ -174,12 +192,15 @@ describe('runAddImage', () => {
 			'a drawing of medicine',
 			{},
 		);
-		expect(onPromptBuilt).toHaveBeenCalledTimes(1);
+		expect(onPromptBuilt).toHaveBeenCalledWith('a drawing of medicine');
 		expect(storeMediaFile).toHaveBeenCalledWith(
 			expect.stringMatching(/^_obsidian_薬_image_\d+\.png$/),
 			'YWJj',
 		);
-		expect(outcome).toEqual({ filename: '_obsidian_test_image_1.png' });
+		expect(outcome).toEqual({
+			filename: '_obsidian_test_image_1.png',
+			prompt: 'a drawing of medicine',
+		});
 		expect(getContent()).toBe(
 			'## Word\n薬\n\n## Meaning\nmedicine\n\n## Image\n\n<img src="_obsidian_test_image_1.png">',
 		);
@@ -194,16 +215,32 @@ describe('runAddImage', () => {
 		});
 		const { plugin } = setup();
 
-		await expect(runAddImage(plugin, note, plan)).resolves.toEqual({
+		await expect(runAddImage(plugin, note, plan, '')).resolves.toEqual({
 			filename: '_obsidian_test_image_1.png',
+			prompt: 'x',
 		});
+	});
+
+	it('draws a given (user-edited) prompt without calling the text model', async () => {
+		imageProvider.generateImage.mockResolvedValue({
+			base64: 'YWJj',
+			ext: 'png',
+			mimeType: 'image/png',
+		});
+		const { plugin } = setup();
+
+		const outcome = await runAddImage(plugin, note, plan, '  my prompt \n');
+
+		expect(textProvider.processText).not.toHaveBeenCalled();
+		expect(imageProvider.generateImage).toHaveBeenCalledWith('my prompt', {});
+		expect(outcome.prompt).toBe('my prompt');
 	});
 
 	it('throws when the text model returns no prompt, without calling the image model', async () => {
 		textProvider.processText.mockResolvedValue({});
 		const { plugin } = setup();
 
-		await expect(runAddImage(plugin, note, plan)).rejects.toBeInstanceOf(
+		await expect(runAddImage(plugin, note, plan, '')).rejects.toBeInstanceOf(
 			ProviderError,
 		);
 		expect(imageProvider.generateImage).not.toHaveBeenCalled();
@@ -217,7 +254,7 @@ describe('runAddImage', () => {
 		);
 		const { plugin, process } = setup();
 
-		await expect(runAddImage(plugin, note, plan)).rejects.toBeInstanceOf(
+		await expect(runAddImage(plugin, note, plan, '')).rejects.toBeInstanceOf(
 			ProviderError,
 		);
 		expect(process).not.toHaveBeenCalled();
@@ -233,7 +270,55 @@ describe('runAddImage', () => {
 		storeMediaFile.mockRejectedValue(new Error('offline'));
 		const { plugin, process } = setup();
 
-		await expect(runAddImage(plugin, note, plan)).rejects.toThrow('offline');
+		await expect(runAddImage(plugin, note, plan, '')).rejects.toThrow('offline');
 		expect(process).not.toHaveBeenCalled();
+	});
+});
+
+describe('cleanImagePrompt / writeImagePrompt', () => {
+	const plan = {
+		textProvider,
+		imageProvider,
+		fieldsInput: 'Word: 薬',
+		word: '薬',
+		outputField: 'Image',
+		onExisting: 'append' as const,
+	};
+
+	it('flattens lines and strips a "Prompt:" label and wrapping quotes', () => {
+		expect(cleanImagePrompt('Prompt: "a cat\n  sleeping"')).toBe(
+			'a cat sleeping',
+		);
+		expect(cleanImagePrompt('`a pill bottle`')).toBe('a pill bottle');
+		expect(cleanImagePrompt("a doctor's bag")).toBe("a doctor's bag");
+	});
+
+	it('cleans the text model answer', async () => {
+		textProvider.processText.mockResolvedValue({
+			[IMAGE_PROMPT_KEY]: 'PROMPT: "a pill\nbottle"',
+		});
+		await expect(writeImagePrompt(plan)).resolves.toBe('a pill bottle');
+	});
+
+	it('uses only the prompt, never the planning idea', async () => {
+		textProvider.processText.mockResolvedValue({
+			idea: 'medicine: a sick man taking a pill',
+			[IMAGE_PROMPT_KEY]: 'a sick man swallowing a pill',
+		});
+		await expect(writeImagePrompt(plan)).resolves.toBe(
+			'a sick man swallowing a pill',
+		);
+
+		textProvider.processText.mockResolvedValue({ idea: 'only an idea' });
+		await expect(writeImagePrompt(plan)).rejects.toBeInstanceOf(
+			ProviderError,
+		);
+	});
+
+	it('throws when nothing is left after cleaning', async () => {
+		textProvider.processText.mockResolvedValue({ [IMAGE_PROMPT_KEY]: '""' });
+		await expect(writeImagePrompt(plan)).rejects.toBeInstanceOf(
+			ProviderError,
+		);
 	});
 });

@@ -122,8 +122,9 @@ Audio generation was dropped; Add Image now asks the user's text model
   `TASK_INSTRUCTION['build-image-prompt']` in `src/providers/text/prompt.ts`.
 - (b) prompt language: already implemented as part of (a) — that instruction requires
   English regardless of the note's language.
-- (c) no preview/edit step. Add Image calls straight through (text model → image
-  provider), same as the Generate button.
+- (c) superseded: the Image tab now has **Write prompt** plus an editable prompt box —
+  Add image draws the box's prompt as-is, or writes one first when it's empty
+  (`07-sidebar.md` §7.2.2).
 - (d) confirmed: no text provider configured **stops with a Notice**; never falls back
   to sending the raw field text as the prompt.
 

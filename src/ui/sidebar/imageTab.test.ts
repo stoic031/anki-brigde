@@ -76,13 +76,18 @@ const { toastError, toastSuccess } = vi.hoisted(() => ({
 }));
 vi.mock('../toast', () => ({ toastError, toastSuccess }));
 
-const { planAddImage, runAddImage } = vi.hoisted(() => ({
+const { planAddImage, runAddImage, writeImagePrompt } = vi.hoisted(() => ({
 	planAddImage: vi.fn(),
 	runAddImage: vi.fn(),
+	writeImagePrompt: vi.fn(),
 }));
-vi.mock('../../note/addImage', () => ({ planAddImage, runAddImage }));
+vi.mock('../../note/addImage', () => ({
+	planAddImage,
+	runAddImage,
+	writeImagePrompt,
+}));
 
-const note = { path: 'a.md' };
+let note = { path: 'a.md' };
 const flush = () => new Promise((r) => setTimeout(r, 0));
 
 import { renderImageTab } from './imageTab';
@@ -93,6 +98,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
+	note = { path: 'a.md' };
 	vi.unstubAllGlobals();
 	vi.clearAllMocks();
 	settings.length = 0;
@@ -111,23 +117,48 @@ function setup(imageConfigs: Record<string, ImageFieldConfig> = {}) {
 		() => note as never,
 	);
 	const addImage = parent.byClass('anki-bridge-sidebar__action')[0] as FakeEl;
+	const writePrompt = parent.byClass(
+		'anki-bridge-sidebar__action',
+	)[1] as FakeEl;
+	const promptEl = parent.byClass('anki-bridge-sidebar__prompt')[0] as FakeEl;
+	const promptArea = () => promptEl.findAll((el) => el.tag === 'textarea')[0];
+	const promptStatus = () =>
+		promptEl.byClass('anki-bridge-sidebar__hint')[0]?.text;
 	const rows = () => settings as FakeSetting[];
 	const lastRow = () => rows()[rows().length - 1];
-	return { parent, plugin, tab, saveSettings, addImage, rows, lastRow };
+	return {
+		parent,
+		plugin,
+		tab,
+		saveSettings,
+		addImage,
+		writePrompt,
+		promptEl,
+		promptArea,
+		promptStatus,
+		rows,
+		lastRow,
+	};
 }
 
 describe('renderImageTab', () => {
-	it('renders the title with the Add image button (icon + text) next to it', () => {
-		const { parent, addImage } = setup();
+	it('renders the title with Add image and Write prompt (icon + text) next to it', () => {
+		const { parent, addImage, writePrompt, promptEl } = setup();
 
 		const header = parent.byClass('anki-bridge-sidebar__section-header')[0];
 		expect(header?.children.map((c) => c.text || c.tag)).toEqual([
 			'Image field mapping',
 			'button',
+			'button',
 		]);
 		expect(addImage.children[1]?.text).toBe('Add image');
-		expect(setIcon.mock.calls[0]?.[1]).toBe('image');
+		expect(writePrompt.children[1]?.text).toBe('Write prompt');
+		expect(
+			setIcon.mock.calls.map((c: unknown[]) => c[1] as string),
+		).toEqual(['image', 'pencil-line']);
 		expect(addImage.disabled).toBe(true);
+		expect(writePrompt.disabled).toBe(true);
+		expect(promptEl.hidden).toBe(true);
 	});
 
 	it('shows a hint and loads no fields until the note has Deck and Model', async () => {
@@ -303,7 +334,10 @@ describe('renderImageTab', () => {
 
 		it('runs the plan and cycles the button to Done', async () => {
 			planAddImage.mockResolvedValue(plan);
-			runAddImage.mockResolvedValue({ filename: '_obsidian_x_image_1.png' });
+			runAddImage.mockResolvedValue({
+				filename: '_obsidian_x_image_1.png',
+				prompt: 'p',
+			});
 			const { addImage } = await ready();
 
 			await addImage.click();
@@ -313,6 +347,7 @@ describe('renderImageTab', () => {
 				expect.anything(),
 				note,
 				plan,
+				'',
 				expect.any(Function),
 			);
 			expect(addImage.children[1]?.text).toBe('✅ Done!');
@@ -402,6 +437,105 @@ describe('renderImageTab', () => {
 			await flush();
 
 			expect(planAddImage).not.toHaveBeenCalled();
+		});
+	});
+
+	describe('Image prompt', () => {
+		const plan = {
+			textProvider: {},
+			imageProvider: {},
+			fieldsInput: 'Word: 診察',
+			word: '診察',
+			outputField: 'Image',
+			onExisting: 'append' as const,
+		};
+
+		async function ready() {
+			modelFieldNames.mockResolvedValue(['Word', 'Image']);
+			planAddImage.mockResolvedValue(plan);
+			const ctx = setup();
+			await ctx.tab.sync('Japanese', 'Basic');
+			return ctx;
+		}
+
+		it('Write prompt shows the text model’s prompt without drawing', async () => {
+			writeImagePrompt.mockResolvedValue('a doctor examining a patient');
+			const { writePrompt, promptEl, promptArea, promptStatus } =
+				await ready();
+
+			await writePrompt.click();
+			await flush();
+
+			expect(writeImagePrompt).toHaveBeenCalledWith(plan);
+			expect(runAddImage).not.toHaveBeenCalled();
+			expect(promptEl.hidden).toBe(false);
+			expect(promptArea()?.value).toBe('a doctor examining a patient');
+			expect(promptStatus()).toContain('Written by the text model');
+		});
+
+		it('Add image draws the edited prompt as-is', async () => {
+			writeImagePrompt.mockResolvedValue('draft');
+			runAddImage.mockResolvedValue({
+				filename: 'x.png',
+				prompt: 'mine',
+			});
+			const { writePrompt, addImage, promptArea, promptStatus } =
+				await ready();
+			await writePrompt.click();
+			await flush();
+
+			const area = promptArea() as FakeEl;
+			area.value = 'mine';
+			await area.trigger('input');
+			expect(promptStatus()).toContain('Edited');
+
+			await new Promise((r) => setTimeout(r, 2100)); // Write prompt's ✅ restore
+			await addImage.click();
+			await flush();
+
+			expect(runAddImage.mock.calls[0]?.[3]).toBe('mine');
+			expect(promptStatus()).toContain('Used for the last image');
+		});
+
+		it('Add image with no prompt shows the one the text model wrote', async () => {
+			runAddImage.mockImplementation(
+				async (_p, _n, _plan, _given, onBuilt: (p: string) => void) => {
+					onBuilt('auto prompt');
+					return { filename: 'x.png', prompt: 'auto prompt' };
+				},
+			);
+			const { addImage, promptArea, promptStatus } = await ready();
+
+			await addImage.click();
+			await flush();
+
+			expect(runAddImage.mock.calls[0]?.[3]).toBe('');
+			expect(promptArea()?.value).toBe('auto prompt');
+			expect(promptStatus()).toContain('Used for the last image');
+		});
+
+		it('is dropped when the active note changes, and by the discard button', async () => {
+			writeImagePrompt.mockResolvedValue('p');
+			const { writePrompt, tab, promptEl } = await ready();
+			await writePrompt.click();
+			await flush();
+
+			await tab.sync('Japanese', 'Basic');
+			expect(promptEl.hidden).toBe(false);
+
+			note = { path: 'b.md' };
+			await tab.sync('Japanese', 'Basic');
+			expect(promptEl.hidden).toBe(true);
+
+			note = { path: 'a.md' };
+			await new Promise((r) => setTimeout(r, 2100));
+			await writePrompt.click();
+			await flush();
+			const discard = promptEl.findAll(
+				(el) => el.attrs['aria-label'] === 'Discard prompt',
+			)[0];
+			await discard?.click();
+			expect(promptEl.hidden).toBe(true);
 		});
 	});
 });

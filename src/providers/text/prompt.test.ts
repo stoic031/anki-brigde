@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { buildMessages, resultKeys, IMAGE_PROMPT_KEY } from './prompt';
+import {
+	buildMessages,
+	defaultInstruction,
+	IMAGE_STYLE,
+	resultKeys,
+	IMAGE_PROMPT_KEY,
+} from './prompt';
 
 describe('resultKeys', () => {
 	it('is targetFields for a normal task', () => {
@@ -8,8 +14,9 @@ describe('resultKeys', () => {
 		).toEqual(['Meaning', 'Furigana']);
 	});
 
-	it('is always [prompt] for build-image-prompt, ignoring targetFields', () => {
+	it('is always [idea, prompt] for build-image-prompt, ignoring targetFields', () => {
 		expect(resultKeys('build-image-prompt', ['Meaning'])).toEqual([
+			'idea',
 			IMAGE_PROMPT_KEY,
 		]);
 	});
@@ -147,5 +154,97 @@ describe('buildMessages', () => {
 			buildMessages('Word: 薬', 'build-image-prompt', [], { examples })
 				.system,
 		).not.toContain('approved');
+	});
+});
+
+describe('buildMessages — custom instruction', () => {
+	it('replaces the default instruction but keeps the JSON contract', () => {
+		const { system } = buildMessages(
+			'薬',
+			'extract-vocabulary',
+			['Meaning'],
+			{
+				instruction: 'Answer like a pirate.',
+				targetLanguage: 'Japanese',
+			},
+		);
+
+		expect(system.startsWith('Answer like a pirate.\n')).toBe(true);
+		expect(system).not.toContain(defaultInstruction('extract-vocabulary'));
+		expect(system).toContain('Example sentences are in Japanese');
+		expect(system).toContain('keys are exactly: ["Meaning"]');
+	});
+
+	it('falls back to the default when the instruction is blank', () => {
+		const { system } = buildMessages(
+			'薬',
+			'extract-vocabulary',
+			['Meaning'],
+			{
+				instruction: '  \n ',
+			},
+		);
+
+		expect(
+			system.startsWith(defaultInstruction('extract-vocabulary')),
+		).toBe(true);
+	});
+});
+
+describe('buildMessages — build-image-prompt instruction', () => {
+	const { system } = buildMessages('Word: 薬', 'build-image-prompt', []);
+
+	it('asks for one short English line ending in the shared style', () => {
+		expect(system).toContain('English, one line, 20-50 words');
+		expect(system).toContain(`end with exactly: ${IMAGE_STYLE}`);
+		expect(system).toContain('keys are exactly: ["idea","prompt"]');
+	});
+
+	it('plans the picture: first sense, then a strategy per kind of word', () => {
+		expect(system).toContain('The first line is the item to learn');
+		expect(system).toContain(
+			'the first sense in the definition/meaning field',
+		);
+		expect(system).toContain('Example-sentence fields only help');
+		for (const kind of [
+			'Thing',
+			'Action',
+			'Quality',
+			'Feeling',
+			'Abstract idea',
+		])
+			expect(system).toContain(`\n- ${kind} →`);
+	});
+
+	it('illustrates a spoken phrase as the moment it is said, without speech bubbles', () => {
+		expect(system).toContain('\n- Spoken phrase (greeting');
+		expect(system).toContain('the listener reacting');
+		expect(system).toContain('signs or speech bubbles');
+	});
+
+	// A card like "Term — thuật ngữ; thời hạn" with Ex "契約期間は一年です" once produced
+	// "calendar page showing one year marked with a highlighted box".
+	it('steers away from writing objects and diagram marks', () => {
+		expect(system).toMatch(/mostly writing or numbers \(calendars/);
+		expect(system).toMatch(/diagram marks \(arrows, boxes, highlights/);
+	});
+
+	it('includes worked examples as valid JSON ending in the shared style', () => {
+		const lines = system.split('\n');
+		const examples = lines
+			.slice(lines.indexOf('Examples:') + 1)
+			.filter((l) => l.startsWith('{'));
+		expect(examples).toHaveLength(5);
+		for (const line of examples) {
+			const ex = JSON.parse(line) as { idea: string; prompt: string };
+			expect(ex.idea).not.toBe('');
+			expect(ex.prompt.endsWith(`, ${IMAGE_STYLE}`)).toBe(true);
+		}
+	});
+
+	// SD-style models draw whatever is named, even negated — "no text" yields text.
+	it('never suggests writing "no text" into the prompt', () => {
+		expect(system.toLowerCase()).not.toContain('no text');
+		expect(system).not.toContain('must not ask for text');
 	});
 });

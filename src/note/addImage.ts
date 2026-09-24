@@ -68,7 +68,14 @@ export async function planAddImage(
 	const fields = await client.modelFieldNames(model);
 	const sections = parseSections(await plugin.app.vault.read(note));
 
-	const fieldLines = fields
+	// Main Field first — the instruction treats the first line as the item to learn
+	// (a word or a spoken phrase), whatever the Anki model's field order.
+	const mainField =
+		plugin.settings.mainFieldConfig[fieldConfigKey(deck, model)] ?? '';
+	const ordered = fields.includes(mainField)
+		? [mainField, ...fields.filter((f) => f !== mainField)]
+		: fields;
+	const fieldLines = ordered
 		.filter((field) => field !== outputField)
 		.map((field) => ({ field, text: sectionText(sections, field) }))
 		.filter(({ text }) => text !== '')
@@ -93,32 +100,54 @@ export async function planAddImage(
 
 export interface AddImageOutcome {
 	filename: string;
+	prompt: string; // what the image model actually drew
 }
 
-// Text model writes the prompt, image model draws it, AnkiConnect stores the file, then
-// one atomic write into the note. Anki's card fields are never touched — the user syncs
-// explicitly afterwards.
-export async function runAddImage(
-	plugin: AnkiBridgePlugin,
-	note: TFile,
+// Text models vary: some answer with newlines, a "Prompt:" label or wrapping quotes.
+// Only for the model's answer — a prompt the user typed is drawn as-is.
+export function cleanImagePrompt(raw: string): string {
+	const flat = raw
+		.replace(/\s+/g, ' ')
+		.trim()
+		.replace(/^prompt\s*:\s*/i, '');
+	const m = /^(["'`])(.*)\1$/.exec(flat);
+	return (m ? (m[2] ?? '') : flat).trim();
+}
+
+// The text model turns the card's fields into one English image prompt. Shown in the
+// Image tab for the user to edit before (or after) drawing — docs/design/07-sidebar.md §7.2.2.
+export async function writeImagePrompt(
 	plan: Exclude<AddImagePlan, { stop: string }>,
-	// .claude/rules/ui-copy.md — long operations need a Notice that updates as work
-	// progresses; this fires once the prompt is ready, right before the image call.
-	onPromptBuilt?: () => void,
-): Promise<AddImageOutcome> {
+): Promise<string> {
 	const result = await plan.textProvider.processText(
 		plan.fieldsInput,
 		'build-image-prompt',
 		[],
 	);
-	const prompt = (result[IMAGE_PROMPT_KEY] ?? '').trim();
+	const prompt = cleanImagePrompt(result[IMAGE_PROMPT_KEY] ?? '');
 	if (prompt === '') {
 		throw new ProviderError(
 			plan.textProvider.id,
 			'returned no image prompt',
 		);
 	}
-	onPromptBuilt?.();
+	return prompt;
+}
+
+// Image model draws the prompt (the text model writes one first only when none is
+// given), AnkiConnect stores the file, then one atomic write into the note. Anki's card
+// fields are never touched — the user syncs explicitly afterwards.
+export async function runAddImage(
+	plugin: AnkiBridgePlugin,
+	note: TFile,
+	plan: Exclude<AddImagePlan, { stop: string }>,
+	givenPrompt: string,
+	// .claude/rules/ui-copy.md — long operations need a Notice that updates as work
+	// progresses; this fires once the prompt is ready, right before the image call.
+	onPromptBuilt?: (prompt: string) => void,
+): Promise<AddImageOutcome> {
+	const prompt = givenPrompt.trim() || (await writeImagePrompt(plan));
+	onPromptBuilt?.(prompt);
 
 	// negativePrompt already flows into the image provider's own config
 	// (getActiveImageConfig, settings.ts) — nothing to pass here.
@@ -142,5 +171,5 @@ export async function runAddImage(
 			plan.onExisting,
 		),
 	);
-	return { filename: stored };
+	return { filename: stored, prompt };
 }

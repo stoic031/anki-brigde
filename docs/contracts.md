@@ -154,7 +154,7 @@ provider is told exactly which fields exist (e.g. "Meaning", "Furigana", "Pinyin
 field it can't or doesn't know how to fill is simply omitted/empty from the result,
 same as the existing "field không rỗng" rule for consuming it.
 
-For task `build-image-prompt`, `targetFields` is `[]` and the result is always `{ prompt: string }`.
+For task `build-image-prompt`, `targetFields` is `[]` and the result is `{ idea?: string; prompt: string }` — `idea` is the model's planning line (chosen sense + visual idea), written first and never used; only `prompt` goes to the image provider.
 
 `context` is optional and, when either field is set, appends one line to the system
 prompt (`src/providers/text/prompt.ts`'s `buildMessages`): `Context: the user is

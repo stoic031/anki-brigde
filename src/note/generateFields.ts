@@ -71,6 +71,8 @@ export async function planGenerate(
 			plugin.settings.generateExamples[
 				examplesKey(deck, model, targetLanguage)
 			],
+		instruction:
+			plugin.settings.textInstructions[fieldConfigKey(deck, model)],
 	};
 	return { provider, word, targetFields, context };
 }

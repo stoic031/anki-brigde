@@ -16,6 +16,7 @@ import { AnkiConnectError, ProviderError } from '../../types';
 import { toastError, toastSuccess } from '../toast';
 import { createActionButton, runAction } from './actionButton';
 import { startProgressNotice } from './progressNotice';
+import { renderPromptBox } from './promptBox';
 
 export interface TextTab {
 	// Called whenever the active note's Deck+Model may have changed. Only re-fetches the
@@ -95,6 +96,7 @@ export function renderTextTab(
 	const fieldsEl = parent.createDiv({
 		cls: 'anki-bridge-sidebar__field-checkboxes',
 	});
+	const promptBox = renderPromptBox(parent, plugin);
 
 	let current = { deck: '', model: '' };
 	let renderedKey = '';
@@ -125,6 +127,7 @@ export function renderTextTab(
 	const renderFields = (): void => {
 		fieldsEl.empty();
 		clear.el.disabled = Object.keys(drafts).length === 0;
+		promptBox.render(current.deck, current.model, addedFields.length);
 		if (!current.deck || !current.model) return;
 
 		const remaining = allFields.filter(
@@ -305,6 +308,7 @@ export function renderTextTab(
 			addedFields = [];
 			drafts = {};
 			fieldsEl.empty();
+			promptBox.render('', '', 0);
 			addField.el.disabled = true;
 			fieldsEl.createEl('p', {
 				cls: 'anki-bridge-sidebar__hint',

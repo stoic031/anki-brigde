@@ -1,6 +1,10 @@
-import { Notice, Setting, type TFile } from 'obsidian';
+import { Notice, Setting, setIcon, type TFile } from 'obsidian';
 import type AnkiBridgePlugin from '../../main';
-import { planAddImage, runAddImage } from '../../note/addImage';
+import {
+	planAddImage,
+	runAddImage,
+	writeImagePrompt,
+} from '../../note/addImage';
 import {
 	fieldConfigKey,
 	resolveAnkiConnectUrl,
@@ -38,17 +42,149 @@ export function renderImageTab(
 		label: 'Add image',
 		variant: 'primary',
 	});
+	const writePrompt = createActionButton(header, {
+		icon: 'pencil-line',
+		label: 'Write prompt',
+	});
 	addImage.el.disabled = true;
+	writePrompt.el.disabled = true;
 	const configEl = parent.createDiv({
 		cls: 'anki-bridge-sidebar__image-config',
 	});
+	// docs/design/07-sidebar.md §7.2.2 — only shown once a prompt exists, so the tab
+	// stays as short as before until the user asks for one.
+	const promptEl = parent.createDiv({ cls: 'anki-bridge-sidebar__prompt' });
+	promptEl.hidden = true;
 
 	let current = { deck: '', model: '' };
 	let renderedKey = '';
+	// In-memory only: the prompt describes one note's content, so it is dropped when
+	// the active note changes. `promptNote` is the path it was written for.
+	let prompt = '';
+	let promptNote = '';
+	let promptState: 'written' | 'drawn' | 'edited' = 'written';
+
+	const STATE_TEXT = {
+		written: 'Written by the text model. Edit it, then Add image.',
+		drawn: 'Used for the last image. Edit it and Add image to redraw.',
+		edited: 'Edited. Add image draws it as-is.',
+	};
+
+	const setPrompt = (
+		value: string,
+		state: typeof promptState,
+		notePath: string,
+	): void => {
+		prompt = value;
+		promptState = state;
+		promptNote = notePath;
+		renderPrompt();
+	};
+
+	const renderPrompt = (): void => {
+		promptEl.empty();
+		promptEl.hidden = prompt === '';
+		if (promptEl.hidden) return;
+
+		const head = promptEl.createDiv({
+			cls: 'anki-bridge-sidebar__section-header',
+		});
+		head.createSpan({
+			cls: 'anki-bridge-sidebar__section-title',
+			text: 'Image prompt',
+		});
+		const discard = head.createEl('button', {
+			cls: 'clickable-icon',
+			attr: { type: 'button', 'aria-label': 'Discard prompt' },
+		});
+		setIcon(discard, 'x');
+		discard.addEventListener('click', () => setPrompt('', 'written', ''));
+
+		const area = promptEl.createEl('textarea', {
+			cls: 'anki-bridge-sidebar__prompt-input',
+			attr: { rows: '3' },
+		});
+		area.value = prompt;
+		const status = promptEl.createEl('p', {
+			cls: 'anki-bridge-sidebar__hint',
+			text: STATE_TEXT[promptState],
+		});
+		// Per keystroke, but only the in-memory value and the status line — no
+		// re-render, so the caret stays put.
+		area.addEventListener('input', () => {
+			prompt = area.value;
+			promptState = 'edited';
+			status.setText(STATE_TEXT.edited);
+		});
+	};
+
+	// Both buttons call the text model and share one prompt — only one runs at a time.
+	const apply = () => {
+		const off =
+			!current.deck ||
+			!current.model ||
+			addImage.busy ||
+			writePrompt.busy;
+		if (!addImage.busy) addImage.el.disabled = off;
+		if (!writePrompt.busy) writePrompt.el.disabled = off;
+	};
 
 	addImage.el.addEventListener('click', () => {
 		void onAddImage();
 	});
+	writePrompt.el.addEventListener('click', () => {
+		void onWritePrompt();
+	});
+
+	const reportError = (err: unknown) => {
+		// AnkiConnectError reaches here bare for a real, unrecognized AnkiConnect
+		// error (planAddImage's modelFieldNames call) — show its own message rather
+		// than the generic fallback, which would misreport it as a connection issue.
+		toastError(
+			err instanceof ProviderError || err instanceof AnkiConnectError
+				? `❌ ${err.message}`
+				: '❌ Failed to add image. Please check Anki connection.',
+		);
+	};
+
+	// docs/design/07-sidebar.md §7.2.2 — text model only; nothing is drawn or written.
+	const onWritePrompt = async () => {
+		const note = getNote();
+		if (writePrompt.el.disabled || writePrompt.busy || !note) return;
+		try {
+			const plan = await planAddImage(
+				plugin,
+				note,
+				current.deck,
+				current.model,
+			);
+			if (plan.stop !== undefined) {
+				new Notice(plan.stop);
+				return;
+			}
+			const progress = startProgressNotice('⏳ Asking the text model…');
+			try {
+				await runAction(writePrompt, {
+					busyLabel: '⏳ Writing...',
+					failure:
+						'❌ Failed to write the image prompt. Please check your text model settings.',
+					onRestore: apply,
+					work: async () => {
+						apply();
+						setPrompt(
+							await writeImagePrompt(plan),
+							'written',
+							note.path,
+						);
+					},
+				});
+			} finally {
+				progress.stop();
+			}
+		} catch (err) {
+			reportError(err);
+		}
+	};
 
 	// docs/design/03-note.md §3.2 — checks that don't need any model call and end in a
 	// plain Notice; only the model + Anki write cycle the button through ⏳/✅/❌.
@@ -66,20 +202,39 @@ export function renderImageTab(
 				new Notice(plan.stop);
 				return;
 			}
-			const progress = startProgressNotice('⏳ Asking the text model…');
+			// A prompt already in the box is drawn as-is — no text model call.
+			const given = prompt.trim();
+			const progress = startProgressNotice(
+				given
+					? '⏳ Generating the image…'
+					: '⏳ Asking the text model…',
+			);
 			let succeeded = false;
 			try {
 				await runAction(addImage, {
 					busyLabel: '⏳ Generating...',
 					failure:
 						'❌ Failed to add image. Please check Anki connection.',
-					onRestore: () => {
-						addImage.el.disabled = !current.deck || !current.model;
-					},
+					onRestore: apply,
 					work: async () => {
-						await runAddImage(plugin, note, plan, () =>
-							progress.update('⏳ Generating the image…'),
+						apply();
+						const outcome = await runAddImage(
+							plugin,
+							note,
+							plan,
+							given,
+							(used) => {
+								// Shown as soon as it exists, so it survives an image failure.
+								if (!given) {
+									setPrompt(used, 'written', note.path);
+									progress.update('⏳ Generating the image…');
+								}
+							},
 						);
+						// Edited again while drawing → keep it marked as edited.
+						if (prompt.trim() === outcome.prompt) {
+							setPrompt(prompt, 'drawn', note.path);
+						}
 						succeeded = true;
 					},
 				});
@@ -88,14 +243,7 @@ export function renderImageTab(
 			}
 			if (succeeded) toastSuccess('🖼️ Image added to note');
 		} catch (err) {
-			// AnkiConnectError reaches here bare for a real, unrecognized AnkiConnect
-			// error (planAddImage's modelFieldNames call) — show its own message rather
-			// than the generic fallback, which would misreport it as a connection issue.
-			toastError(
-				err instanceof ProviderError || err instanceof AnkiConnectError
-					? `❌ ${err.message}`
-					: '❌ Failed to add image. Please check Anki connection.',
-			);
+			reportError(err);
 		}
 	};
 
@@ -115,7 +263,10 @@ export function renderImageTab(
 	return {
 		async sync(deck, model) {
 			current = { deck, model };
-			if (!addImage.busy) addImage.el.disabled = !deck || !model;
+			apply();
+			if (prompt !== '' && getNote()?.path !== promptNote) {
+				setPrompt('', 'written', '');
+			}
 
 			const key = fieldConfigKey(deck, model);
 			if (key === renderedKey) return;

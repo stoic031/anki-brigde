@@ -90,8 +90,42 @@ dùng active) — thay đổi cộng thêm, không phá dữ liệu cũ.
 - Timeout 60 giây mỗi request (`requestUrl` không có timeout sẵn nên tự `Promise.race`). Chỉ
   retry khi **reply sai JSON** (1 lần); lỗi mạng/HTTP không retry. Thông báo lỗi nêu tên
   provider + URL, không kèm body/key
+- HTTP 429 (rate limit — hay gặp với model `:free` của OpenRouter, Gemini free tier): báo
+  "rate-limited by <host> (HTTP 429). Wait a minute, then try again…", kèm "Try again in N s."
+  nếu có header `Retry-After`. HTTP 402 (hết credit, VD OpenRouter — số dư không đủ cho chi phí
+  tối đa ước tính của request) báo "out of credits at <host> (HTTP 402). Add credits there, or
+  pick a cheaper or free model in settings." Không tự retry (chỉ tốn thêm quota)
 - Task `build-image-prompt`: `targetFields` rỗng, input là nội dung các field của thẻ; kết quả
-  luôn là `{ prompt: string }` (1 prompt tiếng Anh cho image model)
+  là `{ idea?, prompt }` — `idea` là dòng lên ý tưởng (nghĩa đã chọn + ý tưởng hình) model viết
+  **trước** prompt để tự lên kế hoạch, không dùng ở đâu; chỉ `prompt` (tiếng Anh) gửi tới image model
+  - Mục tiêu: ảnh minh hoạ để **học từ** — người học chỉ nhìn ảnh là nhớ ra nghĩa (glance test).
+    Instruction dạy model làm theo thứ tự:
+    1. Dòng đầu của input là thứ cần học (Main Field được đưa lên đầu, `03-note.md` §3.2): 1 từ,
+       hoặc 1 câu nói/cụm giao tiếp ngắn. Với từ: chọn nghĩa **đầu tiên** trong field định
+       nghĩa/nghĩa; field câu ví dụ chỉ để hiểu nghĩa, không vẽ lại.
+    2. Chọn **1** ý tưởng hình theo loại từ: đồ vật → chính nó; hành động → 1 người đang làm dở
+       động tác; tính chất → 1 ví dụ phóng đại; cảm xúc → nét mặt/cơ thể + nguyên nhân; khái niệm
+       trừu tượng → khoảnh khắc đời thường điển hình có người phản ứng; **câu nói** (chào, cảm
+       ơn, xin lỗi, nhờ vả, hỏi, câu cửa miệng) → khoảnh khắc câu đó được nói: người nói đang làm
+       cử chỉ với nét mặt phù hợp, người nghe phản ứng, ở nơi câu đó thường được nói — ý định
+       thể hiện qua cử chỉ (cúi chào, vẫy tay, đưa đồ, chỉ đường). Ưu tiên cảnh phóng đại,
+       có cảm xúc hoặc hơi hài (dễ nhớ hơn); không được cần tới chữ, số, ký hiệu.
+    3. Viết `idea`, rồi `prompt`: 1 dòng 20–50 từ; chủ thể + hành động → 1–2 chi tiết chính →
+       khung hình (close-up / full body / medium shot) → kết thúc bằng `IMAGE_STYLE` ("flat vector
+       illustration, clean lines, soft colors, plain white background") để ảnh cùng deck đồng bộ;
+       1 chủ thể, nền trống.
+    - Chạy được trên cả model dùng CLIP (SD 1.5/SDXL qua ComfyUI/A1111 — chỉ đọc ~75 token đầu,
+      ưu tiên từ đứng trước, vẽ mọi danh từ được nhắc): **không bao giờ nhắc tới chữ/số, kể cả
+      dạng phủ định, và không bong bóng thoại** ("no text" khiến SD vẽ chữ) — loại chữ thuộc negative prompt (Settings gợi
+      ý ở placeholder; ComfyUI đặt trong node negative của workflow); tránh vật chủ yếu là chữ/số
+      (lịch, đồng hồ, trang giấy, tài liệu, sách, biển, màn hình, biểu đồ, bản đồ) và ký hiệu sơ
+      đồ (mũi tên, ô, highlight, dấu tick, icon); chỉ người chung chung, không người thật/thương
+      hiệu; không trọng số `(word:1.2)`, không ngoặc kép, không markdown.
+    - Kèm 5 ví dụ mẫu dạng JSON (`IMAGE_EXAMPLES`: 薬, 走る, Term, 懐かしい, câu お疲れ様です) — model local nhỏ
+      theo ví dụ tốt hơn nhiều so với chỉ theo rule.
+  - Câu trả lời của text model được làm sạch (`cleanImagePrompt`, `src/note/addImage.ts`):
+    gộp xuống dòng/khoảng trắng, bỏ nhãn "Prompt:" và ngoặc bao ngoài. Prompt user tự gõ
+    trong tab Image thì gửi nguyên văn.
 - Adapter nằm ở `src/providers/text/` (`openaiCompatible.ts`, `anthropic.ts`), đăng ký qua
   `textFactories` (`index.ts`). Nhãn Cloud/Local suy từ Base URL (localhost/127.0.0.1 = Local)
 - `processText` nhận thêm tham số tùy chọn thứ 4, `context?: TextContext`
@@ -115,6 +149,10 @@ dùng active) — thay đổi cộng thêm, không phá dữ liệu cũ.
   và văn phong của user — mỗi giá trị cắt còn 300 ký tự. Chỉ cho `extract-vocabulary`,
   không bao giờ cho `build-image-prompt`. Dữ liệu nằm trong `saveData` (không ghi vào
   vault) và chỉ gửi tới provider user đã chọn cho Generate.
+- `context.instruction` (khối Prompt tab Text, `07-sidebar.md` §7.2.1): có nội dung thì
+  **thay** dòng hướng dẫn mặc định của task; rỗng/không có → dùng mặc định. Chỉ thay phần
+  hướng dẫn — dòng ngôn ngữ, ngữ cảnh, ví dụ few-shot và 2 dòng ràng buộc JSON vẫn luôn được
+  nối sau, nên user không thể xoá ràng buộc định dạng.
 
 **Image Generation:**
 
