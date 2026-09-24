@@ -92,7 +92,6 @@ export const TEXT_PRESETS: Record<TextProviderId, ProviderPreset> = {
 	},
 };
 
-// No image adapters exist yet (#17): these only describe what the user can configure.
 export const IMAGE_PRESETS: Record<ImageProviderId, ProviderPreset> = {
 	pollinations: cloud(
 		'pollinations',

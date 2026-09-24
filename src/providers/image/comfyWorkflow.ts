@@ -176,3 +176,93 @@ function fromApiFormat(root: Record<string, unknown>): Graph {
 		},
 	};
 }
+
+export type ApiPrompt = Record<
+	string,
+	{ class_type: string; inputs: Record<string, unknown> }
+>;
+
+const WIDGET_TYPES = new Set(['INT', 'FLOAT', 'STRING', 'BOOLEAN', 'COMBO']);
+
+// UI format (`nodes` + `links`, what ComfyUI saves) → API format (what POST /prompt
+// takes), using /object_info for each class's input order. An API-format workflow is
+// returned unchanged. Widget values are matched to inputs positionally, the way the
+// ComfyUI frontend does it; a seed widget carries one extra "control after generate" value.
+// ponytail: muted/bypassed nodes and classes unknown to /object_info (Note, Reroute,
+// PrimitiveNode) are dropped, so links through a Reroute break — ComfyUI then rejects
+// the prompt with an HTTP error naming the node. Resolve reroutes if users hit that.
+export function toApiPrompt(json: unknown, objectInfo: unknown): ApiPrompt {
+	const root = obj(json);
+	if (!Array.isArray(root.nodes)) return root as ApiPrompt;
+
+	const linkSource = new Map<number, [string, number]>();
+	for (const l of Array.isArray(root.links) ? root.links : []) {
+		if (Array.isArray(l) && typeof l[0] === 'number')
+			linkSource.set(l[0], [String(l[1]), Number(l[2])]);
+	}
+
+	const info = obj(objectInfo);
+	const prompt: ApiPrompt = {};
+	for (const node of (root.nodes as unknown[]).map(obj)) {
+		const type = typeof node.type === 'string' ? node.type : '';
+		const cls = obj(info[type]);
+		if (!info[type] || (node.mode ?? 0) !== 0) continue;
+
+		const links = new Map<string, number>();
+		for (const i of Array.isArray(node.inputs)
+			? node.inputs.map(obj)
+			: []) {
+			if (typeof i.name === 'string' && typeof i.link === 'number')
+				links.set(i.name, i.link);
+		}
+		const widgets = node.widgets_values;
+		let w = 0;
+		const inputs: Record<string, unknown> = {};
+		for (const [name, spec] of inputSpecs(cls)) {
+			const kind = spec[0];
+			const isWidget =
+				Array.isArray(kind) ||
+				(typeof kind === 'string' && WIDGET_TYPES.has(kind));
+			let value: unknown;
+			if (isWidget) {
+				if (Array.isArray(widgets)) {
+					value = widgets[w++];
+					if (
+						obj(spec[1]).control_after_generate === true ||
+						(kind === 'INT' &&
+							(name === 'seed' || name === 'noise_seed'))
+					)
+						w++;
+				} else {
+					value = obj(widgets)[name]; // some custom nodes save a dict
+				}
+			}
+			const link = links.get(name);
+			const source =
+				link === undefined ? undefined : linkSource.get(link);
+			if (source) inputs[name] = source;
+			else if (value !== undefined) inputs[name] = value;
+		}
+		prompt[String(node.id)] = { class_type: type, inputs };
+	}
+	return prompt;
+}
+
+function inputSpecs(cls: Record<string, unknown>): [string, unknown[]][] {
+	const input = obj(cls.input);
+	const order = obj(cls.input_order);
+	const specs: [string, unknown[]][] = [];
+	for (const group of ['required', 'optional']) {
+		const defs = obj(input[group]);
+		const names = Array.isArray(order[group])
+			? (order[group] as unknown[]).filter(
+					(n): n is string => typeof n === 'string',
+				)
+			: Object.keys(defs);
+		for (const name of names) {
+			const spec = defs[name];
+			specs.push([name, Array.isArray(spec) ? spec : []]);
+		}
+	}
+	return specs;
+}

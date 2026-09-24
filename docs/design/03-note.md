@@ -21,9 +21,7 @@ render).
 Các nút nằm ở Sidebar (`07-sidebar.md` §7.2.1). Hiện có: **Sync | Rebuild | Delete** (cùng
 một hàng, tab Note), **Generate** (tab Text, cạnh phần chọn field), và **Add image**
 (tab Image, cạnh phần chọn Output field). Mỗi nút gồm icon + chữ. Add image gọi
-`generateImage()` của image provider user đã chọn — cho tới khi Feature #17 có adapter
-ảnh thật, bấm nút sẽ báo lỗi provider ("no adapter for this provider type") thay vì tạo
-ảnh.
+`generateImage()` của image provider user đã chọn.
 
 > **Nguyên tắc chung cho 2 nút AI** (Generate, Add Image): không nút
 > nào trong 2 nút này gọi `updateNoteFields` — mỗi nút chỉ ghi vào **content của note

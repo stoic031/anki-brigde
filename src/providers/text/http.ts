@@ -1,7 +1,13 @@
-import { requestUrl } from 'obsidian';
+import {
+	arrayBufferToBase64,
+	requestUrl,
+	type RequestUrlParam,
+	type RequestUrlResponse,
+} from 'obsidian';
 import { ProviderError } from '../../types';
 
 export const TEXT_TIMEOUT_MS = 60_000;
+export const IMAGE_TIMEOUT_MS = 120_000; // image models are slower than text
 
 // requestUrl (not fetch) avoids CORS in Obsidian's renderer but has no timeout, so we
 // race one. Errors name the provider and URL; bodies and headers are never included.
@@ -23,27 +29,62 @@ export async function requestJson(
 	body?: unknown,
 	timeoutMs = TEXT_TIMEOUT_MS,
 ): Promise<unknown> {
+	const { text } = await request(
+		providerId,
+		{
+			url,
+			method,
+			contentType: 'application/json',
+			headers,
+			body: body === undefined ? undefined : JSON.stringify(body),
+		},
+		timeoutMs,
+	);
+	try {
+		return JSON.parse(text) as unknown;
+	} catch {
+		throw new ProviderError(
+			providerId,
+			`response from ${url} was not JSON`,
+		);
+	}
+}
+
+// GET a binary body (an image) as raw base64 + its Content-Type.
+export async function requestBinary(
+	providerId: string,
+	url: string,
+	headers: Record<string, string>,
+	timeoutMs = TEXT_TIMEOUT_MS,
+): Promise<{ base64: string; mimeType: string }> {
+	const res = await request(providerId, { url, headers }, timeoutMs);
+	const type = Object.entries(res.headers ?? {}).find(
+		([k]) => k.toLowerCase() === 'content-type',
+	)?.[1];
+	return {
+		base64: arrayBufferToBase64(res.arrayBuffer),
+		mimeType: (type ?? '').split(';')[0]?.trim() ?? '',
+	};
+}
+
+async function request(
+	providerId: string,
+	params: RequestUrlParam,
+	timeoutMs: number,
+): Promise<RequestUrlResponse> {
+	const { url } = params;
 	const timeoutError = new Error('timeout');
 	let timer: ReturnType<typeof window.setTimeout> | undefined;
 	const timeout = new Promise<never>((_, reject) => {
 		timer = window.setTimeout(() => reject(timeoutError), timeoutMs);
 	});
 
-	let status: number;
-	let text: string;
+	let response: RequestUrlResponse;
 	try {
-		const response = await Promise.race([
-			requestUrl({
-				url,
-				method,
-				contentType: 'application/json',
-				headers,
-				body: body === undefined ? undefined : JSON.stringify(body),
-				throw: false,
-			}),
+		response = await Promise.race([
+			requestUrl({ ...params, throw: false }),
 			timeout,
 		]);
-		({ status, text } = response);
 	} catch (err) {
 		const reason =
 			err === timeoutError
@@ -54,15 +95,11 @@ export async function requestJson(
 		window.clearTimeout(timer);
 	}
 
-	if (status < 200 || status >= 300) {
-		throw new ProviderError(providerId, `HTTP ${status} from ${url}`);
-	}
-	try {
-		return JSON.parse(text) as unknown;
-	} catch {
+	if (response.status < 200 || response.status >= 300) {
 		throw new ProviderError(
 			providerId,
-			`response from ${url} was not JSON`,
+			`HTTP ${response.status} from ${url}`,
 		);
 	}
+	return response;
 }

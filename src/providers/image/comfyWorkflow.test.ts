@@ -5,6 +5,7 @@ import {
 	describeAnalysis,
 	fetchWorkflow,
 	listWorkflows,
+	toApiPrompt,
 } from './comfyWorkflow';
 
 const { requestUrl } = vi.hoisted(() => ({ requestUrl: vi.fn() }));
@@ -226,5 +227,80 @@ describe('analyzeWorkflow', () => {
 	it('survives garbage input', () => {
 		expect(analyzeWorkflow(null).problems).toContain('no KSampler found');
 		expect(analyzeWorkflow('x').hasSave).toBe(false);
+	});
+});
+
+describe('toApiPrompt', () => {
+	const objectInfo = {
+		KSampler: {
+			input: {
+				required: {
+					model: ['MODEL'],
+					seed: ['INT', {}],
+					steps: ['INT', {}],
+					sampler_name: [['euler', 'dpmpp']],
+					positive: ['CONDITIONING'],
+				},
+			},
+			input_order: {
+				required: [
+					'model',
+					'seed',
+					'steps',
+					'sampler_name',
+					'positive',
+				],
+			},
+		},
+		CLIPTextEncode: {
+			input: { required: { text: ['STRING', {}], clip: ['CLIP'] } },
+		},
+	};
+
+	it('maps widgets positionally, skips the seed control value, and resolves links', () => {
+		const ui = {
+			nodes: [
+				{
+					id: 3,
+					type: 'KSampler',
+					mode: 0,
+					inputs: [
+						{ name: 'model', link: 1 },
+						{ name: 'positive', link: 2 },
+					],
+					widgets_values: [42, 'randomize', 20, 'euler'],
+				},
+				{ id: 6, type: 'CLIPTextEncode', widgets_values: ['a dog'] },
+				{ id: 10, type: 'Note', widgets_values: ['ignore me'] },
+				{
+					id: 11,
+					type: 'CLIPTextEncode',
+					mode: 2,
+					widgets_values: ['muted'],
+				},
+			],
+			links: [
+				[1, 4, 0, 3, 0, 'MODEL'],
+				[2, 6, 0, 3, 4, 'CONDITIONING'],
+			],
+		};
+		expect(toApiPrompt(ui, objectInfo)).toEqual({
+			'3': {
+				class_type: 'KSampler',
+				inputs: {
+					model: ['4', 0],
+					seed: 42,
+					steps: 20,
+					sampler_name: 'euler',
+					positive: ['6', 0],
+				},
+			},
+			'6': { class_type: 'CLIPTextEncode', inputs: { text: 'a dog' } },
+		});
+	});
+
+	it('returns an API-format workflow unchanged', () => {
+		const api = { '1': { class_type: 'SaveImage', inputs: {} } };
+		expect(toApiPrompt(api, objectInfo)).toBe(api);
 	});
 });

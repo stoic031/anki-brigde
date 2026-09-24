@@ -1,5 +1,6 @@
 import { Plugin } from 'obsidian';
 import { ProviderManager } from './providers/providerManager';
+import { imageFactories } from './providers/image';
 import { textFactories } from './providers/text';
 import { runQuickCapture } from './note/quickCapture';
 import { runCreateNote } from './note/createNote';
@@ -28,10 +29,8 @@ export default class AnkiBridgePlugin extends Plugin {
 					this.app.secretStorage.getSecret(id),
 				),
 		},
-		// No image adapters are registered yet (#17): an active image config makes
-		// getImageProvider() throw 'no adapter for this provider type'.
 		image: {
-			factories: {},
+			factories: imageFactories,
 			getConfig: () =>
 				getActiveImageConfig(this.settings, (id) =>
 					this.app.secretStorage.getSecret(id),

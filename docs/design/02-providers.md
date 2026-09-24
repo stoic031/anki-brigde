@@ -28,9 +28,19 @@ lấy từ chính provider (hoặc tự nhập khi không tải được).
 
 - Cloud: Pollinations (`gen.pollinations.ai`, có `/v1/images/generations`), Gemini, OpenAI, OpenRouter. Local: Automatic1111 (localhost:7860), ComfyUI
   (localhost:8188).
-- Chưa có adapter ảnh (Feature #17): Settings chỉ lưu cấu hình. Lưu ý cho adapter: model ảnh của
-  OpenRouter và Gemini sinh ảnh qua `chat/completions`, không phải `/images/generations` như OpenAI;
-  ComfyUI chạy theo **workflow** đã lưu trong ComfyUI (Settings đã chọn được workflow): workflow lưu ở
+- Adapter ảnh nằm ở `src/providers/image/` (một file/provider), đăng ký qua `imageFactories`
+  (`index.ts`), timeout 120 giây:
+  - Pollinations: `GET {base}/image/{prompt}?model=&negative_prompt=` → trả thẳng bytes ảnh
+    (chỉ nhận Content-Type `image/*`)
+  - OpenAI: `POST /images/generations` (`response_format: b64_json` chỉ cho `dall-e-*`;
+    `gpt-image-*` luôn trả base64)
+  - Gemini: API native `POST /models/{model}:generateContent` với
+    `responseModalities: ['TEXT','IMAGE']`, ảnh ở part `inlineData`
+  - OpenRouter: `POST /chat/completions` với `modalities: ['image','text']`, ảnh là data URL ở
+    `message.images`
+  - Automatic1111: `POST /sdapi/v1/txt2img` (cần chạy với `--api`); Model trống = giữ checkpoint
+    đang load
+  - ComfyUI chạy theo **workflow** đã lưu trong ComfyUI (Settings đã chọn được workflow): workflow lưu ở
   định dạng UI (`nodes`/`links`) nên adapter phải đổi sang API format bằng `/object_info` rồi
   `POST /prompt`, gán prompt vào node prompt dương của KSampler. Prompt do AI viết
   **thay thế hoàn toàn** text đã lưu sẵn trong node dương (không prepend, không dùng
@@ -38,7 +48,9 @@ lấy từ chính provider (hoặc tự nhập khi không tải được).
   ở Settings chỉ áp dụng cho provider nhận tham số negative-prompt trực tiếp
   (Automatic1111, Pollinations), không áp dụng cho ComfyUI (`design-open-questions.md`
   #21). Node chỉ tới được qua reroute/subgraph/primitive không được adapter theo dõi —
-  báo qua `problems` của `analyzeWorkflow` (`src/providers/image/comfyWorkflow.ts`).
+  báo qua `problems` của `analyzeWorkflow` (`src/providers/image/comfyWorkflow.ts`). Seed được
+  random mỗi lần (tránh ComfyUI trả ảnh cache); adapter poll `/history/{id}` tới khi xong (tối đa
+  5 phút, model local có thể phải load lần đầu) rồi tải ảnh qua `/view`.
 
 ## 2.3. AI Provider Manager
 
