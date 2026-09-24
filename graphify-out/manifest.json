@@ -30,8 +30,8 @@
     "semantic_hash": ""
   },
   "src/main.ts": {
-    "mtime": 1790230242.1470854,
-    "ast_hash": "b81e421e71d0e066e6d2b69a6884e115",
+    "mtime": 1790231221.6535037,
+    "ast_hash": "2ee0389405af2503dffecbb6a97a3b4d",
     "semantic_hash": ""
   },
   "tsconfig.json": {
@@ -165,8 +165,8 @@
     "semantic_hash": ""
   },
   "docs/design/03-note.md": {
-    "mtime": 1790230355.2334728,
-    "ast_hash": "e0e9a12a09a046514142a142e4749c94",
+    "mtime": 1790231266.532972,
+    "ast_hash": "60706a19a5eea19ddb5a6f4da0c9059b",
     "semantic_hash": ""
   },
   "docs/design/05-ui.md": {
@@ -295,8 +295,8 @@
     "semantic_hash": ""
   },
   "src/sync/ankiConnect.ts": {
-    "mtime": 1790230915.2999575,
-    "ast_hash": "712decb8e71c9526fa93cf6eb979a3e8",
+    "mtime": 1790231221.6530657,
+    "ast_hash": "708657805e2f6ad77ad54725f294b63a",
     "semantic_hash": ""
   },
   "src/sync/syncEngine.ts": {
@@ -305,8 +305,8 @@
     "semantic_hash": ""
   },
   "src/sync/ankiConnect.test.ts": {
-    "mtime": 1790230915.299788,
-    "ast_hash": "86d558c1cfff2d037af600b9946b4fce",
+    "mtime": 1790231221.6807008,
+    "ast_hash": "cbd426fb57d604304720a6423bf5048c",
     "semantic_hash": ""
   },
   "src/sync/syncEngine.test.ts": {
@@ -400,8 +400,8 @@
     "semantic_hash": ""
   },
   "src/main.test.ts": {
-    "mtime": 1790227997.018894,
-    "ast_hash": "9eb978c3234461cfe0265a1c19f81b01",
+    "mtime": 1790231250.7585778,
+    "ast_hash": "d304bf6dff05c89081c698b35960ace4",
     "semantic_hash": ""
   },
   "src/ui/sidebarView.test.ts": {
@@ -812,6 +812,16 @@
   "src/providers/image/pollinations.ts": {
     "mtime": 1790230303.944142,
     "ast_hash": "4ed7719e668eaad01689472374fee938",
+    "semantic_hash": ""
+  },
+  "src/note/ankiImages.test.ts": {
+    "mtime": 1790231221.664958,
+    "ast_hash": "dd5959351302b90ef61a049ac4078220",
+    "semantic_hash": ""
+  },
+  "src/note/ankiImages.ts": {
+    "mtime": 1790231222.0588586,
+    "ast_hash": "3ac444a97f18c00341c0800211486061",
     "semantic_hash": ""
   }
 }
