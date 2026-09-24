@@ -161,3 +161,50 @@
 .anki-bridge-provider-badge.is-cloud {
 	color: var(--text-warning);
 }
+
+/* docs/design/07-sidebar.md §7.2.1/§7.2.2 — editable prompts. The textarea grows with
+   its content (native field-sizing, no JS) up to a cap, then scrolls. */
+.anki-bridge-sidebar__prompt {
+	margin-top: var(--size-4-3);
+}
+
+.anki-bridge-sidebar__prompt-input {
+	display: block;
+	width: 100%;
+	min-height: 4lh;
+	max-height: 16lh;
+	field-sizing: content;
+	resize: vertical;
+	font-size: var(--font-ui-small);
+	margin: var(--size-4-2) 0 var(--size-4-1);
+}
+
+.anki-bridge-sidebar__prompt-reset {
+	font-size: var(--font-ui-smaller);
+	margin-bottom: var(--size-4-1);
+}
+
+.anki-bridge-sidebar__badge {
+	margin-left: auto;
+	padding: 0 var(--size-4-2);
+	border-radius: var(--radius-s);
+	background: var(--background-modifier-hover);
+	color: var(--text-muted);
+	font-size: var(--font-ui-smaller);
+	font-weight: var(--font-normal);
+}
+
+.anki-bridge-sidebar__badge--accent {
+	background: var(--interactive-accent);
+	color: var(--text-on-accent);
+}
+
+/* Image tab header now holds two buttons: keep them together on the right, wrapping
+   below the title in a narrow sidebar. */
+.anki-bridge-sidebar__section-header {
+	flex-wrap: wrap;
+}
+
+.anki-bridge-sidebar__section-header > .anki-bridge-sidebar__section-title {
+	margin-right: auto;
+}

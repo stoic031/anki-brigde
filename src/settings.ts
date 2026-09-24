@@ -71,6 +71,9 @@ export interface AnkiBridgeSettings {
 	// Last few cards the user wrote from Generate, keyed by examplesKey(deck, model, lang) —
 	// fed back as few-shot examples. docs/design/02-providers.md §2.4.
 	generateExamples: Record<string, ApprovedCard[]>;
+	// Text tab Prompt box, keyed by fieldConfigKey(deck, model). Absent = the default
+	// instruction; only a real edit is stored. docs/design/07-sidebar.md §7.2.1/§7.4.
+	textInstructions: Record<string, string>;
 	textProviders: TextProviderConfig[];
 	activeTextProviderId: string; // '' = none configured = no AI calls; else an id in `textProviders`
 	imageProviders: ImageProviderConfig[];
@@ -105,6 +108,7 @@ export const DEFAULT_SETTINGS: AnkiBridgeSettings = {
 	imageConfigs: {},
 	mainFieldConfig: {},
 	generateExamples: {},
+	textInstructions: {},
 	textProviders: [],
 	activeTextProviderId: '',
 	imageProviders: [],

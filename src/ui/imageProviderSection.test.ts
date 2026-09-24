@@ -114,6 +114,11 @@ class FakeSecret {
 
 class FakeArea {
 	value = '';
+	placeholder = '';
+	setPlaceholder(p: string) {
+		this.placeholder = p;
+		return this;
+	}
 	inputEl = {
 		handlers: {} as Record<string, () => void>,
 		addEventListener(name: string, cb: () => void) {
@@ -400,6 +405,17 @@ describe('renderImageProviderSection', () => {
 
 		expect(settings.imageProviders[0]?.negativePrompt).toBe('blurry, text');
 		expect(saveSettings).toHaveBeenCalled();
+	});
+
+	it('suggests a negative prompt as a placeholder, without saving it', () => {
+		const { settings } = setup({
+			imageProviders: [{ ...auto }],
+			activeImageProviderId: 'i1',
+		});
+		const area = latest('Negative prompt')?.areas[0];
+
+		expect(area?.placeholder).toContain('text, letters, watermark');
+		expect(settings.imageProviders[0]?.negativePrompt).toBe('');
 	});
 
 	it('shows only image models after Refresh and saves the pick', async () => {

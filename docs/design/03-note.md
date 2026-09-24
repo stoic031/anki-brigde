@@ -123,8 +123,11 @@ trước khi nó chạm vào note.
 **Add Image Button** (icon `image`, tab Image):
 
 - Qua pre-check ở trên thì thực hiện 2 bước, cả hai đều qua provider user đã cấu hình:
-    1. Gom nội dung các section **không rỗng** của note (trừ section Output) → gọi **text
+    1. Gom nội dung các section **không rỗng** của note (trừ section Output; Main Field — nếu
+       đã chọn — đứng đầu, vì text model coi dòng đầu là thứ cần học) → gọi **text
        provider** `processText(fields, 'build-image-prompt', [])` để nó viết prompt tạo ảnh.
+       Bỏ qua bước này nếu tab Image đang có prompt (từ Write prompt hoặc user đã sửa) — vẽ
+       đúng prompt đó (`07-sidebar.md` §7.2.2).
     2. Gọi image provider `generateImage(prompt, opts)` → gọi AnkiConnect `storeMediaFile` →
        ghi tag `<img src="filename.png">` vào cuối section **Output**, theo tuỳ chọn
        Overwrite/Append của tab Image (xem §3.4).

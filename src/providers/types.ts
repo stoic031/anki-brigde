@@ -14,6 +14,7 @@ export interface TextContext {
 	targetLanguage?: string; // profile's Learning language, docs/design/06-settings.md §6.1
 	nativeLanguage?: string; // global "Your language", docs/design/06-settings.md §6.2
 	examples?: ApprovedCard[]; // recent cards the user wrote for this Deck+Model, few-shot
+	instruction?: string; // user's own task instruction for this Deck+Model; blank = default
 }
 
 // A card the user approved via Write — the (possibly edited) Generate result.

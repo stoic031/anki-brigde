@@ -94,6 +94,7 @@ function fakeSettings(
 		imageConfigs: {},
 		mainFieldConfig: {},
 		generateExamples: {},
+		textInstructions: {},
 		textProviders: [],
 		activeTextProviderId: '',
 		imageProviders: [],

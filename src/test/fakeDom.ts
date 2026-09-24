@@ -14,13 +14,15 @@ export class FakeEl {
 	children: FakeEl[] = [];
 	disabled = false;
 	hidden = false;
+	value = ''; // <textarea>/<input>
 	private listeners: Record<string, (() => unknown)[]> = {};
 
 	constructor(
 		public tag = 'div',
 		opts: CreateOpts = {},
 	) {
-		for (const c of ([] as string[]).concat(opts.cls ?? [])) this.classes.add(c);
+		for (const c of ([] as string[]).concat(opts.cls ?? []))
+			this.classes.add(c);
 		this.text = opts.text ?? '';
 		this.attrs = { ...opts.attr };
 	}
@@ -57,7 +59,10 @@ export class FakeEl {
 	}
 	// Fires the click listeners and waits for anything they kick off synchronously.
 	async click(): Promise<void> {
-		await Promise.all((this.listeners.click ?? []).map((cb) => cb()));
+		await this.trigger('click');
+	}
+	async trigger(event: string): Promise<void> {
+		await Promise.all((this.listeners[event] ?? []).map((cb) => cb()));
 	}
 
 	// Depth-first search over this element and its descendants.

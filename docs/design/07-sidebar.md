@@ -195,6 +195,17 @@ Furigana                                                             [×]
 - Nút **Clear** (icon `eraser` + chữ): xoá hết nội dung preview của mọi field (không đụng
   note, không hỏi xác nhận — preview chỉ nằm trong bộ nhớ, Generate lại được). Bị vô hiệu
   khi chưa có preview nào.
+- **Khối Prompt** (dưới danh sách field, `<details>` thu gọn mặc định): tiêu đề "Prompt" kèm
+  badge **Default** / **Custom** để biết đang dùng hướng dẫn nào mà không cần mở. Mở ra là
+  textarea chứa phần **hướng dẫn** (instruction) của task `extract-vocabulary` — bản user đã
+  sửa, hoặc bản mặc định. Chỉ phần này sửa được; ngôn ngữ, ví dụ few-shot và ràng buộc JSON
+  vẫn do plugin tự nối sau (`02-providers.md` §2.4), nên sửa sai không làm hỏng parse. Bên dưới
+  là 1 dòng read-only liệt kê đúng những phần sẽ được nối thêm ở lần Generate kế tiếp, VD
+  "Also sent automatically: Learning language (Japanese), 2 approved cards as examples, JSON
+  format for 3 fields." (phần nào không có thì không liệt kê).
+  - Lưu khi rời textarea (blur), theo cặp Deck+Model (`settings.textInstructions`, §7.4).
+    Để trống hoặc giống hệt mặc định → xoá khoá (không lưu bản sao của mặc định).
+  - Nút **Reset to default** chỉ hiện khi đang Custom.
 
 ### 7.2.2. Tab Image
 
@@ -212,6 +223,18 @@ Output: [Image ▼]
 - **On existing tag (Overwrite/Append):** Append = giữ tag cũ, thêm tag mới; Overwrite = xoá
   tag `<img src="...">` cũ trong section Output trước khi ghi tag mới (chỉ xoá tag, giữ
   nguyên text khác — xem `03-note.md` §3.4).
+- **Nút Write prompt** (icon `pencil-line` + chữ, cạnh Add image): chỉ gọi text model
+  (`build-image-prompt`) và hiện prompt ảnh — không vẽ, không ghi gì. Cùng pre-check với
+  Add image. Hai nút không chạy đồng thời.
+- **Khối Image prompt:** chỉ xuất hiện khi đã có prompt (từ Write prompt, hoặc prompt Add
+  image vừa tự viết). Textarea sửa được + dòng trạng thái: "Written by the text model…" →
+  sửa tay thì "Edited. Add image draws it as-is." → vẽ xong "Used for the last image…".
+  Nút `×` bỏ prompt.
+  - Add image khi có prompt → vẽ đúng prompt đó, **không** gọi text model. Khi trống → hành
+    vi cũ (tự viết rồi vẽ) và hiện prompt vừa dùng để user tinh chỉnh, vẽ lại.
+  - Prompt vẫn giữ sau khi vẽ (vẽ lại được); prompt hiện ngay khi text model viết xong nên
+    vẫn còn nếu bước vẽ lỗi.
+  - Chỉ nằm trong bộ nhớ, gắn với note đã viết nó: chuyển sang note khác thì bị bỏ.
 
 ## 7.3. Action: Create New Note
 
@@ -263,7 +286,9 @@ Deck/Model/Folder của note mới lấy từ **profile đang chọn** (§7.2.1;
   Output tab Image, và Main Field được lưu **riêng theo từng cặp Deck+Model**
   (`settings.generateWithAiFields` / `imageConfigs` / `mainFieldConfig`, cùng khoá
   `fieldConfigKey(deck, model)`), không dùng chung 1 cấu hình toàn cục. Khoá lưu theo
-  cặp Deck+Model, không theo profile.
+  cặp Deck+Model, không theo profile. Hướng dẫn tuỳ chỉnh của khối Prompt tab Text
+  (`settings.textInstructions`) cũng dùng khoá này; vắng khoá = hướng dẫn mặc định.
+  Prompt ảnh tab Image thì không lưu (§7.2.2).
 - Chuyển sang note khác đang mở có `anki_deck`/`anki_model` khác (hoặc đổi Deck/Model của
   note) → Main Field và các tab Text/Image tự hiện lại cấu hình đã lưu cho cặp đó (nếu
   có), hoặc trống nếu cặp đó chưa từng được cấu hình.

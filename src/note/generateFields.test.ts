@@ -108,6 +108,17 @@ describe('planGenerate', () => {
 		expect(plan).toMatchObject({ context: { examples } });
 	});
 
+	it("passes this Deck+Model's custom instruction", async () => {
+		const { plugin } = setup();
+		plugin.settings.textInstructions = {
+			[fieldConfigKey('D', 'M')]: 'Be funny.',
+			[fieldConfigKey('D', 'Other')]: 'Be serious.',
+		};
+		const plan = await planGenerate(plugin, note, 'D', 'M');
+
+		expect(plan).toMatchObject({ context: { instruction: 'Be funny.' } });
+	});
+
 	it('only passes examples written for the selected Learning language', async () => {
 		const { plugin } = setup({ targetLanguage: 'Japanese' });
 		plugin.settings.generateExamples = {
