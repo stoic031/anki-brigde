@@ -41,9 +41,11 @@ function fakeTFile(overrides: Record<string, unknown> = {}): TFile {
 function fakePlugin(overrides: Partial<AnkiBridgeSettings> = {}) {
 	const handlers: ((file: TFile) => void)[] = [];
 	const getActiveFile = vi.fn<() => TFile | null>();
+	const cleanups: (() => void)[] = [];
 	const plugin = {
 		settings: { ...DEFAULT_SETTINGS, autoSyncOnSave: true, ...overrides },
 		registerEvent: vi.fn(),
+		register: (cb: () => void) => cleanups.push(cb),
 		app: {
 			vault: {
 				on: (name: string, cb: (file: TFile) => void) => {
@@ -59,6 +61,7 @@ function fakePlugin(overrides: Partial<AnkiBridgeSettings> = {}) {
 		plugin,
 		getActiveFile,
 		fireModify: (file: TFile) => handlers.forEach((h) => h(file)),
+		unload: () => cleanups.forEach((cb) => cb()),
 	};
 }
 
@@ -132,6 +135,19 @@ describe('registerAutoSync', () => {
 		await vi.advanceTimersByTimeAsync(2000);
 
 		expect(syncNote).toHaveBeenCalledTimes(1);
+	});
+
+	it('drops a pending sync when the plugin unloads', async () => {
+		const { plugin, getActiveFile, fireModify, unload } = fakePlugin();
+		const file = fakeTFile();
+		getActiveFile.mockReturnValue(file);
+		registerAutoSync(plugin);
+
+		fireModify(file);
+		unload();
+		await vi.advanceTimersByTimeAsync(3000);
+
+		expect(syncNote).not.toHaveBeenCalled();
 	});
 
 	it('skips silently when the note has no Deck/Model configured', async () => {

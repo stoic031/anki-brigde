@@ -18,6 +18,8 @@ export function registerAutoSync(plugin: AnkiBridgePlugin): void {
 	// Guards against syncNote's own frontmatter write (writeAnkiFrontmatter) re-firing
 	// 'modify' and triggering a second, overlapping auto-sync of the same file.
 	const inFlight = new Set<string>();
+	// A pending debounce must not fire a sync after the plugin is disabled.
+	plugin.register(() => timers.forEach((t) => window.clearTimeout(t)));
 
 	plugin.registerEvent(
 		plugin.app.vault.on('modify', (file) => {
