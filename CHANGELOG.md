@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented in this file.
 
+## [Unreleased]
+
+### Added
+
+- Buy Me a Coffee funding link on the plugin page, and a rewritten README.
+
 ## [2.0.0] - 2026-09-25
 
 ### Changed
